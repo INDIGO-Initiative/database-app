@@ -1,0 +1,177 @@
+{% extends 'indigo/base.html' %}
+
+
+
+{% block content %}
+
+    <h2>Event</h2>
+
+     <table class="table">
+        <tr>
+            <th>At</th>
+            <td>{{ event.created }}</td>
+        </tr>
+        <tr>
+            <th>By</th>
+            <td>{{ event.user }}</td>
+        </tr>
+     </table>
+
+    {% if edits_created_and_approved %}
+
+        <h3>Edits Created and Approved at same time</h3>
+
+        {% for edit in edits_created_and_approved %}
+            <table class="table">
+                <tr>
+                    <th>Mode</th>
+                    <td>{{ edit.mode }}</td>
+                </tr>
+                <tr>
+                    <th>Key</th>
+                    <td>{{ edit.data_key }}</td>
+                </tr>
+                <tr>
+                    <th>Data</th>
+                    <td>{{ edit.get_data_html|safe }}</td>
+                </tr>
+                <tr>
+                    <th>Record</th>
+                    <td>
+                        {{ edit.record.type.title }} /  {{ edit.record.public_id }}
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+
+    {% endif %}
+
+    {% if edits_only_created %}
+
+        <h3>Edits Created</h3>
+
+        {% for edit in edits_only_created %}
+            <table class="table">
+                <tr>
+                    <th>Mode</th>
+                    <td>{{ edit.mode }}</td>
+                </tr>
+                <tr>
+                    <th>Key</th>
+                    <td>{{ edit.data_key }}</td>
+                </tr>
+                <tr>
+                    <th>Data</th>
+                    <td>{{ edit.get_data_html|safe }}</td>
+                </tr>
+                <tr>
+                    <th>Record</th>
+                    <td>
+                        {{ edit.record.type.title }} /  {{ edit.record.public_id }}
+                    </td>
+                </tr>
+
+                {% if edit.approval_event %}
+                    <tr>
+                        <th>State</th>
+                        <td>
+                            Approved {{ edit.approval_event.created }} / {{ edit.approval_event.user }}
+                            <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                {% elif edit.refusal_event %}
+                    <tr>
+                        <th>State</th>
+                        <td>
+                            Refused {{ edit.refusal_event.created }} / {{ edit.refusal_event.user }}
+                            <a href="{% url 'indigo_admin_event_index' event_id=edit.refusal_event.public_id %}" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <th>State</th>
+                        <td>
+                            Not Moderated yet
+                        </td>
+                    </tr>
+                {% endif %}
+
+            </table>
+        {% endfor %}
+
+    {% endif %}
+
+
+    {% if edits_only_approved %}
+
+         <h3>Edits Approved</h3>
+
+         {% for edit in edits_only_approved %}
+            <table class="table">
+                <tr>
+                    <th>Mode</th>
+                    <td>{{ edit.mode }}</td>
+                </tr>
+                <tr>
+                    <th>Key</th>
+                    <td>{{ edit.data_key }}</td>
+                </tr>
+                <tr>
+                    <th>Data</th>
+                    <td>{{ edit.get_data_html|safe }}</td>
+                </tr>
+                <tr>
+                    <th>Record</th>
+                    <td>
+                        {{ edit.record.type.title }} /  {{ edit.record.public_id }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Edit created</th>
+                    <td>
+                        {{ edit.creation_event.created }} / {{ edit.creation_event.user }}
+                        <a href="{% url 'indigo_admin_event_index' event_id=edit.creation_event.public_id %}" class="btn btn-primary">View</a>
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+
+    {% endif %}
+
+    {% if edits_refused %}
+
+         <h3>Edits Approved</h3>
+
+         {% for edit in edits_refused %}
+            <table class="table">
+                <tr>
+                    <th>Mode</th>
+                    <td>{{ edit.mode }}</td>
+                </tr>
+                <tr>
+                    <th>Key</th>
+                    <td>{{ edit.data_key }}</td>
+                </tr>
+                <tr>
+                    <th>Data</th>
+                    <td>{{ edit.get_data_html|safe }}</td>
+                </tr>
+                <tr>
+                    <th>Record</th>
+                    <td>
+                        {{ edit.record.type.title }} /  {{ edit.record.public_id }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Edit created by</th>
+                    <td>
+                        {{ edit.creation_event.created }} / {{ edit.creation_event.user }}
+                        <a href="{% url 'indigo_admin_event_index' event_id=edit.creation_event.public_id %}" class="btn btn-primary">View</a>
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+
+    {% endif %}
+
+{% endblock %}

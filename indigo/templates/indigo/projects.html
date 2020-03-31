@@ -1,0 +1,27 @@
+{% extends 'indigo/base.html' %}
+
+
+
+{% block content %}
+
+    {% if projects %}
+        <table class="table">
+            <tr>
+                <th>Title</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for project in projects %}
+                <tr>
+                    <td>{{ project.data_public.project_name.value }}</td>
+                    <td><a href="{% url 'indigo_project_index' public_id=project.public_id %}" class="btn btn-primary">View</a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No projects are available.</p>
+    {% endif %}
+
+    <p><a href="{% url 'indigo_project_list_download' %}" class="btn btn-primary">Download List</a></p>
+
+{% endblock %}

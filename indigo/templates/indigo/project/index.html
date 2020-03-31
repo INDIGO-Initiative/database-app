@@ -1,0 +1,18 @@
+{% extends 'indigo/base.html' %}
+
+
+
+{% block content %}
+
+<p>Project {{ project.data_public.title }}</p>
+
+<table class="table">
+    <tr><th>ID</th><td>{{ project.public_id }}</td></tr>
+    {% for title, value in field_data.items %}
+        <tr><th>{{ title }}</th><td>{{ value }}</td></tr>
+    {% endfor %}
+</table>
+
+<p><a href="{% url 'indigo_project_download_form' public_id=project.public_id %}" class="btn btn-primary">Download Form</a></p>
+
+{% endblock %}

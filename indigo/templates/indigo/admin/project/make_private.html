@@ -1,0 +1,20 @@
+{% extends 'indigo/base.html' %}
+
+
+
+{% block content %}
+
+    <h2>Make Private</h2>
+
+    <p>This will make the WHOLE project private</p>
+
+      <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+          {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit">
+      </form>
+
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{
+  "$id": "https://example.com/project.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Organisation",
+  "type": "object",
+  "required": [
+    "status"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "PUBLIC",
+        "PRIVATE",
+        "DISPUTED"
+      ]
+    },
+    "project_name": {
+      "$ref": "#/definitions/value_string"
+    },
+    "fund_name": {
+      "$ref": "#/definitions/value_string"
+    },
+    "launch_date": {
+      "$ref": "#/definitions/value_string"
+    }
+  },
+  "definitions": {
+    "value_string": {
+      "type": "object",
+      "required": [
+        "value", "source", "status"
+      ],
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PUBLIC", "PRIVATE", "DISPUTED"]
+        }
+      }
+    }
+  }
+}

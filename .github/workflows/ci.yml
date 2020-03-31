@@ -1,0 +1,43 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.6
+    - uses: actions/cache@v1
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements_dev.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - run: pip install -r requirements_dev.txt
+    - run: black --check *.py */
+      if: always()
+    #- run: isort --check-only --recursive *.py */
+    #  if: always()
+    - run: flake8
+      if: always()
+    - env:
+        JSONDATAFERRET_DATABASE_NAME: postgres
+        JSONDATAFERRET_DATABASE_USER: postgres
+        JSONDATAFERRET_DATABASE_PASSWORD: postgres
+      run: python manage.py test
+      if: always()
+

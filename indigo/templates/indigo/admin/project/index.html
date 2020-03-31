@@ -1,0 +1,26 @@
+{% extends 'indigo/base.html' %}
+
+
+
+{% block content %}
+
+<p>Project {{ project.data_private.project_name.value }}</p>
+
+<table class="table">
+    <tr><th>ID</th><td>{{ project.public_id }}</td></tr>
+    {% for title, value in field_data.items %}
+        <tr><th>{{ title }}</th><td>{{ value }}</td></tr>
+    {% endfor %}
+</table>
+
+
+{% if project.status_public %}
+    <p><a href="{% url 'indigo_admin_project_make_private' public_id=project.public_id %}" class="btn btn-primary">Change to Private</a></p>
+    <p><a href="{% url 'indigo_admin_project_make_disputed' public_id=project.public_id %}" class="btn btn-primary">Change to Disputed</a></p>
+{% endif %}
+<P><a href="{% url 'indigo_admin_project_download_form' public_id=project.public_id %}" class="btn btn-primary">Download Form</a></P>
+<P><a href="{% url 'indigo_admin_project_import_form' public_id=project.public_id %}" class="btn btn-primary">Upload/Import Form</a></P>
+<P><a href="{% url 'indigo_admin_project_moderate' public_id=project.public_id %}" class="btn btn-primary">Moderate</a></P>
+<P><a href="{% url 'indigo_admin_project_history' public_id=project.public_id %}" class="btn btn-primary">History</a></P>
+
+{% endblock %}

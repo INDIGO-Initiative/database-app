@@ -1,0 +1,51 @@
+{% extends 'indigo/base.html' %}
+
+
+
+{% block content %}
+
+    <h2>Moderate</h2>
+
+    {% if edits %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for edit in edits %}
+
+            <table>
+                <tr>
+                    <th>Mode</th>
+                    <td>{{ edit.mode }}</td>
+                </tr>
+                {% for field_data in edit.field_datas %}
+                    <tr><th>Field: {{ field_data.title }}</th><td>{{ field_data.value }}</td></tr>
+                {% endfor %}
+                <tr>
+                    <th>Action</th>
+                    <td>
+                        <label>
+                            <input type="radio" name="action_{{ edit.id }}" value="approve">
+                            Approve
+                        </label>
+                        <label>
+                            <input type="radio" name="action_{{ edit.id }}" value="reject">
+                            Reject
+                        </label>
+                        <label>
+                            <input type="radio" name="action_{{ edit.id }}" value="" checked>
+                            No Action
+                        </label>
+                    </td>
+                </tr>
+            </table>
+
+            {% endfor %}
+
+            <input type="submit" value="Moderate">
+        </form>
+
+    {% else %}
+        <p>There is nothing to moderate, well done!</p>
+    {% endif %}
+
+
+{% endblock %}
