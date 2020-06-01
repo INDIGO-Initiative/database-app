@@ -70,6 +70,8 @@ def project_index(request, public_id):
         )
     except Project.DoesNotExist:
         raise Http404("Project does not exist")
+    if not project.status_public or not project.exists:
+        raise Http404("Project does not exist")
     field_data = {}
     for field in TYPE_PROJECT_FIELD_LIST:
         if project.has_data_public_field(field["key"]):
@@ -83,13 +85,11 @@ def project_index(request, public_id):
 
 def project_download_form(request, public_id):
     try:
-        type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
-        raise Http404("Record does not exist")
-
+        project = Project.objects.get(public_id=public_id)
+    except Project.DoesNotExist:
+        raise Http404("Project does not exist")
+    if not project.status_public or not project.exists:
+        raise Http404("Project does not exist")
     guide_file = os.path.join(
         settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project-public.xlsx",
     )
@@ -99,12 +99,12 @@ def project_download_form(request, public_id):
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
     )
 
-    spreadsheetforms.api.put_data_in_form(guide_file, record.cached_data, out_file)
+    spreadsheetforms.api.put_data_in_form(guide_file, project.data_public, out_file)
 
     with open(out_file, "rb") as fh:
         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
         response["Content-Disposition"] = (
-            "inline; filename=project" + record.public_id + ".xlsx"
+            "inline; filename=project" + project.public_id + ".xlsx"
         )
 
     return response
