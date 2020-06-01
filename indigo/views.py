@@ -4,6 +4,7 @@ import random
 import tempfile
 
 import jsondataferret
+import jsondataferret.utils
 import jsonpointer
 import spreadsheetforms.api
 from django.conf import settings
@@ -14,7 +15,7 @@ from django.urls import reverse
 from jsondataferret.models import Edit, Event, Record, Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 
-from indigo import TYPE_PROJECT_FIELD_LIST, TYPE_PROJECT_PUBLIC_ID
+from indigo import TYPE_PROJECT_PUBLIC_ID
 
 from .forms import (
     ProjectImportForm,
@@ -72,10 +73,9 @@ def project_index(request, public_id):
         raise Http404("Project does not exist")
     if not project.status_public or not project.exists:
         raise Http404("Project does not exist")
-    field_data = {}
-    for field in TYPE_PROJECT_FIELD_LIST:
-        if project.has_data_public_field(field["key"]):
-            field_data[field["title"]] = project.get_data_public_field(field["key"])
+    field_data = jsondataferret.utils.get_field_list_from_json(
+        TYPE_PROJECT_PUBLIC_ID, project.data_public
+    )
     return render(
         request,
         "indigo/project/index.html",
@@ -159,10 +159,9 @@ def admin_project_index(request, public_id):
         project = Project.objects.get(public_id=public_id)
     except Project.DoesNotExist:
         raise Http404("Project does not exist")
-    field_data = {}
-    for field in TYPE_PROJECT_FIELD_LIST:
-        if project.has_data_private_field(field["key"]):
-            field_data[field["title"]] = project.get_data_private_field(field["key"])
+    field_data = jsondataferret.utils.get_field_list_from_json(
+        TYPE_PROJECT_PUBLIC_ID, project.data_private
+    )
     return render(
         request,
         "indigo/admin/project/index.html",
@@ -431,15 +430,10 @@ def admin_project_moderate(request, public_id):
         )
 
     for edit in edits:
-        edit.field_datas = []
-        for field in TYPE_PROJECT_FIELD_LIST:
-            if edit.has_data_field(field["key"]):
-                edit.field_datas.append(
-                    {
-                        "title": field["title"],
-                        "value": edit.get_data_field(field["key"]),
-                    }
-                )
+        # TODO This will not take account of data_key on an edit If we start using that we will need to check this
+        edit.field_datas = jsondataferret.utils.get_field_list_from_json(
+            TYPE_PROJECT_PUBLIC_ID, edit.data
+        )
 
     return render(
         request,

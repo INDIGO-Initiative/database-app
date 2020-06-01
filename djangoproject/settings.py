@@ -165,8 +165,9 @@ JSONDATAFERRET_TYPE_INFORMATION = {
                 "key": "/outcomes",
                 "title": "Outcomes",
                 "fields": [
-                    {"key": "/outcome", "title": "Outcome"},
+                    {"key": "/title", "title": "Outcome"},
                     {"key": "/definition", "title": "Definition"},
+                    {"key": "/source", "title": "Source"},
                 ],
             },
         ],
