@@ -7,7 +7,7 @@ import jsondataferret
 import jsonpointer
 import spreadsheetforms.api
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -113,7 +113,7 @@ def project_download_form(request, public_id):
 ########################### Admin
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_index(request):
     return render(request, "indigo/admin/index.html")
 
@@ -121,7 +121,7 @@ def admin_index(request):
 ########################### Admin - Projects
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_project_download_blank_form(request):
     type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PROJECT_PUBLIC_ID, {})
     if not type_data.get("spreadsheet_form_guide"):
@@ -143,7 +143,7 @@ def admin_project_download_blank_form(request):
     return response
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_projects_list(request):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -153,7 +153,7 @@ def admin_projects_list(request):
     return render(request, "indigo/admin/projects.html", {"projects": projects},)
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_project_index(request, public_id):
     try:
         project = Project.objects.get(public_id=public_id)
@@ -170,7 +170,7 @@ def admin_project_index(request, public_id):
     )
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_project_download_form(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -198,7 +198,7 @@ def admin_project_download_form(request, public_id):
     return response
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_project_import_form(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -257,7 +257,7 @@ def admin_project_import_form(request, public_id):
     return render(request, "indigo/admin/project/import_form.html", context)
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_project_make_private(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -304,7 +304,7 @@ def admin_project_make_private(request, public_id):
     return render(request, "indigo/admin/project/make_private.html", context,)
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_project_make_disputed(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -351,7 +351,7 @@ def admin_project_make_disputed(request, public_id):
     return render(request, "indigo/admin/project/make_disputed.html", context,)
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_projects_new(request):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -397,7 +397,7 @@ def admin_projects_new(request):
     return render(request, "indigo/admin/project/new.html", context)
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_project_moderate(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -448,7 +448,7 @@ def admin_project_moderate(request, public_id):
     )
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_project_history(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -470,7 +470,7 @@ def admin_project_history(request, public_id):
 ########################### Admin - Event
 
 
-@login_required
+@permission_required("indigo.admin")
 def admin_event_index(request, event_id):
     try:
         event = Event.objects.get(public_id=event_id)

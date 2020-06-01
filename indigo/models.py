@@ -3,6 +3,12 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 
 
+class Indigo(models.Model):
+    class Meta:
+        managed = False
+        permissions = (("admin", "Admin - All admin tasks on Indigo data"),)
+
+
 class Project(models.Model):
     public_id = models.CharField(max_length=200, unique=True)
     exists = models.BooleanField(default=False)
