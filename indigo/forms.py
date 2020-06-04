@@ -4,15 +4,17 @@ from django import forms
 class ProjectNewForm(forms.Form):
     id = forms.SlugField()
     title = forms.CharField()
+    comment = forms.CharField(widget=forms.Textarea)
 
 
 class ProjectImportForm(forms.Form):
     file = forms.FileField()
+    comment = forms.CharField(widget=forms.Textarea)
 
 
 class ProjectMakeDisputedForm(forms.Form):
-    pass
+    comment = forms.CharField(widget=forms.Textarea)
 
 
 class ProjectMakePrivateForm(forms.Form):
-    pass
+    comment = forms.CharField(widget=forms.Textarea)

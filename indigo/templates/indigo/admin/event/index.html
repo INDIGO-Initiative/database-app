@@ -15,6 +15,10 @@
             <th>By</th>
             <td>{{ event.user }}</td>
         </tr>
+         <tr>
+            <th>Comment</th>
+            <td>{{ event.comment |linebreaks}}</td>
+        </tr>
      </table>
 
     {% if edits_created_and_approved %}

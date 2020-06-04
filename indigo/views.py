@@ -235,7 +235,11 @@ def admin_project_import_form(request, public_id):
                 json_data,
                 mode=jsondataferret.EVENT_MODE_MERGE,
             )
-            newEvent([new_event_data], user=request.user)
+            newEvent(
+                [new_event_data],
+                user=request.user,
+                comment=form.cleaned_data["comment"],
+            )
 
             # redirect to a new URL:
             return HttpResponseRedirect(
@@ -281,7 +285,11 @@ def admin_project_make_private(request, public_id):
                 {"status": "PRIVATE"},
                 mode=jsondataferret.EVENT_MODE_MERGE,
             )
-            newEvent([new_event_data], user=request.user)
+            newEvent(
+                [new_event_data],
+                user=request.user,
+                comment=form.cleaned_data["comment"],
+            )
 
             # redirect to a new URL:
             return HttpResponseRedirect(
@@ -328,7 +336,11 @@ def admin_project_make_disputed(request, public_id):
                 {"status": "DISPUTED"},
                 mode=jsondataferret.EVENT_MODE_MERGE,
             )
-            newEvent([new_event_data], user=request.user)
+            newEvent(
+                [new_event_data],
+                user=request.user,
+                comment=form.cleaned_data["comment"],
+            )
 
             # redirect to a new URL:
             return HttpResponseRedirect(
@@ -378,7 +390,9 @@ def admin_projects_new(request):
                     {"project_name": {"value": form.cleaned_data["title"]}},
                     approved=True,
                 )
-                newEvent([data], user=request.user)
+                newEvent(
+                    [data], user=request.user, comment=form.cleaned_data["comment"]
+                )
 
                 # redirect to a new URL:
                 return HttpResponseRedirect(
@@ -423,7 +437,9 @@ def admin_project_moderate(request, public_id):
                 )
 
         if actions:
-            jsondataferret.pythonapi.newevent.newEvent(actions, user=request.user)
+            jsondataferret.pythonapi.newevent.newEvent(
+                actions, user=request.user, comment=request.POST.get("comment")
+            )
 
         return HttpResponseRedirect(
             reverse("indigo_admin_project_index", kwargs={"public_id": public_id},)

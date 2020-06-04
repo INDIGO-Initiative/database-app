@@ -11,12 +11,14 @@
             <tr>
                 <th>At</th>
                 <th>By</th>
+                <th>Comment</th>
                 <th>&nbsp;</th>
             </tr>
             {% for event in events %}
                 <tr>
                     <td>{{ event.created }}</td>
                     <td>{{ event.user }}</td>
+                    <td>{{ event.comment|linebreaks }}</td>
                     <td><a href="{% url 'indigo_admin_event_index' event_id=event.public_id %}" class="btn btn-primary">View</a></td>
                 </tr>
             {% endfor %}
