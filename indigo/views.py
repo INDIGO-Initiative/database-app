@@ -15,6 +15,7 @@ from django.urls import reverse
 from jsondataferret.models import Edit, Event, Record, Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 
+import indigo.processdata
 from indigo import TYPE_ORGANISATION_PUBLIC_ID, TYPE_PROJECT_PUBLIC_ID
 
 from .forms import (
@@ -92,23 +93,24 @@ def project_download_form(request, public_id):
         raise Http404("Project does not exist")
     if not project.status_public or not project.exists:
         raise Http404("Project does not exist")
+
+    data = indigo.processdata.add_other_records_to_project(
+        project.data_public, public_only=True
+    )
     guide_file = os.path.join(
         settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project-public.xlsx",
     )
-
     out_file = os.path.join(
         tempfile.gettempdir(),
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
     )
-
-    spreadsheetforms.api.put_data_in_form(guide_file, project.data_public, out_file)
+    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
 
     with open(out_file, "rb") as fh:
         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
         response["Content-Disposition"] = (
             "inline; filename=project" + project.public_id + ".xlsx"
         )
-
     return response
 
 
@@ -181,21 +183,21 @@ def admin_project_download_form(request, public_id):
     except Record.DoesNotExist:
         raise Http404("Record does not exist")
 
+    data = indigo.processdata.add_other_records_to_project(
+        record.cached_data, public_only=False
+    )
     guide_file = os.path.join(
         settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
     )
-
     out_file = os.path.join(
         tempfile.gettempdir(),
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
     )
-
-    spreadsheetforms.api.put_data_in_form(guide_file, record.cached_data, out_file)
+    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
 
     with open(out_file, "rb") as fh:
         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
         response["Content-Disposition"] = "inline; filename=project.xlsx"
-
     return response
 
 
@@ -203,7 +205,7 @@ def admin_project_download_form(request, public_id):
 def admin_project_import_form(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
-        data = Record.objects.get(type=type, public_id=public_id)
+        project = Record.objects.get(type=type, public_id=public_id)
     except Type.DoesNotExist:
         raise Http404("Type does not exist")
     except Record.DoesNotExist:
@@ -231,22 +233,18 @@ def admin_project_import_form(request, public_id):
 
             # process the data in form.cleaned_data as required
             # Save the event
-            new_event_data = NewEventData(
-                TYPE_PROJECT_PUBLIC_ID,
-                data.public_id,
-                json_data,
-                mode=jsondataferret.EVENT_MODE_MERGE,
+            new_event_data = indigo.processdata.extract_edits_from_project_import(
+                project, json_data
             )
             newEvent(
-                [new_event_data],
-                user=request.user,
-                comment=form.cleaned_data["comment"],
+                new_event_data, user=request.user, comment=form.cleaned_data["comment"],
             )
 
             # redirect to a new URL:
             return HttpResponseRedirect(
                 reverse(
-                    "indigo_admin_project_index", kwargs={"public_id": data.public_id},
+                    "indigo_admin_project_index",
+                    kwargs={"public_id": project.public_id},
                 )
             )
 
@@ -255,7 +253,7 @@ def admin_project_import_form(request, public_id):
         form = ProjectImportForm()
 
     context = {
-        "record": data,
+        "record": project,
         "form": form,
     }
 

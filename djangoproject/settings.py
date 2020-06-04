@@ -171,6 +171,18 @@ JSONDATAFERRET_TYPE_INFORMATION = {
                     {"key": "/source", "title": "Source"},
                 ],
             },
+            {
+                "type": "list",
+                "key": "/outcome_funds",
+                "title": "Outcome Funds",
+                "fields": [
+                    {"key": "/title", "title": "Title"},
+                    {"key": "/id", "title": "Identifier"},
+                    {"key": "/organisation/id", "title": "Organisation ID"},
+                    {"key": "/organisation/name", "title": "Organisation Name"},
+                    {"key": "/organisation/type", "title": "Organisation Type"},
+                ],
+            },
         ],
     },
     "organisation": {

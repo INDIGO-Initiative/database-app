@@ -3,6 +3,7 @@ import copy
 import jsonpointer
 from jsondataferret.models import Record, Type
 
+import indigo.processdata
 from indigo import (
     TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST,
     TYPE_ORGANISATION_PUBLIC_ID,
@@ -48,18 +49,25 @@ def update_project(record):
         else ""
     )
     project.status_public = record.cached_exists and record_status == "public"
-    # Public data
-    project.data_public = (
-        filter_values(
-            record.cached_data,
-            keys_with_own_status_subfield=TYPE_PROJECT_FILTER_KEYS_LIST,
-            keys_always_remove=TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
+    # Public Data
+    if project.status_public:
+        project.data_public = indigo.processdata.add_other_records_to_project(
+            filter_values(
+                record.cached_data,
+                keys_with_own_status_subfield=TYPE_PROJECT_FILTER_KEYS_LIST,
+                keys_always_remove=TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
+            ),
+            public_only=True,
         )
-        if project.status_public
-        else {}
-    )
+    else:
+        project.data_public = {}
     # Private Data
-    project.data_private = record.cached_data if record.cached_exists else {}
+    if record.cached_exists:
+        project.data_private = indigo.processdata.add_other_records_to_project(
+            record.cached_data, public_only=False
+        )
+    else:
+        project.data_private = {}
     # Finally, Save
     project.save()
 
