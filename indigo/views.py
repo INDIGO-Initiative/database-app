@@ -253,7 +253,7 @@ def admin_project_import_form(request, public_id):
         form = ProjectImportForm()
 
     context = {
-        "data": data,
+        "record": data,
         "form": form,
     }
 

@@ -1,6 +1,13 @@
-{% extends 'indigo/base.html' %}
+{% extends 'indigo/base-admin.html' %}
 
 
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Admin</li>
+      </ol>
+    </nav>
+{% endblock %}
 
 {% block content %}
 

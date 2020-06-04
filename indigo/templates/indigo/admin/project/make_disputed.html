@@ -1,5 +1,16 @@
-{% extends 'indigo/base.html' %}
+{% extends 'indigo/base-admin.html' %}
 
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_list' %}">Projects</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_index' public_id=record.public_id  %}">Project {{ record.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Make Disputed</li>
+      </ol>
+    </nav>
+{% endblock %}
 
 
 {% block content %}
