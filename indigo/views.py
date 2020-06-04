@@ -15,15 +15,17 @@ from django.urls import reverse
 from jsondataferret.models import Edit, Event, Record, Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 
-from indigo import TYPE_PROJECT_PUBLIC_ID
+from indigo import TYPE_ORGANISATION_PUBLIC_ID, TYPE_PROJECT_PUBLIC_ID
 
 from .forms import (
+    OrganisationImportForm,
+    OrganisationNewForm,
     ProjectImportForm,
     ProjectMakeDisputedForm,
     ProjectMakePrivateForm,
     ProjectNewForm,
 )
-from .models import Project
+from .models import Organisation, Project
 
 ########################### Home Page
 
@@ -473,6 +475,270 @@ def admin_project_history(request, public_id):
     return render(
         request,
         "indigo/admin/project/history.html",
+        {"type": type, "record": record, "events": events},
+    )
+
+
+########################### Admin - Organisations
+
+
+@permission_required("indigo.admin")
+def admin_organisation_download_blank_form(request):
+    type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_ORGANISATION_PUBLIC_ID, {}
+    )
+    if not type_data.get("spreadsheet_form_guide"):
+        raise Http404("Feature not available")
+
+    out_file = os.path.join(
+        tempfile.gettempdir(),
+        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
+    )
+
+    spreadsheetforms.api.make_empty_form(
+        type_data.get("spreadsheet_form_guide"), out_file
+    )
+
+    with open(out_file, "rb") as fh:
+        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        response["Content-Disposition"] = "inline; filename=organisation.xlsx"
+
+    return response
+
+
+@permission_required("indigo.admin")
+def admin_organisations_list(request):
+    try:
+        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
+    except Type.DoesNotExist:
+        raise Http404("Type does not exist")
+    organisations = Record.objects.filter(type=type)
+    return render(
+        request, "indigo/admin/organisations.html", {"organisations": organisations},
+    )
+
+
+@permission_required("indigo.admin")
+def admin_organisation_index(request, public_id):
+    try:
+        organisation = Organisation.objects.get(public_id=public_id)
+    except Organisation.DoesNotExist:
+        raise Http404("Organisation does not exist")
+    field_data = jsondataferret.utils.get_field_list_from_json(
+        TYPE_ORGANISATION_PUBLIC_ID, organisation.data_private
+    )
+    return render(
+        request,
+        "indigo/admin/organisation/index.html",
+        {"organisation": organisation, "field_data": field_data},
+    )
+
+
+@permission_required("indigo.admin")
+def admin_organisation_download_form(request, public_id):
+    try:
+        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
+        record = Record.objects.get(type=type, public_id=public_id)
+    except Type.DoesNotExist:
+        raise Http404("Type does not exist")
+    except Record.DoesNotExist:
+        raise Http404("Record does not exist")
+
+    guide_file = os.path.join(
+        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation.xlsx",
+    )
+
+    out_file = os.path.join(
+        tempfile.gettempdir(),
+        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
+    )
+
+    spreadsheetforms.api.put_data_in_form(guide_file, record.cached_data, out_file)
+
+    with open(out_file, "rb") as fh:
+        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        response["Content-Disposition"] = "inline; filename=organisation.xlsx"
+
+    return response
+
+
+@permission_required("indigo.admin")
+def admin_organisation_import_form(request, public_id):
+    try:
+        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
+        data = Record.objects.get(type=type, public_id=public_id)
+    except Type.DoesNotExist:
+        raise Http404("Type does not exist")
+    except Record.DoesNotExist:
+        raise Http404("Record does not exist")
+
+    if request.method == "POST":
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = OrganisationImportForm(request.POST, request.FILES)
+
+        # Check if the form is valid:
+        if form.is_valid():
+
+            # get data
+            guide_file = os.path.join(
+                settings.BASE_DIR,
+                "indigo",
+                "spreadsheetform_guides",
+                "organisation.xlsx",
+            )
+            json_data = spreadsheetforms.api.get_data_from_form(
+                guide_file,
+                request.FILES["file"].temporary_file_path(),
+                date_format=getattr(
+                    settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
+                ),
+            )
+
+            # process the data in form.cleaned_data as required
+            # Save the event
+            new_event_data = NewEventData(
+                TYPE_ORGANISATION_PUBLIC_ID,
+                data.public_id,
+                json_data,
+                mode=jsondataferret.EVENT_MODE_MERGE,
+            )
+            newEvent(
+                [new_event_data],
+                user=request.user,
+                comment=form.cleaned_data["comment"],
+            )
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(
+                reverse(
+                    "indigo_admin_organisation_index",
+                    kwargs={"public_id": data.public_id},
+                )
+            )
+
+        # If this is a GET (or any other method) create the default form.
+    else:
+        form = OrganisationImportForm()
+
+    context = {
+        "record": data,
+        "form": form,
+    }
+
+    return render(request, "indigo/admin/organisation/import_form.html", context)
+
+
+@permission_required("indigo.admin")
+def admin_organisations_new(request):
+    try:
+        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
+    except Type.DoesNotExist:
+        raise Http404("Type does not exist")
+
+    # If this is a POST request then process the Form data
+    if request.method == "POST":
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = OrganisationNewForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # Save the event
+            id = form.cleaned_data["id"]
+            existing_record = Record.objects.filter(type=type, public_id=id)
+            if existing_record:
+                form.add_error("id", "This ID already exists")
+            else:
+                data = NewEventData(
+                    type, id, {"name": form.cleaned_data["title"]}, approved=True,
+                )
+                newEvent(
+                    [data], user=request.user, comment=form.cleaned_data["comment"]
+                )
+
+                # redirect to a new URL:
+                return HttpResponseRedirect(
+                    reverse(
+                        "indigo_admin_organisation_index", kwargs={"public_id": id},
+                    )
+                )
+
+    # If this is a GET (or any other method) create the default form.
+    else:
+        form = OrganisationNewForm()
+
+    context = {
+        "form": form,
+    }
+
+    return render(request, "indigo/admin/organisation/new.html", context)
+
+
+@permission_required("indigo.admin")
+def admin_organisation_moderate(request, public_id):
+    try:
+        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
+        record = Record.objects.get(type=type, public_id=public_id)
+    except Type.DoesNotExist:
+        raise Http404("Type does not exist")
+    except Record.DoesNotExist:
+        raise Http404("Record does not exist")
+
+    edits = Edit.objects.filter(record=record, approval_event=None, refusal_event=None)
+
+    if request.method == "POST":
+
+        # TODO check CSFR
+
+        actions = []
+        for edit in edits:
+            action = request.POST.get("action_" + str(edit.id))
+            if action == "approve":
+                actions.append(jsondataferret.pythonapi.newevent.NewEventApproval(edit))
+            elif action == "reject":
+                actions.append(
+                    jsondataferret.pythonapi.newevent.NewEventRejection(edit)
+                )
+
+        if actions:
+            jsondataferret.pythonapi.newevent.newEvent(
+                actions, user=request.user, comment=request.POST.get("comment")
+            )
+
+        return HttpResponseRedirect(
+            reverse("indigo_admin_organisation_index", kwargs={"public_id": public_id},)
+        )
+
+    for edit in edits:
+        # TODO This will not take account of data_key on an edit If we start using that we will need to check this
+        edit.field_datas = jsondataferret.utils.get_field_list_from_json(
+            TYPE_ORGANISATION_PUBLIC_ID, edit.data
+        )
+
+    return render(
+        request,
+        "indigo/admin/organisation/moderate.html",
+        {"type": type, "record": record, "edits": edits},
+    )
+
+
+@permission_required("indigo.admin")
+def admin_organisation_history(request, public_id):
+    try:
+        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
+        record = Record.objects.get(type=type, public_id=public_id)
+    except Type.DoesNotExist:
+        raise Http404("Type does not exist")
+    except Record.DoesNotExist:
+        raise Http404("Record does not exist")
+
+    events = Event.objects.filter_by_record(record)
+
+    return render(
+        request,
+        "indigo/admin/organisation/history.html",
         {"type": type, "record": record, "events": events},
     )
 

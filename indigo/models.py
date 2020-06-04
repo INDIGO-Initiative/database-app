@@ -9,7 +9,7 @@ class Indigo(models.Model):
         permissions = (("admin", "Admin - All admin tasks on Indigo data"),)
 
 
-class Project(models.Model):
+class BaseModel(models.Model):
     public_id = models.CharField(max_length=200, unique=True)
     exists = models.BooleanField(default=False)
     status_public = models.BooleanField(default=False)
@@ -39,3 +39,14 @@ class Project(models.Model):
             return jsonpointer.resolve_pointer(self.data_private, field,)
         except jsonpointer.JsonPointerException:
             return ""
+
+    class Meta:
+        abstract = True
+
+
+class Organisation(BaseModel):
+    pass
+
+
+class Project(BaseModel):
+    pass

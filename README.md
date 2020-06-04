@@ -11,6 +11,7 @@ Log into /admin
 Add some Types:
 
 * public id: project, title: Project
+* public id: organisation, title: Organisation
 
 Go to /app - work with data!
 

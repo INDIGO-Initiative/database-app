@@ -1,0 +1,31 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_organisation_list' %}">Organisations</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Organisation {{ organisation.public_id }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+
+
+{% block content %}
+
+<p>Organisation {{ organisation.data_private.name }}</p>
+
+<table class="table">
+    <tr><th>ID</th><td>{{ organisation.public_id }}</td></tr>
+    {% for field in field_data %}
+        <tr><th>{{ field.title }}</th><td>{{ field.value }}</td></tr>
+    {% endfor %}
+</table>
+
+<P><a href="{% url 'indigo_admin_organisation_download_form' public_id=organisation.public_id %}" class="btn btn-primary">Download Form</a></P>
+<P><a href="{% url 'indigo_admin_organisation_import_form' public_id=organisation.public_id %}" class="btn btn-primary">Upload/Import Form</a></P>
+<P><a href="{% url 'indigo_admin_organisation_moderate' public_id=organisation.public_id %}" class="btn btn-primary">Moderate</a></P>
+<P><a href="{% url 'indigo_admin_organisation_history' public_id=organisation.public_id %}" class="btn btn-primary">History</a></P>
+
+{% endblock %}

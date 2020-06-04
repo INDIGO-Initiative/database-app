@@ -173,4 +173,19 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             },
         ],
     },
+    "organisation": {
+        "jsonschema_file": os.path.join(
+            BASE_DIR, "indigo", "jsonschema", "organisation.json"
+        ),
+        "spreadsheet_form_guide": os.path.join(
+            BASE_DIR, "indigo", "spreadsheetform_guides", "organisation.xlsx",
+        ),
+        "fields": [
+            {"key": "/name", "title": "Name"},
+            {"key": "/type", "title": "Type"},
+            {"key": "/contact/name", "title": "Contact Name"},
+            {"key": "/contact/email", "title": "Contact Email"},
+            {"key": "/website", "title": "Website"},
+        ],
+    },
 }

@@ -65,6 +65,47 @@ urlpatterns = [
     path(
         "admin/new_project", views.admin_projects_new, name="indigo_admin_project_new",
     ),
+    ########################### Admin - Organisation
+    path(
+        "admin/organisation_download_blank_form",
+        views.admin_organisation_download_blank_form,
+        name="indigo_admin_organisation_download_blank_form",
+    ),
+    path(
+        "admin/organisation",
+        views.admin_organisations_list,
+        name="indigo_admin_organisation_list",
+    ),
+    path(
+        "admin/organisation/<public_id>",
+        views.admin_organisation_index,
+        name="indigo_admin_organisation_index",
+    ),
+    path(
+        "admin/organisation/<public_id>/download_form",
+        views.admin_organisation_download_form,
+        name="indigo_admin_organisation_download_form",
+    ),
+    path(
+        "admin/organisation/<public_id>/import_form",
+        views.admin_organisation_import_form,
+        name="indigo_admin_organisation_import_form",
+    ),
+    path(
+        "admin/organisation/<public_id>/moderate",
+        views.admin_organisation_moderate,
+        name="indigo_admin_organisation_moderate",
+    ),
+    path(
+        "admin/organisation/<public_id>/history",
+        views.admin_organisation_history,
+        name="indigo_admin_organisation_history",
+    ),
+    path(
+        "admin/new_organisation",
+        views.admin_organisations_new,
+        name="indigo_admin_organisation_new",
+    ),
     ########################### Admin - Event
     path(
         "admin/event/<event_id>",
