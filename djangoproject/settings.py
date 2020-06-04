@@ -151,6 +151,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
         ),
         "fields": [
+            {"key": "/status", "title": "Status"},
             {"key": "/project_name/value", "title": "Project Name (value)"},
             {"key": "/project_name/source", "title": "Project Name (source)"},
             {"key": "/project_name/status", "title": "Project Name (status)"},
