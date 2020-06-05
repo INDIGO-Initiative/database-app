@@ -9,6 +9,9 @@ class ProjectNewForm(forms.Form):
 
 class ProjectImportForm(forms.Form):
     file = forms.FileField()
+
+
+class ProjectImportStage2Form(forms.Form):
     comment = forms.CharField(widget=forms.Textarea)
 
 

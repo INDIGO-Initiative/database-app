@@ -9,6 +9,7 @@ import jsonpointer
 import spreadsheetforms.api
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
+from django.db.models.functions import Now
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -22,11 +23,12 @@ from .forms import (
     OrganisationImportForm,
     OrganisationNewForm,
     ProjectImportForm,
+    ProjectImportStage2Form,
     ProjectMakeDisputedForm,
     ProjectMakePrivateForm,
     ProjectNewForm,
 )
-from .models import Organisation, Project
+from .models import Organisation, Project, ProjectImport
 
 ########################### Home Page
 
@@ -205,11 +207,14 @@ def admin_project_download_form(request, public_id):
 def admin_project_import_form(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
-        project = Record.objects.get(type=type, public_id=public_id)
+        record = Record.objects.get(type=type, public_id=public_id)
+        project = Project.objects.get(public_id=public_id)
     except Type.DoesNotExist:
         raise Http404("Type does not exist")
     except Record.DoesNotExist:
         raise Http404("Record does not exist")
+    except Project.DoesNotExist:
+        raise Http404("Project does not exist")
 
     if request.method == "POST":
 
@@ -231,16 +236,85 @@ def admin_project_import_form(request, public_id):
                 ),
             )
 
-            # process the data in form.cleaned_data as required
-            # Save the event
-            new_event_data = indigo.processdata.extract_edits_from_project_import(
-                project, json_data
-            )
-            newEvent(
-                new_event_data, user=request.user, comment=form.cleaned_data["comment"],
+            # Save the data
+            print(project)
+            project_import = ProjectImport()
+            project_import.user = request.user
+            project_import.project = project
+            project_import.data = json_data
+            project_import.save()
+
+            # redirect to a new URL for stage 2 of the process
+            return HttpResponseRedirect(
+                reverse(
+                    "indigo_admin_project_import_form_stage_2",
+                    kwargs={
+                        "public_id": project.public_id,
+                        "import_id": project_import.id,
+                    },
+                )
             )
 
-            # redirect to a new URL:
+        # If this is a GET (or any other method) create the default form.
+    else:
+        form = ProjectImportForm()
+
+    context = {
+        "record": record,
+        "project": project,
+        "form": form,
+    }
+
+    return render(request, "indigo/admin/project/import_form.html", context)
+
+
+@permission_required("indigo.admin")
+def admin_project_import_form_stage_2(request, public_id, import_id):
+    try:
+        type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
+        record = Record.objects.get(type=type, public_id=public_id)
+        project = Project.objects.get(public_id=public_id)
+        project_import = ProjectImport.objects.get(id=import_id)
+    except Type.DoesNotExist:
+        raise Http404("Type does not exist")
+    except Record.DoesNotExist:
+        raise Http404("Record does not exist")
+    except Project.DoesNotExist:
+        raise Http404("Project does not exist")
+    except ProjectImport.DoesNotExist:
+        raise Http404("Import does not exist")
+
+    if project_import.project != project:
+        raise Http404("Import is for another project")
+    if project_import.user != request.user:
+        raise Http404("Import is for another user")
+    if project_import.imported:
+        raise Http404("Import already done")
+
+    if request.method == "POST":
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = ProjectImportStage2Form(request.POST, request.FILES)
+
+        # Check if the form is valid:
+        if form.is_valid():
+
+            # process the data as required
+            # Save the event
+            new_event_datas = indigo.processdata.extract_edits_from_project_import(
+                record, project_import.data
+            )
+            newEvent(
+                new_event_datas,
+                user=request.user,
+                comment=form.cleaned_data["comment"],
+            )
+
+            # mark import done
+            project_import.imported = Now()
+            project_import.save()
+
+            # redirect to a new URL for stage 2 of the process
             return HttpResponseRedirect(
                 reverse(
                     "indigo_admin_project_index",
@@ -250,14 +324,15 @@ def admin_project_import_form(request, public_id):
 
         # If this is a GET (or any other method) create the default form.
     else:
-        form = ProjectImportForm()
+        form = ProjectImportStage2Form()
 
     context = {
-        "record": project,
+        "record": record,
+        "project": project,
         "form": form,
     }
 
-    return render(request, "indigo/admin/project/import_form.html", context)
+    return render(request, "indigo/admin/project/import_form_stage_2.html", context)
 
 
 @permission_required("indigo.admin")

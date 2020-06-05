@@ -1,4 +1,5 @@
 import jsonpointer
+from django.conf import settings
 from django.contrib.postgres.fields import JSONField
 from django.db import models
 
@@ -50,3 +51,13 @@ class Organisation(BaseModel):
 
 class Project(BaseModel):
     pass
+
+
+class ProjectImport(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    data = JSONField(default=dict)
+    created = models.DateTimeField(auto_now_add=True)
+    imported = models.DateTimeField(null=True, blank=True)
+    project = models.ForeignKey(
+        Project, on_delete=models.PROTECT, related_name="imports",
+    )

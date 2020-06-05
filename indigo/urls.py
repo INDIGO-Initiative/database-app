@@ -53,6 +53,11 @@ urlpatterns = [
         name="indigo_admin_project_import_form",
     ),
     path(
+        "admin/project/<public_id>/import_form/<import_id>",
+        views.admin_project_import_form_stage_2,
+        name="indigo_admin_project_import_form_stage_2",
+    ),
+    path(
         "admin/project/<public_id>/moderate",
         views.admin_project_moderate,
         name="indigo_admin_project_moderate",
