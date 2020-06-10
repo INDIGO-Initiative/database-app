@@ -10,8 +10,9 @@ attrs==19.3.0             # via jsonschema
 django-environ==0.4.5     # via -r requirements.in
 django==3.0.7             # via -r requirements.in, jsondataferret
 et-xmlfile==1.0.1         # via openpyxl
-importlib-metadata==1.6.0  # via jsonschema
+importlib-metadata==1.6.1  # via jsonschema
 jdcal==1.4.1              # via openpyxl
+json-merge-patch==0.2     # via jsondataferret
 jsonmerge==1.7.0          # via jsondataferret
 jsonpointer==2.0          # via spreadsheetforms
 jsonschema==3.2.0         # via jsondataferret, jsonmerge
