@@ -20,7 +20,8 @@ def update_all_data():
     try:
         type_organisation = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
         for organisation in Record.objects.filter(type=type_organisation):
-            update_organisation(organisation)
+            # update_projects=False because we are about to do that in next block anyway
+            update_organisation(organisation, update_projects=False)
     except Type.DoesNotExist:
         pass
 
@@ -41,6 +42,8 @@ def update_project(record, update_include_organisations=False):
         project = Project()
         project.public_id = record.public_id
 
+    # record - this doesn't change after creation but we need to migrate old data
+    project.record = record
     # Exists
     project.exists = record.cached_exists
     # Status
@@ -106,7 +109,7 @@ def update_project(record, update_include_organisations=False):
         # But at moment, how we use than variable it doesnt matter
 
 
-def update_organisation(record):
+def update_organisation(record, update_projects=False):
 
     try:
         organisation = Organisation.objects.get(public_id=record.public_id)
@@ -114,6 +117,8 @@ def update_organisation(record):
         organisation = Organisation()
         organisation.public_id = record.public_id
 
+    # record - this doesn't change after creation but we need to migrate old data
+    organisation.record = record
     # Exists
     organisation.exists = record.cached_exists
     # Status - at the moment we assume all org's are public
@@ -131,6 +136,15 @@ def update_organisation(record):
     organisation.data_private = record.cached_data if record.cached_exists else {}
     # Finally, Save
     organisation.save()
+
+    if update_projects:
+        for project_includes_organisation in ProjectIncludesOrganisation.objects.filter(
+            in_current_data=True, organisation=organisation
+        ):
+            update_project(
+                project_includes_organisation.project.record,
+                update_include_organisations=False,
+            )
 
 
 def filter_values(data, keys_with_own_status_subfield=[], keys_always_remove=[]):
