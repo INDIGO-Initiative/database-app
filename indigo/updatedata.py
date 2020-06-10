@@ -9,9 +9,10 @@ from indigo import (
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
     TYPE_PROJECT_FILTER_KEYS_LIST,
+    TYPE_PROJECT_ORGANISATION_LISTS_LIST,
     TYPE_PROJECT_PUBLIC_ID,
 )
-from indigo.models import Organisation, Project
+from indigo.models import Organisation, Project, ProjectIncludesOrganisation
 
 
 def update_all_data():
@@ -27,12 +28,12 @@ def update_all_data():
     try:
         type_project = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
         for project in Record.objects.filter(type=type_project):
-            update_project(project)
+            update_project(project, update_include_organisations=True)
     except Type.DoesNotExist:
         pass
 
 
-def update_project(record):
+def update_project(record, update_include_organisations=False):
 
     try:
         project = Project.objects.get(public_id=record.public_id)
@@ -70,6 +71,39 @@ def update_project(record):
         project.data_private = {}
     # Finally, Save
     project.save()
+
+    if update_include_organisations:
+        organisations = []
+        for organisation_list_data in TYPE_PROJECT_ORGANISATION_LISTS_LIST:
+            data_list = jsonpointer.resolve_pointer(
+                record.cached_data, organisation_list_data["list_key"], default=None
+            )
+            if isinstance(data_list, list) and data_list:
+                for data_item in data_list:
+                    org_id = jsonpointer.resolve_pointer(
+                        data_item, organisation_list_data["item_id_key"], default=None
+                    )
+                    if org_id:
+                        try:
+                            organisations.append(
+                                Organisation.objects.get(public_id=org_id)
+                            )
+                        except Organisation.DoesNotExist:
+                            pass
+        # Save Organisations
+        for organisation in organisations:
+            try:
+                project_includes_organisation = ProjectIncludesOrganisation.objects.get(
+                    project=project, organisation=organisation
+                )
+            except ProjectIncludesOrganisation.DoesNotExist:
+                project_includes_organisation = ProjectIncludesOrganisation()
+                project_includes_organisation.organisation = organisation
+                project_includes_organisation.project = project
+            project_includes_organisation.in_current_data = True
+            project_includes_organisation.save()
+        # TODO also need to set in_current_data=False if org is removed
+        # But at moment, how we use than variable it doesnt matter
 
 
 def update_organisation(record):

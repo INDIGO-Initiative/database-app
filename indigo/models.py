@@ -61,3 +61,19 @@ class ProjectImport(models.Model):
     project = models.ForeignKey(
         Project, on_delete=models.PROTECT, related_name="imports",
     )
+
+
+class ProjectIncludesOrganisation(models.Model):
+    project = models.ForeignKey(
+        Project, on_delete=models.PROTECT, related_name="includes_organisations",
+    )
+    organisation = models.ForeignKey(
+        Organisation, on_delete=models.PROTECT, related_name="included_by_projects",
+    )
+    in_current_data = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = (
+            "project",
+            "organisation",
+        )
