@@ -18,6 +18,13 @@ urlpatterns = [
         views.project_download_form,
         name="indigo_project_download_form",
     ),
+    ########################### Public - Project - API
+    path("api1/project", views.api1_projects_list, name="indigo_api1_project_list",),
+    path(
+        "api1/project/<public_id>",
+        views.api1_project_index,
+        name="indigo_api1_project_index",
+    ),
     ########################### Admin
     path("admin/", views.admin_index, name="indigo_admin_index"),
     ########################### Admin - Project

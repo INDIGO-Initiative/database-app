@@ -10,7 +10,7 @@ import spreadsheetforms.api
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
 from django.db.models.functions import Now
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from jsondataferret.models import Edit, Event, Record, Type
@@ -114,6 +114,32 @@ def project_download_form(request, public_id):
             "inline; filename=project" + project.public_id + ".xlsx"
         )
     return response
+
+
+########################### Public - Project - API
+
+
+def api1_projects_list(request):
+    projects = Project.objects.filter()
+    data = {
+        "projects": [
+            {"id": p.public_id, "public": (p.exists and p.status_public)}
+            for p in projects
+        ]
+    }
+    return JsonResponse(data)
+
+
+def api1_project_index(request, public_id):
+    try:
+        project = Project.objects.get(public_id=public_id)
+    except Project.DoesNotExist:
+        raise Http404("Project does not exist")
+    if not project.status_public or not project.exists:
+        raise Http404("Project does not exist")
+
+    data = {"project": {"id": project.public_id, "data": project.data_public,}}
+    return JsonResponse(data)
 
 
 ########################### Admin
