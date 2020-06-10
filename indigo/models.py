@@ -2,6 +2,7 @@ import jsonpointer
 from django.conf import settings
 from django.contrib.postgres.fields import JSONField
 from django.db import models
+from jsondataferret.models import Record
 
 
 class Indigo(models.Model):
@@ -16,6 +17,8 @@ class BaseModel(models.Model):
     status_public = models.BooleanField(default=False)
     data_public = JSONField(default=dict)
     data_private = JSONField(default=dict)
+    # record is nullable for historical data - it should be NOT NULL really
+    record = models.ForeignKey(Record, on_delete=models.PROTECT, null=True, blank=True)
 
     def has_data_public_field(self, field):
         try:
