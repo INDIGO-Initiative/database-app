@@ -90,15 +90,16 @@ def extract_edits_from_project_import(record, import_json):
     for org_id, org_datas in organisation_data.items():
         try:
             organisation = Organisation.objects.get(public_id=org_id)
-
-            out.append(
-                jsondataferret.pythonapi.newevent.NewEventData(
-                    TYPE_ORGANISATION_PUBLIC_ID,
-                    organisation.public_id,
-                    org_datas[0],
-                    mode=jsondataferret.EVENT_MODE_MERGE,
-                )
+            # TODO check for mis-matching data
+            # for now we assume its good and carry on
+            edit_part = jsondataferret.pythonapi.newevent.NewEventData(
+                TYPE_ORGANISATION_PUBLIC_ID,
+                organisation.public_id,
+                org_datas[0],
+                mode=jsondataferret.EVENT_MODE_MERGE,
             )
+            if edit_part.does_this_create_or_change_record():
+                out.append(edit_part)
         except Organisation.DoesNotExist:
             pass  # TODO
 

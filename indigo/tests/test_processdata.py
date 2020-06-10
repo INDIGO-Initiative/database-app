@@ -47,7 +47,7 @@ class ProcessExtractEditsFromProjectImport(TestCase):
         assert 1 == len(out)
         assert {"project_name": {"value": "Project With Ferrets"}} == out[0].data
 
-    def test_one_existing_org(self):
+    def test_one_existing_org_with_changes(self):
         input = {
             "project_name": {"value": "Project With Ferrets"},
             "outcome_funds": [
@@ -78,6 +78,40 @@ class ProcessExtractEditsFromProjectImport(TestCase):
                 }
             ],
         } == out[0].data
+        # The org is different than current value so an edit exists for the org
         assert {"name": "Organisation 1", "type": "A serious Organisation"} == out[
             1
         ].data
+
+    def test_one_existing_org_with_no_changes(self):
+        input = {
+            "project_name": {"value": "Project With Ferrets"},
+            "outcome_funds": [
+                {
+                    "title": "Bobs Fund",
+                    "definition": "BOB-FUND",
+                    "organisation": {
+                        "id": "ORG1",
+                        "name": "Organisation One",
+                        "type": "Type Ferrety",
+                    },
+                }
+            ],
+        }
+
+        out = indigo.processdata.extract_edits_from_project_import(
+            self.project_record, input
+        )
+
+        assert 1 == len(out)
+        assert {
+            "project_name": {"value": "Project With Ferrets"},
+            "outcome_funds": [
+                {
+                    "title": "Bobs Fund",
+                    "definition": "BOB-FUND",
+                    "organisation": {"id": "ORG1", "name": None, "type": None},
+                }
+            ],
+        } == out[0].data
+        # The org is same as current value so no edit exists for the org
