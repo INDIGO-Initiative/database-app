@@ -7,9 +7,12 @@
 -e git+https://github.com/OpenDataServices/json-data-ferret.git@master#egg=jsondataferret  # via -r requirements.in
 asgiref==3.2.7            # via django
 attrs==19.3.0             # via jsonschema
+dj-database-url==0.5.0    # via django-heroku
 django-environ==0.4.5     # via -r requirements.in
-django==3.0.7             # via -r requirements.in, jsondataferret
+django-heroku==0.3.1      # via -r requirements.in
+django==3.0.7             # via -r requirements.in, django-heroku, jsondataferret
 et-xmlfile==1.0.1         # via openpyxl
+gunicorn==20.0.4          # via -r requirements.in
 importlib-metadata==1.6.1  # via jsonschema
 jdcal==1.4.1              # via openpyxl
 json-merge-patch==0.2     # via jsondataferret
@@ -17,13 +20,14 @@ jsonmerge==1.7.0          # via jsondataferret
 jsonpointer==2.0          # via spreadsheetforms
 jsonschema==3.2.0         # via jsondataferret, jsonmerge
 openpyxl==3.0.3           # via spreadsheetforms
-psycopg2==2.8.5           # via -r requirements.in, jsondataferret
+psycopg2==2.8.5           # via -r requirements.in, django-heroku, jsondataferret
 pygments==2.6.1           # via jsondataferret
 pyrsistent==0.16.0        # via jsonschema
 pytz==2020.1              # via django
 six==1.15.0               # via jsonschema, pyrsistent
 spreadsheetforms==0.3.0   # via jsondataferret
 sqlparse==0.3.1           # via django
+whitenoise==5.1.0         # via django-heroku
 zipp==3.1.0               # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:

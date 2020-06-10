@@ -2,3 +2,5 @@ Django
 psycopg2
 django-environ
 -e git+https://github.com/OpenDataServices/json-data-ferret.git@master#egg=jsondataferret
+gunicorn
+django-heroku
