@@ -6,26 +6,49 @@
   "required": [
   ],
   "properties": {
-    "name": {
-      "type": "string"
-    },
-    "type": {
-      "type": "string",
-      "enum": [
-        "Type1",
-        "Type2"
-      ]
-    },
-    "website": {
-      "type": "string"
+    "org-ids": {
+      "type": "object",
+      "properties": {
+        "company": {
+          "$ref": "#/definitions/object_with_value_string"
+        },
+        "charity": {
+          "$ref": "#/definitions/object_with_value_string"
+        },
+        "other": {
+          "$ref": "#/definitions/object_with_value_string"
+        }
+      }
     },
     "contact": {
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "$ref": "#/definitions/object_with_value_string"
         },
         "email": {
+          "$ref": "#/definitions/object_with_value_string"
+        }
+      }
+    },
+    "website": {
+          "$ref": "#/definitions/object_with_value_string"
+    },
+    "address": {
+          "$ref": "#/definitions/object_with_value_string"
+    },
+    "postcode": {
+          "$ref": "#/definitions/object_with_value_string"
+    },
+    "country": {
+          "$ref": "#/definitions/object_with_value_string"
+    }
+  },
+  "definitions": {
+    "object_with_value_string": {
+      "type": "object",
+      "properties": {
+        "value": {
           "type": "string"
         }
       }
