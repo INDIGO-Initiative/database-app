@@ -263,7 +263,6 @@ def admin_project_import_form(request, public_id):
             )
 
             # Save the data
-            print(project)
             project_import = ProjectImport()
             project_import.user = request.user
             project_import.project = project
