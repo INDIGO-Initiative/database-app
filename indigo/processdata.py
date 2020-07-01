@@ -78,10 +78,10 @@ def extract_edits_from_project_import(record, import_json):
                         org_key[1:],
                         jsonpointer.resolve_pointer(data_item, data_key, default=None),
                     )
-                    jsonpointer.set_pointer(
-                        data_item, data_key, None,
-                    )
                 organisation_data[org_id] = org_data
+    jsonpointer.set_pointer(
+        import_json, TYPE_PROJECT_ORGANISATION_LIST["list_key"], None,
+    )
 
     ################### Now we have removed org data, create project edit
     out.append(

@@ -59,7 +59,10 @@ class ProcessExtractEditsFromProjectImport(TestCase):
         )
 
         assert 1 == len(out)
-        assert {"name": {"value": "Project With Ferrets"}} == out[0].data
+        assert {
+            "name": {"value": "Project With Ferrets"},
+            "organisations": None,
+        } == out[0].data
 
     def test_one_existing_org_with_changes(self):
         input = {
@@ -91,21 +94,7 @@ class ProcessExtractEditsFromProjectImport(TestCase):
         assert 2 == len(out)
         assert {
             "name": {"value": "Project With Ferrets"},
-            "organisations": [
-                {
-                    "id": "ORG1",
-                    "contact": {"name": {"value": None}, "email": {"value": None}},
-                    "address": {"value": None},
-                    "country": {"value": None},
-                    "org-ids": {
-                        "other": {"value": None},
-                        "charity": {"value": None},
-                        "company": {"value": None},
-                    },
-                    "website": {"value": None},
-                    "postcode": {"value": None},
-                }
-            ],
+            "organisations": None,
         } == out[0].data
         # The org is different than current value so an edit exists for the org
         assert {
@@ -154,20 +143,6 @@ class ProcessExtractEditsFromProjectImport(TestCase):
         assert 1 == len(out)
         assert {
             "name": {"value": "Project With Ferrets"},
-            "organisations": [
-                {
-                    "id": "ORG1",
-                    "contact": {"name": {"value": None}, "email": {"value": None}},
-                    "address": {"value": None},
-                    "country": {"value": None},
-                    "org-ids": {
-                        "other": {"value": None},
-                        "charity": {"value": None},
-                        "company": {"value": None},
-                    },
-                    "website": {"value": None},
-                    "postcode": {"value": None},
-                }
-            ],
+            "organisations": None,
         } == out[0].data
         # The org is same as current value so no edit exists for the org
