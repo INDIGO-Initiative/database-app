@@ -10,7 +10,6 @@ from indigo import (
     TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
     TYPE_PROJECT_FILTER_KEYS_LIST,
     TYPE_PROJECT_FILTER_LISTS_LIST,
-    TYPE_PROJECT_ORGANISATION_LISTS_LIST,
     TYPE_PROJECT_PUBLIC_ID,
 )
 from indigo.models import Organisation, Project, ProjectIncludesOrganisation
@@ -80,22 +79,15 @@ def update_project(record, update_include_organisations=False):
 
     if update_include_organisations:
         organisations = []
-        for organisation_list_data in TYPE_PROJECT_ORGANISATION_LISTS_LIST:
-            data_list = jsonpointer.resolve_pointer(
-                record.cached_data, organisation_list_data["list_key"], default=None
-            )
-            if isinstance(data_list, list) and data_list:
-                for data_item in data_list:
-                    org_id = jsonpointer.resolve_pointer(
-                        data_item, organisation_list_data["item_id_key"], default=None
-                    )
-                    if org_id:
-                        try:
-                            organisations.append(
-                                Organisation.objects.get(public_id=org_id)
-                            )
-                        except Organisation.DoesNotExist:
-                            pass
+        for (
+            org_id
+        ) in indigo.processdata.find_unique_organisation_ids_referenced_in_project_data(
+            record.cached_data
+        ):
+            try:
+                organisations.append(Organisation.objects.get(public_id=org_id))
+            except Organisation.DoesNotExist:
+                pass
         # Save Organisations
         for organisation in organisations:
             try:
