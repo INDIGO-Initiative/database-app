@@ -109,8 +109,8 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         ),
         "fields": [
             {"key": "/status", "title": "Status"},
-            {"key": "/name", "title": "Name"},
-            {"key": "/alternative_names", "title": "Alternative Names"},
+            {"key": "/name/value", "title": "Name"},
+            {"key": "/alternative_names/value", "title": "Alternative Names"},
             {"key": "/stage_development/value", "title": "Stage of Development"},
             {
                 "key": "/stage_development/source_ids",
