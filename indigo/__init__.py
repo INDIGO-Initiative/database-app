@@ -45,5 +45,15 @@ TYPE_PROJECT_ORGANISATION_LIST = {
     },
 }
 
+TYPE_PROJECT_SOURCE_LIST = {
+    # The key in the whole project data where we look for the list
+    "list_key": "/sources",
+    # In each item in the list, the key where we find the ID of the source
+    "item_id_key": "/id",
+}
+TYPE_PROJECT_SOURCES_REFERENCES_LIST = [
+    {"list_key": "/intermediary_services", "item_source_ids_key": "/source_ids",}
+    # TODO find and add the rest
+]
 
 TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST = ["/contact"]

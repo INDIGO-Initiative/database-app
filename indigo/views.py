@@ -351,10 +351,17 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
     else:
         form = ProjectImportStage2Form()
 
+        (
+            source_ids_used_that_are_not_in_sources_table,
+            source_table_entries_that_are_not_used,
+        ) = indigo.processdata.check_project_data_for_source_errors(project_import.data)
+
     context = {
         "record": record,
         "project": project,
         "form": form,
+        "source_ids_used_that_are_not_in_sources_table": source_ids_used_that_are_not_in_sources_table,
+        "source_table_entries_that_are_not_used": source_table_entries_that_are_not_used,
     }
 
     return render(request, "indigo/admin/project/import_form_stage_2.html", context)
