@@ -10,6 +10,7 @@ from indigo import (
     TYPE_PROJECT_ORGANISATION_REFERENCES_LIST,
     TYPE_PROJECT_PUBLIC_ID,
     TYPE_PROJECT_SOURCE_LIST,
+    TYPE_PROJECT_SOURCES_REFERENCES,
     TYPE_PROJECT_SOURCES_REFERENCES_LIST,
 )
 from indigo.models import Organisation
@@ -139,6 +140,12 @@ def check_project_data_for_source_errors(input_json):
     source_ids_found = []
 
     # ----------------- Find all Source ID's referenced in data
+    for key in TYPE_PROJECT_SOURCES_REFERENCES:
+        field_value = jsonpointer.resolve_pointer(input_json, key, default="")
+        for source_id in [s.strip() for s in field_value.strip().split(",")]:
+            if source_id:
+                source_ids_referenced.append({"source_id": source_id})
+
     for config in TYPE_PROJECT_SOURCES_REFERENCES_LIST:
         data_list = jsonpointer.resolve_pointer(
             input_json, config["list_key"], default=None
@@ -146,7 +153,7 @@ def check_project_data_for_source_errors(input_json):
         if isinstance(data_list, list) and data_list:
             for item in data_list:
                 field_value = jsonpointer.resolve_pointer(
-                    item, config["item_source_ids_key"], default=None
+                    item, config["item_source_ids_key"], default=""
                 )
                 for source_id in [s.strip() for s in field_value.strip().split(",")]:
                     if source_id:
@@ -160,7 +167,7 @@ def check_project_data_for_source_errors(input_json):
         # Look through source table looking for problems
         for source_item in source_list:
             source_id = jsonpointer.resolve_pointer(
-                source_item, TYPE_PROJECT_SOURCE_LIST["item_id_key"]
+                source_item, TYPE_PROJECT_SOURCE_LIST["item_id_key"], default=""
             ).strip()
             if source_id:
                 source_ids_found.append(source_id)

@@ -51,6 +51,16 @@ TYPE_PROJECT_SOURCE_LIST = {
     # In each item in the list, the key where we find the ID of the source
     "item_id_key": "/id",
 }
+
+TYPE_PROJECT_SOURCES_REFERENCES = [
+    "/stage_development/source_ids",
+    "/dates/source_ids",
+    "/overall_project_finance/source_ids",
+    "/purpose_and_classifications/source_ids",
+    "/service_and_beneficiaries/source_ids",
+    "/changes_to_project_due_to_covid19/source_ids",
+]
+
 TYPE_PROJECT_SOURCES_REFERENCES_LIST = [
     {"list_key": "/intermediary_services", "item_source_ids_key": "/source_ids",}
     # TODO find and add the rest

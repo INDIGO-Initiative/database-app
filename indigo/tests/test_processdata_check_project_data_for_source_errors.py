@@ -32,11 +32,29 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         assert 0 == len(source_ids_used_that_are_not_in_sources_table)
         assert 0 == len(source_table_entries_that_are_not_used)
 
-    def test_source_not_exist(self):
+    def test_source_not_exist_referenced_in_list(self):
 
         input = {
             "name": {"value": "Project With Ferrets"},
             "intermediary_services": [{"source_ids": "BOOK1"}],
+        }
+
+        (
+            source_ids_used_that_are_not_in_sources_table,
+            source_table_entries_that_are_not_used,
+        ) = indigo.processdata.check_project_data_for_source_errors(input)
+
+        assert 1 == len(source_ids_used_that_are_not_in_sources_table)
+        assert {"source_id": "BOOK1"} == source_ids_used_that_are_not_in_sources_table[
+            0
+        ]
+        assert 0 == len(source_table_entries_that_are_not_used)
+
+    def test_source_not_exist_referenced_in_single_field(self):
+
+        input = {
+            "name": {"value": "Project With Ferrets"},
+            "dates": {"source_ids": "BOOK1"},
         }
 
         (
