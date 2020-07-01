@@ -9,6 +9,7 @@ from indigo import (
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
     TYPE_PROJECT_FILTER_KEYS_LIST,
+    TYPE_PROJECT_FILTER_LISTS_LIST,
     TYPE_PROJECT_ORGANISATION_LISTS_LIST,
     TYPE_PROJECT_PUBLIC_ID,
 )
@@ -56,10 +57,12 @@ def update_project(record, update_include_organisations=False):
     # Public Data
     if project.status_public:
         project.data_public = indigo.processdata.add_other_records_to_project(
+            record.public_id,
             filter_values(
                 record.cached_data,
                 keys_with_own_status_subfield=TYPE_PROJECT_FILTER_KEYS_LIST,
                 keys_always_remove=TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
+                lists_with_items_with_own_status_subfield=TYPE_PROJECT_FILTER_LISTS_LIST,
             ),
             public_only=True,
         )
@@ -68,7 +71,7 @@ def update_project(record, update_include_organisations=False):
     # Private Data
     if record.cached_exists:
         project.data_private = indigo.processdata.add_other_records_to_project(
-            record.cached_data, public_only=False
+            record.public_id, record.cached_data, public_only=False
         )
     else:
         project.data_private = {}
@@ -147,12 +150,19 @@ def update_organisation(record, update_projects=False):
             )
 
 
-def filter_values(data, keys_with_own_status_subfield=[], keys_always_remove=[]):
+def filter_values(
+    data,
+    keys_with_own_status_subfield=[],
+    keys_always_remove=[],
+    lists_with_items_with_own_status_subfield=[],
+):
     data = copy.deepcopy(data)
 
+    # We always remove some keys
     for key in keys_always_remove:
         jsonpointer.set_pointer(data, key, None)
 
+    # Some single values (or groups of single values) wight be removed, based on a status field.
     for key in keys_with_own_status_subfield:
         try:
             key_data = jsonpointer.resolve_pointer(data, key)
@@ -167,4 +177,24 @@ def filter_values(data, keys_with_own_status_subfield=[], keys_always_remove=[])
             # Remove all data!
             jsonpointer.set_pointer(data, key, None)
 
+    # Some lists have items with a status field, which we might remove
+    for list_key in lists_with_items_with_own_status_subfield:
+        try:
+            old_list = jsonpointer.resolve_pointer(data, list_key)
+        except jsonpointer.JsonPointerException:
+            # Data does not exist anyway, nothing to do!
+            continue
+        if isinstance(old_list, list) and old_list:
+            new_list = []
+            for item in old_list:
+                key_status = item.get("status", "") if isinstance(item, dict) else ""
+                if (
+                    isinstance(key_status, str)
+                    and key_status.strip().lower() == "public"
+                ):
+                    del item["status"]
+                    new_list.append(item)
+            jsonpointer.set_pointer(data, list_key, new_list)
+
+    # Done
     return data

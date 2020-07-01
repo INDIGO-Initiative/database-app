@@ -109,37 +109,123 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         ),
         "fields": [
             {"key": "/status", "title": "Status"},
-            {"key": "/project_name/value", "title": "Project Name (value)"},
-            {"key": "/project_name/source", "title": "Project Name (source)"},
-            {"key": "/project_name/status", "title": "Project Name (status)"},
-            {"key": "/fund_name/value", "title": "Fund Name (value)"},
-            {"key": "/fund_name/source", "title": "Fund Name (source)"},
-            {"key": "/fund_name/status", "title": "Fund Name (status)"},
-            {"key": "/launch_date/value", "title": "Launch Date (value)"},
-            {"key": "/launch_date/source", "title": "Launch Date (source)"},
-            {"key": "/launch_date/status", "title": "Launch Date (status)"},
+            {"key": "/name", "title": "Name"},
+            {"key": "/alternative_names", "title": "Alternative Names"},
+            {"key": "/stage_development/value", "title": "Stage of Development"},
             {
-                "type": "list",
-                "key": "/outcomes",
-                "title": "Outcomes",
-                "fields": [
-                    {"key": "/title", "title": "Outcome"},
-                    {"key": "/definition", "title": "Definition"},
-                    {"key": "/source", "title": "Source"},
-                ],
+                "key": "/stage_development/source_ids",
+                "title": "Stage of Development (Sources)",
             },
+            {
+                "key": "/stage_development/status",
+                "title": "Stage of Development (Status)",
+            },
+            # dates group
+            {
+                "key": "/dates/outcomes_contract_signed/value",
+                "title": "Date outcomes contract signed",
+            },
+            {
+                "key": "/dates/outcomes_contract_signed/status",
+                "title": "Date outcomes contract signed (Status)",
+            },
+            {
+                "key": "/dates/contracts_between_all_parties_signed/value",
+                "title": "Date contracts between all parties signed",
+            },
+            {
+                "key": "/dates/contracts_between_all_parties_signed/status",
+                "title": "Date contracts between all parties signed (Status)",
+            },
+            {
+                "key": "/dates/anticipated_completion_date/value",
+                "title": "Anticipated completion date",
+            },
+            {
+                "key": "/dates/anticipated_completion_date/status",
+                "title": "Anticipated completion date (Status)",
+            },
+            {
+                "key": "/dates/actual_completion_date/value",
+                "title": "Actual completion date",
+            },
+            {
+                "key": "/dates/actual_completion_date/status",
+                "title": "Actual completion date (Status)",
+            },
+            {
+                "key": "/dates/start_date_of_service_provision/value",
+                "title": "Start date of service provision",
+            },
+            {
+                "key": "/dates/start_date_of_service_provision/status",
+                "title": "Start date of service provision (Status)",
+            },
+            {
+                "key": "/dates/anticipated_end_date_of_service_provision/value",
+                "title": "Anticipated end date of service provision",
+            },
+            {
+                "key": "/dates/anticipated_end_date_of_service_provision/status",
+                "title": "Anticipated end date of service provision (Status)",
+            },
+            {
+                "key": "/dates/actual_end_date_of_service_provision/value",
+                "title": "Actual end date of service provision",
+            },
+            {
+                "key": "/dates/actual_end_date_of_service_provision/status",
+                "title": "Actual end date of service provision (Status)",
+            },
+            {"key": "/dates/source_ids", "title": "Dates (Sources)"},
+            {"key": "/dates/notes", "title": "Notes (Sources)"},
+            # Overall project finance
+            # TODO
+            # Purpose and classifications
+            # TODO
+            # Service and beneficiaries
+            # TODO
+            # Changes to project due to COVID-19
+            # TODO
+            # Outcome Funds
             {
                 "type": "list",
                 "key": "/outcome_funds",
                 "title": "Outcome Funds",
                 "fields": [
-                    {"key": "/title", "title": "Title"},
-                    {"key": "/id", "title": "Identifier"},
-                    {"key": "/organisation/id", "title": "Organisation ID"},
-                    {"key": "/organisation/name", "title": "Organisation Name"},
-                    {"key": "/organisation/type", "title": "Organisation Type"},
+                    {"key": "/id", "title": "ID"},
+                    {"key": "/name", "title": "Name"},
+                    {"key": "/identifier_scheme", "title": "Identifier_scheme"},
+                    {"key": "/identifier", "title": "Identifier"},
+                    {"key": "/organisation_ids", "title": "Organisations"},
+                    {"key": "/country", "title": "Country"},
+                    {"key": "/source_ids", "title": "Sources"},
+                    {"key": "/notes", "title": "Notes"},
+                    {"key": "/status", "title": "Status"},
                 ],
             },
+            # Delivery Locations
+            # TODO
+            # Sources
+            # TODO
+            # Organisations
+            # TODO
+            # Service Provisions
+            # TODO
+            # Outcome Payment Comitments
+            # TODO
+            # Investements
+            # TODO
+            # Intermediary services
+            # TODO
+            # Outcome Metrics
+            # TODO
+            # Results
+            # TODO
+            # Open Contracting
+            # TODO
+            # 360Giving
+            # TODO
         ],
     },
     "organisation": {
@@ -150,11 +236,15 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             BASE_DIR, "indigo", "spreadsheetform_guides", "organisation.xlsx",
         ),
         "fields": [
-            {"key": "/name", "title": "Name"},
-            {"key": "/type", "title": "Type"},
-            {"key": "/contact/name", "title": "Contact Name"},
-            {"key": "/contact/email", "title": "Contact Email"},
-            {"key": "/website", "title": "Website"},
+            {"key": "/org-ids/company/value", "title": "ORG-Ids - company"},
+            {"key": "/org-ids/charity/value", "title": "ORG-Ids - charity"},
+            {"key": "/org-ids/other/value", "title": "ORG-Ids - other"},
+            {"key": "/contact/name/value", "title": "Contact Name"},
+            {"key": "/contact/email/value", "title": "Contact Email"},
+            {"key": "/website/value", "title": "Website"},
+            {"key": "/address/value", "title": "Address"},
+            {"key": "/postcode/value", "title": "Postcode"},
+            {"key": "/country/value", "title": "Country"},
         ],
     },
 }

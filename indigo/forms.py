@@ -3,7 +3,7 @@ from django import forms
 
 class ProjectNewForm(forms.Form):
     id = forms.SlugField()
-    title = forms.CharField()
+    name = forms.CharField()
     comment = forms.CharField(widget=forms.Textarea)
 
 
@@ -25,7 +25,6 @@ class ProjectMakePrivateForm(forms.Form):
 
 class OrganisationNewForm(forms.Form):
     id = forms.SlugField()
-    title = forms.CharField()
     comment = forms.CharField(widget=forms.Textarea)
 
 

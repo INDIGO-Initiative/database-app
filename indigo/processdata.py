@@ -2,6 +2,7 @@ from collections import defaultdict
 
 import jsondataferret
 import jsonpointer
+import spreadsheetforms.util
 
 from indigo import (
     TYPE_ORGANISATION_PUBLIC_ID,
@@ -11,7 +12,8 @@ from indigo import (
 from indigo.models import Organisation
 
 
-def add_other_records_to_project(input_json, public_only=False):
+def add_other_records_to_project(project_id, input_json, public_only=False):
+    input_json["id"] = project_id
     for organisation_list_data in TYPE_PROJECT_ORGANISATION_LISTS_LIST:
         data_list = jsonpointer.resolve_pointer(
             input_json, organisation_list_data["list_key"], default=None
@@ -64,9 +66,10 @@ def extract_edits_from_project_import(record, import_json):
                     for data_key, org_key in organisation_list_data[
                         "item_to_org_map"
                     ].items():
-                        jsonpointer.set_pointer(
+                        # We don't use jsonpointer.set_pointer here because it can't cope with setting "deep" paths
+                        spreadsheetforms.util.json_set_deep_value(
                             org_data,
-                            org_key,
+                            org_key[1:],
                             jsonpointer.resolve_pointer(
                                 data_item, data_key, default=None
                             ),

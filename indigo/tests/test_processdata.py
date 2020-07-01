@@ -30,7 +30,21 @@ class ProcessExtractEditsFromProjectImport(TestCase):
                 jsondataferret.pythonapi.newevent.NewEventData(
                     self.type_organisation,
                     self.organisation_1_record,
-                    {"name": "Organisation One", "type": "Type Ferrety"},
+                    {
+                        "contact": {
+                            "name": {"value": "Bob"},
+                            "email": {"value": "bob@test.com"},
+                        },
+                        "address": {"value": None},
+                        "country": {"value": None},
+                        "org-ids": {
+                            "other": {"value": None},
+                            "charity": {"value": None},
+                            "company": {"value": None},
+                        },
+                        "website": {"value": None},
+                        "postcode": {"value": None},
+                    },
                     approved=True,
                 )
             ]
@@ -38,27 +52,34 @@ class ProcessExtractEditsFromProjectImport(TestCase):
 
     def test_no_orgs(self):
 
-        input = {"project_name": {"value": "Project With Ferrets"}}
+        input = {"name": {"value": "Project With Ferrets"}}
 
         out = indigo.processdata.extract_edits_from_project_import(
             self.project_record, input
         )
 
         assert 1 == len(out)
-        assert {"project_name": {"value": "Project With Ferrets"}} == out[0].data
+        assert {"name": {"value": "Project With Ferrets"}} == out[0].data
 
     def test_one_existing_org_with_changes(self):
         input = {
-            "project_name": {"value": "Project With Ferrets"},
-            "outcome_funds": [
+            "name": {"value": "Project With Ferrets"},
+            "organisations": [
                 {
-                    "title": "Bobs Fund",
-                    "definition": "BOB-FUND",
-                    "organisation": {
-                        "id": "ORG1",
-                        "name": "Organisation 1",
-                        "type": "A serious Organisation",
+                    "id": "ORG1",
+                    "contact": {
+                        "name": {"value": "Bob Prescot"},
+                        "email": {"value": "bob.prescot@test.com"},
                     },
+                    "address": {"value": None},
+                    "country": {"value": None},
+                    "org-ids": {
+                        "other": {"value": None},
+                        "charity": {"value": None},
+                        "company": {"value": None},
+                    },
+                    "website": {"value": None},
+                    "postcode": {"value": None},
                 }
             ],
         }
@@ -69,32 +90,59 @@ class ProcessExtractEditsFromProjectImport(TestCase):
 
         assert 2 == len(out)
         assert {
-            "project_name": {"value": "Project With Ferrets"},
-            "outcome_funds": [
+            "name": {"value": "Project With Ferrets"},
+            "organisations": [
                 {
-                    "title": "Bobs Fund",
-                    "definition": "BOB-FUND",
-                    "organisation": {"id": "ORG1", "name": None, "type": None},
+                    "id": "ORG1",
+                    "contact": {"name": {"value": None}, "email": {"value": None}},
+                    "address": {"value": None},
+                    "country": {"value": None},
+                    "org-ids": {
+                        "other": {"value": None},
+                        "charity": {"value": None},
+                        "company": {"value": None},
+                    },
+                    "website": {"value": None},
+                    "postcode": {"value": None},
                 }
             ],
         } == out[0].data
         # The org is different than current value so an edit exists for the org
-        assert {"name": "Organisation 1", "type": "A serious Organisation"} == out[
-            1
-        ].data
+        assert {
+            "org-ids": {
+                "company": {"value": None},
+                "charity": {"value": None},
+                "other": {"value": None},
+            },
+            "contact": {
+                "name": {"value": "Bob Prescot"},
+                "email": {"value": "bob.prescot@test.com"},
+            },
+            "website": {"value": None},
+            "address": {"value": None},
+            "postcode": {"value": None},
+            "country": {"value": None},
+        } == out[1].data
 
     def test_one_existing_org_with_no_changes(self):
         input = {
-            "project_name": {"value": "Project With Ferrets"},
-            "outcome_funds": [
+            "name": {"value": "Project With Ferrets"},
+            "organisations": [
                 {
-                    "title": "Bobs Fund",
-                    "definition": "BOB-FUND",
-                    "organisation": {
-                        "id": "ORG1",
-                        "name": "Organisation One",
-                        "type": "Type Ferrety",
+                    "id": "ORG1",
+                    "contact": {
+                        "name": {"value": "Bob"},
+                        "email": {"value": "bob@test.com"},
                     },
+                    "address": {"value": None},
+                    "country": {"value": None},
+                    "org-ids": {
+                        "other": {"value": None},
+                        "charity": {"value": None},
+                        "company": {"value": None},
+                    },
+                    "website": {"value": None},
+                    "postcode": {"value": None},
                 }
             ],
         }
@@ -105,12 +153,20 @@ class ProcessExtractEditsFromProjectImport(TestCase):
 
         assert 1 == len(out)
         assert {
-            "project_name": {"value": "Project With Ferrets"},
-            "outcome_funds": [
+            "name": {"value": "Project With Ferrets"},
+            "organisations": [
                 {
-                    "title": "Bobs Fund",
-                    "definition": "BOB-FUND",
-                    "organisation": {"id": "ORG1", "name": None, "type": None},
+                    "id": "ORG1",
+                    "contact": {"name": {"value": None}, "email": {"value": None}},
+                    "address": {"value": None},
+                    "country": {"value": None},
+                    "org-ids": {
+                        "other": {"value": None},
+                        "charity": {"value": None},
+                        "company": {"value": None},
+                    },
+                    "website": {"value": None},
+                    "postcode": {"value": None},
                 }
             ],
         } == out[0].data

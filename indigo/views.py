@@ -97,7 +97,7 @@ def project_download_form(request, public_id):
         raise Http404("Project does not exist")
 
     data = indigo.processdata.add_other_records_to_project(
-        project.data_public, public_only=True
+        project.public_id, project.data_public, public_only=True
     )
     guide_file = os.path.join(
         settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project-public.xlsx",
@@ -212,7 +212,7 @@ def admin_project_download_form(request, public_id):
         raise Http404("Record does not exist")
 
     data = indigo.processdata.add_other_records_to_project(
-        record.cached_data, public_only=False
+        record.public_id, record.cached_data, public_only=False
     )
     guide_file = os.path.join(
         settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
@@ -488,7 +488,7 @@ def admin_projects_new(request):
                 data = NewEventData(
                     type,
                     id,
-                    {"project_name": {"value": form.cleaned_data["title"]}},
+                    {"name": {"value": form.cleaned_data["name"]}},
                     approved=True,
                 )
                 newEvent(
@@ -750,9 +750,7 @@ def admin_organisations_new(request):
             if existing_record:
                 form.add_error("id", "This ID already exists")
             else:
-                data = NewEventData(
-                    type, id, {"name": form.cleaned_data["title"]}, approved=True,
-                )
+                data = NewEventData(type, id, {}, approved=True,)
                 newEvent(
                     [data], user=request.user, comment=form.cleaned_data["comment"]
                 )

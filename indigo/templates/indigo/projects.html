@@ -12,7 +12,7 @@
             </tr>
             {% for project in projects %}
                 <tr>
-                    <td>{{ project.data_public.project_name.value }}</td>
+                    <td>{{ project.data_public.name.value }}</td>
                     <td><a href="{% url 'indigo_project_index' public_id=project.public_id %}" class="btn btn-primary">View</a></td>
 
                 </tr>
