@@ -142,9 +142,10 @@ def check_project_data_for_source_errors(input_json):
     # ----------------- Find all Source ID's referenced in data
     for key in TYPE_PROJECT_SOURCES_REFERENCES:
         field_value = jsonpointer.resolve_pointer(input_json, key, default="")
-        for source_id in [s.strip() for s in field_value.strip().split(",")]:
-            if source_id:
-                source_ids_referenced.append({"source_id": source_id})
+        if isinstance(field_value, str):
+            for source_id in [s.strip() for s in field_value.strip().split(",")]:
+                if source_id:
+                    source_ids_referenced.append({"source_id": source_id})
 
     for config in TYPE_PROJECT_SOURCES_REFERENCES_LIST:
         data_list = jsonpointer.resolve_pointer(
