@@ -1,10 +1,9 @@
 {
   "$id": "https://example.com/project.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Organisation",
+  "title": "Project",
   "type": "object",
   "required": [
-    "status"
   ],
   "properties": {
     "status": {
@@ -15,27 +14,139 @@
         "DISPUTED"
       ]
     },
-    "project_name": {
-      "$ref": "#/definitions/value_string"
+    "name": {
+      "$ref": "#/definitions/object_with_value_string"
     },
-    "fund_name": {
-      "$ref": "#/definitions/value_string"
+    "alternative_names": {
+      "$ref": "#/definitions/object_with_value_string"
     },
-    "launch_date": {
-      "$ref": "#/definitions/value_string"
+    "stage_development": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "enum": [
+            "Early-stage design",
+            "Late-stage design",
+            "Contracted",
+            "Implementation",
+            "Service delivery complete",
+            "Complete"
+          ]
+        },
+        "source_ids": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "dates": {
+      "type": "object",
+      "properties": {
+        "outcomes_contract_signed": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "contracts_between_all_parties_signed": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "anticipated_completion_date": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "actual_completion_date": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "start_date_of_service_provision": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "anticipated_end_date_of_service_provision": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "actual_end_date_of_service_provision": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "source_ids": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "overall_project_finance": {
+      "type": "object",
+      "properties": {
+        "total_investment_commitment": {
+          "type": "object",
+          "properties": {
+            "currency": {
+              "$ref": "#/definitions/object_with_value_string_and_status"
+            },
+            "amount": {
+              "$ref": "#/definitions/object_with_value_string_and_status"
+            },
+            "amount_usd": {
+              "$ref": "#/definitions/object_with_value_string_and_status"
+            }
+          }
+        },
+        "maximum_potential_outcome_payment": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "maximum_potential_loss": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "maximum_potential_return_type": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "maximum_potential_return": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "configuration_contracting_parties": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "investor_repayment": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "total_outcome_payments_made": {
+          "type": "object",
+          "properties": {
+            "currency": {
+              "$ref": "#/definitions/object_with_value_string_and_status"
+            },
+            "amount": {
+              "$ref": "#/definitions/object_with_value_string_and_status"
+            },
+            "amount_usd": {
+              "$ref": "#/definitions/object_with_value_string_and_status"
+            }
+          }
+        },
+        "source_ids": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
     }
+
+
   },
   "definitions": {
-    "value_string": {
+    "object_with_value_string": {
       "type": "object",
-      "required": [
-        "value", "source", "status"
-      ],
       "properties": {
         "value": {
           "type": "string"
-        },
-        "source": {
+        }
+      }
+    },
+    "object_with_value_string_and_status": {
+      "type": "object",
+      "properties": {
+        "value": {
           "type": "string"
         },
         "status": {
