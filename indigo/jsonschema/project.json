@@ -130,9 +130,570 @@
           "type": "string"
         }
       }
+    },
+    "purpose_and_classifications": {
+      "type": "object",
+      "properties": {
+        "social_challenge": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "intervention": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "policy_sector": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "primary_sdg_goal": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "secondary_sdg_goals": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "primary_sdg_target": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "secondary_sdg_targets": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "source_ids": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "service_and_beneficiaries": {
+      "type": "object",
+      "properties": {
+        "target_population": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "targeted_number_service_users_or_beneficiaries_total": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "unit_type_targeted_service_users_or_beneficiaries": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "unit_description_of_service_user_or_beneficiaries": {
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "source_ids": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "changes_to_project_due_to_covid19": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "enum": [
+            "Pause project",
+            "Continue on outcomes contract without variations",
+            "Continue on outcomes contract with variations",
+            "Switch to grant payments based on medium scenarios"
+          ]
+        },
+        "source_ids": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "outcome_funds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "identifier_scheme": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "identifier": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "organisation_ids": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "country": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "delivery_locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "service_provision_id": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "location_name": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "location_postcode": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "location_country": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "adminstrative_geography_name": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "adminstrative_geography_code_type": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "adminstrative_geography_code": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "type": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "publishing_organisation_ids": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "url": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "archive_url": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "internal_url": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "publication_date": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "accessed_date": {
+            "$ref": "#/definitions/object_with_value_string"
+          }
+        }
+      }
+    },
+    "service_provisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "organisation_id": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "organisation_role_category": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "intervention": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "planned_service": {
+            "type": "object",
+            "properties": {
+              "start_date": {
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "end_date": {
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "actual_service": {
+            "type": "object",
+            "properties": {
+              "start_date": {
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "end_date": {
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "alterations": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "reason": {
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "outcome_payment_commitments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "organisation_id": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "organisation_role_category": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "maximum_potential_outcome_payment": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "result_type": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "period": {
+            "type": "object",
+            "properties": {
+              "start_date": {
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "end_date": {
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "total_outcome_payments": {
+            "type": "object",
+            "properties": {
+              "currency": {
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              },
+              "amount": {
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              },
+              "amount_usd": {
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              }
+            }
+          },
+          "alterations": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              },
+              "reason": {
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              }
+            }
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "investments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "organisation_id": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "organisation_role_category": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "investment_commitment": {
+            "type": "object",
+            "properties": {
+              "currency": {
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              },
+              "amount": {
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              },
+              "amount_usd": {
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              }
+            }
+          },
+          "maximum_potential_loss": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "maximum_potential_return_type": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "maximum_potential_return": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "investor_repayment": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "investment_type": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "intermediary_services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "organisation_id": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "organisation_role_category": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "other_role_description": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "outcome_metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "definition": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "target_population": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "targeted_number_of_service_users _or_beneficiaries_total": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "unit_type_of_targeted _service_users_or_beneficiaries": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "unit_description_of_service_user_or_beneficiaries": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "outcome_metric_target": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "other_target_for_meeting_outcome_metric_target": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "outcome_validation_method": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "data_source_for _outcome_validation": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "result_level": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "result_type": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "period": {
+            "type": "object",
+            "properties": {
+              "start_date": {
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "end_date": {
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "outcomes_achieved": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "number_engaged_in_impact_bond": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "number_with_positive_social_outcomes": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "other_description_of_result": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "outcomes_validator_organisation_ids": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "evaluation_documents_source_ids": {
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "open_contracting_datas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ocid": {
+            "type": "string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "360giving_datas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "grant_id": {
+            "type": "string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
     }
-
-
   },
   "definitions": {
     "object_with_value_string": {
