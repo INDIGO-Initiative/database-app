@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+import json
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -99,11 +100,18 @@ FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHand
 
 JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT = "%Y-%m-%d"
 
+
+with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "project.json")) as fp:
+    project_json_schema = json.load(fp)
+
+
+with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "organisation.json")) as fp:
+    organisation_json_schema = json.load(fp)
+
+
 JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
-        "jsonschema_file": os.path.join(
-            BASE_DIR, "indigo", "jsonschema", "project.json"
-        ),
+        "json_schema": project_json_schema,
         "spreadsheet_form_guide": os.path.join(
             BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
         ),
@@ -229,9 +237,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         ],
     },
     "organisation": {
-        "jsonschema_file": os.path.join(
-            BASE_DIR, "indigo", "jsonschema", "organisation.json"
-        ),
+        "json_schema": organisation_json_schema,
         "spreadsheet_form_guide": os.path.join(
             BASE_DIR, "indigo", "spreadsheetform_guides", "organisation.xlsx",
         ),

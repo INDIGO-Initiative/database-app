@@ -4,20 +4,20 @@
 #
 #    pip-compile requirements_dev.in
 #
--e git+https://github.com/OpenDataServices/json-data-ferret.git@master#egg=jsondataferret  # via -r requirements.txt
+-e git+https://github.com/OpenDataServices/json-data-ferret.git@v0.2.0#egg=jsondataferret  # via -r requirements.txt
 appdirs==1.4.4            # via black
-asgiref==3.2.7            # via -r requirements.txt, django
+asgiref==3.2.10           # via -r requirements.txt, django
 attrs==19.3.0             # via -r requirements.txt, black, jsonschema
 black==19.10b0            # via -r requirements_dev.in
 click==7.1.2              # via black, pip-tools
 dj-database-url==0.5.0    # via -r requirements.txt, django-heroku
 django-environ==0.4.5     # via -r requirements.txt
 django-heroku==0.3.1      # via -r requirements.txt
-django==3.0.7             # via -r requirements.txt, django-heroku, jsondataferret
+django==3.0.8             # via -r requirements.txt, django-heroku, jsondataferret
 et-xmlfile==1.0.1         # via -r requirements.txt, openpyxl
 flake8==3.8.3             # via -r requirements_dev.in
 gunicorn==20.0.4          # via -r requirements.txt
-importlib-metadata==1.6.1  # via -r requirements.txt, flake8, jsonschema
+importlib-metadata==1.7.0  # via -r requirements.txt, flake8, jsonschema
 isort==4.3.21             # via -r requirements_dev.in
 jdcal==1.4.1              # via -r requirements.txt, openpyxl
 json-merge-patch==0.2     # via -r requirements.txt, jsondataferret
@@ -25,7 +25,7 @@ jsonmerge==1.7.0          # via -r requirements.txt, jsondataferret
 jsonpointer==2.0          # via -r requirements.txt, spreadsheetforms
 jsonschema==3.2.0         # via -r requirements.txt, jsondataferret, jsonmerge
 mccabe==0.6.1             # via flake8
-openpyxl==3.0.3           # via -r requirements.txt, spreadsheetforms
+openpyxl==3.0.4           # via -r requirements.txt, spreadsheetforms
 pathspec==0.8.0           # via black
 pip-tools==5.2.1          # via -r requirements_dev.in
 psycopg2==2.8.5           # via -r requirements.txt, django-heroku, jsondataferret
