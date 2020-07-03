@@ -242,6 +242,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             BASE_DIR, "indigo", "spreadsheetform_guides", "organisation.xlsx",
         ),
         "fields": [
+            {"key": "/name/value", "title": "Name"},
             {"key": "/org-ids/company/value", "title": "ORG-Ids - company"},
             {"key": "/org-ids/charity/value", "title": "ORG-Ids - charity"},
             {"key": "/org-ids/other/value", "title": "ORG-Ids - other"},

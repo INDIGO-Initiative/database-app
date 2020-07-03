@@ -6,6 +6,9 @@
   "required": [
   ],
   "properties": {
+    "name": {
+      "$ref": "#/definitions/object_with_value_string"
+    },
     "org-ids": {
       "type": "object",
       "properties": {

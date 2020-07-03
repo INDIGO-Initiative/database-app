@@ -25,6 +25,7 @@ class ProjectMakePrivateForm(forms.Form):
 
 class OrganisationNewForm(forms.Form):
     id = forms.SlugField()
+    name = forms.CharField()
     comment = forms.CharField(widget=forms.Textarea)
 
 

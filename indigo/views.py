@@ -756,7 +756,12 @@ def admin_organisations_new(request):
             if existing_record:
                 form.add_error("id", "This ID already exists")
             else:
-                data = NewEventData(type, id, {}, approved=True,)
+                data = NewEventData(
+                    type,
+                    id,
+                    {"name": {"value": form.cleaned_data["name"]}},
+                    approved=True,
+                )
                 newEvent(
                     [data], user=request.user, comment=form.cleaned_data["comment"]
                 )
