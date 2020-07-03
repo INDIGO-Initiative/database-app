@@ -127,7 +127,7 @@ def find_unique_organisation_ids_referenced_in_project_data(input_json):
                 field_value = jsonpointer.resolve_pointer(
                     item, config["item_organisation_id_key"], default=None
                 )
-                if field_value.strip():
+                if field_value and field_value.strip():
                     org_ids.append(field_value)
 
     return list(set(org_ids))
