@@ -658,7 +658,10 @@ def admin_organisation_download_form(request, public_id):
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
     )
 
-    spreadsheetforms.api.put_data_in_form(guide_file, record.cached_data, out_file)
+    data = record.cached_data
+    data["id"] = record.public_id
+
+    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
 
     with open(out_file, "rb") as fh:
         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -699,6 +702,7 @@ def admin_organisation_import_form(request, public_id):
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
                 ),
             )
+            del json_data["id"]
 
             # process the data in form.cleaned_data as required
             # Save the event
