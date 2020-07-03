@@ -84,10 +84,32 @@
               "$ref": "#/definitions/object_with_value_string_and_status"
             },
             "amount": {
-              "$ref": "#/definitions/object_with_value_string_and_status"
+              "type": "object",
+              "properties": {
+                "min": {
+                  "$ref": "#/definitions/object_with_value_string_and_status"
+                },
+                "exact": {
+                  "$ref": "#/definitions/object_with_value_string_and_status"
+                },
+                "max": {
+                  "$ref": "#/definitions/object_with_value_string_and_status"
+                }
+              }
             },
             "amount_usd": {
-              "$ref": "#/definitions/object_with_value_string_and_status"
+              "type": "object",
+              "properties": {
+                "min": {
+                  "$ref": "#/definitions/object_with_value_string_and_status"
+                },
+                "exact": {
+                  "$ref": "#/definitions/object_with_value_string_and_status"
+                },
+                "max": {
+                  "$ref": "#/definitions/object_with_value_string_and_status"
+                }
+              }
             }
           }
         },
@@ -471,13 +493,35 @@
             "type": "object",
             "properties": {
               "currency": {
-                "$ref": "#/definitions/object_with_value_string_and_status"
+                "$ref": "#/definitions/object_with_value_string"
               },
               "amount": {
-                "$ref": "#/definitions/object_with_value_string_and_status"
+                "type": "object",
+                "properties": {
+                  "min": {
+                    "$ref": "#/definitions/object_with_value_string"
+                  },
+                  "exact": {
+                    "$ref": "#/definitions/object_with_value_string"
+                  },
+                  "max": {
+                    "$ref": "#/definitions/object_with_value_string"
+                  }
+                }
               },
               "amount_usd": {
-                "$ref": "#/definitions/object_with_value_string_and_status"
+                "type": "object",
+                "properties": {
+                  "min": {
+                    "$ref": "#/definitions/object_with_value_string"
+                  },
+                  "exact": {
+                    "$ref": "#/definitions/object_with_value_string"
+                  },
+                  "max": {
+                    "$ref": "#/definitions/object_with_value_string"
+                  }
+                }
               }
             }
           },
