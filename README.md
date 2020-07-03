@@ -12,6 +12,7 @@ Add some Types:
 
 * public id: project, title: Project
 * public id: organisation, title: Organisation
+* public id: fund, title: Fund
 
 Go to /app - work with data!
 

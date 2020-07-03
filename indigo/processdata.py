@@ -6,6 +6,7 @@ import spreadsheetforms.util
 
 from indigo import (
     TYPE_ORGANISATION_PUBLIC_ID,
+    TYPE_PROJECT_FUND_LIST,
     TYPE_PROJECT_ORGANISATION_LIST,
     TYPE_PROJECT_ORGANISATION_REFERENCES_LIST,
     TYPE_PROJECT_PUBLIC_ID,
@@ -13,7 +14,7 @@ from indigo import (
     TYPE_PROJECT_SOURCES_REFERENCES,
     TYPE_PROJECT_SOURCES_REFERENCES_LIST,
 )
-from indigo.models import Organisation
+from indigo.models import Fund, Organisation
 
 
 def add_other_records_to_project(project_id, input_json, public_only=False):
@@ -52,6 +53,30 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
         input_json, TYPE_PROJECT_ORGANISATION_LIST["list_key"], organisations_list
     )
 
+    # Place funds in proper list place
+    funds_list = []
+    for org_id in find_unique_fund_ids_referenced_in_project_data(input_json):
+        try:
+            fund = Fund.objects.get(public_id=org_id)
+            fund_data = fund.data_public if public_only else fund.data_private
+            this_fund_data = {}
+            jsonpointer.set_pointer(
+                this_fund_data, TYPE_PROJECT_FUND_LIST["item_id_key"], fund.public_id,
+            )
+            for data_key, fund_key in TYPE_PROJECT_FUND_LIST[
+                "item_to_fund_map"
+            ].items():
+                # We don't use jsonpointer.set_pointer here because it can't cope with setting "deep" paths
+                spreadsheetforms.util.json_set_deep_value(
+                    this_fund_data,
+                    data_key[1:],
+                    jsonpointer.resolve_pointer(fund_data, fund_key, default=None),
+                )
+            funds_list.append(this_fund_data)
+        except Fund.DoesNotExist:
+            pass
+    jsonpointer.set_pointer(input_json, TYPE_PROJECT_FUND_LIST["list_key"], funds_list)
+
     # Done
     return input_json
 
@@ -85,6 +110,17 @@ def extract_edits_from_project_import(record, import_json):
     jsonpointer.set_pointer(
         import_json, TYPE_PROJECT_ORGANISATION_LIST["list_key"], None,
     )
+
+    ################### Look For Funds
+    data_list = jsonpointer.resolve_pointer(
+        import_json, TYPE_PROJECT_FUND_LIST["list_key"], default=None
+    )
+    if isinstance(data_list, list) and data_list:
+        for data_item in data_list:
+            # TODO
+            jsonpointer.set_pointer(
+                data_item, TYPE_PROJECT_FUND_LIST["item_key_to_remove"], None,
+            )
 
     ################### Now we have removed org data, create project edit
     out.append(
@@ -131,6 +167,26 @@ def find_unique_organisation_ids_referenced_in_project_data(input_json):
                     org_ids.append(field_value)
 
     return list(set(org_ids))
+
+
+def find_unique_fund_ids_referenced_in_project_data(input_json):
+    fund_ids = []
+
+    # There is only one place funds are referenced in the project data
+    data_list = jsonpointer.resolve_pointer(
+        input_json, TYPE_PROJECT_FUND_LIST["list_key"], default=None
+    )
+    print(TYPE_PROJECT_FUND_LIST["list_key"])
+    if isinstance(data_list, list) and data_list:
+        for item in data_list:
+            field_value = jsonpointer.resolve_pointer(
+                item, TYPE_PROJECT_FUND_LIST["item_id_key"], default=None
+            )
+            field_value = str(field_value).strip() if field_value else None
+            if field_value:
+                fund_ids.append(field_value)
+
+    return list(set(fund_ids))
 
 
 def check_project_data_for_source_errors(input_json):

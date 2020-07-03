@@ -1,0 +1,38 @@
+{% extends 'indigo/base-admin.html' %}
+
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Funds</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    {% if funds %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Fund Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for fund in funds %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_fund_index' public_id=fund.public_id %}">{{ fund.public_id }}</a></td>
+                    <td>{{ fund.cached_data.fund_name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_fund_index' public_id=fund.public_id %}" class="btn btn-primary">View</a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No funds are available.</p>
+    {% endif %}
+
+    <p><a href="{% url 'indigo_admin_fund_download_blank_form' %}" class="btn btn-primary">Download Blank Form</a></p>
+    <p><a href="{% url 'indigo_admin_fund_new' %}" class="btn btn-primary">New Fund</a></p>
+
+{% endblock %}

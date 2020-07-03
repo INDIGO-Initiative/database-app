@@ -1,0 +1,40 @@
+{
+  "$id": "https://example.com/fund.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Fund",
+  "type": "object",
+  "required": [
+  ],
+  "properties": {
+    "name": {
+      "$ref": "#/definitions/object_with_value_string"
+    },
+    "identifier_scheme": {
+      "$ref": "#/definitions/object_with_value_string"
+    },
+    "identifier": {
+      "$ref": "#/definitions/object_with_value_string"
+    },
+    "country": {
+      "$ref": "#/definitions/object_with_value_string"
+    },
+    "organisations": {
+      "type": "object",
+      "properties": {
+        "organisation_ids": {
+          "$ref": "#/definitions/object_with_value_string"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "object_with_value_string": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

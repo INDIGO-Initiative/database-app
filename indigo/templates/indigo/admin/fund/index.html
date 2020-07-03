@@ -1,0 +1,31 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_fund_list' %}">Funds</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Fund {{ fund.public_id }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+
+
+{% block content %}
+
+<p>Fund {{ fund.data_private.name.value }}</p>
+
+<table class="table">
+    <tr><th>ID</th><td>{{ fund.public_id }}</td></tr>
+    {% for field in field_data %}
+        <tr><th>{{ field.title }}</th><td>{{ field.value }}</td></tr>
+    {% endfor %}
+</table>
+
+<P><a href="{% url 'indigo_admin_fund_download_form' public_id=fund.public_id %}" class="btn btn-primary">Download Form</a></P>
+<P><a href="{% url 'indigo_admin_fund_import_form' public_id=fund.public_id %}" class="btn btn-primary">Upload/Import Form</a></P>
+<P><a href="{% url 'indigo_admin_fund_moderate' public_id=fund.public_id %}" class="btn btn-primary">Moderate</a></P>
+<P><a href="{% url 'indigo_admin_fund_history' public_id=fund.public_id %}" class="btn btn-primary">History</a></P>
+
+{% endblock %}

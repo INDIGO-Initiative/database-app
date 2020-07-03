@@ -236,21 +236,6 @@
           "id": {
             "type": "string"
           },
-          "name": {
-            "$ref": "#/definitions/object_with_value_string"
-          },
-          "identifier_scheme": {
-            "$ref": "#/definitions/object_with_value_string"
-          },
-          "identifier": {
-            "$ref": "#/definitions/object_with_value_string"
-          },
-          "organisation_ids": {
-            "$ref": "#/definitions/object_with_value_string"
-          },
-          "country": {
-            "$ref": "#/definitions/object_with_value_string"
-          },
           "source_ids": {
             "title": "Sources",
             "type": "string"

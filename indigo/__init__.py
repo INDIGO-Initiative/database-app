@@ -1,5 +1,6 @@
 TYPE_PROJECT_PUBLIC_ID = "project"
 TYPE_ORGANISATION_PUBLIC_ID = "organisation"
+TYPE_FUND_PUBLIC_ID = "fund"
 
 JSONDATAFERRET_HOOKS = "indigo.jsondataferret"
 
@@ -50,6 +51,23 @@ TYPE_PROJECT_SOURCE_LIST = {
     "list_key": "/sources",
     # In each item in the list, the key where we find the ID of the source
     "item_id_key": "/id",
+}
+TYPE_PROJECT_FUND_LIST = {
+    # The key in the whole project data where we look for the list
+    "list_key": "/outcome_funds",
+    # In each item in the list, the key where we find the ID of the source
+    "item_id_key": "/id",
+    # key to remove from each item when importing
+    "item_key_to_remove": "/fund",
+    # If the item in the list has other fund fields that we should pull out of the fund record, put them here
+    # key is key in item in list: value is key in fund record (this should always start with a slash )
+    "item_to_fund_map": {
+        "/fund/name/value": "/name/value",
+        "/fund/identifier_scheme/value": "/identifier_scheme/value",
+        "/fund/identifier/value": "/identifier/value",
+        "/fund/country/value": "/country/value",
+    },
+    # TODO add organisations to above mapping in some way, but it's more complex as we have to convert list <-> comma seperated string
 }
 
 TYPE_PROJECT_SOURCES_REFERENCES = [

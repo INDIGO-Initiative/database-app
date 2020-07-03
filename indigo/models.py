@@ -56,6 +56,10 @@ class Project(BaseModel):
     pass
 
 
+class Fund(BaseModel):
+    pass
+
+
 class ProjectImport(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     data = JSONField(default=dict)
@@ -79,4 +83,20 @@ class ProjectIncludesOrganisation(models.Model):
         unique_together = (
             "project",
             "organisation",
+        )
+
+
+class ProjectIncludesFund(models.Model):
+    project = models.ForeignKey(
+        Project, on_delete=models.PROTECT, related_name="includes_funds",
+    )
+    fund = models.ForeignKey(
+        Fund, on_delete=models.PROTECT, related_name="included_by_projects",
+    )
+    in_current_data = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = (
+            "project",
+            "fund",
         )

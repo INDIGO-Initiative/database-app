@@ -118,6 +118,39 @@ urlpatterns = [
         views.admin_organisations_new,
         name="indigo_admin_organisation_new",
     ),
+    ########################### Admin - Fund
+    path(
+        "admin/fund_download_blank_form",
+        views.admin_fund_download_blank_form,
+        name="indigo_admin_fund_download_blank_form",
+    ),
+    path("admin/fund", views.admin_funds_list, name="indigo_admin_fund_list",),
+    path(
+        "admin/fund/<public_id>",
+        views.admin_fund_index,
+        name="indigo_admin_fund_index",
+    ),
+    path(
+        "admin/fund/<public_id>/download_form",
+        views.admin_fund_download_form,
+        name="indigo_admin_fund_download_form",
+    ),
+    path(
+        "admin/fund/<public_id>/import_form",
+        views.admin_fund_import_form,
+        name="indigo_admin_fund_import_form",
+    ),
+    path(
+        "admin/fund/<public_id>/moderate",
+        views.admin_fund_moderate,
+        name="indigo_admin_fund_moderate",
+    ),
+    path(
+        "admin/fund/<public_id>/history",
+        views.admin_fund_history,
+        name="indigo_admin_fund_history",
+    ),
+    path("admin/new_fund", views.admin_funds_new, name="indigo_admin_fund_new",),
     ########################### Admin - Event
     path(
         "admin/event/<event_id>",

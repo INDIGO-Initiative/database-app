@@ -109,6 +109,10 @@ with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "organisation.json")) a
     organisation_json_schema = json.load(fp)
 
 
+with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "fund.json")) as fp:
+    fund_json_schema = json.load(fp)
+
+
 JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
         "json_schema": project_json_schema,
@@ -252,6 +256,25 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             {"key": "/address/value", "title": "Address"},
             {"key": "/postcode/value", "title": "Postcode"},
             {"key": "/country/value", "title": "Country"},
+        ],
+    },
+    "fund": {
+        "json_schema": fund_json_schema,
+        "spreadsheet_form_guide": os.path.join(
+            BASE_DIR, "indigo", "spreadsheetform_guides", "fund.xlsx",
+        ),
+        "fields": [
+            {"key": "/name/value", "title": "Name"},
+            {"key": "/identifier_scheme/value", "title": "Identifier Scheme"},
+            {"key": "/identifier/value", "title": "Identifier"},
+            {"key": "/organisation_ids/value", "title": "Organisation Id's"},
+            {"key": "/country/value", "title": "Country"},
+            {
+                "type": "list",
+                "key": "/organisations",
+                "title": "Organisations",
+                "fields": [{"key": "/organisation_id/value", "title": "ID"},],
+            },
         ],
     },
 }

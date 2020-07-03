@@ -32,3 +32,14 @@ class OrganisationNewForm(forms.Form):
 class OrganisationImportForm(forms.Form):
     file = forms.FileField()
     comment = forms.CharField(widget=forms.Textarea)
+
+
+class FundNewForm(forms.Form):
+    id = forms.SlugField()
+    name = forms.CharField()
+    comment = forms.CharField(widget=forms.Textarea)
+
+
+class FundImportForm(forms.Form):
+    file = forms.FileField()
+    comment = forms.CharField(widget=forms.Textarea)

@@ -5,6 +5,7 @@ from jsondataferret.models import Record, Type
 
 import indigo.processdata
 from indigo import (
+    TYPE_FUND_PUBLIC_ID,
     TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
@@ -12,7 +13,13 @@ from indigo import (
     TYPE_PROJECT_FILTER_LISTS_LIST,
     TYPE_PROJECT_PUBLIC_ID,
 )
-from indigo.models import Organisation, Project, ProjectIncludesOrganisation
+from indigo.models import (
+    Fund,
+    Organisation,
+    Project,
+    ProjectIncludesFund,
+    ProjectIncludesOrganisation,
+)
 
 
 def update_all_data():
@@ -25,16 +32,29 @@ def update_all_data():
     except Type.DoesNotExist:
         pass
 
-    # Because Projects can include Organisation data, we update projects last
+    # Because Funds refer to Organisations do them after
+    try:
+        type_fund = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
+        for fund in Record.objects.filter(type=type_fund):
+            # update_projects=False because we are about to do that in next block anyway
+            update_fund(fund, update_projects=False)
+    except Type.DoesNotExist:
+        pass
+
+    # Because Projects can include Organisation & Fund data, we update projects last
     try:
         type_project = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
         for project in Record.objects.filter(type=type_project):
-            update_project(project, update_include_organisations=True)
+            update_project(
+                project, update_include_organisations=True, update_include_funds=True
+            )
     except Type.DoesNotExist:
         pass
 
 
-def update_project(record, update_include_organisations=False):
+def update_project(
+    record, update_include_organisations=False, update_include_funds=False
+):
 
     try:
         project = Project.objects.get(public_id=record.public_id)
@@ -103,6 +123,32 @@ def update_project(record, update_include_organisations=False):
         # TODO also need to set in_current_data=False if org is removed
         # But at moment, how we use than variable it doesnt matter
 
+    if update_include_funds:
+        funds = []
+        for (
+            fund_id
+        ) in indigo.processdata.find_unique_fund_ids_referenced_in_project_data(
+            record.cached_data
+        ):
+            try:
+                funds.append(Fund.objects.get(public_id=fund_id))
+            except Fund.DoesNotExist:
+                pass
+        # Save Funds
+        for fund in funds:
+            try:
+                project_includes_fund = ProjectIncludesFund.objects.get(
+                    project=project, fund=fund
+                )
+            except ProjectIncludesFund.DoesNotExist:
+                project_includes_fund = ProjectIncludesFund()
+                project_includes_fund.fund = fund
+                project_includes_fund.project = project
+            project_includes_fund.in_current_data = True
+            project_includes_fund.save()
+        # TODO also need to set in_current_data=False if fund is removed
+        # But at moment, how we use than variable it doesnt matter
+
 
 def update_organisation(record, update_projects=False):
 
@@ -138,6 +184,38 @@ def update_organisation(record, update_projects=False):
         ):
             update_project(
                 project_includes_organisation.project.record,
+                update_include_organisations=False,
+                update_include_funds=False,
+            )
+
+
+def update_fund(record, update_projects=False):
+
+    try:
+        fund = Fund.objects.get(public_id=record.public_id)
+    except Fund.DoesNotExist:
+        fund = Fund()
+        fund.public_id = record.public_id
+        fund.record = record
+
+    # Exists
+    fund.exists = record.cached_exists
+    # Status - at the moment we assume all fund's are public
+    fund.status_public = record.cached_exists
+    # Public data
+    fund.data_public = record.cached_data if fund.status_public else {}
+    # Private Data
+    fund.data_private = record.cached_data if record.cached_exists else {}
+    # Finally, Save
+    fund.save()
+
+    if update_projects:
+        for project_includes_fund in ProjectIncludesFund.objects.filter(
+            in_current_data=True, fund=fund
+        ):
+            update_project(
+                project_includes_fund.project.record,
+                update_include_funds=False,
                 update_include_organisations=False,
             )
 
