@@ -176,7 +176,6 @@ def find_unique_fund_ids_referenced_in_project_data(input_json):
     data_list = jsonpointer.resolve_pointer(
         input_json, TYPE_PROJECT_FUND_LIST["list_key"], default=None
     )
-    print(TYPE_PROJECT_FUND_LIST["list_key"])
     if isinstance(data_list, list) and data_list:
         for item in data_list:
             field_value = jsonpointer.resolve_pointer(
@@ -212,9 +211,12 @@ def check_project_data_for_source_errors(input_json):
                 field_value = jsonpointer.resolve_pointer(
                     item, config["item_source_ids_key"], default=""
                 )
-                for source_id in [s.strip() for s in field_value.strip().split(",")]:
-                    if source_id:
-                        source_ids_referenced.append({"source_id": source_id})
+                if field_value:
+                    for source_id in [
+                        s.strip() for s in field_value.strip().split(",")
+                    ]:
+                        if source_id:
+                            source_ids_referenced.append({"source_id": source_id})
 
     # -------------------- Now look through source table
     source_list = jsonpointer.resolve_pointer(
@@ -225,8 +227,9 @@ def check_project_data_for_source_errors(input_json):
         for source_item in source_list:
             source_id = jsonpointer.resolve_pointer(
                 source_item, TYPE_PROJECT_SOURCE_LIST["item_id_key"], default=""
-            ).strip()
+            )
             if source_id:
+                source_id = source_id.strip()
                 source_ids_found.append(source_id)
                 # Is this source ID used? Add to list if not
                 if (
