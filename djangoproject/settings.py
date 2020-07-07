@@ -123,6 +123,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
         ),
         "fields": project_json_processor.get_fields(),
+        "filter_keys": project_json_processor.get_filter_keys(),
     },
     "organisation": {
         "json_schema": organisation_json_schema,

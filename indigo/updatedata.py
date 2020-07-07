@@ -1,6 +1,7 @@
 import copy
 
 import jsonpointer
+from django.conf import settings
 from jsondataferret.models import Record, Type
 
 import indigo.processdata
@@ -9,7 +10,6 @@ from indigo import (
     TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
-    TYPE_PROJECT_FILTER_KEYS_LIST,
     TYPE_PROJECT_FILTER_LISTS_LIST,
     TYPE_PROJECT_PUBLIC_ID,
 )
@@ -79,7 +79,11 @@ def update_project(
             record.public_id,
             filter_values(
                 record.cached_data,
-                keys_with_own_status_subfield=TYPE_PROJECT_FILTER_KEYS_LIST,
+                keys_with_own_status_subfield=settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+                    "project"
+                ).get(
+                    "filter_keys"
+                ),
                 keys_always_remove=TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
                 lists_with_items_with_own_status_subfield=TYPE_PROJECT_FILTER_LISTS_LIST,
             ),

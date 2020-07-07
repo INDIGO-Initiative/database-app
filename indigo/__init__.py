@@ -5,8 +5,19 @@ TYPE_FUND_PUBLIC_ID = "fund"
 JSONDATAFERRET_HOOKS = "indigo.jsondataferret"
 
 TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST = ["/status"]
-TYPE_PROJECT_FILTER_KEYS_LIST = ["/stage_development"]
-TYPE_PROJECT_FILTER_LISTS_LIST = ["/outcome_funds"]
+
+TYPE_PROJECT_FILTER_LISTS_LIST = [
+    "/outcome_funds",
+    "/delivery_locations",
+    "/service_provisions",
+    "/outcome_payment_commitments",
+    "/investments",
+    "/intermediary_services",
+    "/outcome_metrics",
+    "/results",
+    "/open_contracting_datas",
+    "/360giving_datas",
+]
 
 TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [
     {

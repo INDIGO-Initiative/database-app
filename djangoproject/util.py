@@ -57,3 +57,25 @@ class JsonSchemaProcessor:
             return bit2.strip()
         else:
             return ""
+
+    def get_filter_keys(self):
+        return self._get_filter_keys_worker(start_pointer="")
+
+    def _get_filter_keys_worker(
+        self, start_pointer,
+    ):
+        out = []
+        our_json_schema = jsonpointer.resolve_pointer(
+            self.json_schema_compiled, start_pointer
+        )
+        if our_json_schema.get("type") == "object":
+            for key in our_json_schema.get("properties").keys():
+                if key != "status":
+                    out.extend(
+                        self._get_filter_keys_worker(
+                            start_pointer=start_pointer + "/properties/" + key,
+                        )
+                    )
+                elif start_pointer != "":
+                    out.append(start_pointer.replace("/properties/", "/"))
+        return out
