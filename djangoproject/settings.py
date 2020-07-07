@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
 import json
 import os
+
+from .util import JsonSchemaProcessor
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -103,7 +104,9 @@ JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT = "%Y-%m-%d"
 
 with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "project.json")) as fp:
     project_json_schema = json.load(fp)
-
+project_json_processor = JsonSchemaProcessor(
+    input_filename=os.path.join(BASE_DIR, "indigo", "jsonschema", "project.json")
+)
 
 with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "organisation.json")) as fp:
     organisation_json_schema = json.load(fp)
@@ -119,126 +122,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         "spreadsheet_form_guide": os.path.join(
             BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
         ),
-        "fields": [
-            {"key": "/status", "title": "Status"},
-            {"key": "/name/value", "title": "Name"},
-            {"key": "/alternative_names/value", "title": "Alternative Names"},
-            {"key": "/stage_development/value", "title": "Stage of Development"},
-            {
-                "key": "/stage_development/source_ids",
-                "title": "Stage of Development (Sources)",
-            },
-            {
-                "key": "/stage_development/status",
-                "title": "Stage of Development (Status)",
-            },
-            # dates group
-            {
-                "key": "/dates/outcomes_contract_signed/value",
-                "title": "Date outcomes contract signed",
-            },
-            {
-                "key": "/dates/outcomes_contract_signed/status",
-                "title": "Date outcomes contract signed (Status)",
-            },
-            {
-                "key": "/dates/contracts_between_all_parties_signed/value",
-                "title": "Date contracts between all parties signed",
-            },
-            {
-                "key": "/dates/contracts_between_all_parties_signed/status",
-                "title": "Date contracts between all parties signed (Status)",
-            },
-            {
-                "key": "/dates/anticipated_completion_date/value",
-                "title": "Anticipated completion date",
-            },
-            {
-                "key": "/dates/anticipated_completion_date/status",
-                "title": "Anticipated completion date (Status)",
-            },
-            {
-                "key": "/dates/actual_completion_date/value",
-                "title": "Actual completion date",
-            },
-            {
-                "key": "/dates/actual_completion_date/status",
-                "title": "Actual completion date (Status)",
-            },
-            {
-                "key": "/dates/start_date_of_service_provision/value",
-                "title": "Start date of service provision",
-            },
-            {
-                "key": "/dates/start_date_of_service_provision/status",
-                "title": "Start date of service provision (Status)",
-            },
-            {
-                "key": "/dates/anticipated_end_date_of_service_provision/value",
-                "title": "Anticipated end date of service provision",
-            },
-            {
-                "key": "/dates/anticipated_end_date_of_service_provision/status",
-                "title": "Anticipated end date of service provision (Status)",
-            },
-            {
-                "key": "/dates/actual_end_date_of_service_provision/value",
-                "title": "Actual end date of service provision",
-            },
-            {
-                "key": "/dates/actual_end_date_of_service_provision/status",
-                "title": "Actual end date of service provision (Status)",
-            },
-            {"key": "/dates/source_ids", "title": "Dates (Sources)"},
-            {"key": "/dates/notes", "title": "Notes (Sources)"},
-            # Overall project finance
-            # TODO
-            # Purpose and classifications
-            # TODO
-            # Service and beneficiaries
-            # TODO
-            # Changes to project due to COVID-19
-            # TODO
-            # Outcome Funds
-            {
-                "type": "list",
-                "key": "/outcome_funds",
-                "title": "Outcome Funds",
-                "fields": [
-                    {"key": "/id", "title": "ID"},
-                    {"key": "/name/value", "title": "Name"},
-                    {"key": "/identifier_scheme/value", "title": "Identifier_scheme"},
-                    {"key": "/identifier/value", "title": "Identifier"},
-                    {"key": "/organisation_ids/value", "title": "Organisations"},
-                    {"key": "/country/value", "title": "Country"},
-                    {"key": "/source_ids", "title": "Sources"},
-                    {"key": "/notes", "title": "Notes"},
-                    {"key": "/status", "title": "Status"},
-                ],
-            },
-            # Delivery Locations
-            # TODO
-            # Sources
-            # TODO
-            # Organisations
-            # TODO
-            # Service Provisions
-            # TODO
-            # Outcome Payment Comitments
-            # TODO
-            # Investements
-            # TODO
-            # Intermediary services
-            # TODO
-            # Outcome Metrics
-            # TODO
-            # Results
-            # TODO
-            # Open Contracting
-            # TODO
-            # 360Giving
-            # TODO
-        ],
+        "fields": project_json_processor.get_fields(),
     },
     "organisation": {
         "json_schema": organisation_json_schema,

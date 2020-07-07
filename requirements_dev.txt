@@ -10,6 +10,7 @@ asgiref==3.2.10           # via -r requirements.txt, django
 attrs==19.3.0             # via -r requirements.txt, black, jsonschema
 black==19.10b0            # via -r requirements_dev.in
 click==7.1.2              # via black, pip-tools
+compiletojsonschema==0.2.0  # via -r requirements.txt
 dj-database-url==0.5.0    # via -r requirements.txt, django-heroku
 django-environ==0.4.5     # via -r requirements.txt
 django-heroku==0.3.1      # via -r requirements.txt
@@ -23,7 +24,8 @@ jdcal==1.4.1              # via -r requirements.txt, openpyxl
 json-merge-patch==0.2     # via -r requirements.txt, jsondataferret
 jsonmerge==1.7.0          # via -r requirements.txt, jsondataferret
 jsonpointer==2.0          # via -r requirements.txt, spreadsheetforms
-jsonschema==3.2.0         # via -r requirements.txt, jsondataferret, jsonmerge
+jsonref==0.2              # via -r requirements.txt, compiletojsonschema
+jsonschema==3.2.0         # via -r requirements.txt, compiletojsonschema, jsondataferret, jsonmerge
 mccabe==0.6.1             # via flake8
 openpyxl==3.0.4           # via -r requirements.txt, spreadsheetforms
 pathspec==0.8.0           # via black

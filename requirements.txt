@@ -7,6 +7,7 @@
 -e git+https://github.com/OpenDataServices/json-data-ferret.git@v0.2.0#egg=jsondataferret  # via -r requirements.in
 asgiref==3.2.10           # via django
 attrs==19.3.0             # via jsonschema
+compiletojsonschema==0.2.0  # via -r requirements.in
 dj-database-url==0.5.0    # via django-heroku
 django-environ==0.4.5     # via -r requirements.in
 django-heroku==0.3.1      # via -r requirements.in
@@ -18,7 +19,8 @@ jdcal==1.4.1              # via openpyxl
 json-merge-patch==0.2     # via jsondataferret
 jsonmerge==1.7.0          # via jsondataferret
 jsonpointer==2.0          # via spreadsheetforms
-jsonschema==3.2.0         # via jsondataferret, jsonmerge
+jsonref==0.2              # via compiletojsonschema
+jsonschema==3.2.0         # via compiletojsonschema, jsondataferret, jsonmerge
 openpyxl==3.0.4           # via spreadsheetforms
 psycopg2==2.8.5           # via -r requirements.in, django-heroku, jsondataferret
 pygments==2.6.1           # via jsondataferret

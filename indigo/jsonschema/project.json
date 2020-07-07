@@ -1,12 +1,12 @@
 {
   "$id": "https://example.com/project.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Project",
   "type": "object",
   "required": [
   ],
   "properties": {
     "status": {
+      "title": "Status",
       "type": "string",
       "enum": [
         "PUBLIC",
@@ -15,15 +15,19 @@
       ]
     },
     "name": {
+      "title": "Impact Bond Name",
       "$ref": "#/definitions/object_with_value_string"
     },
     "alternative_names": {
+      "title": "Alternative Names",
       "$ref": "#/definitions/object_with_value_string"
     },
     "stage_development": {
+      "title": "Stage of Development",
       "type": "object",
       "properties": {
         "value": {
+          "title": "(Value)",
           "type": "string",
           "enum": [
             "Early-stage design",
@@ -35,78 +39,101 @@
           ]
         },
         "source_ids": {
+          "title": "(Source ID's)",
           "type": "string"
         },
         "status": {
+          "title": "(Status)",
           "type": "string"
         }
       }
     },
     "dates": {
+      "title": "Dates",
       "type": "object",
       "properties": {
         "outcomes_contract_signed": {
+          "title": "Date outcomes contract signed",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "contracts_between_all_parties_signed": {
+          "title": "Date contracts between all parties signed",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "anticipated_completion_date": {
+          "title": "Anticipated completion date",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "actual_completion_date": {
+          "title": "Actual completion date",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "start_date_of_service_provision": {
+          "title": "Start date of service provision",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "anticipated_end_date_of_service_provision": {
+          "title": "Anticipated end date of service provision",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "actual_end_date_of_service_provision": {
+          "title": "Actual end date of service provision",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "source_ids": {
+          "title": "(Source ID's)",
           "type": "string"
         },
         "notes": {
+          "title": "(Notes)",
           "type": "string"
         }
       }
     },
     "overall_project_finance": {
+      "title": "Overall project finance",
       "type": "object",
       "properties": {
         "total_investment_commitment": {
+          "title": "Total investment commitment",
           "type": "object",
           "properties": {
             "currency": {
+              "title": "Currency",
               "$ref": "#/definitions/object_with_value_string_and_status"
             },
             "amount": {
+              "title": "Amount",
               "type": "object",
               "properties": {
                 "min": {
+                  "title": "Min",
                   "$ref": "#/definitions/object_with_value_string_and_status"
                 },
                 "exact": {
+                  "title": "Exact",
                   "$ref": "#/definitions/object_with_value_string_and_status"
                 },
                 "max": {
+                  "title": "Max",
                   "$ref": "#/definitions/object_with_value_string_and_status"
                 }
               }
             },
             "amount_usd": {
+              "title": "Amount USD",
               "type": "object",
               "properties": {
                 "min": {
+                  "title": "Min",
                   "$ref": "#/definitions/object_with_value_string_and_status"
                 },
                 "exact": {
+                  "title": "Exact",
                   "$ref": "#/definitions/object_with_value_string_and_status"
                 },
                 "max": {
+                  "title": "Max",
                   "$ref": "#/definitions/object_with_value_string_and_status"
                 }
               }
@@ -114,104 +141,135 @@
           }
         },
         "maximum_potential_outcome_payment": {
+          "title": "Maximum potential outcome payment",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "maximum_potential_loss": {
+          "title": "Maximum potential loss",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "maximum_potential_return_type": {
+          "title": "Maximum potential return type",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "maximum_potential_return": {
+          "title": "Maximum potential return",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "configuration_contracting_parties": {
+          "title": "Configuration of the Contracting Parties",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "investor_repayment": {
+          "title": "Investor repayment",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "total_outcome_payments_made": {
+          "title": "Total outcome payments made",
           "type": "object",
           "properties": {
             "currency": {
+              "title": "Currency",
               "$ref": "#/definitions/object_with_value_string_and_status"
             },
             "amount": {
+              "title": "Amount",
               "$ref": "#/definitions/object_with_value_string_and_status"
             },
             "amount_usd": {
+              "title": "Amount USD",
               "$ref": "#/definitions/object_with_value_string_and_status"
             }
           }
         },
         "source_ids": {
+          "title": "(Source ID's)",
           "type": "string"
         },
         "notes": {
+          "title": "(Notes)",
           "type": "string"
         }
       }
     },
     "purpose_and_classifications": {
+      "title": "Purpose and classifications",
       "type": "object",
       "properties": {
         "social_challenge": {
+          "title": "Social challenge",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "intervention": {
+          "title": "Intervention",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "policy_sector": {
+          "title": "Policy sector",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "primary_sdg_goal": {
+          "title": "Primary SDG goal",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "secondary_sdg_goals": {
+          "title": "Secondary SDG goals",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "primary_sdg_target": {
+          "title": "Primary SDG target",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "secondary_sdg_targets": {
+          "title": "Secondary SDG targets",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "source_ids": {
+          "title": "(Source ID's)",
           "type": "string"
         },
         "notes": {
+          "title": "(Notes)",
           "type": "string"
         }
       }
     },
     "service_and_beneficiaries": {
+      "title": "Service and beneficiaries",
       "type": "object",
       "properties": {
         "target_population": {
+          "title": "Target population",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "targeted_number_service_users_or_beneficiaries_total": {
+          "title": "Targeted number of service users or beneficiaries (total)",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "unit_type_targeted_service_users_or_beneficiaries": {
+          "title": "Unit type of targeted service users or beneficiaries",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "unit_description_of_service_user_or_beneficiaries": {
+          "title": "Unit description of service user or beneficiaries",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "source_ids": {
+          "title": "(Source ID's)",
           "type": "string"
         },
         "notes": {
+          "title": "(Notes)",
           "type": "string"
         }
       }
     },
     "changes_to_project_due_to_covid19": {
+      "title": "Changes to project due to COVID-19",
       "type": "object",
       "properties": {
         "value": {
+          "title": "(Value)",
           "type": "string",
           "enum": [
             "Pause project",
@@ -221,19 +279,23 @@
           ]
         },
         "source_ids": {
+          "title": "(Source ID's)",
           "type": "string"
         },
         "status": {
+          "title": "(Status)",
           "type": "string"
         }
       }
     },
     "outcome_funds": {
+      "title": "Outcome Funds",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "id": {
+            "title": "Id",
             "type": "string"
           },
           "source_ids": {
@@ -241,10 +303,12 @@
             "type": "string"
           },
           "notes": {
+            "title": "(Notes)",
             "title": "Notes",
             "type": "string"
           },
           "status": {
+            "title": "(Status)",
             "title": "Status",
             "type": "string"
           }
@@ -252,29 +316,37 @@
       }
     },
     "delivery_locations": {
+      "title": "Delivery Locations",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "service_provision_id": {
+            "title": "Service Provision ID",
             "$ref": "#/definitions/object_with_value_string"
           },
           "location_name": {
+            "title": "Location - Name",
             "$ref": "#/definitions/object_with_value_string"
           },
           "location_postcode": {
+            "title": "Location - Postcode",
             "$ref": "#/definitions/object_with_value_string"
           },
           "location_country": {
+            "title": "Location - Country",
             "$ref": "#/definitions/object_with_value_string"
           },
           "adminstrative_geography_name": {
+            "title": "Adminstrative geography - Name",
             "$ref": "#/definitions/object_with_value_string"
           },
           "adminstrative_geography_code_type": {
+            "title": "Adminstrative geography - Code Type",
             "$ref": "#/definitions/object_with_value_string"
           },
           "adminstrative_geography_code": {
+            "title": "Adminstrative geography - Code",
             "$ref": "#/definitions/object_with_value_string"
           },
           "source_ids": {
@@ -293,86 +365,110 @@
       }
     },
     "sources": {
+      "title": "Sources",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "id": {
+            "title": "Id",
             "type": "string"
           },
           "name": {
+            "title": "Name",
             "$ref": "#/definitions/object_with_value_string"
           },
           "type": {
+            "title": "Type",
             "$ref": "#/definitions/object_with_value_string"
           },
           "publishing_organisation_ids": {
+            "title": "Publishing Organisations",
             "$ref": "#/definitions/object_with_value_string"
           },
           "url": {
+            "title": "URL",
             "$ref": "#/definitions/object_with_value_string"
           },
           "archive_url": {
+            "title": "Archive URL",
             "$ref": "#/definitions/object_with_value_string"
           },
           "internal_url": {
+            "title": "Internal URL",
             "$ref": "#/definitions/object_with_value_string"
           },
           "publication_date": {
+            "title": "Publication Date",
             "$ref": "#/definitions/object_with_value_string"
           },
           "accessed_date": {
+            "title": "Accessed Date",
             "$ref": "#/definitions/object_with_value_string"
           }
         }
       }
     },
     "service_provisions": {
+      "title": "Service Provisions",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "id": {
+            "title": "Id",
             "type": "string"
           },
           "organisation_id": {
+            "title": "Organisation ID",
             "$ref": "#/definitions/object_with_value_string"
           },
           "organisation_role_category": {
+            "title": "Organisation Role Category",
             "$ref": "#/definitions/object_with_value_string"
           },
           "intervention": {
+            "title": "Intervention",
             "$ref": "#/definitions/object_with_value_string"
           },
           "planned_service": {
+            "title": "Planned Service",
             "type": "object",
             "properties": {
               "start_date": {
+                "title": "Start",
                 "$ref": "#/definitions/object_with_value_string"
               },
               "end_date": {
+                "title": "End",
                 "$ref": "#/definitions/object_with_value_string"
               }
             }
           },
           "actual_service": {
+            "title": "Actual Service",
             "type": "object",
             "properties": {
               "start_date": {
+                "title": "Start",
                 "$ref": "#/definitions/object_with_value_string"
               },
               "end_date": {
+                "title": "End",
                 "$ref": "#/definitions/object_with_value_string"
               }
             }
           },
           "alterations": {
+            "title": "Alterations to service",
             "type": "object",
             "properties": {
               "description": {
+                "title": "Description",
                 "$ref": "#/definitions/object_with_value_string"
               },
               "reason": {
+                "title": "Reason",
                 "$ref": "#/definitions/object_with_value_string"
               }
             }
@@ -393,54 +489,69 @@
       }
     },
     "outcome_payment_commitments": {
+      "title": "Outcome Payment Commitments",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "organisation_id": {
+            "title": "Organisation ID",
             "$ref": "#/definitions/object_with_value_string"
           },
           "organisation_role_category": {
+            "title": "Organisation Role Category",
             "$ref": "#/definitions/object_with_value_string"
           },
           "maximum_potential_outcome_payment": {
+            "title": "Maximum potential Outcome payment",
             "$ref": "#/definitions/object_with_value_string"
           },
           "result_type": {
+            "title": "Result type",
             "$ref": "#/definitions/object_with_value_string"
           },
           "period": {
+            "title": "Period",
             "type": "object",
             "properties": {
               "start_date": {
+                "title": "Start",
                 "$ref": "#/definitions/object_with_value_string"
               },
               "end_date": {
+                "title": "End",
                 "$ref": "#/definitions/object_with_value_string"
               }
             }
           },
           "total_outcome_payments": {
+            "title": "Total outcome payments made",
             "type": "object",
             "properties": {
               "currency": {
+                "title": "Currency",
                 "$ref": "#/definitions/object_with_value_string_and_status"
               },
               "amount": {
+                "title": "Amount",
                 "$ref": "#/definitions/object_with_value_string_and_status"
               },
               "amount_usd": {
+                "title": "Amount USD",
                 "$ref": "#/definitions/object_with_value_string_and_status"
               }
             }
           },
           "alterations": {
+            "title": "Alterations to payment commitment",
             "type": "object",
             "properties": {
               "description": {
+                "title": "Description",
                 "$ref": "#/definitions/object_with_value_string_and_status"
               },
               "reason": {
+                "title": "Reason",
                 "$ref": "#/definitions/object_with_value_string_and_status"
               }
             }
@@ -461,49 +572,63 @@
       }
     },
     "investments": {
+      "title": "Investments",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "id": {
+            "title": "Id",
             "type": "string"
           },
           "organisation_id": {
+            "title": "Organisation ID",
             "$ref": "#/definitions/object_with_value_string"
           },
           "organisation_role_category": {
+            "title": "Organisation Role Category",
             "$ref": "#/definitions/object_with_value_string"
           },
           "investment_commitment": {
+            "title": "Investment Commitment",
             "type": "object",
             "properties": {
               "currency": {
+                "title": "Currency",
                 "$ref": "#/definitions/object_with_value_string"
               },
               "amount": {
+                "title": "Amount",
                 "type": "object",
                 "properties": {
                   "min": {
+                    "title": "Min",
                     "$ref": "#/definitions/object_with_value_string"
                   },
                   "exact": {
+                    "title": "Exact",
                     "$ref": "#/definitions/object_with_value_string"
                   },
                   "max": {
+                    "title": "Max",
                     "$ref": "#/definitions/object_with_value_string"
                   }
                 }
               },
               "amount_usd": {
+                "title": "Amount USD",
                 "type": "object",
                 "properties": {
                   "min": {
+                    "title": "Min",
                     "$ref": "#/definitions/object_with_value_string"
                   },
                   "exact": {
+                    "title": "Exact",
                     "$ref": "#/definitions/object_with_value_string"
                   },
                   "max": {
+                    "title": "Max",
                     "$ref": "#/definitions/object_with_value_string"
                   }
                 }
@@ -511,18 +636,23 @@
             }
           },
           "maximum_potential_loss": {
+            "title": "Maximum Potential loss",
             "$ref": "#/definitions/object_with_value_string"
           },
           "maximum_potential_return_type": {
+            "title": "Maximum Potential Return Type",
             "$ref": "#/definitions/object_with_value_string"
           },
           "maximum_potential_return": {
+            "title": "Maximum Potential Return",
             "$ref": "#/definitions/object_with_value_string"
           },
           "investor_repayment": {
+            "title": "Investor Repayment",
             "$ref": "#/definitions/object_with_value_string"
           },
           "investment_type": {
+            "title": "Investment Type",
             "$ref": "#/definitions/object_with_value_string"
           },
           "source_ids": {
@@ -541,17 +671,21 @@
       }
     },
     "intermediary_services": {
+      "title": "Intermediary services",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "organisation_id": {
+            "title": "Organisation ID",
             "$ref": "#/definitions/object_with_value_string"
           },
           "organisation_role_category": {
+            "title": "Organisation Role Category",
             "$ref": "#/definitions/object_with_value_string"
           },
           "other_role_description": {
+            "title": "Other Role Description",
             "$ref": "#/definitions/object_with_value_string"
           },
           "source_ids": {
@@ -570,39 +704,50 @@
       }
     },
     "outcome_metrics": {
+      "title": "Outcome Metrics",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "id": {
+            "title": "Id",
             "type": "string"
           },
           "definition": {
+            "title": "Outcome Definition",
             "$ref": "#/definitions/object_with_value_string"
           },
           "target_population": {
+            "title": "Target Population",
             "$ref": "#/definitions/object_with_value_string"
           },
           "targeted_number_of_service_users _or_beneficiaries_total": {
+            "title": "Targeted number of service users Or beneficiaries (total)",
             "$ref": "#/definitions/object_with_value_string"
           },
           "unit_type_of_targeted _service_users_or_beneficiaries": {
+            "title": "Unit type of targeted Service users or beneficiaries",
             "$ref": "#/definitions/object_with_value_string"
           },
           "unit_description_of_service_user_or_beneficiaries": {
+            "title": "Unit description of Service user or beneficiaries",
             "$ref": "#/definitions/object_with_value_string"
           },
           "outcome_metric_target": {
-            "$ref": "#/definitions/object_with_value_string"
+            "$ref": "#/definitions/object_with_value_string",
+            "title": "Outcome metric target"
           },
           "other_target_for_meeting_outcome_metric_target": {
-            "$ref": "#/definitions/object_with_value_string"
+            "$ref": "#/definitions/object_with_value_string",
+            "title": "Other target for Meeting outcome metric target"
           },
           "outcome_validation_method": {
-            "$ref": "#/definitions/object_with_value_string"
+            "$ref": "#/definitions/object_with_value_string",
+            "title": "Outcome validation Method"
           },
-          "data_source_for _outcome_validation": {
-            "$ref": "#/definitions/object_with_value_string"
+          "data_source_for_outcome_validation": {
+            "$ref": "#/definitions/object_with_value_string",
+            "title": "Data source for Outcome validation"
           },
           "source_ids": {
             "title": "Sources",
@@ -620,46 +765,59 @@
       }
     },
     "results": {
+      "title": "Results",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "id": {
+            "title": "Id",
             "type": "string"
           },
           "result_level": {
+            "title": "Result level",
             "$ref": "#/definitions/object_with_value_string"
           },
           "result_type": {
+            "title": "Result type",
             "$ref": "#/definitions/object_with_value_string"
           },
           "period": {
+            "title": "Period",
             "type": "object",
             "properties": {
               "start_date": {
+                "title": "Start",
                 "$ref": "#/definitions/object_with_value_string"
               },
               "end_date": {
+                "title": "End",
                 "$ref": "#/definitions/object_with_value_string"
               }
             }
           },
           "outcomes_achieved": {
+            "title": "Outcomes achieved",
             "$ref": "#/definitions/object_with_value_string"
           },
           "number_engaged_in_impact_bond": {
+            "title": "Number engaged In impact bond",
             "$ref": "#/definitions/object_with_value_string"
           },
           "number_with_positive_social_outcomes": {
+            "title": "Number with Positive social outcomes",
             "$ref": "#/definitions/object_with_value_string"
           },
           "other_description_of_result": {
+            "title": "Other Description of result",
             "$ref": "#/definitions/object_with_value_string"
           },
           "outcomes_validator_organisation_ids": {
+            "title": "Outcomes validator(s)",
             "$ref": "#/definitions/object_with_value_string"
           },
           "evaluation_documents_source_ids": {
+            "title": "Evaluation Documents",
             "$ref": "#/definitions/object_with_value_string"
           },
           "source_ids": {
@@ -678,11 +836,13 @@
       }
     },
     "open_contracting_datas": {
+      "title": "Open Contracting data",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "ocid": {
+            "title": "OCID",
             "type": "string"
           },
           "source_ids": {
@@ -701,11 +861,13 @@
       }
     },
     "360giving_datas": {
+      "title": "360 Giving Data",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "grant_id": {
+            "title": "Grant ID",
             "type": "string"
           },
           "source_ids": {
@@ -729,6 +891,7 @@
       "type": "object",
       "properties": {
         "value": {
+          "title": "(Value)",
           "type": "string"
         }
       }
@@ -737,11 +900,17 @@
       "type": "object",
       "properties": {
         "value": {
+          "title": "(Value)",
           "type": "string"
         },
         "status": {
+          "title": "(Status)",
           "type": "string",
-          "enum": ["PUBLIC", "PRIVATE", "DISPUTED"]
+          "enum": [
+            "PUBLIC",
+            "PRIVATE",
+            "DISPUTED"
+          ]
         }
       }
     }
