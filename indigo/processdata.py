@@ -54,28 +54,38 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
     )
 
     # Place funds in proper list place
-    funds_list = []
-    for org_id in find_unique_fund_ids_referenced_in_project_data(input_json):
-        try:
-            fund = Fund.objects.get(public_id=org_id)
-            fund_data = fund.data_public if public_only else fund.data_private
-            this_fund_data = {}
-            jsonpointer.set_pointer(
-                this_fund_data, TYPE_PROJECT_FUND_LIST["item_id_key"], fund.public_id,
-            )
-            for data_key, fund_key in TYPE_PROJECT_FUND_LIST[
-                "item_to_fund_map"
-            ].items():
-                # We don't use jsonpointer.set_pointer here because it can't cope with setting "deep" paths
-                spreadsheetforms.util.json_set_deep_value(
-                    this_fund_data,
-                    data_key[1:],
-                    jsonpointer.resolve_pointer(fund_data, fund_key, default=None),
+    funds_list = jsonpointer.resolve_pointer(
+        input_json, TYPE_PROJECT_FUND_LIST["list_key"]
+    )
+    if isinstance(funds_list, list) and funds_list:
+        for fund_row in funds_list:
+            try:
+                fund_id = jsonpointer.resolve_pointer(
+                    fund_row, TYPE_PROJECT_FUND_LIST["item_id_key"]
                 )
-            funds_list.append(this_fund_data)
-        except Fund.DoesNotExist:
-            pass
-    jsonpointer.set_pointer(input_json, TYPE_PROJECT_FUND_LIST["list_key"], funds_list)
+                if fund_id:
+                    fund = Fund.objects.get(public_id=fund_id)
+                    fund_data = fund.data_public if public_only else fund.data_private
+                    # We are going to add extra details to a "fund" dictionary, so set that as an empty dictionary now
+                    # spreadsheetforms.util.json_set_deep_value won't do it for us, it has a bug when the existing key is None
+                    jsonpointer.set_pointer(
+                        fund_row,
+                        TYPE_PROJECT_FUND_LIST["item_key_with_fund_details"],
+                        {},
+                    )
+                    for data_key, fund_key in TYPE_PROJECT_FUND_LIST[
+                        "item_to_fund_map"
+                    ].items():
+                        # We don't use jsonpointer.set_pointer here because it can't cope with setting "deep" paths
+                        spreadsheetforms.util.json_set_deep_value(
+                            fund_row,
+                            data_key[1:],
+                            jsonpointer.resolve_pointer(
+                                fund_data, fund_key, default=None
+                            ),
+                        )
+            except Fund.DoesNotExist:
+                pass
 
     # Done
     return input_json
@@ -119,7 +129,7 @@ def extract_edits_from_project_import(record, import_json):
         for data_item in data_list:
             # TODO
             jsonpointer.set_pointer(
-                data_item, TYPE_PROJECT_FUND_LIST["item_key_to_remove"], None,
+                data_item, TYPE_PROJECT_FUND_LIST["item_key_with_fund_details"], None,
             )
 
     ################### Now we have removed org data, create project edit

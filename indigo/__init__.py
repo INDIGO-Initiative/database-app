@@ -69,7 +69,7 @@ TYPE_PROJECT_FUND_LIST = {
     # In each item in the list, the key where we find the ID of the source
     "item_id_key": "/id",
     # key to remove from each item when importing
-    "item_key_to_remove": "/fund",
+    "item_key_with_fund_details": "/fund",
     # If the item in the list has other fund fields that we should pull out of the fund record, put them here
     # key is key in item in list: value is key in fund record (this should always start with a slash )
     "item_to_fund_map": {
