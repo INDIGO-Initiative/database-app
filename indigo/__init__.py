@@ -91,8 +91,16 @@ TYPE_PROJECT_SOURCES_REFERENCES = [
 ]
 
 TYPE_PROJECT_SOURCES_REFERENCES_LIST = [
-    {"list_key": "/intermediary_services", "item_source_ids_key": "/source_ids",}
-    # TODO find and add the rest
+    {"list_key": "/outcome_funds", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/delivery_locations", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/service_provisions", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/outcome_payment_commitments", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/investments", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/intermediary_services", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/outcome_metrics", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/results", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/open_contracting_datas", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/360giving_datas", "item_source_ids_key": "/source_ids",},
 ]
 
 TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST = ["/contact"]
