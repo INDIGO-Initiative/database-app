@@ -322,7 +322,14 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
     if project_import.imported:
         raise Http404("Import already done")
 
-    if request.method == "POST":
+    (
+        source_ids_used_that_are_not_in_sources_table,
+        source_table_entries_that_are_not_used,
+    ) = indigo.processdata.check_project_data_for_source_errors(project_import.data)
+
+    can_import_now = len(source_ids_used_that_are_not_in_sources_table) == 0
+
+    if request.method == "POST" and can_import_now:
 
         # Create a form instance and populate it with data from the request (binding):
         form = ProjectImportStage2Form(request.POST, request.FILES)
@@ -357,17 +364,13 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
     else:
         form = ProjectImportStage2Form()
 
-        (
-            source_ids_used_that_are_not_in_sources_table,
-            source_table_entries_that_are_not_used,
-        ) = indigo.processdata.check_project_data_for_source_errors(project_import.data)
-
     context = {
         "record": record,
         "project": project,
         "form": form,
         "source_ids_used_that_are_not_in_sources_table": source_ids_used_that_are_not_in_sources_table,
         "source_table_entries_that_are_not_used": source_table_entries_that_are_not_used,
+        "can_import_now": can_import_now,
     }
 
     return render(request, "indigo/admin/project/import_form_stage_2.html", context)
