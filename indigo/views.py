@@ -327,7 +327,16 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
         source_table_entries_that_are_not_used,
     ) = indigo.processdata.check_project_data_for_source_errors(project_import.data)
 
-    can_import_now = len(source_ids_used_that_are_not_in_sources_table) == 0
+    organisation_ids_that_do_not_exist = indigo.processdata.filter_organisation_ids_that_do_not_exist_in_database(
+        indigo.processdata.find_unique_organisation_ids_referenced_in_project_data(
+            project_import.data
+        )
+    )
+
+    can_import_now = (
+        not source_ids_used_that_are_not_in_sources_table
+        and not organisation_ids_that_do_not_exist
+    )
 
     if request.method == "POST" and can_import_now:
 
@@ -361,8 +370,10 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
             )
 
         # If this is a GET (or any other method) create the default form.
-    else:
+    elif can_import_now:
         form = ProjectImportStage2Form()
+    else:
+        form = None
 
     context = {
         "record": record,
@@ -370,6 +381,7 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
         "form": form,
         "source_ids_used_that_are_not_in_sources_table": source_ids_used_that_are_not_in_sources_table,
         "source_table_entries_that_are_not_used": source_table_entries_that_are_not_used,
+        "organisation_ids_that_do_not_exist": organisation_ids_that_do_not_exist,
         "can_import_now": can_import_now,
     }
 

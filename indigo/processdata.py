@@ -169,6 +169,18 @@ def find_unique_organisation_ids_referenced_in_project_data(input_json):
     return list(set(org_ids))
 
 
+def filter_organisation_ids_that_do_not_exist_in_database(list_of_ids):
+    """Takes list of public_ids of orgs, returns a list of those that do NOT exist in the database.
+    Hint: feed find_unique_organisation_ids_referenced_in_project_data into this."""
+    out = []
+    for id in list_of_ids:
+        try:
+            Organisation.objects.get(public_id=id)
+        except Organisation.DoesNotExist:
+            out.append(id)
+    return out
+
+
 def find_unique_fund_ids_referenced_in_project_data(input_json):
     fund_ids = []
 
