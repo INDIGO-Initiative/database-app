@@ -200,6 +200,18 @@ def find_unique_fund_ids_referenced_in_project_data(input_json):
     return list(set(fund_ids))
 
 
+def filter_fund_ids_that_do_not_exist_in_database(list_of_ids):
+    """Takes list of public_ids of funds, returns a list of those that do NOT exist in the database.
+    Hint: feed find_unique_fund_ids_referenced_in_project_data into this."""
+    out = []
+    for id in list_of_ids:
+        try:
+            Fund.objects.get(public_id=id)
+        except Fund.DoesNotExist:
+            out.append(id)
+    return out
+
+
 def check_project_data_for_source_errors(input_json):
     source_table_entries_that_are_not_used = []
     source_ids_referenced_that_are_not_in_sources_table = []

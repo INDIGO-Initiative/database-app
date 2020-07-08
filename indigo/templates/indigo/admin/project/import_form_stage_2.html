@@ -35,6 +35,15 @@
     </ul>
   {% endif %}
 
+  {% if fund_ids_that_do_not_exist %}
+    <h3>Problems: Some fund ID's were used that are not in the database</h3>
+    <ul>
+      {% for id in fund_ids_that_do_not_exist %}
+        <li>{{ id }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
 
   {% if source_table_entries_that_are_not_used %}
     <h3>Warning: Some sources table entries are not used</h3>
