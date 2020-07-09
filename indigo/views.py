@@ -62,12 +62,10 @@ def projects_list_download(request):
     response["Content-Disposition"] = 'attachment; filename="projects.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(
-        ["ID", "Project Name", "Fund Name", "Launch Date",]
-    )
+    writer.writerow(["ID", "Project Name", "Stage of Development"])
     for project in projects:
         row = [project.public_id]
-        for key in ["/project_name", "/fund_name", "/launch_date"]:
+        for key in ["/name", "/stage_development"]:
             try:
                 row.append(
                     jsonpointer.resolve_pointer(project.data_public, key + "/value")
