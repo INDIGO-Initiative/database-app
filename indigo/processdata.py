@@ -7,6 +7,7 @@ import spreadsheetforms.util
 from indigo import (
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PROJECT_FUND_LIST,
+    TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST,
     TYPE_PROJECT_ORGANISATION_LIST,
     TYPE_PROJECT_ORGANISATION_REFERENCES_LIST,
     TYPE_PROJECT_PUBLIC_ID,
@@ -175,6 +176,20 @@ def find_unique_organisation_ids_referenced_in_project_data(input_json):
                 )
                 if field_value and field_value.strip():
                     org_ids.append(field_value)
+
+    # For comma separated keys
+    for config in TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST:
+        data_list = jsonpointer.resolve_pointer(
+            input_json, config["list_key"], default=None
+        )
+        if isinstance(data_list, list) and data_list:
+            for item in data_list:
+                field_value = jsonpointer.resolve_pointer(
+                    item, config["item_organisation_id_key"], default=None
+                )
+                if field_value and field_value.strip():
+                    field_values = field_value.split(",")
+                    org_ids.extend([id.strip() for id in field_values if id.strip()])
 
     return list(set(org_ids))
 

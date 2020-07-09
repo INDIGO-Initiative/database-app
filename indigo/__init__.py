@@ -33,7 +33,13 @@ TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [
         "list_key": "/intermediary_services",
         "item_organisation_id_key": "/organisation_id/value",
     },
-    # TODO the comma separated orgs in Results tab
+]
+
+TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST = [
+    {
+        "list_key": "/results",
+        "item_organisation_id_key": "/outcomes_validator_organisation_ids/value",
+    },
     # TODO the comma separated orgs in outcome funds tab
 ]
 
