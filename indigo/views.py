@@ -47,12 +47,16 @@ def index(request):
 
 
 def projects_list(request):
-    projects = Project.objects.filter(exists=True, status_public=True)
+    projects = Project.objects.filter(exists=True, status_public=True).order_by(
+        "public_id"
+    )
     return render(request, "indigo/projects.html", {"projects": projects},)
 
 
 def projects_list_download(request):
-    projects = Project.objects.filter(exists=True, status_public=True)
+    projects = Project.objects.filter(exists=True, status_public=True).order_by(
+        "public_id"
+    )
 
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="projects.csv"'
@@ -187,7 +191,7 @@ def admin_projects_list(request):
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
     except Type.DoesNotExist:
         raise Http404("Type does not exist")
-    projects = Record.objects.filter(type=type)
+    projects = Record.objects.filter(type=type).order_by("public_id")
     return render(request, "indigo/admin/projects.html", {"projects": projects},)
 
 
@@ -646,7 +650,7 @@ def admin_organisations_list(request):
         type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
     except Type.DoesNotExist:
         raise Http404("Type does not exist")
-    organisations = Record.objects.filter(type=type)
+    organisations = Record.objects.filter(type=type).order_by("public_id")
     return render(
         request, "indigo/admin/organisations.html", {"organisations": organisations},
     )
@@ -915,7 +919,7 @@ def admin_funds_list(request):
         type = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
     except Type.DoesNotExist:
         raise Http404("Type does not exist")
-    funds = Record.objects.filter(type=type)
+    funds = Record.objects.filter(type=type).order_by("public_id")
     return render(request, "indigo/admin/funds.html", {"funds": funds},)
 
 
