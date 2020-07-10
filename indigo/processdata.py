@@ -56,13 +56,13 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
 
     # Place funds in proper list place
     funds_list = jsonpointer.resolve_pointer(
-        input_json, TYPE_PROJECT_FUND_LIST["list_key"]
+        input_json, TYPE_PROJECT_FUND_LIST["list_key"], default=None
     )
     if isinstance(funds_list, list) and funds_list:
         for fund_row in funds_list:
             try:
                 fund_id = jsonpointer.resolve_pointer(
-                    fund_row, TYPE_PROJECT_FUND_LIST["item_id_key"]
+                    fund_row, TYPE_PROJECT_FUND_LIST["item_id_key"], default=None
                 )
                 if fund_id:
                     fund = Fund.objects.get(public_id=fund_id)
