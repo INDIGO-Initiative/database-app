@@ -288,6 +288,20 @@
         }
       }
     },
+    "notes": {
+      "title": "Notes",
+      "type": "object",
+      "properties": {
+        "value": {
+          "title": "(Value)",
+          "type": "string"
+        },
+        "status": {
+          "title": "(Status)",
+          "type": "string"
+        }
+      }
+    },
     "outcome_funds": {
       "title": "Outcome Funds",
       "type": "array",
@@ -504,7 +518,21 @@
           },
           "maximum_potential_outcome_payment": {
             "title": "Maximum potential Outcome payment",
-            "$ref": "#/definitions/object_with_value_string"
+            "type": "object",
+            "properties": {
+              "currency": {
+                "title": "Currency",
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              },
+              "amount": {
+                "title": "Amount",
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              },
+              "amount_usd": {
+                "title": "Amount USD",
+                "$ref": "#/definitions/object_with_value_string_and_status"
+              }
+            }
           },
           "result_type": {
             "title": "Result type",
