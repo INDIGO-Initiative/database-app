@@ -749,11 +749,11 @@
             "title": "Target Population",
             "$ref": "#/definitions/object_with_value_string"
           },
-          "targeted_number_of_service_users _or_beneficiaries_total": {
+          "targeted_number_of_service_users_or_beneficiaries_total": {
             "title": "Targeted number of service users Or beneficiaries (total)",
             "$ref": "#/definitions/object_with_value_string"
           },
-          "unit_type_of_targeted _service_users_or_beneficiaries": {
+          "unit_type_of_targeted_service_users_or_beneficiaries": {
             "title": "Unit type of targeted Service users or beneficiaries",
             "$ref": "#/definitions/object_with_value_string"
           },
