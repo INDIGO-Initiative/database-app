@@ -31,6 +31,7 @@ class ProcessExtractEditsFromProjectImport(TestCase):
                     self.type_organisation,
                     self.organisation_1_record,
                     {
+                        "name": {"value": "Bob's Org"},
                         "contact": {
                             "name": {"value": "Bob"},
                             "email": {"value": "bob@test.com"},
@@ -70,6 +71,7 @@ class ProcessExtractEditsFromProjectImport(TestCase):
             "organisations": [
                 {
                     "id": "ORG1",
+                    "name": {"value": "Bob's Org"},
                     "contact": {
                         "name": {"value": "Bob Prescot"},
                         "email": {"value": "bob.prescot@test.com"},
@@ -98,6 +100,7 @@ class ProcessExtractEditsFromProjectImport(TestCase):
         } == out[0].data
         # The org is different than current value so an edit exists for the org
         assert {
+            "name": {"value": "Bob's Org"},
             "org-ids": {
                 "company": {"value": None},
                 "charity": {"value": None},
@@ -119,6 +122,7 @@ class ProcessExtractEditsFromProjectImport(TestCase):
             "organisations": [
                 {
                     "id": "ORG1",
+                    "name": {"value": "Bob's Org"},
                     "contact": {
                         "name": {"value": "Bob"},
                         "email": {"value": "bob@test.com"},

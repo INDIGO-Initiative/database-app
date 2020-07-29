@@ -51,6 +51,7 @@ TYPE_PROJECT_ORGANISATION_LIST = {
     # If the item in the list has other org fields that we should pull out of the org record, put them here
     # key is key in item in list: value is key in organisation record (this should always start with a slash )
     "item_to_org_map": {
+        "/name/value": "/name/value",
         "/org-ids/company/value": "/org-ids/company/value",
         "/org-ids/charity/value": "/org-ids/charity/value",
         "/org-ids/other/value": "/org-ids/other/value",
