@@ -147,11 +147,13 @@ class Command(BaseCommand):
         # Location
         value = self._get_fixed_cell(data_worksheet, "D6", source_info)
         if value:
-            project_data["delivery_locations"] = {
-                "location_name": value["value"],
-                "status": DEFAULT_FIELD_LEVEL_STATUS,
-                "source_ids": value["source_id"],
-            }
+            project_data["delivery_locations"] = [
+                {
+                    "location_name": {"value": value["value"]},
+                    "status": DEFAULT_FIELD_LEVEL_STATUS,
+                    "source_ids": value["source_id"],
+                }
+            ]
         # Service Provider(s)
         value = self._get_fixed_cell_value(data_worksheet, "D10")
         if value:
@@ -159,13 +161,16 @@ class Command(BaseCommand):
             org_ids = [self._get_org_id(x.strip()) for x in bits if x.strip()]
             source_ids = self._get_sources_for_cells(["D10"], source_info)
             for org_id in org_ids:
-                project_data["service_provisions"].append(
-                    {
-                        "organisation_id": org_id,
-                        "source_ids": ",".join(source_ids),
-                        "status": DEFAULT_FIELD_LEVEL_STATUS,
-                    }
-                )
+                if org_id:
+                    project_data["service_provisions"].append(
+                        {
+                            "id": "serviceprovision"
+                            + str(len(project_data["service_provisions"]) + 1),
+                            "organisation_id": {"value": org_id},
+                            "source_ids": ",".join(source_ids),
+                            "status": DEFAULT_FIELD_LEVEL_STATUS,
+                        }
+                    )
         # Performance Manager
         value = self._get_fixed_cell_value(data_worksheet, "D12")
         if value:
@@ -173,16 +178,17 @@ class Command(BaseCommand):
             org_ids = [self._get_org_id(x.strip()) for x in bits if x.strip()]
             source_ids = self._get_sources_for_cells(["D12"], source_info)
             for org_id in org_ids:
-                project_data["intermediary_services"].append(
-                    {
-                        "organisation_id": {"value": org_id},
-                        "organisation_role_category": {
-                            "value": "Performance management"
-                        },
-                        "source_ids": ",".join(source_ids),
-                        "status": DEFAULT_FIELD_LEVEL_STATUS,
-                    }
-                )
+                if org_id:
+                    project_data["intermediary_services"].append(
+                        {
+                            "organisation_id": {"value": org_id},
+                            "organisation_role_category": {
+                                "value": "Performance management"
+                            },
+                            "source_ids": ",".join(source_ids),
+                            "status": DEFAULT_FIELD_LEVEL_STATUS,
+                        }
+                    )
         # Technical Assistance Provider(s)
         value = self._get_fixed_cell_value(data_worksheet, "D13")
         if value:
@@ -190,13 +196,14 @@ class Command(BaseCommand):
             org_ids = [self._get_org_id(x.strip()) for x in bits if x.strip()]
             source_ids = self._get_sources_for_cells(["D13"], source_info)
             for org_id in org_ids:
-                project_data["intermediary_services"].append(
-                    {
-                        "organisation_id": {"value": org_id},
-                        "source_ids": ",".join(source_ids),
-                        "status": DEFAULT_FIELD_LEVEL_STATUS,
-                    }
-                )
+                if org_id:
+                    project_data["intermediary_services"].append(
+                        {
+                            "organisation_id": {"value": org_id},
+                            "source_ids": ",".join(source_ids),
+                            "status": DEFAULT_FIELD_LEVEL_STATUS,
+                        }
+                    )
         # Service Users Actively Engaged (in total)  - Target / Actual
         value_target = self._get_fixed_cell(data_worksheet, "D19", source_info)
         value_actual = self._get_fixed_cell(data_worksheet, "E19", source_info)
@@ -352,29 +359,31 @@ class Command(BaseCommand):
         )
         for row_in in table_data:
             if row_in["data"]["C"]:
-                row_out = {
-                    "organisation_id": self._get_org_id(row_in["data"]["C"]),
-                    "source_ids": ",".join(
-                        self._get_sources_for_cells(
-                            [
-                                "C" + str(row_in["row"]),
-                                "D" + str(row_in["row"]),
-                                "E" + str(row_in["row"]),
-                            ],
-                            source_info,
-                        )
-                    ),
-                    "status": DEFAULT_FIELD_LEVEL_STATUS,
-                }
-                if row_in["data"]["D"]:
-                    row_out["maximum_potential_outcome_payment"] = {
-                        "amount": {"value": row_in["data"]["D"]}
+                org_id = self._get_org_id(row_in["data"]["C"])
+                if org_id:
+                    row_out = {
+                        "organisation_id": {"value": org_id},
+                        "source_ids": ",".join(
+                            self._get_sources_for_cells(
+                                [
+                                    "C" + str(row_in["row"]),
+                                    "D" + str(row_in["row"]),
+                                    "E" + str(row_in["row"]),
+                                ],
+                                source_info,
+                            )
+                        ),
+                        "status": DEFAULT_FIELD_LEVEL_STATUS,
                     }
-                if row_in["data"]["E"]:
-                    row_out["total_outcome_payments"] = {
-                        "amount": {"value": row_in["data"]["E"]}
-                    }
-                project_data["outcome_payment_commitments"].append(row_out)
+                    if row_in["data"]["D"]:
+                        row_out["maximum_potential_outcome_payment"] = {
+                            "amount": {"value": row_in["data"]["D"]}
+                        }
+                    if row_in["data"]["E"]:
+                        row_out["total_outcome_payments"] = {
+                            "amount": {"value": row_in["data"]["E"]}
+                        }
+                    project_data["outcome_payment_commitments"].append(row_out)
         # Investors [TABLE] -> Investments [ TABLE]
         start_column, start_row = self._find_cell_below_a_set_label_return_components(
             ["Investors",], "R", 20, data_worksheet,
@@ -384,26 +393,28 @@ class Command(BaseCommand):
         )
         for row_in in table_data:
             if row_in["data"]["R"]:
-                row_out = {
-                    "id": "investment" + str(len(project_data["investments"]) + 1),
-                    "organisation_id": self._get_org_id(row_in["data"]["R"]),
-                    "source_ids": ",".join(
-                        self._get_sources_for_cells(
-                            [
-                                "R" + str(row_in["row"]),
-                                "S" + str(row_in["row"]),
-                                "T" + str(row_in["row"]),
-                                "U" + str(row_in["row"]),
-                            ],
-                            source_info,
-                        )
-                    ),
-                    "status": DEFAULT_FIELD_LEVEL_STATUS,
-                }
-                if row_in["data"]["S"]:
-                    row_out["investment_type"] = {"value": row_in["data"]["S"]}
-                # TODO Column U, amount invested
-                project_data["investments"].append(row_out)
+                org_id = self._get_org_id(row_in["data"]["R"])
+                if org_id:
+                    row_out = {
+                        "id": "investment" + str(len(project_data["investments"]) + 1),
+                        "organisation_id": {"value": org_id},
+                        "source_ids": ",".join(
+                            self._get_sources_for_cells(
+                                [
+                                    "R" + str(row_in["row"]),
+                                    "S" + str(row_in["row"]),
+                                    "T" + str(row_in["row"]),
+                                    "U" + str(row_in["row"]),
+                                ],
+                                source_info,
+                            )
+                        ),
+                        "status": DEFAULT_FIELD_LEVEL_STATUS,
+                    }
+                    if row_in["data"]["S"]:
+                        row_out["investment_type"] = {"value": row_in["data"]["S"]}
+                    # TODO Column U, amount invested
+                    project_data["investments"].append(row_out)
         # Investors - Total Row
         # TODO
 
@@ -678,6 +689,9 @@ class Command(BaseCommand):
             return [input.strip()]
 
     def _get_org_id(self, org_name):
+        # Data Cleaning
+        if org_name.strip() in ["Inc."]:
+            return None
         # Existing
         for key, value in self.organisations.items():
             if value["name"]["value"].strip().upper() == org_name.strip().upper():
