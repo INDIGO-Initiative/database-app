@@ -88,14 +88,14 @@ class Command(BaseCommand):
         # name
         json_set_deep_value(project_data, "name/value", data_worksheet["F2"].value)
         # Stage
-        stage = data_worksheet["C3"].value or ""
+        stage = data_worksheet["C3"].value or data_worksheet["D2"].value or ""
         if not stage:
             stage = data_worksheet["C2"].value or ""
             if stage.startswith("Stage: "):
                 stage = stage[7:]
-            # Seen in record 3
-            if stage == "Completed":
-                stage = "Complete"
+        # Seen in record 3
+        if stage == "Completed":
+            stage = "Complete"
 
         json_set_deep_value(project_data, "stage_development/value", stage)
         json_set_deep_value(
