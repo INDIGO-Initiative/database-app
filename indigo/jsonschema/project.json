@@ -798,9 +798,9 @@
       "items": {
         "type": "object",
         "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
+          "outcome_metric_id": {
+            "title": "Outcome Metric Id",
+            "$ref": "#/definitions/object_with_value_string"
           },
           "result_level": {
             "title": "Result level",

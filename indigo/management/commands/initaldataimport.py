@@ -231,7 +231,7 @@ class Command(BaseCommand):
             project_data["results"].append(
                 {
                     # ID here is outcome id, so set it the same as above
-                    "id": "outcomemetric1",
+                    "outcome_metric_id": {"value": "outcomemetric1"},
                     "source_ids": value_actual["source_id"],
                     "number_engaged_in_impact_bond": {"value": value_actual["value"]},
                     "status": DEFAULT_FIELD_LEVEL_STATUS,
