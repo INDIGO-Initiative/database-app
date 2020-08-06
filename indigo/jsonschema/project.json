@@ -351,6 +351,20 @@
             "title": "Location - Country",
             "$ref": "#/definitions/object_with_value_string"
           },
+          "lat_lng": {
+            "title": "Lat/Lng",
+            "type": "object",
+            "properties": {
+              "lat": {
+                "title": "Lat",
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "lng": {
+                "title": "Lng",
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
           "adminstrative_geography_name": {
             "title": "Adminstrative geography - Name",
             "$ref": "#/definitions/object_with_value_string"
