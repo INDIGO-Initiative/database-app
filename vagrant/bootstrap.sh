@@ -6,10 +6,14 @@ echo "en_GB.UTF-8 UTF-8" >> /etc/locale.gen
 
 locale-gen
 
+# Latest Postgres Versions
+sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+
 
 apt-get update
 
-DEBIAN_FRONTEND=noninteractive apt-get install -y python3 python3-pip postgresql-10 libpq-dev  python-virtualenv
+DEBIAN_FRONTEND=noninteractive apt-get install -y python3 python3-pip postgresql-12 libpq-dev  python-virtualenv
 
 pip3 install sphinx virtualenv
 

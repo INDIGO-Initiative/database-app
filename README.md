@@ -47,6 +47,14 @@ Clean up code before commit:
     black djangoproject/ indigo/
     flake8 djangoproject/ indigo/
 
+If you have a database you want to restore into your vagrant box, put the file in the folder so it appears in your vagrant box then:
+
+    sudo su postgres
+    psql -c "DROP DATABASE app"
+    psql -c "CREATE DATABASE app WITH OWNER app ENCODING 'UTF8'  LC_COLLATE='en_GB.UTF-8' LC_CTYPE='en_GB.UTF-8'  TEMPLATE=template0 "
+    exit
+    pg_restore -d app -U app -h localhost    /vagrant/indigo-backup-01.sql
+
 ## API for front end site
 
 To list:
