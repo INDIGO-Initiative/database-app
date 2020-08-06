@@ -7,14 +7,15 @@
     {% if projects %}
         <table class="table">
             <tr>
+                <th>ID</th>
                 <th>Title</th>
                 <th>&nbsp;</th>
             </tr>
             {% for project in projects %}
                 <tr>
+                    <td><a href="{% url 'indigo_project_index' public_id=project.public_id %}">{{ project.public_id }}</a></td>
                     <td>{{ project.data_public.name.value }}</td>
                     <td><a href="{% url 'indigo_project_index' public_id=project.public_id %}" class="btn btn-primary">View</a></td>
-
                 </tr>
             {% endfor %}
         </table>
