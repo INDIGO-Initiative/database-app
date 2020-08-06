@@ -22,7 +22,7 @@
             {% for organisation in organisations %}
                 <tr>
                     <td><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id %}">{{ organisation.public_id }}</a></td>
-                    <td>{{ organisation.cached_data.organisation_name.value }}</td>
+                    <td>{{ organisation.cached_data.name.value }}</td>
                     <td><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id %}" class="btn btn-primary">View</a></td>
 
                 </tr>
