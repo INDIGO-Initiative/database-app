@@ -23,13 +23,15 @@
             {% for edit in edits %}
 
             <table>
-                <tr>
-                    <th>Mode</th>
-                    <td>{{ edit.mode }}</td>
-                </tr>
                 {% for field_data in edit.field_datas %}
                     <tr><th>Field: {{ field_data.title }}</th><td>{{ field_data.value }}</td></tr>
                 {% endfor %}
+                <tr>
+                    <th>Made</th>
+                    <td>
+                        {{ edit.creation_event.created }}{% if edit.creation_event.user %} by {{ edit.creation_event.user }}{% endif %}
+                    </td>
+                </tr>
                 <tr>
                     <th>Action</th>
                     <td>
@@ -53,7 +55,7 @@
 
             <div>
                 <label>
-                    Comment
+                    Comment for history
                     <textarea name="comment"></textarea>
                 </label>
             </div>
