@@ -147,18 +147,29 @@ def extract_edits_from_project_import(record, import_json):
     for org_id, org_data in organisation_data.items():
         try:
             organisation = Organisation.objects.get(public_id=org_id)
-            edit_part = jsondataferret.pythonapi.newevent.NewEventData(
-                TYPE_ORGANISATION_PUBLIC_ID,
-                organisation.public_id,
-                org_data,
-                mode=jsondataferret.EVENT_MODE_MERGE,
-            )
-            if edit_part.does_this_create_or_change_record():
+            if does_organisation_data_contain_changes(organisation, org_data):
+                edit_part = jsondataferret.pythonapi.newevent.NewEventData(
+                    TYPE_ORGANISATION_PUBLIC_ID,
+                    organisation.public_id,
+                    org_data,
+                    mode=jsondataferret.EVENT_MODE_MERGE,
+                )
                 out.append(edit_part)
         except Organisation.DoesNotExist:
             pass  # TODO
 
     return out
+
+
+def does_organisation_data_contain_changes(organisation_model, new_data):
+    for data_key, org_key in TYPE_PROJECT_ORGANISATION_LIST["item_to_org_map"].items():
+        old_data_value = jsonpointer.resolve_pointer(
+            organisation_model.record.cached_data, org_key, default=None
+        )
+        new_data_value = jsonpointer.resolve_pointer(new_data, data_key, default=None)
+        if old_data_value != new_data_value:
+            return True
+    return False
 
 
 def find_unique_organisation_ids_referenced_in_project_data(input_json):

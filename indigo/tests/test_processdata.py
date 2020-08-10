@@ -30,21 +30,14 @@ class ProcessExtractEditsFromProjectImport(TestCase):
                 jsondataferret.pythonapi.newevent.NewEventData(
                     self.type_organisation,
                     self.organisation_1_record,
+                    # This data deliberately has no extra fields because imported data has no extra fields
+                    # We must make sure that our code to detect changes does not generate a false positive on this.
                     {
                         "name": {"value": "Bob's Org"},
                         "contact": {
                             "name": {"value": "Bob"},
                             "email": {"value": "bob@test.com"},
                         },
-                        "address": {"value": None},
-                        "country": {"value": None},
-                        "org-ids": {
-                            "other": {"value": None},
-                            "charity": {"value": None},
-                            "company": {"value": None},
-                        },
-                        "website": {"value": None},
-                        "postcode": {"value": None},
                     },
                     approved=True,
                 )
@@ -117,6 +110,8 @@ class ProcessExtractEditsFromProjectImport(TestCase):
         } == out[1].data
 
     def test_one_existing_org_with_no_changes(self):
+        # This data must have all the "address": {"value": None} stuff, as this is how
+        # new data will appear on top of imported data and we need to make sure that works.
         input = {
             "name": {"value": "Project With Ferrets"},
             "organisations": [
