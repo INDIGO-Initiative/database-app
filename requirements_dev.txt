@@ -14,7 +14,7 @@ compiletojsonschema==0.2.0  # via -r requirements.txt
 dj-database-url==0.5.0    # via -r requirements.txt, django-heroku
 django-environ==0.4.5     # via -r requirements.txt
 django-heroku==0.3.1      # via -r requirements.txt
-django==3.0.8             # via -r requirements.txt, django-heroku, jsondataferret
+django==3.1               # via -r requirements.txt, django-heroku, jsondataferret
 et-xmlfile==1.0.1         # via -r requirements.txt, openpyxl
 flake8==3.8.3             # via -r requirements_dev.in
 gunicorn==20.0.4          # via -r requirements.txt
@@ -29,20 +29,20 @@ jsonschema==3.2.0         # via -r requirements.txt, compiletojsonschema, jsonda
 mccabe==0.6.1             # via flake8
 openpyxl==3.0.4           # via -r requirements.txt, spreadsheetforms
 pathspec==0.8.0           # via black
-pip-tools==5.2.1          # via -r requirements_dev.in
+pip-tools==5.3.1          # via -r requirements_dev.in
 psycopg2==2.8.5           # via -r requirements.txt, django-heroku, jsondataferret
 pycodestyle==2.6.0        # via flake8
 pyflakes==2.2.0           # via flake8
 pygments==2.6.1           # via -r requirements.txt, jsondataferret
 pyrsistent==0.16.0        # via -r requirements.txt, jsonschema
 pytz==2020.1              # via -r requirements.txt, django
-regex==2020.6.8           # via black
+regex==2020.7.14          # via black
 six==1.15.0               # via -r requirements.txt, jsonschema, pip-tools, pyrsistent
-spreadsheetforms==0.3.0   # via -r requirements.txt, jsondataferret
+spreadsheetforms==0.4.0   # via -r requirements.txt, jsondataferret
 sqlparse==0.3.1           # via -r requirements.txt, django
 toml==0.10.1              # via black
 typed-ast==1.4.1          # via black
-whitenoise==5.1.0         # via -r requirements.txt, django-heroku
+whitenoise==5.2.0         # via -r requirements.txt, django-heroku
 zipp==3.1.0               # via -r requirements.txt, importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
