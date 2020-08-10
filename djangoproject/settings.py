@@ -38,6 +38,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "indigo.middleware.TemplateContextMiddleware",
 ]
 
 ROOT_URLCONF = "djangoproject.urls"
@@ -164,6 +165,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     },
 }
 
+APP_TITLE = os.getenv("APP_TITLE", "INDIGO")
 
 if "ON_HEROKU" in os.environ:
     import django_heroku
