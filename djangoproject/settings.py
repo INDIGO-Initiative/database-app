@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import json
 import os
 
+from spreadsheetforms.api import get_guide_spec
+
 from .util import JsonSchemaProcessor
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -117,19 +119,31 @@ with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "fund.json")) as fp:
     fund_json_schema = json.load(fp)
 
 
+_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME = os.path.join(
+    BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
+)
+_FUND_SPREADSHEET_FORM_GUIDE_FILENAME = os.path.join(
+    BASE_DIR, "indigo", "spreadsheetform_guides", "fund.xlsx",
+)
+_ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME = os.path.join(
+    BASE_DIR, "indigo", "spreadsheetform_guides", "organisation.xlsx",
+)
+
 JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
         "json_schema": project_json_schema,
-        "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
+        "spreadsheet_form_guide": _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME,
+        "spreadsheet_form_guide_spec": get_guide_spec(
+            _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME
         ),
         "fields": project_json_processor.get_fields(),
         "filter_keys": project_json_processor.get_filter_keys(),
     },
     "organisation": {
         "json_schema": organisation_json_schema,
-        "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "organisation.xlsx",
+        "spreadsheet_form_guide": _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME,
+        "spreadsheet_form_guide_spec": get_guide_spec(
+            _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME
         ),
         "fields": [
             {"key": "/name/value", "title": "Name"},
@@ -146,8 +160,9 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     },
     "fund": {
         "json_schema": fund_json_schema,
-        "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "fund.xlsx",
+        "spreadsheet_form_guide": _FUND_SPREADSHEET_FORM_GUIDE_FILENAME,
+        "spreadsheet_form_guide_spec": get_guide_spec(
+            _FUND_SPREADSHEET_FORM_GUIDE_FILENAME
         ),
         "fields": [
             {"key": "/name/value", "title": "Name"},

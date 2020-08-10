@@ -259,11 +259,10 @@ def admin_project_import_form(request, public_id):
         if form.is_valid():
 
             # get data
-            guide_file = os.path.join(
-                settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
-            )
-            json_data = spreadsheetforms.api.get_data_from_form(
-                guide_file,
+            json_data = spreadsheetforms.api.get_data_from_form_with_guide_spec(
+                settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
+                    "spreadsheet_form_guide_spec"
+                ],
                 request.FILES["file"].temporary_file_path(),
                 date_format=getattr(
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
@@ -720,14 +719,10 @@ def admin_organisation_import_form(request, public_id):
         if form.is_valid():
 
             # get data
-            guide_file = os.path.join(
-                settings.BASE_DIR,
-                "indigo",
-                "spreadsheetform_guides",
-                "organisation.xlsx",
-            )
-            json_data = spreadsheetforms.api.get_data_from_form(
-                guide_file,
+            json_data = spreadsheetforms.api.get_data_from_form_with_guide_spec(
+                settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"][
+                    "spreadsheet_form_guide_spec"
+                ],
                 request.FILES["file"].temporary_file_path(),
                 date_format=getattr(
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
@@ -987,11 +982,10 @@ def admin_fund_import_form(request, public_id):
         if form.is_valid():
 
             # get data
-            guide_file = os.path.join(
-                settings.BASE_DIR, "indigo", "spreadsheetform_guides", "fund.xlsx",
-            )
-            json_data = spreadsheetforms.api.get_data_from_form(
-                guide_file,
+            json_data = spreadsheetforms.api.get_data_from_form_with_guide_spec(
+                settings.JSONDATAFERRET_TYPE_INFORMATION["fund"][
+                    "spreadsheet_form_guide_spec"
+                ],
                 request.FILES["file"].temporary_file_path(),
                 date_format=getattr(
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
