@@ -9,6 +9,7 @@ appdirs==1.4.4            # via black
 asgiref==3.2.10           # via -r requirements.txt, django
 attrs==19.3.0             # via -r requirements.txt, black, jsonschema
 black==19.10b0            # via -r requirements_dev.in
+certifi==2020.6.20        # via -r requirements.txt, sentry-sdk
 click==7.1.2              # via black, pip-tools
 compiletojsonschema==0.2.0  # via -r requirements.txt
 dj-database-url==0.5.0    # via -r requirements.txt, django-heroku
@@ -37,11 +38,13 @@ pygments==2.6.1           # via -r requirements.txt, jsondataferret
 pyrsistent==0.16.0        # via -r requirements.txt, jsonschema
 pytz==2020.1              # via -r requirements.txt, django
 regex==2020.7.14          # via black
+sentry-sdk==0.16.3        # via -r requirements.txt
 six==1.15.0               # via -r requirements.txt, jsonschema, pip-tools, pyrsistent
 spreadsheetforms==0.4.0   # via -r requirements.txt, jsondataferret
 sqlparse==0.3.1           # via -r requirements.txt, django
 toml==0.10.1              # via black
 typed-ast==1.4.1          # via black
+urllib3==1.25.10          # via -r requirements.txt, sentry-sdk
 whitenoise==5.2.0         # via -r requirements.txt, django-heroku
 zipp==3.1.0               # via -r requirements.txt, importlib-metadata
 

@@ -182,6 +182,15 @@ JSONDATAFERRET_TYPE_INFORMATION = {
 
 APP_TITLE = os.getenv("APP_TITLE", "INDIGO")
 
+SENTRY_DSN = os.getenv("SENTRY_DSN")
+if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN, integrations=[DjangoIntegration()],
+    )
+
 if "ON_HEROKU" in os.environ:
     import django_heroku
 

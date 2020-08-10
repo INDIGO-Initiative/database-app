@@ -12,6 +12,8 @@ Add the Config Vars `ON_HEROKU` and set it's value to `1`.
 
 Add the Config Vars `SECRET_KEY` and set it's value to something random and secret.
 
+Add the Config Vars `SENTRY_DSN` and set it's value to whatever Sentry tells you.
+
 Deploy by normal Heroku methods. 
 
 Use the `Run console` option and the normal Django `createsuperuser` command to create your first admin user.

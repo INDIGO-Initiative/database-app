@@ -7,6 +7,7 @@
 -e git+https://github.com/OpenDataServices/json-data-ferret.git@v0.2.0#egg=jsondataferret  # via -r requirements.in
 asgiref==3.2.10           # via django
 attrs==19.3.0             # via jsonschema
+certifi==2020.6.20        # via sentry-sdk
 compiletojsonschema==0.2.0  # via -r requirements.in
 dj-database-url==0.5.0    # via django-heroku
 django-environ==0.4.5     # via -r requirements.in
@@ -26,9 +27,11 @@ psycopg2==2.8.5           # via -r requirements.in, django-heroku, jsondataferre
 pygments==2.6.1           # via jsondataferret
 pyrsistent==0.16.0        # via jsonschema
 pytz==2020.1              # via django
+sentry-sdk==0.16.3        # via -r requirements.in
 six==1.15.0               # via jsonschema, pyrsistent
 spreadsheetforms==0.4.0   # via jsondataferret
 sqlparse==0.3.1           # via django
+urllib3==1.25.10          # via sentry-sdk
 whitenoise==5.2.0         # via django-heroku
 zipp==3.1.0               # via importlib-metadata
 
