@@ -32,6 +32,14 @@
                         {{ edit.creation_event.created }}{% if edit.creation_event.user %} by {{ edit.creation_event.user }}{% endif %}
                     </td>
                 </tr>
+                {% if edit.creation_event.comment %}
+                    <tr>
+                        <th>Comment</th>
+                        <td>
+                            {{ edit.creation_event.comment|linebreaks }}
+                        </td>
+                    </tr>
+                {% endif %}
                 <tr>
                     <th>Action</th>
                     <td>
