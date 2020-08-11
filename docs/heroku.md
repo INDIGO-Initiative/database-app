@@ -8,11 +8,14 @@ Set up an app in Europe.
 
 Add a Heroku Postgres Database - make sure it saves it's credentials as `DATABASE_URL`.
 
-Add the Config Vars `ON_HEROKU` and set it's value to `1`.
+Add the Config Var `ON_HEROKU` and set it's value to `1`.
 
-Add the Config Vars `SECRET_KEY` and set it's value to something random and secret.
+Add the Config Var `SECRET_KEY` and set it's value to something random and secret.
 
-Add the Config Vars `SENTRY_DSN` and set it's value to whatever Sentry tells you.
+Add the Config Var `SENTRY_DSN` and set it's value to whatever Sentry tells you.
+
+If it's a test server, you can also add the the Config Var `APP_TITLE` and set a test title like `INDIGO Test Server`. 
+This will help users tell the diference between test and live servers. Don't set this var on the live server.
 
 Deploy by normal Heroku methods. 
 
@@ -24,7 +27,7 @@ In the Django admin console, go to the `Jsondataferret` section, `Types` option.
 * public id: organisation, title: Organisation
 * public id: fund, title: Fund
 
-The app is now ready to use
+The app is now ready to use!
 
 ## Deploying
 
