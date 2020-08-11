@@ -8,6 +8,7 @@ import jsondataferret.utils
 import jsonpointer
 import spreadsheetforms.api
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.db.models.functions import Now
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
@@ -369,7 +370,12 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
             project_import.imported = Now()
             project_import.save()
 
-            # redirect to a new URL for stage 2 of the process
+            # redirect to project page with message
+            messages.add_message(
+                request,
+                messages.INFO,
+                "The data has been imported; remember to moderate it!",
+            )
             return HttpResponseRedirect(
                 reverse(
                     "indigo_admin_project_index",
@@ -745,6 +751,11 @@ def admin_organisation_import_form(request, public_id):
             )
 
             # redirect to a new URL:
+            messages.add_message(
+                request,
+                messages.INFO,
+                "The data has been imported; remember to moderate it!",
+            )
             return HttpResponseRedirect(
                 reverse(
                     "indigo_admin_organisation_index",
@@ -1008,6 +1019,11 @@ def admin_fund_import_form(request, public_id):
             )
 
             # redirect to a new URL:
+            messages.add_message(
+                request,
+                messages.INFO,
+                "The data has been imported; remember to moderate it!",
+            )
             return HttpResponseRedirect(
                 reverse(
                     "indigo_admin_fund_index", kwargs={"public_id": data.public_id},
