@@ -24,7 +24,9 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
 
     # Place organisations in proper list place
     organisations_list = []
-    for org_id in find_unique_organisation_ids_referenced_in_project_data(input_json):
+    for org_id in sorted(
+        find_unique_organisation_ids_referenced_in_project_data(input_json)
+    ):
         try:
             organisation = Organisation.objects.get(public_id=org_id)
             organisation_data = (
