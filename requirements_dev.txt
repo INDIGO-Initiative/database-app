@@ -40,7 +40,7 @@ pytz==2020.1              # via -r requirements.txt, django
 regex==2020.7.14          # via black
 sentry-sdk==0.16.3        # via -r requirements.txt
 six==1.15.0               # via -r requirements.txt, jsonschema, pip-tools, pyrsistent
-spreadsheetforms==0.4.0   # via -r requirements.txt, jsondataferret
+spreadsheetforms==0.4.1   # via -r requirements.txt, jsondataferret
 sqlparse==0.3.1           # via -r requirements.txt, django
 toml==0.10.1              # via black
 typed-ast==1.4.1          # via black

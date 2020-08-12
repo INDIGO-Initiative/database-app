@@ -29,7 +29,7 @@ pyrsistent==0.16.0        # via jsonschema
 pytz==2020.1              # via django
 sentry-sdk==0.16.3        # via -r requirements.in
 six==1.15.0               # via jsonschema, pyrsistent
-spreadsheetforms==0.4.0   # via jsondataferret
+spreadsheetforms==0.4.1   # via jsondataferret
 sqlparse==0.3.1           # via django
 urllib3==1.25.10          # via sentry-sdk
 whitenoise==5.2.0         # via django-heroku
