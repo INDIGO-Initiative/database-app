@@ -49,7 +49,7 @@ class Command(BaseCommand):
             # LibreOffice creates lock files that start with a .
             if not file_name.startswith("."):
                 file_name_bits = file_name.split(".")
-                project_id = "INDIGO-" + "{:04d}".format(int(file_name_bits[0]))
+                project_id = "INDIGO-POJ-" + "{:04d}".format(int(file_name_bits[0]))
                 id_counter += 1
                 self._import_project(file_name, project_id)
 
@@ -701,7 +701,7 @@ class Command(BaseCommand):
             if value["name"]["value"].strip().upper() == org_name.strip().upper():
                 return key
         # New
-        org_id = "ORG-" + "{:04d}".format(len(self.organisations) + 1)
+        org_id = "INDIGO-ORG-" + "{:04d}".format(len(self.organisations) + 1)
         self.organisations[org_id] = {"name": {"value": org_name.strip()}}
         return org_id
 
@@ -711,7 +711,7 @@ class Command(BaseCommand):
             if value["name"]["value"].strip().upper() == fund_name.strip().upper():
                 return key
         # New
-        org_id = "FUND-" + "{:04d}".format(len(self.funds) + 1)
+        org_id = "INDIGO-FUND-" + "{:04d}".format(len(self.funds) + 1)
         self.funds[org_id] = {"name": {"value": fund_name.strip()}}
         return org_id
 
