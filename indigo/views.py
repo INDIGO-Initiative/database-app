@@ -660,6 +660,35 @@ def admin_organisations_list(request):
 
 
 @permission_required("indigo.admin")
+def admin_organisation_download_all_csv(request):
+    try:
+        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
+    except Type.DoesNotExist:
+        raise Http404("Type does not exist")
+    organisations = Record.objects.filter(type=type).order_by("public_id")
+
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="organisations-admin.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["ID", "Organisation Name"])
+    for organisation in organisations:
+        row = [organisation.public_id]
+        for key in ["/name"]:
+            try:
+                row.append(
+                    jsonpointer.resolve_pointer(
+                        organisation.cached_data, key + "/value"
+                    )
+                )
+            except jsonpointer.JsonPointerException:
+                row.append("")
+        writer.writerow(row)
+
+    return response
+
+
+@permission_required("indigo.admin")
 def admin_organisation_index(request, public_id):
     try:
         organisation = Organisation.objects.get(public_id=public_id)

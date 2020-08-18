@@ -84,6 +84,11 @@ urlpatterns = [
         name="indigo_admin_organisation_download_blank_form",
     ),
     path(
+        "admin/organisation_download_all_csv",
+        views.admin_organisation_download_all_csv,
+        name="indigo_admin_organisation_download_all_csv",
+    ),
+    path(
         "admin/organisation",
         views.admin_organisations_list,
         name="indigo_admin_organisation_list",
