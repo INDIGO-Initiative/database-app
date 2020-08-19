@@ -58,56 +58,57 @@ class ProcessExtractEditsFromProjectImport(TestCase):
             "organisations": None,
         } == out[0].data
 
-    def test_one_existing_org_with_changes(self):
-        input = {
-            "name": {"value": "Project With Ferrets"},
-            "organisations": [
-                {
-                    "id": "ORG1",
-                    "name": {"value": "Bob's Org"},
-                    "contact": {
-                        "name": {"value": "Bob Prescot"},
-                        "email": {"value": "bob.prescot@test.com"},
-                    },
-                    "address": {"value": None},
-                    "country": {"value": None},
-                    "org-ids": {
-                        "other": {"value": None},
-                        "charity": {"value": None},
-                        "company": {"value": None},
-                    },
-                    "website": {"value": None},
-                    "postcode": {"value": None},
-                }
-            ],
-        }
-
-        out = indigo.processdata.extract_edits_from_project_import(
-            self.project_record, input
-        )
-
-        assert 2 == len(out)
-        assert {
-            "name": {"value": "Project With Ferrets"},
-            "organisations": None,
-        } == out[0].data
-        # The org is different than current value so an edit exists for the org
-        assert {
-            "name": {"value": "Bob's Org"},
-            "org-ids": {
-                "company": {"value": None},
-                "charity": {"value": None},
-                "other": {"value": None},
-            },
-            "contact": {
-                "name": {"value": "Bob Prescot"},
-                "email": {"value": "bob.prescot@test.com"},
-            },
-            "website": {"value": None},
-            "address": {"value": None},
-            "postcode": {"value": None},
-            "country": {"value": None},
-        } == out[1].data
+    # For now, this functionality is removed
+    # def test_one_existing_org_with_changes(self):
+    #     input = {
+    #         "name": {"value": "Project With Ferrets"},
+    #         "organisations": [
+    #             {
+    #                 "id": "ORG1",
+    #                 "name": {"value": "Bob's Org"},
+    #                 "contact": {
+    #                     "name": {"value": "Bob Prescot"},
+    #                     "email": {"value": "bob.prescot@test.com"},
+    #                 },
+    #                 "address": {"value": None},
+    #                 "country": {"value": None},
+    #                 "org-ids": {
+    #                     "other": {"value": None},
+    #                     "charity": {"value": None},
+    #                     "company": {"value": None},
+    #                 },
+    #                 "website": {"value": None},
+    #                 "postcode": {"value": None},
+    #             }
+    #         ],
+    #     }
+    #
+    #     out = indigo.processdata.extract_edits_from_project_import(
+    #         self.project_record, input
+    #     )
+    #
+    #     assert 2 == len(out)
+    #     assert {
+    #         "name": {"value": "Project With Ferrets"},
+    #         "organisations": None,
+    #     } == out[0].data
+    #     # The org is different than current value so an edit exists for the org
+    #     assert {
+    #         "name": {"value": "Bob's Org"},
+    #         "org-ids": {
+    #             "company": {"value": None},
+    #             "charity": {"value": None},
+    #             "other": {"value": None},
+    #         },
+    #         "contact": {
+    #             "name": {"value": "Bob Prescot"},
+    #             "email": {"value": "bob.prescot@test.com"},
+    #         },
+    #         "website": {"value": None},
+    #         "address": {"value": None},
+    #         "postcode": {"value": None},
+    #         "country": {"value": None},
+    #     } == out[1].data
 
     def test_one_existing_org_with_no_changes(self):
         # This data must have all the "address": {"value": None} stuff, as this is how
