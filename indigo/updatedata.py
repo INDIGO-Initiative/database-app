@@ -234,7 +234,11 @@ def filter_values(
 
     # We always remove some keys
     for key in keys_always_remove:
-        jsonpointer.set_pointer(data, key, None)
+        try:
+            jsonpointer.set_pointer(data, key, None)
+        except jsonpointer.JsonPointerException:
+            # Data does not exist anyway, nothing to do!
+            continue
 
     # Some single values (or groups of single values) wight be removed, based on a status field.
     for key in keys_with_own_status_subfield:
@@ -267,6 +271,9 @@ def filter_values(
                     and key_status.strip().lower() == "public"
                 ):
                     del item["status"]
+                    # We temporarily are removing source ID's and treating as private data
+                    if "source_ids" in item:
+                        del item["source_ids"]
                     new_list.append(item)
             jsonpointer.set_pointer(data, list_key, new_list)
 
