@@ -32,7 +32,7 @@ class Command(BaseCommand):
         for fund in Fund.objects.all():
 
             guide_file = os.path.join(
-                settings.BASE_DIR, "indigo", "spreadsheetform_guides", "fund.xlsx",
+                settings.BASE_DIR, "indigo", "spreadsheetform_guides", "fund_v001.xlsx",
             )
 
             out_file = os.path.join(out_funds_dirname, fund.public_id + ".xlsx")
@@ -48,7 +48,7 @@ class Command(BaseCommand):
                 settings.BASE_DIR,
                 "indigo",
                 "spreadsheetform_guides",
-                "organisation.xlsx",
+                "organisation_v001.xlsx",
             )
 
             out_file = os.path.join(
@@ -64,7 +64,10 @@ class Command(BaseCommand):
         for project in Project.objects.all():
 
             guide_file = os.path.join(
-                settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
+                settings.BASE_DIR,
+                "indigo",
+                "spreadsheetform_guides",
+                "project_v002.xlsx",
             )
 
             out_file = os.path.join(out_projects_dirname, project.public_id + ".xlsx")

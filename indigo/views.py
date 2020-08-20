@@ -18,6 +18,7 @@ from jsondataferret.models import Edit, Event, Record, Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 
 import indigo.processdata
+import indigo.utils
 from indigo import (
     TYPE_FUND_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
@@ -109,7 +110,10 @@ def project_download_form(request, public_id):
         project.public_id, project.data_public, public_only=True
     )
     guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project-public.xlsx",
+        settings.BASE_DIR,
+        "indigo",
+        "spreadsheetform_guides",
+        "project_public_v002.xlsx",
     )
     out_file = os.path.join(
         tempfile.gettempdir(),
@@ -224,7 +228,7 @@ def admin_project_download_form(request, public_id):
         record.public_id, record.cached_data, public_only=False
     )
     guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project.xlsx",
+        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project_v002.xlsx",
     )
     out_file = os.path.join(
         tempfile.gettempdir(),
@@ -260,10 +264,20 @@ def admin_project_import_form(request, public_id):
         if form.is_valid():
 
             # get data
+            version = indigo.utils.get_project_spreadsheet_version(
+                request.FILES["file"].temporary_file_path()
+            )
+            if (
+                version
+                not in settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
+                    "spreadsheet_form_guide_spec_versions"
+                ].keys()
+            ):
+                raise Exception("This seems to not be a project spreadsheet?")
             json_data = spreadsheetforms.api.get_data_from_form_with_guide_spec(
                 settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
-                    "spreadsheet_form_guide_spec"
-                ],
+                    "spreadsheet_form_guide_spec_versions"
+                ][version],
                 request.FILES["file"].temporary_file_path(),
                 date_format=getattr(
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
@@ -740,7 +754,7 @@ def admin_organisation_download_form(request, public_id):
         raise Http404("Record does not exist")
 
     guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation.xlsx",
+        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v001.xlsx",
     )
 
     out_file = os.path.join(
@@ -1008,7 +1022,7 @@ def admin_fund_download_form(request, public_id):
         raise Http404("Record does not exist")
 
     guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "fund.xlsx",
+        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "fund_v001.xlsx",
     )
 
     out_file = os.path.join(

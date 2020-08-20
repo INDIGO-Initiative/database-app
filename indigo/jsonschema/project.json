@@ -791,6 +791,26 @@
             "$ref": "#/definitions/object_with_value_string",
             "title": "Data source for Outcome validation"
           },
+          "policy_sector": {
+            "title": "Policy sector",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "primary_sdg_goal": {
+            "title": "Primary SDG goal",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "secondary_sdg_goals": {
+            "title": "Secondary SDG goals",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "primary_sdg_target": {
+            "title": "Primary SDG target",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "secondary_sdg_targets": {
+            "title": "Secondary SDG targets",
+            "$ref": "#/definitions/object_with_value_string"
+          },
           "source_ids": {
             "title": "Sources",
             "type": "string"
