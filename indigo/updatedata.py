@@ -179,6 +179,17 @@ def update_organisation(record, update_projects=False):
     )
     # Private Data
     organisation.data_private = record.cached_data if record.cached_exists else {}
+    # Full Text Search
+    organisation.full_text_search_private = record.public_id
+    for field in [
+        i.get("key")
+        for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get("organisation").get(
+            "fields"
+        )
+    ]:
+        organisation.full_text_search_private += " " + str(
+            jsonpointer.resolve_pointer(organisation.data_private, field, default="")
+        )
     # Finally, Save
     organisation.save()
 

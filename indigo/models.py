@@ -19,6 +19,7 @@ class BaseModel(models.Model):
     data_private = JSONField(default=dict)
     # record is nullable for historical data - it should be NOT NULL really
     record = models.ForeignKey(Record, on_delete=models.PROTECT, null=True, blank=True)
+    full_text_search_private = models.TextField(default="")
 
     def has_data_public_field(self, field):
         try:

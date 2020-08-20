@@ -94,6 +94,16 @@ urlpatterns = [
         name="indigo_admin_organisation_list",
     ),
     path(
+        "admin/organisation_goto",
+        views.admin_organisations_goto,
+        name="indigo_admin_organisation_goto",
+    ),
+    path(
+        "admin/organisation_search",
+        views.admin_organisations_search,
+        name="indigo_admin_organisation_search",
+    ),
+    path(
         "admin/organisation/<public_id>",
         views.admin_organisation_index,
         name="indigo_admin_organisation_index",

@@ -1,0 +1,44 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Organisations{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_organisation_list' %}">Organisations</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Search</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        <form action="" method="get">
+            <label>Search: <input type="text" name="search" value="{{ search_term }}"></label>
+            <input type="submit" value="Search"  class="btn btn-primary">
+        </form>
+    </div>
+
+    {% if organisations %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Organisation Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for organisation in organisations %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id %}">{{ organisation.public_id }}</a></td>
+                    <td>{{ organisation.data_private.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id %}" class="btn btn-primary">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No organisations are available.</p>
+    {% endif %}
+
+
+{% endblock %}

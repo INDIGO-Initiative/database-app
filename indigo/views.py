@@ -649,13 +649,38 @@ def admin_organisation_download_blank_form(request):
 
 @permission_required("indigo.admin")
 def admin_organisations_list(request):
+    return render(request, "indigo/admin/organisations.html", {},)
+
+
+@permission_required("indigo.admin")
+def admin_organisations_goto(request):
+    goto = request.POST.get("goto").strip()
     try:
-        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    organisations = Record.objects.filter(type=type).order_by("public_id")
+        organisation = Organisation.objects.get(public_id=goto)
+    except Organisation.DoesNotExist:
+        raise Http404("Organisation does not exist")
+
+    return HttpResponseRedirect(
+        reverse(
+            "indigo_admin_organisation_index",
+            kwargs={"public_id": organisation.public_id},
+        )
+    )
+
+
+@permission_required("indigo.admin")
+def admin_organisations_search(request):
+    search_term = request.GET.get("search", "").strip()
+    organisations = Organisation.objects
+    if search_term:
+        organisations = organisations.filter(
+            full_text_search_private__search=search_term
+        )
+    organisations = organisations.order_by("public_id")
     return render(
-        request, "indigo/admin/organisations.html", {"organisations": organisations},
+        request,
+        "indigo/admin/organisations_search.html",
+        {"search_term": search_term, "organisations": organisations},
     )
 
 
