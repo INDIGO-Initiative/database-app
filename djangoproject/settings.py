@@ -114,7 +114,9 @@ project_json_processor = JsonSchemaProcessor(
 
 with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "organisation.json")) as fp:
     organisation_json_schema = json.load(fp)
-
+organisation_json_processor = JsonSchemaProcessor(
+    input_filename=os.path.join(BASE_DIR, "indigo", "jsonschema", "organisation.json")
+)
 
 with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "fund.json")) as fp:
     fund_json_schema = json.load(fp)
@@ -129,8 +131,11 @@ _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V002 = os.path.join(
 _FUND_SPREADSHEET_FORM_GUIDE_FILENAME = os.path.join(
     BASE_DIR, "indigo", "spreadsheetform_guides", "fund_v001.xlsx",
 )
-_ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME = os.path.join(
+_ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V001 = os.path.join(
     BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v001.xlsx",
+)
+_ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002 = os.path.join(
+    BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v002.xlsx",
 )
 
 JSONDATAFERRET_TYPE_INFORMATION = {
@@ -149,22 +154,15 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     },
     "organisation": {
         "json_schema": organisation_json_schema,
-        "spreadsheet_form_guide": _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME,
+        "spreadsheet_form_guide": _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002,
         "spreadsheet_form_guide_spec": get_guide_spec(
-            _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME
+            _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002
         ),
-        "fields": [
-            {"key": "/name/value", "title": "Name"},
-            {"key": "/org-ids/company/value", "title": "ORG-Ids - company"},
-            {"key": "/org-ids/charity/value", "title": "ORG-Ids - charity"},
-            {"key": "/org-ids/other/value", "title": "ORG-Ids - other"},
-            {"key": "/contact/name/value", "title": "Contact Name"},
-            {"key": "/contact/email/value", "title": "Contact Email"},
-            {"key": "/website/value", "title": "Website"},
-            {"key": "/address/value", "title": "Address"},
-            {"key": "/postcode/value", "title": "Postcode"},
-            {"key": "/country/value", "title": "Country"},
-        ],
+        "spreadsheet_form_guide_spec_versions": {
+            1: get_guide_spec(_ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V001),
+            2: get_guide_spec(_ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002),
+        },
+        "fields": organisation_json_processor.get_fields(),
     },
     "fund": {
         "json_schema": fund_json_schema,

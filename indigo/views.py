@@ -754,7 +754,7 @@ def admin_organisation_download_form(request, public_id):
         raise Http404("Record does not exist")
 
     guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v001.xlsx",
+        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v002.xlsx",
     )
 
     out_file = os.path.join(
@@ -793,10 +793,21 @@ def admin_organisation_import_form(request, public_id):
         if form.is_valid():
 
             # get data
+            version = indigo.utils.get_organisation_spreadsheet_version(
+                request.FILES["file"].temporary_file_path()
+            )
+            if (
+                version
+                not in settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"][
+                    "spreadsheet_form_guide_spec_versions"
+                ].keys()
+            ):
+                raise Exception("This seems to not be a organisation spreadsheet?")
+
             json_data = spreadsheetforms.api.get_data_from_form_with_guide_spec(
                 settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"][
-                    "spreadsheet_form_guide_spec"
-                ],
+                    "spreadsheet_form_guide_spec_versions"
+                ][version],
                 request.FILES["file"].temporary_file_path(),
                 date_format=getattr(
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None

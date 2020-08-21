@@ -1,50 +1,127 @@
 {
   "$id": "https://example.com/project.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Organisation",
   "type": "object",
   "required": [
   ],
   "properties": {
     "name": {
-      "$ref": "#/definitions/object_with_value_string"
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Name"
     },
     "org-ids": {
       "type": "object",
+      "title": "ORG-Ids",
       "properties": {
         "company": {
-          "$ref": "#/definitions/object_with_value_string"
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "Company"
         },
         "charity": {
-          "$ref": "#/definitions/object_with_value_string"
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "Charity"
         },
         "other": {
-          "$ref": "#/definitions/object_with_value_string"
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "Other"
         }
       }
     },
     "contact": {
       "type": "object",
+      "title": "Contact",
       "properties": {
         "name": {
-          "$ref": "#/definitions/object_with_value_string"
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "Name"
         },
         "email": {
-          "$ref": "#/definitions/object_with_value_string"
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "Email"
         }
       }
     },
     "website": {
-          "$ref": "#/definitions/object_with_value_string"
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "Website"
     },
     "address": {
-          "$ref": "#/definitions/object_with_value_string"
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "Address"
     },
     "postcode": {
-          "$ref": "#/definitions/object_with_value_string"
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "Postcode"
     },
     "country": {
-          "$ref": "#/definitions/object_with_value_string"
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "Country"
+    },
+    "controlled_by": {
+      "title": "Controlled By",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "organisation_id": {
+            "title": "By Organisation ID",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sources": {
+      "title": "Sources",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "type": {
+            "title": "Type",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "publishing_organisation_ids": {
+            "title": "Publishing Organisations",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "url": {
+            "title": "URL",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "archive_url": {
+            "title": "Archive URL",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "internal_url": {
+            "title": "Internal URL",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "publication_date": {
+            "title": "Publication Date",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "accessed_date": {
+            "title": "Accessed Date",
+            "$ref": "#/definitions/object_with_value_string"
+          }
+        }
+      }
     }
   },
   "definitions": {

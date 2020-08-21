@@ -19,3 +19,15 @@ class GetProjectSpreadsheetVersion(TestCase):
         assert 2 == indigo.utils.get_project_spreadsheet_version(
             os.path.join(SPREADSHEET_DIR, "project_v002.xlsx")
         )
+
+
+class GetOrganisationSpreadsheetVersion(TestCase):
+    def test_v1(self):
+        assert 1 == indigo.utils.get_organisation_spreadsheet_version(
+            os.path.join(SPREADSHEET_DIR, "organisation_v001.xlsx")
+        )
+
+    def test_v2(self):
+        assert 2 == indigo.utils.get_organisation_spreadsheet_version(
+            os.path.join(SPREADSHEET_DIR, "organisation_v002.xlsx")
+        )
