@@ -744,6 +744,22 @@ def admin_organisation_index(request, public_id):
 
 
 @permission_required("indigo.admin")
+def admin_organisation_projects(request, public_id):
+    try:
+        organisation = Organisation.objects.get(public_id=public_id)
+    except Organisation.DoesNotExist:
+        raise Http404("Organisation does not exist")
+    return render(
+        request,
+        "indigo/admin/organisation/projects.html",
+        {
+            "organisation": organisation,
+            "project_links": organisation.included_by_projects.all(),
+        },
+    )
+
+
+@permission_required("indigo.admin")
 def admin_organisation_download_form(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)

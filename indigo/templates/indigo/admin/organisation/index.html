@@ -25,6 +25,7 @@
     {% endfor %}
 </table>
 
+<P><a href="{% url 'indigo_admin_organisation_projects' public_id=organisation.public_id %}" class="btn btn-primary">Projects Using This</a></P>
 <P><a href="{% url 'indigo_admin_organisation_download_form' public_id=organisation.public_id %}" class="btn btn-primary">Download Form</a></P>
 <P><a href="{% url 'indigo_admin_organisation_import_form' public_id=organisation.public_id %}" class="btn btn-primary">Upload/Import Form</a></P>
 <P><a href="{% url 'indigo_admin_organisation_moderate' public_id=organisation.public_id %}" class="btn btn-primary">Moderate</a></P>

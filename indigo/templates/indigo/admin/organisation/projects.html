@@ -1,0 +1,40 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Projects for Organisation {{ organisation.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_organisation_list' %}">Organisations</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id  %}">Organisation {{ organisation.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Projects</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+
+    <h2>Projects linked (previously or currently)</h2>
+
+    {% if project_links %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for project_link in project_links %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_project_index' public_id=project_link.project.public_id %}">{{ project_link.project.public_id }}</a></td>
+                    <td>{{ project_link.project.data_private.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_project_index' public_id=project_link.project.public_id %}" class="btn btn-primary">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No projects are linked.</p>
+    {% endif %}
+
+{% endblock %}
