@@ -119,7 +119,7 @@ def project_download_form(request, public_id):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "project_public_v002.xlsx",
+        "project_public_v003.xlsx",
     )
     out_file = os.path.join(
         tempfile.gettempdir(),
@@ -360,7 +360,7 @@ def admin_project_download_form(request, public_id):
         record.public_id, record.cached_data, public_only=False
     )
     guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project_v002.xlsx",
+        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project_v003.xlsx",
     )
     out_file = os.path.join(
         tempfile.gettempdir(),

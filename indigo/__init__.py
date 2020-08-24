@@ -27,6 +27,9 @@ TYPE_PROJECT_FILTER_LISTS_LIST = [
     "/results",
     "/open_contracting_datas",
     "/360giving_datas",
+    "/outcome_pricings",
+    "/transactions",
+    "/grants",
 ]
 
 TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [
@@ -42,6 +45,22 @@ TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [
     {
         "list_key": "/intermediary_services",
         "item_organisation_id_key": "/organisation_id/value",
+    },
+    {
+        "list_key": "/transactions",
+        "item_organisation_id_key": "/sending_organisation_id/value",
+    },
+    {
+        "list_key": "/transactions",
+        "item_organisation_id_key": "/receiving_organisation_id/value",
+    },
+    {
+        "list_key": "/grants",
+        "item_organisation_id_key": "/recipient_organisation_id/value",
+    },
+    {
+        "list_key": "/grants",
+        "item_organisation_id_key": "/funding_organisation_id/value",
     },
 ]
 
@@ -118,6 +137,9 @@ TYPE_PROJECT_SOURCES_REFERENCES_LIST = [
     {"list_key": "/results", "item_source_ids_key": "/source_ids",},
     {"list_key": "/open_contracting_datas", "item_source_ids_key": "/source_ids",},
     {"list_key": "/360giving_datas", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/outcome_pricings", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/transactions", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/grants", "item_source_ids_key": "/source_ids",},
 ]
 
 TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST = ["/contact"]

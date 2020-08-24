@@ -48,6 +48,20 @@
         }
       }
     },
+    "social_investment_prototype": {
+      "title": "Social Investment Prototype",
+      "type": "object",
+      "properties": {
+        "value": {
+          "title": "(Value)",
+          "type": "string",
+          "enum": [
+            "YES",
+            "NO"
+          ]
+        }
+      }
+    },
     "dates": {
       "title": "Dates",
       "type": "object",
@@ -178,6 +192,52 @@
             },
             "amount_usd": {
               "title": "Amount USD",
+              "$ref": "#/definitions/object_with_value_string_and_status"
+            }
+          }
+        },
+        "total_funds_invested": {
+          "title": "Total Funds Invested",
+          "type": "object",
+          "properties": {
+            "latest": {
+              "title": "Latest",
+              "type": "object",
+              "properties": {
+                 "currency": {
+                    "title": "Currency",
+                    "$ref": "#/definitions/object_with_value_string_and_status"
+                  },
+                  "amount": {
+                    "title": "Amount",
+                    "$ref": "#/definitions/object_with_value_string_and_status"
+                  },
+                  "amount_usd": {
+                    "title": "Amount USD",
+                    "$ref": "#/definitions/object_with_value_string_and_status"
+                  },
+                  "date": {
+                    "title": "Date",
+                    "$ref": "#/definitions/object_with_value_string_and_status"
+                  }
+              }
+            }
+          }
+        },
+        "internal_rate_of_return": {
+          "title": "Internal Rate of Return",
+          "type": "object",
+          "properties": {
+            "target": {
+              "title": "Target",
+              "$ref": "#/definitions/object_with_value_string_and_status"
+            },
+            "latest": {
+              "title": "Latest",
+              "$ref": "#/definitions/object_with_value_string_and_status"
+            },
+            "date": {
+              "title": "Date",
               "$ref": "#/definitions/object_with_value_string_and_status"
             }
           }
@@ -810,6 +870,274 @@
           "secondary_sdg_targets": {
             "title": "Secondary SDG targets",
             "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "outcome_pricings": {
+      "title": "Outcome Pricings",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "outcome_metric_id": {
+            "title": "Outcome Metric Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "currency": {
+            "title": "Currency",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "price_per_unit": {
+            "title": "Price Per Unit",
+            "type": "object",
+            "properties": {
+              "amount": {
+                "title": "Amount",
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "amount_usd": {
+                "title": "Amount USD",
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "maximum_price_if_all_targets_achieved": {
+            "title": "Maximum Price if all targets achieved",
+            "type": "object",
+            "properties": {
+              "amount": {
+                "title": "Amount",
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "contracted_increases_to_outcome_pricing": {
+            "title": "Currency",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "price_description": {
+            "title": "Currency",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "transactions": {
+      "title": "Transactions",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "investment_id": {
+            "title": "Investment Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "outcome_metric_id": {
+            "title": "Outcome Metric Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "grant_id": {
+            "title": "Grant Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "date": {
+            "title": "Date",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "sending_organisation_id": {
+            "title": "Sending Organisation ID",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "receiving_organisation_id": {
+            "title": "Receiving Organisation ID",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "transaction_type": {
+            "title": "Transaction Type",
+            "type": "object",
+            "properties": {
+              "value": {
+                "title": "(Value)",
+                "type": "string",
+                "enum": [
+                  "Debt",
+                  "Grant",
+                  "Equity",
+                  "Debt and Equity",
+                  "Interest Payment",
+                  "Capital Repayment",
+                  "Capital Repayment and Interest",
+                  "Outcome Payment",
+                  "Other"
+                ]
+              }
+            }
+          },
+          "money": {
+            "title": "Money",
+            "type": "object",
+            "properties": {
+              "currency": {
+                "title": "Currency",
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "amount": {
+                "title": "Amount",
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "amount_usd": {
+                "title": "Amount USD",
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "grants": {
+      "title": "Grants",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "360giving_id": {
+            "title": "360Giving Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "title": {
+            "title": "Title",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "award_date": {
+            "title": "Award Date",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "currency": {
+            "title": "Currency",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "amount_applied_for": {
+            "title": "Amount Applied For",
+            "type": "object",
+            "properties": {
+              "amount": {
+                "title": "Amount",
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "amount_usd": {
+                "title": "Amount USD",
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "amount_awarded": {
+            "title": "Amount Awarded",
+            "type": "object",
+            "properties": {
+              "amount": {
+                "title": "Amount",
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "amount_usd": {
+                "title": "Amount USD",
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "amount_disbursed": {
+            "title": "Amount Disbursed",
+            "type": "object",
+            "properties": {
+              "amount": {
+                "title": "Amount",
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "amount_usd": {
+                "title": "Amount USD",
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "recipient_organisation_id": {
+            "title": "Recipient Organisation Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "funding_organisation_id": {
+            "title": "Funding Organisation Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "description": {
+            "title": "Description",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "purpose": {
+            "title": "Purpose",
+            "type": "object",
+            "properties": {
+              "value": {
+                "title": "(Value)",
+                "type": "string",
+                "enum": [
+                  "Acquisition",
+                  "Asset",
+                  "Bridging Loan",
+                  "Capital",
+                  "DevelopmentCapital",
+                  "Growth Finance",
+                  "Multiple",
+                  "Program Funding",
+                  "Property",
+                  "Property Refurbishment",
+                  "Other",
+                  "Restructuring Finance",
+                  "Startup Costs",
+                  "Technical Assistance",
+                  "Unrestricted",
+                  "Working Capital"
+                ]
+              }
+            }
           },
           "source_ids": {
             "title": "Sources",
