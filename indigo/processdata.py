@@ -91,6 +91,14 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
     return input_json
 
 
+def add_other_records_to_organisation(organisation_id, input_json, public_only=False):
+    # Add ID
+    input_json["id"] = organisation_id
+
+    # Done
+    return input_json
+
+
 def extract_edits_from_project_import(record, import_json):
     out = []
     # organisation_data = defaultdict(list)

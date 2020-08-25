@@ -129,6 +129,94 @@ def project_download_form(request, public_id):
     return response
 
 
+########################### Public - Organisation
+
+
+def organisations_list(request):
+    organisations = Organisation.objects.filter(
+        exists=True, status_public=True
+    ).order_by("public_id")
+    return render(
+        request, "indigo/organisations.html", {"organisations": organisations},
+    )
+
+
+def organisations_list_download(request):
+    organisations = Organisation.objects.filter(
+        exists=True, status_public=True
+    ).order_by("public_id")
+
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="organisations.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["ID", "Organisation Name"])
+    for organisation in organisations:
+        row = [organisation.public_id]
+        for key in ["/name"]:
+            try:
+                row.append(
+                    jsonpointer.resolve_pointer(
+                        organisation.data_public, key + "/value"
+                    )
+                )
+            except jsonpointer.JsonPointerException:
+                row.append("")
+        writer.writerow(row)
+
+    return response
+
+
+def organisation_index(request, public_id):
+    try:
+        organisation = Organisation.objects.get(
+            exists=True, status_public=True, public_id=public_id
+        )
+    except Organisation.DoesNotExist:
+        raise Http404("Organisation does not exist")
+    if not organisation.status_public or not organisation.exists:
+        raise Http404("Organisation does not exist")
+    field_data = jsondataferret.utils.get_field_list_from_json(
+        TYPE_ORGANISATION_PUBLIC_ID, organisation.data_public
+    )
+    return render(
+        request,
+        "indigo/organisation/index.html",
+        {"organisation": organisation, "field_data": field_data},
+    )
+
+
+def organisation_download_form(request, public_id):
+    try:
+        organisation = Organisation.objects.get(public_id=public_id)
+    except Organisation.DoesNotExist:
+        raise Http404("Organisation does not exist")
+    if not organisation.status_public or not organisation.exists:
+        raise Http404("Organisation does not exist")
+
+    data = indigo.processdata.add_other_records_to_organisation(
+        organisation.public_id, organisation.data_public, public_only=True
+    )
+    guide_file = os.path.join(
+        settings.BASE_DIR,
+        "indigo",
+        "spreadsheetform_guides",
+        "organisation_public_v001.xlsx",
+    )
+    out_file = os.path.join(
+        tempfile.gettempdir(),
+        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
+    )
+    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
+
+    with open(out_file, "rb") as fh:
+        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        response["Content-Disposition"] = (
+            "inline; filename=organisation" + organisation.public_id + ".xlsx"
+        )
+    return response
+
+
 ########################### Public - Project - API
 
 
@@ -152,6 +240,37 @@ def api1_project_index(request, public_id):
         raise Http404("Project does not exist")
 
     data = {"project": {"id": project.public_id, "data": project.data_public,}}
+    return JsonResponse(data)
+
+
+########################### Public - Organisation - API
+
+
+def api1_organisations_list(request):
+    organisations = Organisation.objects.filter()
+    data = {
+        "organisations": [
+            {"id": p.public_id, "public": (p.exists and p.status_public)}
+            for p in organisations
+        ]
+    }
+    return JsonResponse(data)
+
+
+def api1_organisation_index(request, public_id):
+    try:
+        organisation = Organisation.objects.get(public_id=public_id)
+    except Organisation.DoesNotExist:
+        raise Http404("Organisation does not exist")
+    if not organisation.status_public or not organisation.exists:
+        raise Http404("Organisation does not exist")
+
+    data = {
+        "organisation": {
+            "id": organisation.public_id,
+            "data": organisation.data_public,
+        }
+    }
     return JsonResponse(data)
 
 

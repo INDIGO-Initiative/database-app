@@ -1,0 +1,28 @@
+{% extends 'indigo/base.html' %}
+
+{% block head_title %}Organisations{% endblock %}
+
+{% block content %}
+
+    {% if organisations %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for organisation in organisations %}
+                <tr>
+                    <td><a href="{% url 'indigo_organisation_index' public_id=organisation.public_id %}">{{ organisation.public_id }}</a></td>
+                    <td>{{ organisation.data_public.name.value }}</td>
+                    <td><a href="{% url 'indigo_organisation_index' public_id=organisation.public_id %}" class="btn btn-primary">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No organisations are available.</p>
+    {% endif %}
+
+    <p><a href="{% url 'indigo_organisation_list_download' %}" class="btn btn-primary">Download List</a></p>
+
+{% endblock %}

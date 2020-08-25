@@ -1,5 +1,7 @@
 # API for front end site
 
+## Projects
+
 To list projects:
 
     /app/api1/project
@@ -22,4 +24,9 @@ So the process any agents who want to get the latest data should follow is:
     - if public, get `/app/api1/project/ID`, save locally
     - If not, remove any local data you might have
 
+## Organisations
 
+This works the same as projects, but with different end points:
+
+    /app/api1/organisation
+    /app/api1/organisation/ID
