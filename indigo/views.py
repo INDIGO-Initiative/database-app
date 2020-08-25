@@ -63,15 +63,21 @@ def projects_list_download(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="projects.csv"'
 
+    labels = ["ID"]
+    keys = []
+
+    for config in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]:
+        if config.get("type", "") != "list" and config.get("key").find("/status") == -1:
+            labels.append(config.get("title"))
+            keys.append(config.get("key"))
+
     writer = csv.writer(response)
-    writer.writerow(["ID", "Project Name", "Stage of Development"])
+    writer.writerow(labels)
     for project in projects:
         row = [project.public_id]
-        for key in ["/name", "/stage_development"]:
+        for key in keys:
             try:
-                row.append(
-                    jsonpointer.resolve_pointer(project.data_public, key + "/value")
-                )
+                row.append(jsonpointer.resolve_pointer(project.data_public, key))
             except jsonpointer.JsonPointerException:
                 row.append("")
         writer.writerow(row)
@@ -149,17 +155,24 @@ def organisations_list_download(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="organisations.csv"'
 
+    labels = ["ID"]
+    keys = []
+
+    for config in settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"]["fields"]:
+        if (
+            config.get("type", "") != "list"
+            and config.get("key").find("/contact") == -1
+        ):
+            labels.append(config.get("title"))
+            keys.append(config.get("key"))
+
     writer = csv.writer(response)
-    writer.writerow(["ID", "Organisation Name"])
+    writer.writerow(labels)
     for organisation in organisations:
         row = [organisation.public_id]
-        for key in ["/name"]:
+        for key in keys:
             try:
-                row.append(
-                    jsonpointer.resolve_pointer(
-                        organisation.data_public, key + "/value"
-                    )
-                )
+                row.append(jsonpointer.resolve_pointer(organisation.data_public, key))
             except jsonpointer.JsonPointerException:
                 row.append("")
         writer.writerow(row)
@@ -828,17 +841,21 @@ def admin_organisation_download_all_csv(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="organisations-admin.csv"'
 
+    labels = ["ID"]
+    keys = []
+
+    for config in settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"]["fields"]:
+        if config.get("type", "") != "list":
+            labels.append(config.get("title"))
+            keys.append(config.get("key"))
+
     writer = csv.writer(response)
-    writer.writerow(["ID", "Organisation Name"])
+    writer.writerow(labels)
     for organisation in organisations:
         row = [organisation.public_id]
-        for key in ["/name"]:
+        for key in keys:
             try:
-                row.append(
-                    jsonpointer.resolve_pointer(
-                        organisation.cached_data, key + "/value"
-                    )
-                )
+                row.append(jsonpointer.resolve_pointer(organisation.cached_data, key))
             except jsonpointer.JsonPointerException:
                 row.append("")
         writer.writerow(row)
