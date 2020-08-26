@@ -214,7 +214,7 @@ def organisation_download_form(request, public_id):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "organisation_public_v001.xlsx",
+        "organisation_public_v002.xlsx",
     )
     out_file = os.path.join(
         tempfile.gettempdir(),
