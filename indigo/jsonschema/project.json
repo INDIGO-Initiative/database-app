@@ -196,6 +196,20 @@
             }
           }
         },
+        "source_ids": {
+          "title": "(Source ID's)",
+          "type": "string"
+        },
+        "notes": {
+          "title": "(Notes)",
+          "type": "string"
+        }
+      }
+    },
+    "investment_details": {
+      "title": "Investment Details",
+      "type": "object",
+      "properties": {
         "total_funds_invested": {
           "title": "Total Funds Invested",
           "type": "object",

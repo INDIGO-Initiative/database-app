@@ -348,6 +348,7 @@ def admin_project_index(request, public_id):
 
 @permission_required("indigo.admin")
 def admin_project_download_form(request, public_id):
+    type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PROJECT_PUBLIC_ID, {})
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
         record = Record.objects.get(type=type, public_id=public_id)
@@ -359,14 +360,13 @@ def admin_project_download_form(request, public_id):
     data = indigo.processdata.add_other_records_to_project(
         record.public_id, record.cached_data, public_only=False
     )
-    guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "project_v003.xlsx",
-    )
     out_file = os.path.join(
         tempfile.gettempdir(),
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
     )
-    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
+    spreadsheetforms.api.put_data_in_form(
+        type_data.get("spreadsheet_form_guide"), data, out_file
+    )
 
     with open(out_file, "rb") as fh:
         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
