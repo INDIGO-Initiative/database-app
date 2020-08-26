@@ -31,6 +31,8 @@ TYPE_PROJECT_FILTER_LISTS_LIST = [
     "/outcome_pricings",
     "/transactions",
     "/grants",
+    "/technical_assistances",
+    "/technical_assistance_details",
 ]
 
 TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [
@@ -61,6 +63,14 @@ TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [
     },
     {
         "list_key": "/grants",
+        "item_organisation_id_key": "/funding_organisation_id/value",
+    },
+    {
+        "list_key": "/technical_assistances",
+        "item_organisation_id_key": "/recipient_organisation_id/value",
+    },
+    {
+        "list_key": "/technical_assistances",
         "item_organisation_id_key": "/funding_organisation_id/value",
     },
 ]
@@ -160,6 +170,11 @@ TYPE_PROJECT_SOURCES_REFERENCES_LIST = [
     {"list_key": "/outcome_pricings", "item_source_ids_key": "/source_ids",},
     {"list_key": "/transactions", "item_source_ids_key": "/source_ids",},
     {"list_key": "/grants", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/technical_assistances", "item_source_ids_key": "/source_ids",},
+    {
+        "list_key": "/technical_assistance_details",
+        "item_source_ids_key": "/source_ids",
+    },
 ]
 
 TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST = ["/contact"]

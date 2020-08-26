@@ -1184,6 +1184,209 @@
         }
       }
     },
+    "technical_assistances": {
+      "title": "Technical Assistance",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "description": {
+            "title": "Description",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "period_start": {
+            "title": "Period Start",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "period_end": {
+            "title": "Period End",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "funding_organisation_id": {
+            "title": "Funding Organisation Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "recipient_organisation_id": {
+            "title": "Recipient Organisation Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "currency": {
+            "title": "Currency",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "technical_assistance_details": {
+      "title": "Technical Assistance Details",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "technical_assistance_id": {
+            "title": "Technical Assistance Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "title": {
+            "title": "Title",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "description": {
+            "title": "Description",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "category": {
+            "title": "Category",
+            "type": "object",
+            "properties": {
+              "value": {
+                "title": "(Value)",
+                "type": "string",
+                "enum": [
+                  "Overall TA - Planning - Project Management",
+                  "Overall TA - Planning - Commissioning",
+                  "Overall TA - Delivery - In-house Relationship",
+                  "Overall TA - Delivery - In-house Specialist",
+                  "Overall TA - Delivery - Pro-bono Partner",
+                  "Overall TA - Delivery - External Consultant",
+                  "Overall TA - Delivery - SPO Staff Member",
+                  "Theory of Change and Impact Strategy - Support to develop the Theory of Change and Impact Strategy",
+                  "Theory of Change and Impact Strategy - Support to develop an evaluation framework and performance measures",
+                  "Developing an Impact Measurement System",
+                  "Fundraising - Assistance securing funding from other sources",
+                  "Fundraising - Use VPO's reputation to help grantees secure funding from other sources",
+                  "Fundraising - Practical support with fundraising",
+                  "Fundraising - Fundraising advice or strategy",
+                  "Fundraising - Assistance securing follow-on funding",
+                  "Revenue Strategy - Business Planning",
+                  "Revenue Strategy - Business Model Development or Business Model Canvas)",
+                  "Financial Management - Sound Financial Management Capabilities or Financial Management Tools",
+                  "Financial Management - Develop Financial Systems",
+                  "Financial Management - Financial Management Advice",
+                  "Financial Management - Financial Planning or Accounting",
+                  "Financial Management - Support To Establish New Financial Systems",
+                  "Human Capital Support - Strengthening CEO And Management Team (Coaching And Mentoring",
+                  "Human Capital Support - Recruitment And Talent Provision",
+                  "Governance Support - Support to Develop Board of Directors",
+                  "Governance Support - Advice or Assistance to Strengthen the Board or Governance System",
+                  "Governance Support - Board Development or Governance Assistance",
+                  "Governance Support - Assistance in Recruitment of New Board Members",
+                  "Strategic Support - Strategy Consulting",
+                  "Strategic Support - General Management Advice",
+                  "Strategic Support - Strategic Planning Advice",
+                  "Strategic Support - Support to Develop the Business Strategy",
+                  "Strategic Support - Support to Develop New Products or Services",
+                  "Strategic Support - Support to Develop New Business Systems or Procedures",
+                  "Strategic Support - Advice on management of change",
+                  "Operational Support - Marketing",
+                  "Operational Support - Operational Management",
+                  "Operational Support - Technical Assistance in Specialist Areas",
+                  "Operational Support - ICT Advice",
+                  "Operational Support - Support on Procurement",
+                  "Operational Support - Estate Management or Access to Physical Space",
+                  "Operational Support - Legal Advice",
+                  "Funding - Financing Capacity Building Grants and Awards - Specific money allocated for non-financial support",
+                  "Funding - Financing Capacity Building Grants and Awards - VPOs and VPO’s funders allocate specific resources to non-financial support",
+                  "Funding - Financing Unrestricted Grants or Funding - Give unrestricted funding for capacity building",
+                  "Funding - Financing Unrestricted Grants or Funding - VPOs and VPO’s funders allocate specific resources to non-financial support/external donations",
+                  "Funding - Financing Grants and Contacts with External Capacity-building Providers - Develop Network of Capacity-building Providers",
+                  "Funding - Financing Grants and Contacts with External Capacity-building Providers - External Parties Giving Support For Free",
+                  "Funding - Financing Capacity Building Through Collaboration Among Funders And Beyond - Investors Team Up To Address Capacity-building Challenges",
+                  "Funding - Financing Capacity Building Through Collaboration Among Funders And Beyond - VPOs and VPO’s Funders Allocate Specific Resources to Non-financial Support",
+                  "Funding - Financing Management Fees",
+                  "Funding - Financing the SPO to Pay for Non-financial Support or Matching",
+                  "Funding - Financing Corporate Partners",
+                  "Funding - Financing a VPO Subsidy"
+                ]
+              }
+            }
+          },
+          "approach": {
+            "title": "Approach",
+            "type": "object",
+            "properties": {
+              "value": {
+                "title": "(Value)",
+                "type": "string",
+                "enum": [
+                  "SPO Board Seat (including Observers)",
+                  "Coaching and mentoring",
+                  "Trainings, Workshops and Boot Camps",
+                  "Conferences and Other External Events",
+                  "Access to Networks (External or Peers)",
+                  "Specific Expertise (One-to-One or Groups)",
+                  "Mentoring",
+                  "Informal Relationship Management and Ad Hoc Support",
+                  "Other Approach"
+                ]
+              }
+            }
+          },
+          "cost_type": {
+            "title": "Cost Type",
+            "type": "object",
+            "properties": {
+              "value": {
+                "title": "(Value)",
+                "type": "string",
+                "enum": [
+                  "Purchased or spent",
+                  "In-kind",
+                  "Staff cost",
+                  "Other"
+                ]
+              }
+            }
+          },
+          "cost_of_activities": {
+            "title": "Cost Of Activities",
+            "type": "object",
+            "properties": {
+              "amount": {
+                "title": "Amount",
+                "$ref": "#/definitions/object_with_value_string"
+              }
+            }
+          },
+          "number_of_days": {
+            "title": "Number Of Days",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
+    },
     "results": {
       "title": "Results",
       "type": "array",
