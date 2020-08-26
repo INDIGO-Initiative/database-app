@@ -266,7 +266,23 @@
         },
         "policy_sector": {
           "title": "Policy sector",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "type": "object",
+          "properties": {
+            "value": {
+              "title": "(Value)",
+              "type": "string",
+              "enum": [
+                "Employment and training",
+                "Child and family welfare",
+                "Health",
+                "Homelessness",
+                "Education",
+                "Criminal justice",
+                "Agriculture and environment",
+                "Poverty reduction"
+              ]
+            }
+          }
         },
         "primary_sdg_goal": {
           "title": "Primary SDG goal",

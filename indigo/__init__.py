@@ -126,6 +126,24 @@ TYPE_PROJECT_SOURCES_REFERENCES = [
     "/changes_to_project_due_to_covid19/source_ids",
 ]
 
+TYPE_PROJECT_MAP_VALUES_STAGE_DEVELOPMENT = {
+    "Completed ": "Complete",
+    "Implementation ": "Implementation",
+}
+
+TYPE_PROJECT_MAP_VALUES_PURPOSE_AND_CLASSIFICATIONS_POLICY_SECTOR = {
+    "Homelessness ": "Homelessness",
+    "Poverty": "Poverty reduction",
+    "Education and Early Years": "Education",
+    "Education and early years": "Education",
+    "Employment": "Employment and training",
+    "Health and wellbeing": "Health",
+    "Health & wellbeing": "Health",
+    "Maternal and child health": "Health",
+    "Children development": "Child and family welfare",
+    "Child & family welfare": "Child and family welfare",
+}
+
 TYPE_PROJECT_SOURCES_REFERENCES_LIST = [
     {"list_key": "/outcome_funds", "item_source_ids_key": "/source_ids",},
     {"list_key": "/delivery_locations", "item_source_ids_key": "/source_ids",},

@@ -11,6 +11,8 @@ from indigo import (
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
     TYPE_PROJECT_FILTER_LISTS_LIST,
+    TYPE_PROJECT_MAP_VALUES_PURPOSE_AND_CLASSIFICATIONS_POLICY_SECTOR,
+    TYPE_PROJECT_MAP_VALUES_STAGE_DEVELOPMENT,
     TYPE_PROJECT_PUBLIC_ID,
 )
 from indigo.models import (
@@ -73,12 +75,14 @@ def update_project(
         else ""
     )
     project.status_public = record.cached_exists and record_status == "public"
+    # Data
+    data = map_project_values(record.cached_data)
     # Public Data
     if project.status_public:
         project.data_public = indigo.processdata.add_other_records_to_project(
             record.public_id,
             filter_values(
-                record.cached_data,
+                data,
                 keys_with_own_status_subfield=settings.JSONDATAFERRET_TYPE_INFORMATION.get(
                     "project"
                 ).get(
@@ -94,7 +98,7 @@ def update_project(
     # Private Data
     if record.cached_exists:
         project.data_private = indigo.processdata.add_other_records_to_project(
-            record.public_id, record.cached_data, public_only=False
+            record.public_id, data, public_only=False
         )
     else:
         project.data_private = {}
@@ -287,6 +291,38 @@ def filter_values(
                         del item["source_ids"]
                     new_list.append(item)
             jsonpointer.set_pointer(data, list_key, new_list)
+
+    # Done
+    return data
+
+
+def map_project_values(data):
+    data = copy.deepcopy(data)
+
+    # STAGE_DEVELOPMENT
+    value_sd = jsonpointer.resolve_pointer(data, "/stage_development/value", None)
+    if value_sd in TYPE_PROJECT_MAP_VALUES_STAGE_DEVELOPMENT.keys():
+        jsonpointer.set_pointer(
+            data,
+            "/stage_development/value",
+            TYPE_PROJECT_MAP_VALUES_STAGE_DEVELOPMENT[value_sd],
+        )
+
+    # PURPOSE_AND_CLASSIFICATIONS_POLICY_SECTOR
+    value_pacps = jsonpointer.resolve_pointer(
+        data, "/purpose_and_classifications/policy_sector/value", None
+    )
+    if (
+        value_pacps
+        in TYPE_PROJECT_MAP_VALUES_PURPOSE_AND_CLASSIFICATIONS_POLICY_SECTOR.keys()
+    ):
+        jsonpointer.set_pointer(
+            data,
+            "/purpose_and_classifications/policy_sector/value",
+            TYPE_PROJECT_MAP_VALUES_PURPOSE_AND_CLASSIFICATIONS_POLICY_SECTOR[
+                value_pacps
+            ],
+        )
 
     # Done
     return data
