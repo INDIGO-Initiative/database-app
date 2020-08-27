@@ -85,6 +85,26 @@ def projects_list_download(request):
     return response
 
 
+def project_download_blank_form(request):
+    out_file = os.path.join(
+        tempfile.gettempdir(),
+        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
+    )
+    guide_file = os.path.join(
+        settings.BASE_DIR,
+        "indigo",
+        "spreadsheetform_guides",
+        "project_public_v006.xlsx",
+    )
+    spreadsheetforms.api.make_empty_form(guide_file, out_file)
+
+    with open(out_file, "rb") as fh:
+        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        response["Content-Disposition"] = "inline; filename=project.xlsx"
+
+    return response
+
+
 def project_index(request, public_id):
     try:
         project = Project.objects.get(
@@ -176,6 +196,26 @@ def organisations_list_download(request):
             except jsonpointer.JsonPointerException:
                 row.append("")
         writer.writerow(row)
+
+    return response
+
+
+def organisation_download_blank_form(request):
+    out_file = os.path.join(
+        tempfile.gettempdir(),
+        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
+    )
+    guide_file = os.path.join(
+        settings.BASE_DIR,
+        "indigo",
+        "spreadsheetform_guides",
+        "organisation_public_v002.xlsx",
+    )
+    spreadsheetforms.api.make_empty_form(guide_file, out_file)
+
+    with open(out_file, "rb") as fh:
+        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        response["Content-Disposition"] = "inline; filename=organisation.xlsx"
 
     return response
 
