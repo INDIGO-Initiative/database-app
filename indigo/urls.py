@@ -14,7 +14,7 @@ urlpatterns = [
     ),
     path(
         "project_download_social_investment_prototype",
-        views.projects_list_download,
+        views.projects_list_download_social_investment_prototype,
         name="indigo_project_list_download_social_investment_prototype",
     ),
     path(

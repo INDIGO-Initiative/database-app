@@ -59,6 +59,17 @@ def projects_list_download(request):
     projects = Project.objects.filter(exists=True, status_public=True).order_by(
         "public_id"
     )
+    return _projects_list_download_worker(projects)
+
+
+def projects_list_download_social_investment_prototype(request):
+    projects = Project.objects.filter(
+        exists=True, status_public=True, social_investment_prototype=True
+    ).order_by("public_id")
+    return _projects_list_download_worker(projects)
+
+
+def _projects_list_download_worker(projects):
 
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="projects.csv"'

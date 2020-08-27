@@ -54,7 +54,9 @@ class Organisation(BaseModel):
 
 
 class Project(BaseModel):
-    pass
+    social_investment_prototype = models.BooleanField(
+        default=False, null=False, blank=True
+    )
 
 
 class Fund(BaseModel):

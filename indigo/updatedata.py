@@ -102,6 +102,13 @@ def update_project(
         )
     else:
         project.data_private = {}
+    # social_investment_prototype (BII)
+    project.social_investment_prototype = (
+        jsonpointer.resolve_pointer(
+            project.data_public, "/social_investment_prototype/value", "NO"
+        )
+        == "YES"
+    )
     # Finally, Save
     project.save()
 
