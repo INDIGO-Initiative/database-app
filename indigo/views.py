@@ -76,21 +76,34 @@ def _projects_list_download_worker(projects):
 
     labels = ["ID"]
     keys = []
-
     for config in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]:
         if config.get("type", "") != "list" and config.get("key").find("/status") == -1:
             labels.append(config.get("title"))
             keys.append(config.get("key"))
+    labels.append("Organisations")
 
     writer = csv.writer(response)
     writer.writerow(labels)
     for project in projects:
+        # id
         row = [project.public_id]
+        # fields
         for key in keys:
             try:
                 row.append(jsonpointer.resolve_pointer(project.data_public, key))
             except jsonpointer.JsonPointerException:
                 row.append("")
+        # orgs
+        orgs_list = jsonpointer.resolve_pointer(
+            project.data_public, "/organisations", []
+        )
+        if isinstance(orgs_list, list):
+            orgs = [jsonpointer.resolve_pointer(d, "/id", "") for d in orgs_list]
+            row.append(", ".join([i for i in orgs if isinstance(i, str) and i]))
+        else:
+            row.append("")
+
+        # project done
         writer.writerow(row)
 
     return response
