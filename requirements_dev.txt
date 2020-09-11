@@ -5,10 +5,13 @@
 #    pip-compile requirements_dev.in
 #
 -e git+https://github.com/OpenDataServices/json-data-ferret.git@v0.2.0#egg=jsondataferret  # via -r requirements.txt
+amqp==2.6.1               # via -r requirements.txt, kombu
 appdirs==1.4.4            # via black
 asgiref==3.2.10           # via -r requirements.txt, django
 attrs==19.3.0             # via -r requirements.txt, black, jsonschema
+billiard==3.6.3.0         # via -r requirements.txt, celery
 black==19.10b0            # via -r requirements_dev.in
+celery==4.4.7             # via -r requirements.txt
 certifi==2020.6.20        # via -r requirements.txt, sentry-sdk
 click==7.1.2              # via black, pip-tools
 compiletojsonschema==0.2.0  # via -r requirements.txt
@@ -19,7 +22,7 @@ django==3.1               # via -r requirements.txt, django-heroku, jsondataferr
 et-xmlfile==1.0.1         # via -r requirements.txt, openpyxl
 flake8==3.8.3             # via -r requirements_dev.in
 gunicorn==20.0.4          # via -r requirements.txt
-importlib-metadata==1.7.0  # via -r requirements.txt, flake8, jsonschema
+importlib-metadata==1.7.0  # via -r requirements.txt, flake8, jsonschema, kombu
 isort==4.3.21             # via -r requirements_dev.in
 jdcal==1.4.1              # via -r requirements.txt, openpyxl
 json-merge-patch==0.2     # via -r requirements.txt, jsondataferret
@@ -27,6 +30,7 @@ jsonmerge==1.7.0          # via -r requirements.txt, jsondataferret
 jsonpointer==2.0          # via -r requirements.txt, spreadsheetforms
 jsonref==0.2              # via -r requirements.txt, compiletojsonschema
 jsonschema==3.2.0         # via -r requirements.txt, compiletojsonschema, jsondataferret, jsonmerge
+kombu==4.6.11             # via -r requirements.txt, celery
 mccabe==0.6.1             # via flake8
 openpyxl==3.0.4           # via -r requirements.txt, spreadsheetforms
 pathspec==0.8.0           # via black
@@ -36,7 +40,7 @@ pycodestyle==2.6.0        # via flake8
 pyflakes==2.2.0           # via flake8
 pygments==2.6.1           # via -r requirements.txt, jsondataferret
 pyrsistent==0.16.0        # via -r requirements.txt, jsonschema
-pytz==2020.1              # via -r requirements.txt, django
+pytz==2020.1              # via -r requirements.txt, celery, django
 regex==2020.7.14          # via black
 sentry-sdk==0.16.3        # via -r requirements.txt
 six==1.15.0               # via -r requirements.txt, jsonschema, pip-tools, pyrsistent
@@ -45,6 +49,7 @@ sqlparse==0.3.1           # via -r requirements.txt, django
 toml==0.10.1              # via black
 typed-ast==1.4.1          # via black
 urllib3==1.25.10          # via -r requirements.txt, sentry-sdk
+vine==1.3.0               # via -r requirements.txt, amqp, celery
 whitenoise==5.2.0         # via -r requirements.txt, django-heroku
 zipp==3.1.0               # via -r requirements.txt, importlib-metadata
 

@@ -198,6 +198,8 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     },
 }
 
+CELERY_BROKER_URL = os.getenv("CLOUDAMQP_URL", "localhost")
+
 APP_TITLE = os.getenv("APP_TITLE", "INDIGO")
 
 SENTRY_DSN = os.getenv("SENTRY_DSN")

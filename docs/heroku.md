@@ -8,6 +8,8 @@ Set up an app in Europe.
 
 Add a Heroku Postgres Database - make sure it saves it's credentials as `DATABASE_URL`.
 
+Add a CloudAMQP service - make sure it saves it's credentials as `CLOUDAMQP`.
+
 Add the Config Var `ON_HEROKU` and set it's value to `1`.
 
 Add the Config Var `SECRET_KEY` and set it's value to something random and secret.

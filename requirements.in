@@ -6,3 +6,4 @@ gunicorn
 django-heroku
 compiletojsonschema
 sentry-sdk
+celery

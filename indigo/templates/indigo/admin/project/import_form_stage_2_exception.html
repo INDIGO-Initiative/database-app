@@ -1,0 +1,21 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Import Project {{ record.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_list' %}">Projects</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_index' public_id=record.public_id  %}">Project {{ record.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Import</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+
+    <div>There was a problem. Please contact support.</div>
+
+{% endblock %}

@@ -12,6 +12,10 @@ After `vagrant ssh`, run `cd /vagrant` and `source .ve/bin/activate`.
 
 Go to `http://localhost:8000`
 
+## Run Worker
+
+    celery -A indigo worker -l info
+
 ## Set up app first time
 
 Run normal Django database migrations.

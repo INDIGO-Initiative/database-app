@@ -65,7 +65,10 @@ class Fund(BaseModel):
 
 class ProjectImport(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    data = JSONField(default=dict)
+    file_data = models.BinaryField(null=True, blank=True)
+    file_not_valid = models.BooleanField(null=True, blank=True)
+    exception = models.BooleanField(null=True, blank=True)
+    data = JSONField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     imported = models.DateTimeField(null=True, blank=True)
     project = models.ForeignKey(

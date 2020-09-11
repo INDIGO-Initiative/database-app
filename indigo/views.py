@@ -24,6 +24,7 @@ from indigo import (
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PROJECT_PUBLIC_ID,
 )
+from indigo.tasks import task_process_imported_project_file
 
 from .forms import (
     FundImportForm,
@@ -459,35 +460,18 @@ def admin_project_import_form(request, public_id):
         # Check if the form is valid:
         if form.is_valid():
 
-            # get data
-            version = indigo.utils.get_project_spreadsheet_version(
-                request.FILES["file"].temporary_file_path()
-            )
-            if (
-                version
-                not in settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
-                    "spreadsheet_form_guide_spec_versions"
-                ].keys()
-            ):
-                raise Exception("This seems to not be a project spreadsheet?")
-            json_data = spreadsheetforms.api.get_data_from_form_with_guide_spec(
-                settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
-                    "spreadsheet_form_guide_spec_versions"
-                ][version],
-                request.FILES["file"].temporary_file_path(),
-                date_format=getattr(
-                    settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
-                ),
-            )
-
             # Save the data
             project_import = ProjectImport()
             project_import.user = request.user
             project_import.project = project
-            project_import.data = json_data
+            with open(request.FILES["file"].temporary_file_path(), "rb") as fp:
+                project_import.file_data = fp.read()
             project_import.save()
 
-            # redirect to a new URL for stage 2 of the process
+            # Make celery call to start background worker
+            task_process_imported_project_file.delay(project_import.id)
+
+            # redirect to a new URL so user can wait for stage 2 of the process to be ready
             return HttpResponseRedirect(
                 reverse(
                     "indigo_admin_project_import_form_stage_2",
@@ -533,6 +517,27 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
         raise Http404("Import is for another user")
     if project_import.imported:
         raise Http404("Import already done")
+
+    if project_import.exception:
+        return render(
+            request,
+            "indigo/admin/project/import_form_stage_2_exception.html",
+            {"record": record, "project": project, "import": project_import},
+        )
+
+    if project_import.file_not_valid:
+        return render(
+            request,
+            "indigo/admin/project/import_form_stage_2_file_not_valid.html",
+            {"record": record, "project": project},
+        )
+
+    if not project_import.data:
+        return render(
+            request,
+            "indigo/admin/project/import_form_stage_2_wait.html",
+            {"record": record, "project": project, "import": project_import},
+        )
 
     (
         source_ids_used_that_are_not_in_sources_table,
