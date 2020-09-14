@@ -1365,6 +1365,10 @@
               "amount": {
                 "title": "Amount",
                 "$ref": "#/definitions/object_with_value_string"
+              },
+              "amount_usd": {
+                "title": "Amount USD",
+                "$ref": "#/definitions/object_with_value_string"
               }
             }
           },
