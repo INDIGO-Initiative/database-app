@@ -333,15 +333,47 @@
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "targeted_number_service_users_or_beneficiaries_total": {
-          "title": "Targeted number of service users or beneficiaries (total)",
+          "title": "Targeted number of unique service users or beneficiaries (total)",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "unit_type_targeted_service_users_or_beneficiaries": {
           "title": "Unit type of targeted service users or beneficiaries",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "type": "object",
+          "properties": {
+            "value": {
+              "title": "(Value)",
+              "type": "string",
+              "enum": [
+                "Individual",
+                "Other"
+              ]
+            }
+          }
         },
         "unit_description_of_service_user_or_beneficiaries": {
-          "title": "Unit description of service user or beneficiaries",
+          "title": "Unit description of targeted service user or beneficiaries",
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "actual_number_service_users_or_beneficiaries_total": {
+          "title": "Actual number of unique service users or beneficiaries engaged (total)",
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "unit_type_actual_service_users_or_beneficiaries": {
+          "title": "Unit type of actual service users or beneficiaries engaged",
+          "type": "object",
+          "properties": {
+            "value": {
+              "title": "(Value)",
+              "type": "string",
+              "enum": [
+                "Individual",
+                "Other"
+              ]
+            }
+          }
+        },
+        "unit_description_of_actual_service_user_or_beneficiaries": {
+          "title": "Unit description of actual service user or beneficiaries engaged",
           "$ref": "#/definitions/object_with_value_string_and_status"
         },
         "source_ids": {

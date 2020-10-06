@@ -140,6 +140,9 @@ _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V005 = os.path.join(
 _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V006 = os.path.join(
     BASE_DIR, "indigo", "spreadsheetform_guides", "project_v006.xlsx",
 )
+_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007 = os.path.join(
+    BASE_DIR, "indigo", "spreadsheetform_guides", "project_v007.xlsx",
+)
 _FUND_SPREADSHEET_FORM_GUIDE_FILENAME = os.path.join(
     BASE_DIR, "indigo", "spreadsheetform_guides", "fund_v001.xlsx",
 )
@@ -153,9 +156,9 @@ _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002 = os.path.join(
 JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
         "json_schema": project_json_schema,
-        "spreadsheet_form_guide": _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V006,
+        "spreadsheet_form_guide": _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007,
         "spreadsheet_form_guide_spec": get_guide_spec(
-            _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V006
+            _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007
         ),
         "spreadsheet_form_guide_spec_versions": {
             1: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V001),
@@ -164,6 +167,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             4: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V004),
             5: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V005),
             6: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V006),
+            7: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007),
         },
         "fields": project_json_processor.get_fields(),
         "filter_keys": project_json_processor.get_filter_keys(),
