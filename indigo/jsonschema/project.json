@@ -347,6 +347,9 @@
                 "Individual",
                 "Other"
               ]
+            },
+            "status": {
+              "$ref": "#/definitions/status"
             }
           }
         },
@@ -369,6 +372,9 @@
                 "Individual",
                 "Other"
               ]
+            },
+            "status": {
+              "$ref": "#/definitions/status"
             }
           }
         },
@@ -1572,6 +1578,15 @@
           ]
         }
       }
+    },
+    "status": {
+      "title": "(Status)",
+      "type": "string",
+      "enum": [
+        "PUBLIC",
+        "PRIVATE",
+        "DISPUTED"
+      ]
     }
   }
 }
