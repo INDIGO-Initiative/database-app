@@ -153,21 +153,20 @@ _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002 = os.path.join(
     BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v002.xlsx",
 )
 
+_PROJECT_SPREADSHEET_FORM_LATEST_GUIDE_SPEC = get_guide_spec(
+    _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007
+)
+_ORGANISATION_SPREADSHEET_FORM_LATEST_GUIDE_SPEC = get_guide_spec(
+    _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002
+)
+
 JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
         "json_schema": project_json_schema,
         "spreadsheet_form_guide": _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007,
-        "spreadsheet_form_guide_spec": get_guide_spec(
-            _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007
-        ),
+        "spreadsheet_form_guide_spec": _PROJECT_SPREADSHEET_FORM_LATEST_GUIDE_SPEC,
         "spreadsheet_form_guide_spec_versions": {
-            1: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V001),
-            2: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V002),
-            3: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V003),
-            4: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V004),
-            5: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V005),
-            6: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V006),
-            7: get_guide_spec(_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007),
+            7: _PROJECT_SPREADSHEET_FORM_LATEST_GUIDE_SPEC,
         },
         "fields": project_json_processor.get_fields(),
         "filter_keys": project_json_processor.get_filter_keys(),
@@ -175,12 +174,9 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     "organisation": {
         "json_schema": organisation_json_schema,
         "spreadsheet_form_guide": _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002,
-        "spreadsheet_form_guide_spec": get_guide_spec(
-            _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002
-        ),
+        "spreadsheet_form_guide_spec": _ORGANISATION_SPREADSHEET_FORM_LATEST_GUIDE_SPEC,
         "spreadsheet_form_guide_spec_versions": {
-            1: get_guide_spec(_ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V001),
-            2: get_guide_spec(_ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002),
+            2: _ORGANISATION_SPREADSHEET_FORM_LATEST_GUIDE_SPEC,
         },
         "fields": organisation_json_processor.get_fields(),
     },
