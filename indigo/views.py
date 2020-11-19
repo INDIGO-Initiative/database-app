@@ -1244,6 +1244,19 @@ def admin_fund_index(request, public_id):
 
 
 @permission_required("indigo.admin")
+def admin_fund_projects(request, public_id):
+    try:
+        fund = Fund.objects.get(public_id=public_id)
+    except Fund.DoesNotExist:
+        raise Http404("Fund does not exist")
+    return render(
+        request,
+        "indigo/admin/fund/projects.html",
+        {"fund": fund, "project_links": fund.included_by_projects.all(),},
+    )
+
+
+@permission_required("indigo.admin")
 def admin_fund_download_form(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
