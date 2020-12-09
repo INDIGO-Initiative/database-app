@@ -1,0 +1,27 @@
+{% extends 'indigo/base.html' %}
+
+{% block head_title %}Funds{% endblock %}
+
+{% block content %}
+
+    {% if funds %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for fund in funds %}
+                <tr>
+                    <td><a href="{% url 'indigo_fund_index' public_id=fund.public_id %}">{{ fund.public_id }}</a></td>
+                    <td>{{ fund.data_public.name.value }}</td>
+                    <td><a href="{% url 'indigo_fund_index' public_id=fund.public_id %}" class="btn btn-primary">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No funds are available.</p>
+    {% endif %}
+
+
+{% endblock %}
