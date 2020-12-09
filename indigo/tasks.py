@@ -6,7 +6,13 @@ from django.conf import settings
 
 import indigo.utils
 from indigo.celery import app
-from indigo.models import ProjectImport
+from indigo.files import (
+    update_public_archive_files,
+    update_public_files_for_fund,
+    update_public_files_for_organisation,
+    update_public_files_for_project,
+)
+from indigo.models import Fund, Organisation, Project, ProjectImport
 
 
 @app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
@@ -66,3 +72,25 @@ def task_process_imported_project_file(self, project_import_id):
         project_import.file_data = None
         project_import.save()
         raise e
+
+
+@app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
+def task_update_public_files_for_project(self, project_id):
+    update_public_files_for_project(Project.objects.get(public_id=project_id))
+
+
+@app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
+def task_update_public_files_for_organisation(self, organisation_id):
+    update_public_files_for_organisation(
+        Organisation.objects.get(public_id=organisation_id)
+    )
+
+
+@app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
+def task_update_public_files_for_fund(self, fund_id):
+    update_public_files_for_fund(Fund.objects.get(public_id=fund_id))
+
+
+@app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
+def task_update_public_archive_files(self):
+    update_public_archive_files()

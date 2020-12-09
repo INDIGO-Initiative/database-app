@@ -38,6 +38,7 @@ jobs:
         JSONDATAFERRET_DATABASE_NAME: postgres
         JSONDATAFERRET_DATABASE_USER: postgres
         JSONDATAFERRET_DATABASE_PASSWORD: postgres
+        CLOUDAMQP_URL: memory://
       run: python manage.py test
       if: always()
 

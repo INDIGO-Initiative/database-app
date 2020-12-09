@@ -41,7 +41,7 @@ Add some `Types` records in the `Jsondataferret` section :
 
 Run tests  (with Vagrant DB credentials):
 
-    JSONDATAFERRET_DATABASE_NAME=test JSONDATAFERRET_DATABASE_USER=test JSONDATAFERRET_DATABASE_PASSWORD=test python manage.py test
+    JSONDATAFERRET_DATABASE_NAME=test JSONDATAFERRET_DATABASE_USER=test JSONDATAFERRET_DATABASE_PASSWORD=test CLOUDAMQP_URL=memory:// python manage.py test
 
 ## Code Quality
 
