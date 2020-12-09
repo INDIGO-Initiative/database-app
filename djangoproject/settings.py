@@ -120,7 +120,9 @@ organisation_json_processor = JsonSchemaProcessor(
 
 with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "fund.json")) as fp:
     fund_json_schema = json.load(fp)
-
+fund_json_processor = JsonSchemaProcessor(
+    input_filename=os.path.join(BASE_DIR, "indigo", "jsonschema", "fund.json")
+)
 
 _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V001 = os.path.join(
     BASE_DIR, "indigo", "spreadsheetform_guides", "project_v001.xlsx",
@@ -186,19 +188,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         "spreadsheet_form_guide_spec": get_guide_spec(
             _FUND_SPREADSHEET_FORM_GUIDE_FILENAME
         ),
-        "fields": [
-            {"key": "/name/value", "title": "Name"},
-            {"key": "/identifier_scheme/value", "title": "Identifier Scheme"},
-            {"key": "/identifier/value", "title": "Identifier"},
-            {"key": "/organisation_ids/value", "title": "Organisation Id's"},
-            {"key": "/country/value", "title": "Country"},
-            {
-                "type": "list",
-                "key": "/organisations",
-                "title": "Organisations",
-                "fields": [{"key": "/organisation_id/value", "title": "ID"},],
-            },
-        ],
+        "fields": fund_json_processor.get_fields(),
     },
 }
 

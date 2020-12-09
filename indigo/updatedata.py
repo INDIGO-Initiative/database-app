@@ -226,7 +226,7 @@ def update_fund(record, update_projects=False):
 
     # Exists
     fund.exists = record.cached_exists
-    # Status - at the moment we assume all fund's are public
+    # Status - all fund's are public
     fund.status_public = record.cached_exists
     # Public data
     fund.data_public = record.cached_data if fund.status_public else {}

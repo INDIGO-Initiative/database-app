@@ -295,6 +295,29 @@ def organisation_download_form(request, public_id):
     return response
 
 
+########################### Public - Fund
+
+
+def funds_list(request):
+    funds = Fund.objects.filter(exists=True, status_public=True).order_by("public_id")
+    return render(request, "indigo/funds.html", {"funds": funds},)
+
+
+def fund_index(request, public_id):
+    try:
+        fund = Fund.objects.get(exists=True, status_public=True, public_id=public_id)
+    except fund.DoesNotExist:
+        raise Http404("fund does not exist")
+    if not fund.status_public or not fund.exists:
+        raise Http404("fund does not exist")
+    field_data = jsondataferret.utils.get_field_list_from_json(
+        TYPE_FUND_PUBLIC_ID, fund.data_public
+    )
+    return render(
+        request, "indigo/fund/index.html", {"fund": fund, "field_data": field_data},
+    )
+
+
 ########################### Public - Project - API
 
 
@@ -349,6 +372,31 @@ def api1_organisation_index(request, public_id):
             "data": organisation.data_public,
         }
     }
+    return JsonResponse(data)
+
+
+########################### Public - Fund - API
+
+
+def api1_funds_list(request):
+    funds = Fund.objects.filter()
+    data = {
+        "funds": [
+            {"id": f.public_id, "public": (f.exists and f.status_public)} for f in funds
+        ]
+    }
+    return JsonResponse(data)
+
+
+def api1_fund_index(request, public_id):
+    try:
+        fund = Fund.objects.get(public_id=public_id)
+    except fund.DoesNotExist:
+        raise Http404("fund does not exist")
+    if not fund.status_public or not fund.exists:
+        raise Http404("fund does not exist")
+
+    data = {"fund": {"id": fund.public_id, "data": fund.data_public,}}
     return JsonResponse(data)
 
 

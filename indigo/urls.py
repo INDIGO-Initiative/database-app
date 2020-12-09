@@ -50,6 +50,9 @@ urlpatterns = [
         views.organisation_download_form,
         name="indigo_organisation_download_form",
     ),
+    ########################### Public - Fund
+    path("fund", views.funds_list, name="indigo_fund_list",),
+    path("fund/<public_id>", views.fund_index, name="indigo_fund_index",),
     ########################### Public - Project - API
     path("api1/project", views.api1_projects_list, name="indigo_api1_project_list",),
     path(
@@ -67,6 +70,11 @@ urlpatterns = [
         "api1/organisation/<public_id>",
         views.api1_organisation_index,
         name="indigo_api1_organisation_index",
+    ),
+    ########################### Public - Fund - API
+    path("api1/fund", views.api1_funds_list, name="indigo_api1_fund_list",),
+    path(
+        "api1/fund/<public_id>", views.api1_fund_index, name="indigo_api1_fund_index",
     ),
     ########################### Admin
     path("admin/", views.admin_index, name="indigo_admin_index"),

@@ -7,22 +7,31 @@
   ],
   "properties": {
     "name": {
-      "$ref": "#/definitions/object_with_value_string"
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Name"
     },
     "identifier_scheme": {
-      "$ref": "#/definitions/object_with_value_string"
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Identifier Scheme"
     },
     "identifier": {
-      "$ref": "#/definitions/object_with_value_string"
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Identifier"
     },
     "country": {
-      "$ref": "#/definitions/object_with_value_string"
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Country"
     },
     "organisations": {
-      "type": "object",
-      "properties": {
-        "organisation_ids": {
-          "$ref": "#/definitions/object_with_value_string"
+      "type": "array",
+      "title": "Organisations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "organisation_id": {
+            "$ref": "#/definitions/object_with_value_string",
+            "title": "Organisation ID"
+          }
         }
       }
     }
