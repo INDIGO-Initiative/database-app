@@ -134,6 +134,16 @@ urlpatterns = [
     path(
         "admin/new_project", views.admin_projects_new, name="indigo_admin_project_new",
     ),
+    path(
+        "admin/project_data_quality_report",
+        views.admin_project_data_quality_report,
+        name="indigo_admin_project_data_quality_report",
+    ),
+    path(
+        "admin/project_data_quality_report/field_single",
+        views.admin_project_data_quality_report_field_single,
+        name="indigo_admin_project_data_quality_report_field_single",
+    ),
     ########################### Admin - Organisation
     path(
         "admin/organisation_download_blank_form",

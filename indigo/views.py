@@ -11,6 +11,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.core.files.storage import default_storage
+from django.db import connection
 from django.db.models.functions import Now
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -894,6 +895,62 @@ def admin_project_history(request, public_id):
         request,
         "indigo/admin/project/history.html",
         {"type": type, "record": record, "events": events},
+    )
+
+
+@permission_required("indigo.admin")
+def admin_project_data_quality_report(request):
+
+    return render(
+        request,
+        "indigo/admin/projects_data_quality_report.html",
+        {
+            "type": type,
+            "fields_single": [
+                i
+                for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
+                if i.get("type") != "list"
+            ],
+        },
+    )
+
+
+@permission_required("indigo.admin")
+def admin_project_data_quality_report_field_single(request):
+
+    field_path = request.GET.get("field", "")
+    # Note we MUST explicitly check the field the user passed is in our pre-calculated Config list!
+    # If we don't, we open ourselves up to SQL Injection security holes.
+    fields = [
+        i
+        for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
+        if i.get("type") != "list" and i.get("key") == field_path
+    ]
+    if not fields:
+        raise Http404("Field does not exist")  #
+    field = fields[0]
+
+    field_bits = ["'" + i + "'" for i in field["key"].split("/") if i]
+    sql_start = "select count(*) as c from indigo_project"
+    sql_where = "CAST(data_private::json->" + "->".join(field_bits) + " as text)"
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            sql_start + " WHERE " + sql_where + " = 'null' OR " + sql_where + " IS NULL"
+        )
+        count_no_data = cursor.fetchone()[0]
+        cursor.execute(sql_start + " WHERE " + sql_where + " != 'null'")
+        count_data = cursor.fetchone()[0]
+
+    return render(
+        request,
+        "indigo/admin/projects_data_quality_report_single_field.html",
+        {
+            "type": type,
+            "field": field,
+            "count_no_data": count_no_data,
+            "count_data": count_data,
+        },
     )
 
 
