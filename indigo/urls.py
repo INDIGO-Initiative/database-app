@@ -52,7 +52,17 @@ urlpatterns = [
     ),
     ########################### Public - Fund
     path("fund", views.funds_list, name="indigo_fund_list",),
+    path(
+        "fund_download_blank_form",
+        views.fund_download_blank_form,
+        name="indigo_fund_download_blank_form",
+    ),
     path("fund/<public_id>", views.fund_index, name="indigo_fund_index",),
+    path(
+        "fund/<public_id>/download_form",
+        views.fund_download_form,
+        name="indigo_fund_download_form",
+    ),
     ########################### Public - All
     path(
         "all_data_as_spreadsheets.zip",

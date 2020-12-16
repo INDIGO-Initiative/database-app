@@ -304,6 +304,23 @@ def funds_list(request):
     return render(request, "indigo/funds.html", {"funds": funds},)
 
 
+def fund_download_blank_form(request):
+    out_file = os.path.join(
+        tempfile.gettempdir(),
+        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
+    )
+    guide_file = os.path.join(
+        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "fund_public_v001.xlsx",
+    )
+    spreadsheetforms.api.make_empty_form(guide_file, out_file)
+
+    with open(out_file, "rb") as fh:
+        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        response["Content-Disposition"] = "inline; filename=fund.xlsx"
+
+    return response
+
+
 def fund_index(request, public_id):
     try:
         fund = Fund.objects.get(exists=True, status_public=True, public_id=public_id)
@@ -317,6 +334,34 @@ def fund_index(request, public_id):
     return render(
         request, "indigo/fund/index.html", {"fund": fund, "field_data": field_data},
     )
+
+
+def fund_download_form(request, public_id):
+    try:
+        fund = Fund.objects.get(public_id=public_id)
+    except Fund.DoesNotExist:
+        raise Http404("Fund does not exist")
+    if not fund.status_public or not fund.exists:
+        raise Http404("Fund does not exist")
+
+    data = indigo.processdata.add_other_records_to_fund(
+        fund.public_id, fund.data_public, public_only=True
+    )
+    guide_file = os.path.join(
+        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "fund_public_v001.xlsx",
+    )
+    out_file = os.path.join(
+        tempfile.gettempdir(),
+        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
+    )
+    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
+
+    with open(out_file, "rb") as fh:
+        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        response["Content-Disposition"] = (
+            "inline; filename=fund" + fund.public_id + ".xlsx"
+        )
+    return response
 
 
 ########################### Public - All
