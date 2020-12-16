@@ -149,48 +149,76 @@ def update_public_archive_files():
     # --- XLSX Files
 
     # Create Temp Files
-    file = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
-    out_file = file.name
-    file.close()
+    file = {
+        "all": tempfile.NamedTemporaryFile(delete=False, suffix=".zip"),
+        "projects": tempfile.NamedTemporaryFile(delete=False, suffix=".zip"),
+        "funds": tempfile.NamedTemporaryFile(delete=False, suffix=".zip"),
+        "organisations": tempfile.NamedTemporaryFile(delete=False, suffix=".zip"),
+    }
+    out_file = {
+        "all": file["all"].name,
+        "projects": file["projects"].name,
+        "funds": file["funds"].name,
+        "organisations": file["organisations"].name,
+    }
+    file["all"].close()
+    file["projects"].close()
+    file["funds"].close()
+    file["organisations"].close()
 
     # Contents
-    with ZipFile(out_file, "w") as zipfile:
+    with ZipFile(out_file["all"], "w") as zipfile_all:
+        with ZipFile(out_file["projects"], "w") as zipfile_projects:
+            with ZipFile(out_file["funds"], "w") as zipfile_funds:
+                with ZipFile(out_file["organisations"], "w") as zipfile_organisations:
 
-        for organisation in Organisation.objects.filter(
-            exists=True, status_public=True
-        ):
-            _put_file_in_zip_file(
-                zipfile,
-                "public/organisation/" + organisation.public_id + ".xlsx",
-                "organisation/" + organisation.public_id + ".xlsx",
-            )
+                    for organisation in Organisation.objects.filter(
+                        exists=True, status_public=True
+                    ):
+                        _put_file_in_zip_file(
+                            [zipfile_all, zipfile_organisations],
+                            "public/organisation/" + organisation.public_id + ".xlsx",
+                            "organisation/" + organisation.public_id + ".xlsx",
+                        )
 
-        for fund in Fund.objects.filter(exists=True, status_public=True):
-            _put_file_in_zip_file(
-                zipfile,
-                "public/fund/" + fund.public_id + ".xlsx",
-                "fund/" + fund.public_id + ".xlsx",
-            )
+                    for fund in Fund.objects.filter(exists=True, status_public=True):
+                        _put_file_in_zip_file(
+                            [zipfile_all, zipfile_funds],
+                            "public/fund/" + fund.public_id + ".xlsx",
+                            "fund/" + fund.public_id + ".xlsx",
+                        )
 
-        for project in Project.objects.filter(exists=True, status_public=True):
-            _put_file_in_zip_file(
-                zipfile,
-                "public/project/" + project.public_id + ".xlsx",
-                "project/" + project.public_id + ".xlsx",
-            )
+                    for project in Project.objects.filter(
+                        exists=True, status_public=True
+                    ):
+                        _put_file_in_zip_file(
+                            [zipfile_all, zipfile_projects],
+                            "public/project/" + project.public_id + ".xlsx",
+                            "project/" + project.public_id + ".xlsx",
+                        )
 
     # Move to Django Storage
-    default_storage.delete("public/all_data_as_spreadsheets.zip")
-    with open(out_file, "rb") as fp:
-        default_storage.save(
-            "public/all_data_as_spreadsheets.zip", ContentFile(fp.read())
-        )
+    for key, filename in [
+        ("all", "data"),
+        ("projects", "projects"),
+        ("funds", "funds"),
+        ("organisations", "organisations"),
+    ]:
+        default_storage.delete("public/all_" + filename + "_as_spreadsheets.zip")
+        with open(out_file[key], "rb") as fp:
+            default_storage.save(
+                "public/all_" + filename + "_as_spreadsheets.zip",
+                ContentFile(fp.read()),
+            )
 
-    # Delete Temp file
-    os.remove(out_file)
+    # Delete Temp files
+    for filename in out_file.values():
+        os.remove(filename)
 
 
-def _put_file_in_zip_file(zipfile, file_name_in_storage, file_name_in_zip):
+def _put_file_in_zip_file(zipfiles, file_name_in_storage, file_name_in_zip):
     if default_storage.exists(file_name_in_storage):
         with default_storage.open(file_name_in_storage, "rb") as fp:
-            zipfile.writestr(file_name_in_zip, fp.read())
+            data = fp.read()
+            for zipfile in zipfiles:
+                zipfile.writestr(file_name_in_zip, data)
