@@ -99,6 +99,14 @@ def add_other_records_to_organisation(organisation_id, input_json, public_only=F
     return input_json
 
 
+def add_other_records_to_fund(fund_id, input_json, public_only=False):
+    # Add ID
+    input_json["id"] = fund_id
+
+    # Done
+    return input_json
+
+
 def extract_edits_from_project_import(record, import_json):
     out = []
     # organisation_data = defaultdict(list)

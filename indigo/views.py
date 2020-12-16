@@ -10,6 +10,7 @@ import spreadsheetforms.api
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
+from django.core.files.storage import default_storage
 from django.db.models.functions import Now
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -316,6 +317,19 @@ def fund_index(request, public_id):
     return render(
         request, "indigo/fund/index.html", {"fund": fund, "field_data": field_data},
     )
+
+
+########################### Public - All
+
+
+def all_public_data_as_spreadsheets(request):
+    if default_storage.exists("public/all_data_as_spreadsheets.zip"):
+        wrapper = default_storage.open("public/all_data_as_spreadsheets.zip")
+        response = HttpResponse(wrapper, content_type="application/zip")
+        response[
+            "Content-Disposition"
+        ] = "attachment; filename=all_data_as_spreadsheets.zip"
+        return response
 
 
 ########################### Public - Project - API

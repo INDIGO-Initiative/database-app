@@ -7,3 +7,4 @@ django-heroku
 compiletojsonschema
 sentry-sdk
 celery
+django-storages[boto3]
