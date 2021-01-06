@@ -4,7 +4,7 @@
 #
 #    pip-compile
 #
--e git+https://github.com/OpenDataServices/json-data-ferret.git@v0.2.0#egg=jsondataferret  # via -r requirements.in
+-e git+https://github.com/OpenDataServices/json-data-ferret.git@v0.3.0#egg=jsondataferret  # via -r requirements.in
 amqp==2.6.1               # via kombu
 asgiref==3.2.10           # via django
 attrs==19.3.0             # via jsonschema
