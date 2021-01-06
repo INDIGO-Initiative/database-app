@@ -1,7 +1,10 @@
+import csv
+import io
 import os
 import tempfile
 from zipfile import ZipFile
 
+import jsonpointer
 import spreadsheetforms.api
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -146,7 +149,119 @@ def _write_public_files_for_fund(fund):
 
 def update_public_archive_files():
 
-    # --- XLSX Files
+    _update_public_archive_files_file_per_record_in_zip()
+    _update_public_archive_files_file_per_data_type_csv_in_zip()
+
+
+def _update_public_archive_files_file_per_data_type_csv_in_zip():
+
+    # Create Zip File
+    file = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
+    out_file_zip = file.name
+    file.close()
+    with ZipFile(out_file_zip, "w") as zipfile:
+
+        # Projects
+        _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
+            "projects",
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"],
+            Project.objects.filter(exists=True, status_public=True).order_by(
+                "public_id"
+            ),
+            zipfile,
+        )
+
+        # Organisations
+        _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
+            "organisations",
+            settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"]["fields"],
+            Organisation.objects.filter(exists=True, status_public=True).order_by(
+                "public_id"
+            ),
+            zipfile,
+        )
+
+        # Funds
+        _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
+            "funds",
+            settings.JSONDATAFERRET_TYPE_INFORMATION["fund"]["fields"],
+            Fund.objects.filter(exists=True, status_public=True).order_by("public_id"),
+            zipfile,
+        )
+
+    # Move to Django Storage
+    default_storage_name = "public/all_data_per_data_type_csv.zip"
+    default_storage.delete(default_storage_name)
+    with open(out_file_zip, "rb") as fp:
+        default_storage.save(default_storage_name, ContentFile(fp.read()))
+
+    # Delete Temp file
+    os.remove(out_file_zip)
+
+
+def _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
+    type_id, type_information_fields, records, zipfile
+):
+
+    # Make list of files to make, and the labels and keys that will be used for each one
+    main_file_labels = ["ID"]
+    main_file_keys = []
+    files_to_make = {}
+
+    for config in type_information_fields:
+        if config.get("type", "") != "list" and config.get("key").find("/status") == -1:
+            main_file_labels.append(config.get("title"))
+            main_file_keys.append(config.get("key"))
+        elif config.get("type", "") == "list":
+            file_to_make = {
+                "list_key": config["key"],
+                "labels": ["Project ID"],
+                "keys": [],
+            }
+            for field in config["fields"]:
+                if field["key"].find("/status") == -1:
+                    file_to_make["labels"].append(field["title"])
+                    file_to_make["keys"].append(field["key"])
+            files_to_make[config["key"].replace("/", "")] = file_to_make
+
+    # Create main file and add to ZIP
+    with io.StringIO() as csv_output:
+        writer = csv.writer(csv_output)
+        writer.writerow(main_file_labels)
+        for record in records:
+            # id
+            row = [record.public_id]
+            # fields
+            for key in main_file_keys:
+                row.append(jsonpointer.resolve_pointer(record.data_public, key, ""))
+            # record done
+            writer.writerow(row)
+        zipfile.writestr(type_id + ".csv", csv_output.getvalue())
+
+    # Create each sub file and add to ZIP
+    for file_to_make_id, file_to_make_config in files_to_make.items():
+        with io.StringIO() as csv_output:
+            writer = csv.writer(csv_output)
+            writer.writerow(file_to_make_config["labels"])
+            for record in records:
+                row_datas = jsonpointer.resolve_pointer(
+                    record.data_public, file_to_make_config["list_key"], []
+                )
+                if row_datas and isinstance(row_datas, list):
+                    for row_data in row_datas:
+                        # id
+                        row = [record.public_id]
+                        # fields
+                        for key in file_to_make_config["keys"]:
+                            row.append(jsonpointer.resolve_pointer(row_data, key, ""))
+                        # record done
+                        writer.writerow(row)
+            zipfile.writestr(
+                type_id + "_" + file_to_make_id + ".csv", csv_output.getvalue()
+            )
+
+
+def _update_public_archive_files_file_per_record_in_zip():
 
     # Create Temp Files
     file = {

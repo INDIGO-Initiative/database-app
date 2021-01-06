@@ -6,9 +6,18 @@
 
 <p>Welcome</p>
 
+<p>Browse</p>
+
 <p><a href="{% url 'indigo_project_list' %}" class="btn btn-primary">Projects</a></p>
 <p><a href="{% url 'indigo_organisation_list' %}" class="btn btn-primary">Organisations</a></p>
 <p><a href="{% url 'indigo_fund_list' %}" class="btn btn-primary">Funds</a></p>
+
+<p>Download</p>
+
+<p><a href="{% url 'indigo_all_public_data_file_per_record_in_zip' %}" class="btn btn-primary">Download all public data (Zip File of Spreadsheets, one per record)</a></p>
+<p><a href="{% url 'indigo_all_public_data_file_per_data_type_csv_in_zip' %}" class="btn btn-primary">Download all public data (Zip File of CSVs, one per data type)</a></p>
+
+<p>Admin</p>
 
 <p><a href="{% url 'indigo_admin_index' %}" class="btn btn-primary">Admin</a></p>
 

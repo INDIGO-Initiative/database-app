@@ -55,9 +55,14 @@ urlpatterns = [
     path("fund/<public_id>", views.fund_index, name="indigo_fund_index",),
     ########################### Public - All
     path(
-        "all_public_projects_as_spreadsheets.zip",
-        views.all_public_projects_as_spreadsheets,
-        name="indigo_all_public_projects_as_spreadsheets",
+        "all_public_data_file_per_record.zip",
+        views.all_public_data_file_per_record_in_zip,
+        name="indigo_all_public_data_file_per_record_in_zip",
+    ),
+    path(
+        "all_public_data_file_per_data_type_csv.zip",
+        views.all_public_data_file_per_data_type_csv_in_zip,
+        name="indigo_all_public_data_file_per_data_type_csv_in_zip",
     ),
     ########################### Public - Project - API
     path("api1/project", views.api1_projects_list, name="indigo_api1_project_list",),
