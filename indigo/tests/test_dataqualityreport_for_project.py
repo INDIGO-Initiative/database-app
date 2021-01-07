@@ -47,3 +47,18 @@ class DataQualityReportForProjectTest(TestCase):
         assert 1 == len(errors)
         assert "value_not_set" == errors[0].get_type()
         assert "alternative_names/value" == errors[0].get_path()
+
+    def test_bad_date(self):
+        data = deepcopy(PASSING_DATA)
+        data["dates"] = {"outcomes_contract_signed": {"value": "23rd April 2020"}}
+        dqr = DataQualityReportForProject(data)
+        errors = dqr.get_errors()
+
+        assert 1 == len(errors)
+        assert "value_not_correct_pattern" == errors[0].get_type()
+        assert "dates/outcomes_contract_signed/value" == errors[0].get_path()
+        assert "23rd April 2020" == errors[0].get_value()
+        assert (
+            "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD"
+            == errors[0].get_pattern_hint()
+        )

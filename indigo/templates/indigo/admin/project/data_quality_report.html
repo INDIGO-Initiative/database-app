@@ -37,6 +37,15 @@
                         {% endif %}
                     </td>
                 </tr>
+            {% elif error.get_type == 'value_not_correct_pattern' %}
+                <tr>
+                    <td>Value not correct format</td>
+                    <td>{{ error.get_path }}</td>
+                    <td>
+                        Current value: {{ error.get_value }}<p>
+                        {{ error.get_pattern_hint }}
+                    </td>
+                </tr>
             {% elif error.get_type == 'value_not_set' %}
                 <tr>
                     <td>Value not set!</td>

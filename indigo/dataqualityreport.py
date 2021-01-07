@@ -28,6 +28,13 @@ class DataQualityReportForProject:
                 and error.validator_value == "string"
             ):
                 errors.append(ValueNotSetDataError(error))
+
+            elif (
+                error.message.find("' does not match '") != -1
+                and error.validator == "pattern"
+            ):
+                errors.append(ValueNotCorrectPatternError(error))
+
             else:
                 pass
                 # print("UNCAUGHT JSON SCHEMA ERROR")
@@ -73,3 +80,22 @@ class ValueNotSetDataError(_DataError):
 
     def get_path(self):
         return self._path
+
+
+class ValueNotCorrectPatternError(_DataError):
+    def __init__(self, error):
+        self._path = "/".join([str(i) for i in error.path])
+        self._value = error.instance
+        self._pattern_hint = error.schema.get("patternHint")
+
+    def get_type(self):
+        return "value_not_correct_pattern"
+
+    def get_path(self):
+        return self._path
+
+    def get_value(self):
+        return self._value
+
+    def get_pattern_hint(self):
+        return self._pattern_hint
