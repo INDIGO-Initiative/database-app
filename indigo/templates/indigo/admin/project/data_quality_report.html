@@ -1,0 +1,59 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Data Quality Report of Project {{ record.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_list' %}">Projects</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_index' public_id=record.public_id  %}">Project {{ record.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Data Quality Report</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Data Quality Report</h2>
+
+    <table class="table">
+        <tr>
+            <th>Type</th>
+            <th>Location</th>
+            <th>Details</th>
+        </tr>
+        {% for error in data_quality_report.get_errors %}
+            {% if error.get_type == 'value_not_in_enum_list' %}
+                <tr>
+                    <td>Value not a valid option</td>
+                    <td>{{ error.get_path }}</td>
+                    <td>
+                        Current value: {{ error.get_value }}<p>
+                        {% if error.get_value_options|length < 10 %}
+                            Options are: {{ error.get_value_options|join:", "  }}
+                        {% else %}
+                            For example, some options are: {{ error.get_value_options|slice:"0:10"|join:", "  }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% elif error.get_type == 'value_not_correct_pattern' %}
+                <tr>
+                    <td>Value not correct format</td>
+                    <td>{{ error.get_path }}</td>
+                    <td>
+                        Current value: {{ error.get_value }}<p>
+                        {{ error.get_pattern_hint }}
+                    </td>
+                </tr>
+            {% elif error.get_type == 'value_not_set' %}
+                <tr>
+                    <td>Value not set!</td>
+                    <td>{{ error.get_path }}</td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+
+{% endblock %}

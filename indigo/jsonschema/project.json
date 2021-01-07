@@ -68,31 +68,31 @@
       "properties": {
         "outcomes_contract_signed": {
           "title": "Date outcomes contract signed",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "$ref": "#/definitions/object_with_value_date_and_status"
         },
         "contracts_between_all_parties_signed": {
           "title": "Date contracts between all parties signed",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "$ref": "#/definitions/object_with_value_date_and_status"
         },
         "anticipated_completion_date": {
           "title": "Anticipated completion date",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "$ref": "#/definitions/object_with_value_date_and_status"
         },
         "actual_completion_date": {
           "title": "Actual completion date",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "$ref": "#/definitions/object_with_value_date_and_status"
         },
         "start_date_of_service_provision": {
           "title": "Start date of service provision",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "$ref": "#/definitions/object_with_value_date_and_status"
         },
         "anticipated_end_date_of_service_provision": {
           "title": "Anticipated end date of service provision",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "$ref": "#/definitions/object_with_value_date_and_status"
         },
         "actual_end_date_of_service_provision": {
           "title": "Actual end date of service provision",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "$ref": "#/definitions/object_with_value_date_and_status"
         },
         "source_ids": {
           "title": "(Source ID's)",
@@ -1567,6 +1567,26 @@
         "value": {
           "title": "(Value)",
           "type": "string"
+        },
+        "status": {
+          "title": "(Status)",
+          "type": "string",
+          "enum": [
+            "PUBLIC",
+            "PRIVATE",
+            "DISPUTED"
+          ]
+        }
+      }
+    },
+    "object_with_value_date_and_status": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "title": "(Value)",
+          "type": "string",
+          "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+          "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD"
         },
         "status": {
           "title": "(Status)",

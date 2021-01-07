@@ -132,17 +132,22 @@ urlpatterns = [
         name="indigo_admin_project_history",
     ),
     path(
-        "admin/new_project", views.admin_projects_new, name="indigo_admin_project_new",
-    ),
-    path(
-        "admin/project_data_quality_report",
+        "admin/project/<public_id>/data_quality_report",
         views.admin_project_data_quality_report,
         name="indigo_admin_project_data_quality_report",
     ),
     path(
+        "admin/new_project", views.admin_projects_new, name="indigo_admin_project_new",
+    ),
+    path(
+        "admin/project_data_quality_report",
+        views.admin_all_projects_data_quality_report,
+        name="indigo_admin_all_projects_data_quality_report",
+    ),
+    path(
         "admin/project_data_quality_report/field_single",
-        views.admin_project_data_quality_report_field_single,
-        name="indigo_admin_project_data_quality_report_field_single",
+        views.admin_all_projects_data_quality_report_field_single,
+        name="indigo_admin_all_projects_data_quality_report_field_single",
     ),
     ########################### Admin - Organisation
     path(
