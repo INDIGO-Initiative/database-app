@@ -26,6 +26,7 @@ from indigo import (
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PROJECT_PUBLIC_ID,
 )
+from indigo.dataqualityreport import DataQualityReportForProject
 from indigo.tasks import task_process_imported_project_file
 
 from .forms import (
@@ -899,7 +900,23 @@ def admin_project_history(request, public_id):
 
 
 @permission_required("indigo.admin")
-def admin_project_data_quality_report(request):
+def admin_project_data_quality_report(request, public_id):
+    try:
+        project = Project.objects.get(public_id=public_id)
+    except Project.DoesNotExist:
+        raise Http404("Project does not exist")
+
+    dqr = DataQualityReportForProject(project.record.cached_data)
+
+    return render(
+        request,
+        "indigo/admin/project/data_quality_report.html",
+        {"project": project, "record": project.record, "data_quality_report": dqr},
+    )
+
+
+@permission_required("indigo.admin")
+def admin_all_projects_data_quality_report(request):
 
     return render(
         request,
@@ -916,7 +933,7 @@ def admin_project_data_quality_report(request):
 
 
 @permission_required("indigo.admin")
-def admin_project_data_quality_report_field_single(request):
+def admin_all_projects_data_quality_report_field_single(request):
 
     field_path = request.GET.get("field", "")
     # Note we MUST explicitly check the field the user passed is in our pre-calculated Config list!
