@@ -22,6 +22,12 @@ class DataQualityReportForProject:
             ):
                 errors.append(ValueNotInEnumListDataError(error))
 
+            elif (
+                error.message == "None is not of type 'string'"
+                and error.validator == "type"
+                and error.validator_value == "string"
+            ):
+                errors.append(ValueNotSetDataError(error))
             else:
                 pass
                 # print("UNCAUGHT JSON SCHEMA ERROR")
@@ -53,6 +59,17 @@ class ValueNotInEnumListDataError(_DataError):
 
     def get_value_options(self):
         return self._value_options
+
+    def get_path(self):
+        return self._path
+
+
+class ValueNotSetDataError(_DataError):
+    def __init__(self, error):
+        self._path = "/".join([str(i) for i in error.path])
+
+    def get_type(self):
+        return "value_not_set"
 
     def get_path(self):
         return self._path

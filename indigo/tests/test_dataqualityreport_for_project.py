@@ -36,3 +36,14 @@ class DataQualityReportForProjectTest(TestCase):
         assert "Who knows" == errors[0].get_value()
         assert "PUBLIC" in errors[0].get_value_options()
         assert "status" == errors[0].get_path()
+
+    def test_none_for_a_value(self):
+        """An empty string can be turned to None by Spreadsheet Forms; test we correctly identify that as a missing value"""
+        data = deepcopy(PASSING_DATA)
+        data["alternative_names"] = {"value": None}
+        dqr = DataQualityReportForProject(data)
+        errors = dqr.get_errors()
+
+        assert 1 == len(errors)
+        assert "value_not_set" == errors[0].get_type()
+        assert "alternative_names/value" == errors[0].get_path()

@@ -37,6 +37,12 @@
                         {% endif %}
                     </td>
                 </tr>
+            {% elif error.get_type == 'value_not_set' %}
+                <tr>
+                    <td>Value not set!</td>
+                    <td>{{ error.get_path }}</td>
+                    <td></td>
+                </tr>
             {% endif %}
         {% endfor %}
     </table>
