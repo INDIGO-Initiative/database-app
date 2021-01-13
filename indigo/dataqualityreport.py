@@ -35,6 +35,13 @@ class DataQualityReportForProject:
             ):
                 errors.append(ValueNotCorrectPatternError(error))
 
+            elif (
+                error.message.endswith(" is not of type 'number'")
+                and error.validator == "type"
+                and error.instance
+            ):
+                errors.append(ValueNotANumberDataError(error))
+
             else:
                 pass
                 # print("UNCAUGHT JSON SCHEMA ERROR")
@@ -99,3 +106,18 @@ class ValueNotCorrectPatternError(_DataError):
 
     def get_pattern_hint(self):
         return self._pattern_hint
+
+
+class ValueNotANumberDataError(_DataError):
+    def __init__(self, error):
+        self._path = "/".join([str(i) for i in error.path])
+        self._value = error.instance
+
+    def get_type(self):
+        return "value_not_a_number"
+
+    def get_path(self):
+        return self._path
+
+    def get_value(self):
+        return self._value

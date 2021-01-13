@@ -122,15 +122,15 @@
               "properties": {
                 "min": {
                   "title": "Min",
-                  "$ref": "#/definitions/object_with_value_string_and_status"
+                  "$ref": "#/definitions/object_with_value_number_and_status"
                 },
                 "exact": {
                   "title": "Exact",
-                  "$ref": "#/definitions/object_with_value_string_and_status"
+                  "$ref": "#/definitions/object_with_value_number_and_status"
                 },
                 "max": {
                   "title": "Max",
-                  "$ref": "#/definitions/object_with_value_string_and_status"
+                  "$ref": "#/definitions/object_with_value_number_and_status"
                 }
               }
             },
@@ -140,15 +140,15 @@
               "properties": {
                 "min": {
                   "title": "Min",
-                  "$ref": "#/definitions/object_with_value_string_and_status"
+                  "$ref": "#/definitions/object_with_value_number_and_status"
                 },
                 "exact": {
                   "title": "Exact",
-                  "$ref": "#/definitions/object_with_value_string_and_status"
+                  "$ref": "#/definitions/object_with_value_number_and_status"
                 },
                 "max": {
                   "title": "Max",
-                  "$ref": "#/definitions/object_with_value_string_and_status"
+                  "$ref": "#/definitions/object_with_value_number_and_status"
                 }
               }
             }
@@ -188,11 +188,11 @@
             },
             "amount": {
               "title": "Amount",
-              "$ref": "#/definitions/object_with_value_string_and_status"
+              "$ref": "#/definitions/object_with_value_number_and_status"
             },
             "amount_usd": {
               "title": "Amount USD",
-              "$ref": "#/definitions/object_with_value_string_and_status"
+              "$ref": "#/definitions/object_with_value_number_and_status"
             }
           }
         },
@@ -224,11 +224,11 @@
                   },
                   "amount": {
                     "title": "Amount",
-                    "$ref": "#/definitions/object_with_value_string_and_status"
+                    "$ref": "#/definitions/object_with_value_number_and_status"
                   },
                   "amount_usd": {
                     "title": "Amount USD",
-                    "$ref": "#/definitions/object_with_value_string_and_status"
+                    "$ref": "#/definitions/object_with_value_number_and_status"
                   },
                   "date": {
                     "title": "Date",
@@ -334,7 +334,7 @@
         },
         "targeted_number_service_users_or_beneficiaries_total": {
           "title": "Targeted number of unique service users or beneficiaries (total)",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "$ref": "#/definitions/object_with_value_number_and_status"
         },
         "unit_type_targeted_service_users_or_beneficiaries": {
           "title": "Unit type of targeted service users or beneficiaries",
@@ -359,7 +359,7 @@
         },
         "actual_number_service_users_or_beneficiaries_total": {
           "title": "Actual number of unique service users or beneficiaries engaged (total)",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "$ref": "#/definitions/object_with_value_number_and_status"
         },
         "unit_type_actual_service_users_or_beneficiaries": {
           "title": "Unit type of actual service users or beneficiaries engaged",
@@ -485,11 +485,11 @@
             "properties": {
               "lat": {
                 "title": "Lat",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               },
               "lng": {
                 "title": "Lng",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               }
             }
           },
@@ -668,11 +668,11 @@
               },
               "amount": {
                 "title": "Amount",
-                "$ref": "#/definitions/object_with_value_string_and_status"
+                "$ref": "#/definitions/object_with_value_number"
               },
               "amount_usd": {
                 "title": "Amount USD",
-                "$ref": "#/definitions/object_with_value_string_and_status"
+                "$ref": "#/definitions/object_with_value_number"
               }
             }
           },
@@ -704,11 +704,11 @@
               },
               "amount": {
                 "title": "Amount",
-                "$ref": "#/definitions/object_with_value_string_and_status"
+                "$ref": "#/definitions/object_with_value_number"
               },
               "amount_usd": {
                 "title": "Amount USD",
-                "$ref": "#/definitions/object_with_value_string_and_status"
+                "$ref": "#/definitions/object_with_value_number"
               }
             }
           },
@@ -773,15 +773,15 @@
                 "properties": {
                   "min": {
                     "title": "Min",
-                    "$ref": "#/definitions/object_with_value_string"
+                    "$ref": "#/definitions/object_with_value_number"
                   },
                   "exact": {
                     "title": "Exact",
-                    "$ref": "#/definitions/object_with_value_string"
+                    "$ref": "#/definitions/object_with_value_number"
                   },
                   "max": {
                     "title": "Max",
-                    "$ref": "#/definitions/object_with_value_string"
+                    "$ref": "#/definitions/object_with_value_number"
                   }
                 }
               },
@@ -791,15 +791,15 @@
                 "properties": {
                   "min": {
                     "title": "Min",
-                    "$ref": "#/definitions/object_with_value_string"
+                    "$ref": "#/definitions/object_with_value_number"
                   },
                   "exact": {
                     "title": "Exact",
-                    "$ref": "#/definitions/object_with_value_string"
+                    "$ref": "#/definitions/object_with_value_number"
                   },
                   "max": {
                     "title": "Max",
-                    "$ref": "#/definitions/object_with_value_string"
+                    "$ref": "#/definitions/object_with_value_number"
                   }
                 }
               }
@@ -974,11 +974,11 @@
             "properties": {
               "amount": {
                 "title": "Amount",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               },
               "amount_usd": {
                 "title": "Amount USD",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               }
             }
           },
@@ -1076,11 +1076,11 @@
               },
               "amount": {
                 "title": "Amount",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               },
               "amount_usd": {
                 "title": "Amount USD",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               }
             }
           },
@@ -1131,11 +1131,11 @@
             "properties": {
               "amount": {
                 "title": "Amount",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               },
               "amount_usd": {
                 "title": "Amount USD",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               }
             }
           },
@@ -1145,11 +1145,11 @@
             "properties": {
               "amount": {
                 "title": "Amount",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               },
               "amount_usd": {
                 "title": "Amount USD",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               }
             }
           },
@@ -1159,11 +1159,11 @@
             "properties": {
               "amount": {
                 "title": "Amount",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               },
               "amount_usd": {
                 "title": "Amount USD",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               }
             }
           },
@@ -1402,17 +1402,17 @@
             "properties": {
               "amount": {
                 "title": "Amount",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               },
               "amount_usd": {
                 "title": "Amount USD",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_number"
               }
             }
           },
           "number_of_days": {
             "title": "Number Of Days",
-            "$ref": "#/definitions/object_with_value_string"
+            "$ref": "#/definitions/object_with_value_number"
           },
           "source_ids": {
             "title": "Sources",
@@ -1561,12 +1561,39 @@
         }
       }
     },
+    "object_with_value_number": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "title": "(Value)",
+          "type": "number"
+        }
+      }
+    },
     "object_with_value_string_and_status": {
       "type": "object",
       "properties": {
         "value": {
           "title": "(Value)",
           "type": "string"
+        },
+        "status": {
+          "title": "(Status)",
+          "type": "string",
+          "enum": [
+            "PUBLIC",
+            "PRIVATE",
+            "DISPUTED"
+          ]
+        }
+      }
+    },
+    "object_with_value_number_and_status": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "title": "(Value)",
+          "type": "number"
         },
         "status": {
           "title": "(Status)",

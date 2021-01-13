@@ -46,6 +46,14 @@
                         {{ error.get_pattern_hint }}
                     </td>
                 </tr>
+            {% elif error.get_type == 'value_not_a_number' %}
+                <tr>
+                    <td>Value not a number</td>
+                    <td>{{ error.get_path }}</td>
+                    <td>
+                        Current value: {{ error.get_value }}
+                    </td>
+                </tr>
             {% elif error.get_type == 'value_not_set' %}
                 <tr>
                     <td>Value not set!</td>
