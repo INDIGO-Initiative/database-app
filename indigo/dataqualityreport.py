@@ -54,6 +54,12 @@ class DataQualityReportForProject:
     def get_errors(self):
         return self.errors
 
+    def get_errors_in_priority_levels(self):
+        out = {0: [], 1: [], 2: [], 3: []}
+        for error in self.errors:
+            out[error.get_priority()].append(error)
+        return out
+
 
 class _DataError:
     pass
@@ -77,6 +83,9 @@ class ValueNotInEnumListDataError(_DataError):
     def get_path(self):
         return self._path
 
+    def get_priority(self):
+        return 0
+
 
 class ValueNotSetDataError(_DataError):
     def __init__(self, error):
@@ -87,6 +96,9 @@ class ValueNotSetDataError(_DataError):
 
     def get_path(self):
         return self._path
+
+    def get_priority(self):
+        return 1
 
 
 class ValueNotCorrectPatternError(_DataError):
@@ -107,6 +119,9 @@ class ValueNotCorrectPatternError(_DataError):
     def get_pattern_hint(self):
         return self._pattern_hint
 
+    def get_priority(self):
+        return 0
+
 
 class ValueNotANumberDataError(_DataError):
     def __init__(self, error):
@@ -121,3 +136,6 @@ class ValueNotANumberDataError(_DataError):
 
     def get_value(self):
         return self._value
+
+    def get_priority(self):
+        return 0

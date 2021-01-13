@@ -17,51 +17,64 @@
 
     <h2>Data Quality Report</h2>
 
-    <table class="table">
-        <tr>
-            <th>Type</th>
-            <th>Location</th>
-            <th>Details</th>
-        </tr>
-        {% for error in data_quality_report.get_errors %}
-            {% if error.get_type == 'value_not_in_enum_list' %}
+    {% for priority, errors in errors_by_priority_level.items %}
+
+        <h3>Priority {{ priority }}</h3>
+
+        <table class="table">
+            <tr>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Details</th>
+            </tr>
+            {% for error in errors %}
+                {% if error.get_type == 'value_not_in_enum_list' %}
+                    <tr>
+                        <td>Value not a valid option</td>
+                        <td>{{ error.get_path }}</td>
+                        <td>
+                            Current value: {{ error.get_value }}<p>
+                            {% if error.get_value_options|length < 10 %}
+                                Options are: {{ error.get_value_options|join:", "  }}
+                            {% else %}
+                                For example, some options are: {{ error.get_value_options|slice:"0:10"|join:", "  }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% elif error.get_type == 'value_not_correct_pattern' %}
+                    <tr>
+                        <td>Value not correct format</td>
+                        <td>{{ error.get_path }}</td>
+                        <td>
+                            Current value: {{ error.get_value }}<p>
+                            {{ error.get_pattern_hint }}
+                        </td>
+                    </tr>
+                {% elif error.get_type == 'value_not_a_number' %}
+                    <tr>
+                        <td>Value not a number</td>
+                        <td>{{ error.get_path }}</td>
+                        <td>
+                            Current value: {{ error.get_value }}
+                        </td>
+                    </tr>
+                {% elif error.get_type == 'value_not_set' %}
+                    <tr>
+                        <td>Value not set!</td>
+                        <td>{{ error.get_path }}</td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+            {% empty %}
                 <tr>
-                    <td>Value not a valid option</td>
-                    <td>{{ error.get_path }}</td>
-                    <td>
-                        Current value: {{ error.get_value }}<p>
-                        {% if error.get_value_options|length < 10 %}
-                            Options are: {{ error.get_value_options|join:", "  }}
-                        {% else %}
-                            For example, some options are: {{ error.get_value_options|slice:"0:10"|join:", "  }}
-                        {% endif %}
+                    <td colspan="3">
+                        There are no issues.
                     </td>
                 </tr>
-            {% elif error.get_type == 'value_not_correct_pattern' %}
-                <tr>
-                    <td>Value not correct format</td>
-                    <td>{{ error.get_path }}</td>
-                    <td>
-                        Current value: {{ error.get_value }}<p>
-                        {{ error.get_pattern_hint }}
-                    </td>
-                </tr>
-            {% elif error.get_type == 'value_not_a_number' %}
-                <tr>
-                    <td>Value not a number</td>
-                    <td>{{ error.get_path }}</td>
-                    <td>
-                        Current value: {{ error.get_value }}
-                    </td>
-                </tr>
-            {% elif error.get_type == 'value_not_set' %}
-                <tr>
-                    <td>Value not set!</td>
-                    <td>{{ error.get_path }}</td>
-                    <td></td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-    </table>
+            {% endfor %}
+        </table>
+
+    {% endfor %}
+
 
 {% endblock %}
