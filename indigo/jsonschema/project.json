@@ -232,7 +232,7 @@
                   },
                   "date": {
                     "title": "Date",
-                    "$ref": "#/definitions/object_with_value_string_and_status"
+                    "$ref": "#/definitions/object_with_value_date_and_status"
                   }
               }
             }
@@ -252,7 +252,7 @@
             },
             "date": {
               "title": "Date",
-              "$ref": "#/definitions/object_with_value_string_and_status"
+              "$ref": "#/definitions/object_with_value_date_and_status"
             }
           }
         },
@@ -686,11 +686,11 @@
             "properties": {
               "start_date": {
                 "title": "Start",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_date"
               },
               "end_date": {
                 "title": "End",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_date"
               }
             }
           },
@@ -1242,11 +1242,11 @@
           },
           "period_start": {
             "title": "Period Start",
-            "$ref": "#/definitions/object_with_value_string"
+            "$ref": "#/definitions/object_with_value_date"
           },
           "period_end": {
             "title": "Period End",
-            "$ref": "#/definitions/object_with_value_string"
+            "$ref": "#/definitions/object_with_value_date"
           },
           "funding_organisation_id": {
             "title": "Funding Organisation Id",
@@ -1453,11 +1453,11 @@
             "properties": {
               "start_date": {
                 "title": "Start",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_date"
               },
               "end_date": {
                 "title": "End",
-                "$ref": "#/definitions/object_with_value_string"
+                "$ref": "#/definitions/object_with_value_date"
               }
             }
           },
@@ -1567,6 +1567,17 @@
         "value": {
           "title": "(Value)",
           "type": "number"
+        }
+      }
+    },
+    "object_with_value_date": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "title": "(Value)",
+          "type": "string",
+          "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+          "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD"
         }
       }
     },
