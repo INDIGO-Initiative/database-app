@@ -85,6 +85,7 @@ def _projects_list_download_worker(projects):
             labels.append(config.get("title"))
             keys.append(config.get("key"))
     labels.append("Organisations")
+    labels.append("Countries")
 
     writer = csv.writer(response)
     writer.writerow(labels)
@@ -104,6 +105,26 @@ def _projects_list_download_worker(projects):
         if isinstance(orgs_list, list):
             orgs = [jsonpointer.resolve_pointer(d, "/id", "") for d in orgs_list]
             row.append(", ".join([i for i in orgs if isinstance(i, str) and i]))
+        else:
+            row.append("")
+
+        # Countries
+        delivery_locations_list = jsonpointer.resolve_pointer(
+            project.data_public, "/delivery_locations", []
+        )
+        if isinstance(delivery_locations_list, list):
+            delivery_locations = [
+                jsonpointer.resolve_pointer(d, "/location_country/value", "")
+                for d in delivery_locations_list
+            ]
+            # List/set removes duplicates
+            row.append(
+                ", ".join(
+                    list(
+                        set([i for i in delivery_locations if isinstance(i, str) and i])
+                    )
+                )
+            )
         else:
             row.append("")
 
@@ -324,13 +345,23 @@ def fund_index(request, public_id):
 ########################### Public - All
 
 
-def all_public_projects_as_spreadsheets(request):
-    if default_storage.exists("public/all_projects_as_spreadsheets.zip"):
-        wrapper = default_storage.open("public/all_projects_as_spreadsheets.zip")
+def all_public_data_file_per_record_in_zip(request):
+    if default_storage.exists("public/all_data_as_spreadsheets.zip"):
+        wrapper = default_storage.open("public/all_data_as_spreadsheets.zip")
         response = HttpResponse(wrapper, content_type="application/zip")
         response[
             "Content-Disposition"
-        ] = "attachment; filename=all_projects_as_spreadsheets.zip"
+        ] = "attachment; filename=all_data_as_spreadsheets.zip"
+        return response
+
+
+def all_public_data_file_per_data_type_csv_in_zip(request):
+    if default_storage.exists("public/all_data_per_data_type_csv.zip"):
+        wrapper = default_storage.open("public/all_data_per_data_type_csv.zip")
+        response = HttpResponse(wrapper, content_type="application/zip")
+        response[
+            "Content-Disposition"
+        ] = "attachment; filename=all_data_per_data_type_csv.zip"
         return response
 
 
