@@ -62,3 +62,17 @@ class DataQualityReportForProjectTest(TestCase):
             "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD"
             == errors[0].get_pattern_hint()
         )
+
+    def test_not_a_number(self):
+        data = deepcopy(PASSING_DATA)
+        data["delivery_locations"] = [
+            {"lat_lng": {"lat": {"value": "East a bit"}, "lng": {"value": 37.8}}},
+            {"lat_lng": {"lat": {"value": None}, "lng": {"value": None}}},
+        ]
+        dqr = DataQualityReportForProject(data)
+        errors = dqr.get_errors()
+
+        assert 1 == len(errors)
+        assert "value_not_a_number" == errors[0].get_type()
+        assert "delivery_locations/0/lat_lng/lat/value" == errors[0].get_path()
+        assert "East a bit" == errors[0].get_value()

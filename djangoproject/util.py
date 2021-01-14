@@ -24,7 +24,7 @@ class JsonSchemaProcessor:
                         title=self._join_title(title, our_json_schema.get("title", "")),
                     )
                 )
-        elif our_json_schema.get("type") in ["string"]:
+        elif our_json_schema.get("type") in ["string", "number"]:
             out.append(
                 {
                     "key": start_pointer.replace("/properties/", "/"),

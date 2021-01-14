@@ -35,6 +35,13 @@ class DataQualityReportForProject:
             ):
                 errors.append(ValueNotCorrectPatternError(error))
 
+            elif (
+                error.message.endswith(" is not of type 'number'")
+                and error.validator == "type"
+                and error.instance
+            ):
+                errors.append(ValueNotANumberDataError(error))
+
             else:
                 pass
                 # print("UNCAUGHT JSON SCHEMA ERROR")
@@ -46,6 +53,12 @@ class DataQualityReportForProject:
 
     def get_errors(self):
         return self.errors
+
+    def get_errors_in_priority_levels(self):
+        out = {0: [], 1: [], 2: [], 3: []}
+        for error in self.errors:
+            out[error.get_priority()].append(error)
+        return out
 
 
 class _DataError:
@@ -70,6 +83,9 @@ class ValueNotInEnumListDataError(_DataError):
     def get_path(self):
         return self._path
 
+    def get_priority(self):
+        return 0
+
 
 class ValueNotSetDataError(_DataError):
     def __init__(self, error):
@@ -80,6 +96,9 @@ class ValueNotSetDataError(_DataError):
 
     def get_path(self):
         return self._path
+
+    def get_priority(self):
+        return 1
 
 
 class ValueNotCorrectPatternError(_DataError):
@@ -99,3 +118,24 @@ class ValueNotCorrectPatternError(_DataError):
 
     def get_pattern_hint(self):
         return self._pattern_hint
+
+    def get_priority(self):
+        return 0
+
+
+class ValueNotANumberDataError(_DataError):
+    def __init__(self, error):
+        self._path = "/".join([str(i) for i in error.path])
+        self._value = error.instance
+
+    def get_type(self):
+        return "value_not_a_number"
+
+    def get_path(self):
+        return self._path
+
+    def get_value(self):
+        return self._value
+
+    def get_priority(self):
+        return 0

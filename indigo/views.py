@@ -911,7 +911,12 @@ def admin_project_data_quality_report(request, public_id):
     return render(
         request,
         "indigo/admin/project/data_quality_report.html",
-        {"project": project, "record": project.record, "data_quality_report": dqr},
+        {
+            "project": project,
+            "record": project.record,
+            "data_quality_report": dqr,
+            "errors_by_priority_level": dqr.get_errors_in_priority_levels(),
+        },
     )
 
 
