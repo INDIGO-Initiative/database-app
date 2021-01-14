@@ -19,36 +19,81 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
     # Add ID
     input_json["id"] = project_id
 
-    # Place organisations in proper list place
-    organisations_list = []
-    for org_id in sorted(
-        find_unique_organisation_ids_referenced_in_project_data(input_json)
-    ):
-        try:
-            organisation = Organisation.objects.get(public_id=org_id)
-            organisation_data = (
-                organisation.data_public if public_only else organisation.data_private
-            )
-            this_org_data = {}
-            jsonpointer.set_pointer(
-                this_org_data,
-                TYPE_PROJECT_ORGANISATION_LIST["item_id_key"],
-                organisation.public_id,
-            )
-            for data_key, org_key in TYPE_PROJECT_ORGANISATION_LIST[
-                "item_to_org_map"
-            ].items():
-                # We don't use jsonpointer.set_pointer here because it can't cope with setting "deep" paths
-                spreadsheetforms.util.json_set_deep_value(
-                    this_org_data,
-                    data_key[1:],
-                    jsonpointer.resolve_pointer(
-                        organisation_data, org_key, default=None
-                    ),
+    # Organisations
+    organisations = {}
+
+    # Look up organisations and add to list (where we can't add more info in place)
+    for config in TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST:
+        data_list = jsonpointer.resolve_pointer(
+            input_json, config["list_key"], default=None
+        )
+        if isinstance(data_list, list) and data_list:
+            for item in data_list:
+                field_value = jsonpointer.resolve_pointer(
+                    item, config["item_organisation_id_key"], default=None
                 )
-            organisations_list.append(this_org_data)
-        except Organisation.DoesNotExist:
-            pass
+                if field_value and field_value.strip():
+                    field_values = field_value.split(",")
+                    for org_id in [
+                        org_id.strip() for org_id in field_values if org_id.strip()
+                    ]:
+                        try:
+                            organisation = Organisation.objects.get(public_id=org_id)
+                            organisations[organisation.public_id] = organisation
+                        except Organisation.DoesNotExist:
+                            pass
+
+    # Look up Organisations, add to list and add more info in place
+    for config in TYPE_PROJECT_ORGANISATION_REFERENCES_LIST:
+        data_list = jsonpointer.resolve_pointer(
+            input_json, config["list_key"], default=None
+        )
+        if isinstance(data_list, list) and data_list:
+            for item in data_list:
+                field_value = jsonpointer.resolve_pointer(
+                    item, config["item_organisation_id_key"], default=None
+                )
+                if field_value and field_value.strip():
+                    try:
+                        organisation = Organisation.objects.get(public_id=field_value)
+                        organisations[organisation.public_id] = organisation
+                        organisation_data = (
+                            organisation.data_public
+                            if public_only
+                            else organisation.data_private
+                        )
+                        spreadsheetforms.util.json_set_deep_value(
+                            item,
+                            "organisation_names" + config["item_organisation_id_key"],
+                            jsonpointer.resolve_pointer(
+                                organisation_data, "/name/value", default=None
+                            ),
+                        )
+                    except Organisation.DoesNotExist:
+                        pass
+
+    # Put organisations list into organisations tab
+    organisations_list = []
+    for org_id, organisation in sorted(organisations.items(), key=lambda x: x[0]):
+        organisation_data = (
+            organisation.data_public if public_only else organisation.data_private
+        )
+        this_org_data = {}
+        jsonpointer.set_pointer(
+            this_org_data,
+            TYPE_PROJECT_ORGANISATION_LIST["item_id_key"],
+            organisation.public_id,
+        )
+        for data_key, org_key in TYPE_PROJECT_ORGANISATION_LIST[
+            "item_to_org_map"
+        ].items():
+            # We don't use jsonpointer.set_pointer here because it can't cope with setting "deep" paths
+            spreadsheetforms.util.json_set_deep_value(
+                this_org_data,
+                data_key[1:],
+                jsonpointer.resolve_pointer(organisation_data, org_key, default=None),
+            )
+        organisations_list.append(this_org_data)
     jsonpointer.set_pointer(
         input_json, TYPE_PROJECT_ORGANISATION_LIST["list_key"], organisations_list
     )
