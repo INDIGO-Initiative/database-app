@@ -11,7 +11,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
 import indigo.utils
-from indigo.models import Fund, Organisation, Project
+from indigo.models import Organisation, Project
 
 
 def update_public_files_for_project(project):
@@ -182,12 +182,13 @@ def _update_public_archive_files_file_per_data_type_csv_in_zip():
         )
 
         # Funds
-        _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
-            "funds",
-            settings.JSONDATAFERRET_TYPE_INFORMATION["fund"]["fields"],
-            Fund.objects.filter(exists=True, status_public=True).order_by("public_id"),
-            zipfile,
-        )
+        # Funds are not being included for now
+        # _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
+        #     "funds",
+        #     settings.JSONDATAFERRET_TYPE_INFORMATION["fund"]["fields"],
+        #     Fund.objects.filter(exists=True, status_public=True).order_by("public_id"),
+        #     zipfile,
+        # )
 
     # Move to Django Storage
     default_storage_name = "public/all_data_per_data_type_csv.zip"
@@ -280,12 +281,13 @@ def _update_public_archive_files_file_per_record_in_zip():
                 "organisation/" + organisation.public_id + ".xlsx",
             )
 
-        for fund in Fund.objects.filter(exists=True, status_public=True):
-            _put_file_in_zip_file(
-                [zipfile_all],
-                "public/fund/" + fund.public_id + ".xlsx",
-                "fund/" + fund.public_id + ".xlsx",
-            )
+        # Funds are not being included for now
+        # for fund in Fund.objects.filter(exists=True, status_public=True):
+        #     _put_file_in_zip_file(
+        #         [zipfile_all],
+        #         "public/fund/" + fund.public_id + ".xlsx",
+        #         "fund/" + fund.public_id + ".xlsx",
+        #     )
 
         for project in Project.objects.filter(exists=True, status_public=True):
             _put_file_in_zip_file(
