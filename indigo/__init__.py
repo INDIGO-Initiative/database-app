@@ -33,6 +33,7 @@ TYPE_PROJECT_FILTER_LISTS_LIST = [
     "/grants",
     "/technical_assistances",
     "/technical_assistance_details",
+    "/documents",
 ]
 
 TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [

@@ -1,0 +1,29 @@
+[
+    {
+        "key": "/name/value",
+        "title": "Fund - Name"
+    },
+    {
+        "key": "/identifier_scheme/value",
+        "title": "Fund - Identifier Scheme"
+    },
+    {
+        "key": "/identifier/value",
+        "title": "Fund - Identifier"
+    },
+    {
+        "key": "/country/value",
+        "title": "Fund - Country"
+    },
+    {
+        "fields": [
+            {
+                "key": "/organisation_id/value",
+                "title": "Organisation ID"
+            }
+        ],
+        "key": "/organisations",
+        "title": "Fund - Organisations",
+        "type": "list"
+    }
+]

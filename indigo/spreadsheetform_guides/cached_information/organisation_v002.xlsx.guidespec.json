@@ -1,0 +1,228 @@
+{
+    "worksheets": {
+        "Controlled By": {
+            "down_configs": {
+                "controlled_by": [
+                    {
+                        "column": 1,
+                        "column_letter": "A",
+                        "coordinate": "A5",
+                        "item_path": "organisation_id/value",
+                        "list_path": "controlled_by",
+                        "mode": "down",
+                        "row": 5
+                    },
+                    {
+                        "column": 2,
+                        "column_letter": "B",
+                        "coordinate": "B5",
+                        "item_path": "source_ids",
+                        "list_path": "controlled_by",
+                        "mode": "down",
+                        "row": 5
+                    },
+                    {
+                        "column": 3,
+                        "column_letter": "C",
+                        "coordinate": "C5",
+                        "item_path": "notes",
+                        "list_path": "controlled_by",
+                        "mode": "down",
+                        "row": 5
+                    }
+                ]
+            },
+            "right_configs": {},
+            "single_configs": {}
+        },
+        "General Overview": {
+            "down_configs": {},
+            "right_configs": {},
+            "single_configs": {
+                "address/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B17",
+                    "mode": "single",
+                    "path": "address/value",
+                    "row": 17
+                },
+                "contact/email/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B13",
+                    "mode": "single",
+                    "path": "contact/email/value",
+                    "row": 13
+                },
+                "contact/name/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B12",
+                    "mode": "single",
+                    "path": "contact/name/value",
+                    "row": 12
+                },
+                "country/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B19",
+                    "mode": "single",
+                    "path": "country/value",
+                    "row": 19
+                },
+                "name/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B2",
+                    "mode": "single",
+                    "path": "name/value",
+                    "row": 2
+                },
+                "org-ids/charity/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B8",
+                    "mode": "single",
+                    "path": "org-ids/charity/value",
+                    "row": 8
+                },
+                "org-ids/company/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B7",
+                    "mode": "single",
+                    "path": "org-ids/company/value",
+                    "row": 7
+                },
+                "org-ids/other/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B9",
+                    "mode": "single",
+                    "path": "org-ids/other/value",
+                    "row": 9
+                },
+                "postcode/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B18",
+                    "mode": "single",
+                    "path": "postcode/value",
+                    "row": 18
+                },
+                "website/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B16",
+                    "mode": "single",
+                    "path": "website/value",
+                    "row": 16
+                }
+            }
+        },
+        "Introduction": {
+            "down_configs": {},
+            "right_configs": {},
+            "single_configs": {
+                "id": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B2",
+                    "mode": "single",
+                    "path": "id",
+                    "row": 2
+                }
+            }
+        },
+        "Sources": {
+            "down_configs": {
+                "sources": [
+                    {
+                        "column": 1,
+                        "column_letter": "A",
+                        "coordinate": "A4",
+                        "item_path": "id",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 2,
+                        "column_letter": "B",
+                        "coordinate": "B4",
+                        "item_path": "name/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 3,
+                        "column_letter": "C",
+                        "coordinate": "C4",
+                        "item_path": "type/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 4,
+                        "column_letter": "D",
+                        "coordinate": "D4",
+                        "item_path": "publishing_organisation_ids/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 5,
+                        "column_letter": "E",
+                        "coordinate": "E4",
+                        "item_path": "url/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 6,
+                        "column_letter": "F",
+                        "coordinate": "F4",
+                        "item_path": "archive_url/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 7,
+                        "column_letter": "G",
+                        "coordinate": "G4",
+                        "item_path": "internal_url/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 8,
+                        "column_letter": "H",
+                        "coordinate": "H4",
+                        "item_path": "publication_date/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 9,
+                        "column_letter": "I",
+                        "coordinate": "I4",
+                        "item_path": "accessed_date/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 4
+                    }
+                ]
+            },
+            "right_configs": {},
+            "single_configs": {}
+        }
+    }
+}

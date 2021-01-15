@@ -12,10 +12,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import json
 import os
 
-from spreadsheetforms.api import get_guide_spec
-
-from .util import JsonSchemaProcessor
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -106,89 +102,80 @@ FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHand
 JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT = "%Y-%m-%d"
 
 
-with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "project.json")) as fp:
-    project_json_schema = json.load(fp)
-project_json_processor = JsonSchemaProcessor(
-    input_filename=os.path.join(BASE_DIR, "indigo", "jsonschema", "project.json")
-)
+def load_guide_form_spec(filename):
+    fn = os.path.join(
+        BASE_DIR,
+        "indigo",
+        "spreadsheetform_guides",
+        "cached_information",
+        filename + ".guidespec.json",
+    )
+    with open(fn) as fp:
+        return json.load(fp)
 
-with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "organisation.json")) as fp:
-    organisation_json_schema = json.load(fp)
-organisation_json_processor = JsonSchemaProcessor(
-    input_filename=os.path.join(BASE_DIR, "indigo", "jsonschema", "organisation.json")
-)
 
-with open(os.path.join(BASE_DIR, "indigo", "jsonschema", "fund.json")) as fp:
-    fund_json_schema = json.load(fp)
-fund_json_processor = JsonSchemaProcessor(
-    input_filename=os.path.join(BASE_DIR, "indigo", "jsonschema", "fund.json")
-)
+def load_json_schema(filename):
+    fn = os.path.join(BASE_DIR, "indigo", "jsonschema", filename)
+    with open(fn) as fp:
+        return json.load(fp)
 
-_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V001 = os.path.join(
-    BASE_DIR, "indigo", "spreadsheetform_guides", "project_v001.xlsx",
-)
-_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V002 = os.path.join(
-    BASE_DIR, "indigo", "spreadsheetform_guides", "project_v002.xlsx",
-)
-_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V003 = os.path.join(
-    BASE_DIR, "indigo", "spreadsheetform_guides", "project_v003.xlsx",
-)
-_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V004 = os.path.join(
-    BASE_DIR, "indigo", "spreadsheetform_guides", "project_v004.xlsx",
-)
-_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V005 = os.path.join(
-    BASE_DIR, "indigo", "spreadsheetform_guides", "project_v005.xlsx",
-)
-_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V006 = os.path.join(
-    BASE_DIR, "indigo", "spreadsheetform_guides", "project_v006.xlsx",
-)
-_PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007 = os.path.join(
-    BASE_DIR, "indigo", "spreadsheetform_guides", "project_v007.xlsx",
-)
-_FUND_SPREADSHEET_FORM_GUIDE_FILENAME = os.path.join(
-    BASE_DIR, "indigo", "spreadsheetform_guides", "fund_v001.xlsx",
-)
-_ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V001 = os.path.join(
-    BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v001.xlsx",
-)
-_ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002 = os.path.join(
-    BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v002.xlsx",
-)
 
-_PROJECT_SPREADSHEET_FORM_LATEST_GUIDE_SPEC = get_guide_spec(
-    _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007
-)
-_ORGANISATION_SPREADSHEET_FORM_LATEST_GUIDE_SPEC = get_guide_spec(
-    _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002
-)
+def load_json_schema_fields(filename):
+    fn = os.path.join(
+        BASE_DIR,
+        "indigo",
+        "jsonschema",
+        "cached_information",
+        filename + ".fields.json",
+    )
+    with open(fn) as fp:
+        return json.load(fp)
+
+
+def load_json_schema_filter_keys(filename):
+    fn = os.path.join(
+        BASE_DIR,
+        "indigo",
+        "jsonschema",
+        "cached_information",
+        filename + ".filter_keys.json",
+    )
+    with open(fn) as fp:
+        return json.load(fp)
+
 
 JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
-        "json_schema": project_json_schema,
-        "spreadsheet_form_guide": _PROJECT_SPREADSHEET_FORM_GUIDE_FILENAME_V007,
-        "spreadsheet_form_guide_spec": _PROJECT_SPREADSHEET_FORM_LATEST_GUIDE_SPEC,
+        "json_schema": load_json_schema("project.json"),
+        "spreadsheet_form_guide": os.path.join(
+            BASE_DIR, "indigo", "spreadsheetform_guides", "project_v008.xlsx",
+        ),
+        "spreadsheet_form_guide_spec": load_guide_form_spec("project_v008.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
-            7: _PROJECT_SPREADSHEET_FORM_LATEST_GUIDE_SPEC,
+            7: load_guide_form_spec("project_v007.xlsx"),
+            8: load_guide_form_spec("project_v008.xlsx"),
         },
-        "fields": project_json_processor.get_fields(),
-        "filter_keys": project_json_processor.get_filter_keys(),
+        "fields": load_json_schema_fields("project.json"),
+        "filter_keys": load_json_schema_filter_keys("project.json"),
     },
     "organisation": {
-        "json_schema": organisation_json_schema,
-        "spreadsheet_form_guide": _ORGANISATION_SPREADSHEET_FORM_GUIDE_FILENAME_V002,
-        "spreadsheet_form_guide_spec": _ORGANISATION_SPREADSHEET_FORM_LATEST_GUIDE_SPEC,
+        "json_schema": load_json_schema("organisation.json"),
+        "spreadsheet_form_guide": os.path.join(
+            BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v002.xlsx",
+        ),
+        "spreadsheet_form_guide_spec": load_guide_form_spec("organisation_v002.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
-            2: _ORGANISATION_SPREADSHEET_FORM_LATEST_GUIDE_SPEC,
+            2: load_guide_form_spec("organisation_v002.xlsx"),
         },
-        "fields": organisation_json_processor.get_fields(),
+        "fields": load_json_schema_fields("organisation.json"),
     },
     "fund": {
-        "json_schema": fund_json_schema,
-        "spreadsheet_form_guide": _FUND_SPREADSHEET_FORM_GUIDE_FILENAME,
-        "spreadsheet_form_guide_spec": get_guide_spec(
-            _FUND_SPREADSHEET_FORM_GUIDE_FILENAME
+        "json_schema": load_json_schema("fund.json"),
+        "spreadsheet_form_guide": os.path.join(
+            BASE_DIR, "indigo", "spreadsheetform_guides", "fund_v001.xlsx",
         ),
-        "fields": fund_json_processor.get_fields(),
+        "spreadsheet_form_guide_spec": load_guide_form_spec("fund_v001.xlsx"),
+        "fields": load_json_schema_fields("fund.json"),
     },
 }
 

@@ -1,0 +1,212 @@
+{
+    "worksheets": {
+        "Controlled By": {
+            "down_configs": {
+                "controlled_by": [
+                    {
+                        "column": 1,
+                        "column_letter": "A",
+                        "coordinate": "A12",
+                        "item_path": "organisation_id/value",
+                        "list_path": "controlled_by",
+                        "mode": "down",
+                        "row": 12
+                    },
+                    {
+                        "column": 2,
+                        "column_letter": "B",
+                        "coordinate": "B12",
+                        "item_path": "source_ids",
+                        "list_path": "controlled_by",
+                        "mode": "down",
+                        "row": 12
+                    },
+                    {
+                        "column": 3,
+                        "column_letter": "C",
+                        "coordinate": "C12",
+                        "item_path": "notes",
+                        "list_path": "controlled_by",
+                        "mode": "down",
+                        "row": 12
+                    }
+                ]
+            },
+            "right_configs": {},
+            "single_configs": {}
+        },
+        "General Overview": {
+            "down_configs": {},
+            "right_configs": {},
+            "single_configs": {
+                "address/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B20",
+                    "mode": "single",
+                    "path": "address/value",
+                    "row": 20
+                },
+                "country/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B22",
+                    "mode": "single",
+                    "path": "country/value",
+                    "row": 22
+                },
+                "name/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B9",
+                    "mode": "single",
+                    "path": "name/value",
+                    "row": 9
+                },
+                "org-ids/charity/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B15",
+                    "mode": "single",
+                    "path": "org-ids/charity/value",
+                    "row": 15
+                },
+                "org-ids/company/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B14",
+                    "mode": "single",
+                    "path": "org-ids/company/value",
+                    "row": 14
+                },
+                "org-ids/other/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B16",
+                    "mode": "single",
+                    "path": "org-ids/other/value",
+                    "row": 16
+                },
+                "postcode/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B21",
+                    "mode": "single",
+                    "path": "postcode/value",
+                    "row": 21
+                },
+                "website/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B19",
+                    "mode": "single",
+                    "path": "website/value",
+                    "row": 19
+                }
+            }
+        },
+        "Introduction": {
+            "down_configs": {},
+            "right_configs": {},
+            "single_configs": {
+                "id": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B2",
+                    "mode": "single",
+                    "path": "id",
+                    "row": 2
+                }
+            }
+        },
+        "Sources": {
+            "down_configs": {
+                "sources": [
+                    {
+                        "column": 1,
+                        "column_letter": "A",
+                        "coordinate": "A11",
+                        "item_path": "id",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 11
+                    },
+                    {
+                        "column": 2,
+                        "column_letter": "B",
+                        "coordinate": "B11",
+                        "item_path": "name/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 11
+                    },
+                    {
+                        "column": 3,
+                        "column_letter": "C",
+                        "coordinate": "C11",
+                        "item_path": "type/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 11
+                    },
+                    {
+                        "column": 4,
+                        "column_letter": "D",
+                        "coordinate": "D11",
+                        "item_path": "publishing_organisation_ids/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 11
+                    },
+                    {
+                        "column": 5,
+                        "column_letter": "E",
+                        "coordinate": "E11",
+                        "item_path": "url/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 11
+                    },
+                    {
+                        "column": 6,
+                        "column_letter": "F",
+                        "coordinate": "F11",
+                        "item_path": "archive_url/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 11
+                    },
+                    {
+                        "column": 7,
+                        "column_letter": "G",
+                        "coordinate": "G11",
+                        "item_path": "internal_url/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 11
+                    },
+                    {
+                        "column": 8,
+                        "column_letter": "H",
+                        "coordinate": "H11",
+                        "item_path": "publication_date/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 11
+                    },
+                    {
+                        "column": 9,
+                        "column_letter": "I",
+                        "coordinate": "I11",
+                        "item_path": "accessed_date/value",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 11
+                    }
+                ]
+            },
+            "right_configs": {},
+            "single_configs": {}
+        }
+    }
+}
