@@ -1549,6 +1549,31 @@
           }
         }
       }
+    },
+    "documents": {
+      "title": "Documents",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "title": "Title",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "url": {
+            "title": "URL",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "definitions": {
