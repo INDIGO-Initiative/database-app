@@ -1,0 +1,104 @@
+[
+    {
+        "key": "/name/value",
+        "title": "Name"
+    },
+    {
+        "key": "/org-ids/company/value",
+        "title": "ORG-Ids - Company"
+    },
+    {
+        "key": "/org-ids/charity/value",
+        "title": "ORG-Ids - Charity"
+    },
+    {
+        "key": "/org-ids/other/value",
+        "title": "ORG-Ids - Other"
+    },
+    {
+        "key": "/contact/name/value",
+        "title": "Contact - Name"
+    },
+    {
+        "key": "/contact/email/value",
+        "title": "Contact - Email"
+    },
+    {
+        "key": "/website/value",
+        "title": "Website"
+    },
+    {
+        "key": "/address/value",
+        "title": "Address"
+    },
+    {
+        "key": "/postcode/value",
+        "title": "Postcode"
+    },
+    {
+        "key": "/country/value",
+        "title": "Country"
+    },
+    {
+        "fields": [
+            {
+                "key": "/organisation_id/value",
+                "title": "By Organisation ID"
+            },
+            {
+                "key": "/source_ids",
+                "title": "Sources"
+            },
+            {
+                "key": "/notes",
+                "title": "Notes"
+            }
+        ],
+        "key": "/controlled_by",
+        "title": "Controlled By",
+        "type": "list"
+    },
+    {
+        "fields": [
+            {
+                "key": "/id",
+                "title": "Id"
+            },
+            {
+                "key": "/name/value",
+                "title": "Name"
+            },
+            {
+                "key": "/type/value",
+                "title": "Type"
+            },
+            {
+                "key": "/publishing_organisation_ids/value",
+                "title": "Publishing Organisations"
+            },
+            {
+                "key": "/url/value",
+                "title": "URL"
+            },
+            {
+                "key": "/archive_url/value",
+                "title": "Archive URL"
+            },
+            {
+                "key": "/internal_url/value",
+                "title": "Internal URL"
+            },
+            {
+                "key": "/publication_date/value",
+                "title": "Publication Date"
+            },
+            {
+                "key": "/accessed_date/value",
+                "title": "Accessed Date"
+            }
+        ],
+        "key": "/sources",
+        "title": "Sources",
+        "type": "list"
+    }
+]
