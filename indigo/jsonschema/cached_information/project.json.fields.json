@@ -550,6 +550,14 @@
             {
                 "key": "/accessed_date/value",
                 "title": "Accessed Date - (Value)"
+            },
+            {
+                "key": "/notes",
+                "title": "Notes"
+            },
+            {
+                "key": "/status",
+                "title": "Status"
             }
         ],
         "key": "/sources",

@@ -6,15 +6,6 @@ JSONDATAFERRET_HOOKS = "indigo.jsondataferret"
 
 TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST = [
     "/status",
-    # We temporarily are removing source ID's and treating as private data
-    "/sources",
-    "/stage_development/source_ids",
-    "/dates/source_ids",
-    "/overall_project_finance/source_ids",
-    "/investment_details/source_ids",
-    "/purpose_and_classifications/source_ids",
-    "/service_and_beneficiaries/source_ids",
-    "/changes_to_project_due_to_covid19/source_ids",
 ]
 
 TYPE_PROJECT_FILTER_LISTS_LIST = [
@@ -34,6 +25,7 @@ TYPE_PROJECT_FILTER_LISTS_LIST = [
     "/technical_assistances",
     "/technical_assistance_details",
     "/documents",
+    "/sources",
 ]
 
 TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [

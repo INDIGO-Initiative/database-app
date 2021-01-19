@@ -561,6 +561,14 @@
           "accessed_date": {
             "title": "Accessed Date",
             "$ref": "#/definitions/object_with_value_string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
           }
         }
       }

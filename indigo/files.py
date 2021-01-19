@@ -40,7 +40,7 @@ def _write_public_files_for_project(project):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "project_public_v011.xlsx",
+        "project_public_v012.xlsx",
     )
 
     # Create in Temp
