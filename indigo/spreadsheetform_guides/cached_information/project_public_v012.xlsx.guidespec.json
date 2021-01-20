@@ -2051,6 +2051,15 @@
                         "list_path": "sources",
                         "mode": "down",
                         "row": 11
+                    },
+                    {
+                        "column": 10,
+                        "column_letter": "J",
+                        "coordinate": "J11",
+                        "item_path": "notes",
+                        "list_path": "sources",
+                        "mode": "down",
+                        "row": 11
                     }
                 ]
             },
