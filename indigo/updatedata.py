@@ -6,6 +6,7 @@ from jsondataferret.models import Record, Type
 
 import indigo.processdata
 from indigo import (
+    TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
     TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST,
     TYPE_ORGANISATION_PUBLIC_ID,
@@ -17,6 +18,7 @@ from indigo import (
 )
 from indigo.dataqualityreport import DataQualityReportForProject
 from indigo.models import (
+    AssessmentResource,
     Fund,
     Organisation,
     Project,
@@ -26,6 +28,15 @@ from indigo.models import (
 
 
 def update_all_data():
+
+    try:
+        type_assessment_resource = Type.objects.get(
+            public_id=TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+        )
+        for assessment_resource in Record.objects.filter(type=type_assessment_resource):
+            update_assessment_resource(assessment_resource)
+    except Type.DoesNotExist:
+        pass
 
     try:
         type_organisation = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
@@ -277,6 +288,39 @@ def update_fund(record, update_projects=False):
                 update_include_funds=False,
                 update_include_organisations=False,
             )
+
+
+def update_assessment_resource(record):
+
+    try:
+        assessment_resource = AssessmentResource.objects.get(public_id=record.public_id)
+    except AssessmentResource.DoesNotExist:
+        assessment_resource = AssessmentResource()
+        assessment_resource.public_id = record.public_id
+        assessment_resource.record = record
+
+    # Exists
+    assessment_resource.exists = record.cached_exists
+    # Status
+    record_status = (
+        record.cached_data.get("status", "").strip().lower()
+        if isinstance(record.cached_data.get("status", ""), str)
+        else ""
+    )
+    assessment_resource.status_public = (
+        record.cached_exists and record_status == "public"
+    )
+    # Public data
+    if assessment_resource.status_public:
+        assessment_resource.data_public = record.cached_data
+    else:
+        assessment_resource.data_public = {}
+    # Private Data
+    assessment_resource.data_private = (
+        record.cached_data if record.cached_exists else {}
+    )
+    # Finally, Save
+    assessment_resource.save()
 
 
 def filter_values(

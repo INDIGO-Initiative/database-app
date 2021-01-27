@@ -53,6 +53,17 @@ urlpatterns = [
     ########################### Public - Fund
     path("fund", views.FundList.as_view(), name="indigo_fund_list",),
     path("fund/<public_id>", views.FundIndex.as_view(), name="indigo_fund_index",),
+    ########################### Public - AssessmentResource
+    path(
+        "assessment_resource",
+        views.AssessmentResourceList.as_view(),
+        name="indigo_assessment_resource_list",
+    ),
+    path(
+        "assessment_resource/<public_id>",
+        views.AssessmentResourceIndex.as_view(),
+        name="indigo_assessment_resource_index",
+    ),
     ########################### Public - All
     path(
         "all_public_data_file_per_record.zip",
@@ -88,6 +99,17 @@ urlpatterns = [
         "api1/fund/<public_id>",
         views.API1FundIndex.as_view(),
         name="indigo_api1_fund_index",
+    ),
+    ########################### Public - Assessment Resource - API
+    path(
+        "api1/assessment_resource",
+        views.API1AssessmentResourceList.as_view(),
+        name="indigo_api1_assessment_resource_list",
+    ),
+    path(
+        "api1/assessment_resource/<public_id>",
+        views.API1AssessmentResourceIndex.as_view(),
+        name="indigo_api1_assessment_resource_index",
     ),
     ########################### Admin
     path("admin/", views.admin_index, name="indigo_admin_index"),
@@ -265,6 +287,47 @@ urlpatterns = [
         name="indigo_admin_fund_history",
     ),
     path("admin/new_fund", views.AdminFundNew.as_view(), name="indigo_admin_fund_new",),
+    ########################### Admin - AssessmentResource
+    path(
+        "admin/assessment_resource_download_blank_form",
+        views.AdminAssessmentResourceDownloadBlankForm.as_view(),
+        name="indigo_admin_assessment_resource_download_blank_form",
+    ),
+    path(
+        "admin/assessment_resource",
+        views.AdminAssessmentResourceList.as_view(),
+        name="indigo_admin_assessment_resource_list",
+    ),
+    path(
+        "admin/assessment_resource/<public_id>",
+        views.AdminAssessmentResourceIndex.as_view(),
+        name="indigo_admin_assessment_resource_index",
+    ),
+    path(
+        "admin/assessment_resource/<public_id>/download_form",
+        views.AdminAssessmentResourceDownloadForm.as_view(),
+        name="indigo_admin_assessment_resource_download_form",
+    ),
+    path(
+        "admin/assessment_resource/<public_id>/import_form",
+        views.AdminAssessmentResourceImportForm.as_view(),
+        name="indigo_admin_assessment_resource_import_form",
+    ),
+    path(
+        "admin/assessment_resource/<public_id>/moderate",
+        views.AdminAssessmentResourceModerate.as_view(),
+        name="indigo_admin_assessment_resource_moderate",
+    ),
+    path(
+        "admin/assessment_resource/<public_id>/history",
+        views.AdminAssessmentResourceHistory.as_view(),
+        name="indigo_admin_assessment_resource_history",
+    ),
+    path(
+        "admin/new_assessment_resource",
+        views.AdminAssessmentResourceNew.as_view(),
+        name="indigo_admin_assessment_resource_new",
+    ),
     ########################### Admin - Sandboxes
     path(
         "admin/sandboxes", views.admin_sandbox_list, name="indigo_admin_sandbox_list",

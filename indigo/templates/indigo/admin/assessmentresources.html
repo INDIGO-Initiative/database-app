@@ -1,0 +1,39 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Assessment Resources{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Assessment Resources</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    {% if datas %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for assessment_resource in datas %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_assessment_resource_index' public_id=assessment_resource.public_id %}">{{ assessment_resource.public_id }}</a></td>
+                    <td>{{ assessment_resource.cached_data.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_assessment_resource_index' public_id=assessment_resource.public_id %}" class="btn btn-primary">View</a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No assessment_resources are available.</p>
+    {% endif %}
+
+    <p><a href="{% url 'indigo_admin_assessment_resource_download_blank_form' %}" class="btn btn-primary">Download Blank Form</a></p>
+    <p><a href="{% url 'indigo_admin_assessment_resource_new' %}" class="btn btn-primary">New Assessment Resource</a></p>
+
+{% endblock %}

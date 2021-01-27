@@ -1,0 +1,690 @@
+{
+    "worksheets": {
+        "CountryCodeOptions": {
+            "down_configs": {},
+            "right_configs": {},
+            "single_configs": {}
+        },
+        "General Overview": {
+            "down_configs": {},
+            "right_configs": {},
+            "single_configs": {
+                "content/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B100",
+                    "mode": "single",
+                    "path": "content/value",
+                    "row": 100
+                },
+                "impact_goal/agnostic": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C29",
+                    "mode": "single",
+                    "path": "impact_goal/agnostic",
+                    "row": 29
+                },
+                "impact_goal/defence": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C30",
+                    "mode": "single",
+                    "path": "impact_goal/defence",
+                    "row": 30
+                },
+                "impact_goal/democracy": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C31",
+                    "mode": "single",
+                    "path": "impact_goal/democracy",
+                    "row": 31
+                },
+                "impact_goal/development_poverty_reduction": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C32",
+                    "mode": "single",
+                    "path": "impact_goal/development_poverty_reduction",
+                    "row": 32
+                },
+                "impact_goal/education": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C33",
+                    "mode": "single",
+                    "path": "impact_goal/education",
+                    "row": 33
+                },
+                "impact_goal/employment_financial_well_being": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C34",
+                    "mode": "single",
+                    "path": "impact_goal/employment_financial_well_being",
+                    "row": 34
+                },
+                "impact_goal/health": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C35",
+                    "mode": "single",
+                    "path": "impact_goal/health",
+                    "row": 35
+                },
+                "impact_goal/housing": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C36",
+                    "mode": "single",
+                    "path": "impact_goal/housing",
+                    "row": 36
+                },
+                "impact_goal/local_rejuvenation": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C37",
+                    "mode": "single",
+                    "path": "impact_goal/local_rejuvenation",
+                    "row": 37
+                },
+                "impact_goal/sdg_oriented": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C38",
+                    "mode": "single",
+                    "path": "impact_goal/sdg_oriented",
+                    "row": 38
+                },
+                "impact_goal/social_impact": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C39",
+                    "mode": "single",
+                    "path": "impact_goal/social_impact",
+                    "row": 39
+                },
+                "impact_goal/sustainability_eco": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C40",
+                    "mode": "single",
+                    "path": "impact_goal/sustainability_eco",
+                    "row": 40
+                },
+                "impact_goal/well_being": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C41",
+                    "mode": "single",
+                    "path": "impact_goal/well_being",
+                    "row": 41
+                },
+                "internal_external/external": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C95",
+                    "mode": "single",
+                    "path": "internal_external/external",
+                    "row": 95
+                },
+                "internal_external/internal": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C94",
+                    "mode": "single",
+                    "path": "internal_external/internal",
+                    "row": 94
+                },
+                "leader/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B98",
+                    "mode": "single",
+                    "path": "leader/value",
+                    "row": 98
+                },
+                "link/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B101",
+                    "mode": "single",
+                    "path": "link/value",
+                    "row": 101
+                },
+                "method/attribution": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C64",
+                    "mode": "single",
+                    "path": "method/attribution",
+                    "row": 64
+                },
+                "method/before_and_after": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C76",
+                    "mode": "single",
+                    "path": "method/before_and_after",
+                    "row": 76
+                },
+                "method/diff_in_diff_statistical_analysis": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C65",
+                    "mode": "single",
+                    "path": "method/diff_in_diff_statistical_analysis",
+                    "row": 65
+                },
+                "method/ex_ante_projections": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C66",
+                    "mode": "single",
+                    "path": "method/ex_ante_projections",
+                    "row": 66
+                },
+                "method/focus_groups": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C67",
+                    "mode": "single",
+                    "path": "method/focus_groups",
+                    "row": 67
+                },
+                "method/framework_agnostic": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C68",
+                    "mode": "single",
+                    "path": "method/framework_agnostic",
+                    "row": 68
+                },
+                "method/interviews": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C69",
+                    "mode": "single",
+                    "path": "method/interviews",
+                    "row": 69
+                },
+                "method/mission_alignment": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C70",
+                    "mode": "single",
+                    "path": "method/mission_alignment",
+                    "row": 70
+                },
+                "method/observation": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C71",
+                    "mode": "single",
+                    "path": "method/observation",
+                    "row": 71
+                },
+                "method/operational_data": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C72",
+                    "mode": "single",
+                    "path": "method/operational_data",
+                    "row": 72
+                },
+                "method/rcts": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C73",
+                    "mode": "single",
+                    "path": "method/rcts",
+                    "row": 73
+                },
+                "method/surveys": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C74",
+                    "mode": "single",
+                    "path": "method/surveys",
+                    "row": 74
+                },
+                "method/theory_of_change": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C75",
+                    "mode": "single",
+                    "path": "method/theory_of_change",
+                    "row": 75
+                },
+                "name/value": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C5",
+                    "mode": "single",
+                    "path": "name/value",
+                    "row": 5
+                },
+                "notes/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B103",
+                    "mode": "single",
+                    "path": "notes/value",
+                    "row": 103
+                },
+                "output_format/agnostic": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C13",
+                    "mode": "single",
+                    "path": "output_format/agnostic",
+                    "row": 13
+                },
+                "output_format/monetary_valuation": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C14",
+                    "mode": "single",
+                    "path": "output_format/monetary_valuation",
+                    "row": 14
+                },
+                "output_format/non_monetary_quant_index": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C15",
+                    "mode": "single",
+                    "path": "output_format/non_monetary_quant_index",
+                    "row": 15
+                },
+                "output_format/ordinal": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C16",
+                    "mode": "single",
+                    "path": "output_format/ordinal",
+                    "row": 16
+                },
+                "output_format/qualitative_only": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C17",
+                    "mode": "single",
+                    "path": "output_format/qualitative_only",
+                    "row": 17
+                },
+                "output_format/quant_but_no_index": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C18",
+                    "mode": "single",
+                    "path": "output_format/quant_but_no_index",
+                    "row": 18
+                },
+                "purpose/value": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B99",
+                    "mode": "single",
+                    "path": "purpose/value",
+                    "row": 99
+                },
+                "scale/agnostic": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C24",
+                    "mode": "single",
+                    "path": "scale/agnostic",
+                    "row": 24
+                },
+                "scale/macro": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C27",
+                    "mode": "single",
+                    "path": "scale/macro",
+                    "row": 27
+                },
+                "scale/meso": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C26",
+                    "mode": "single",
+                    "path": "scale/meso",
+                    "row": 26
+                },
+                "scale/micro": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C25",
+                    "mode": "single",
+                    "path": "scale/micro",
+                    "row": 25
+                },
+                "sourcing/agnostic": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C58",
+                    "mode": "single",
+                    "path": "sourcing/agnostic",
+                    "row": 58
+                },
+                "sourcing/outsource_to_vendor": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C59",
+                    "mode": "single",
+                    "path": "sourcing/outsource_to_vendor",
+                    "row": 59
+                },
+                "sourcing/paid_tool": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C60",
+                    "mode": "single",
+                    "path": "sourcing/paid_tool",
+                    "row": 60
+                },
+                "sourcing/proprietary_in_house": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C61",
+                    "mode": "single",
+                    "path": "sourcing/proprietary_in_house",
+                    "row": 61
+                },
+                "sourcing/self_driven": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C62",
+                    "mode": "single",
+                    "path": "sourcing/self_driven",
+                    "row": 62
+                },
+                "status": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C2",
+                    "mode": "single",
+                    "path": "status",
+                    "row": 2
+                },
+                "time_frame/ongoing": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C20",
+                    "mode": "single",
+                    "path": "time_frame/ongoing",
+                    "row": 20
+                },
+                "time_frame/prospective": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C21",
+                    "mode": "single",
+                    "path": "time_frame/prospective",
+                    "row": 21
+                },
+                "time_frame/retrospective": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C22",
+                    "mode": "single",
+                    "path": "time_frame/retrospective",
+                    "row": 22
+                },
+                "type/case_study": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C46",
+                    "mode": "single",
+                    "path": "type/case_study",
+                    "row": 46
+                },
+                "type/classification": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C47",
+                    "mode": "single",
+                    "path": "type/classification",
+                    "row": 47
+                },
+                "type/consultancy": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C48",
+                    "mode": "single",
+                    "path": "type/consultancy",
+                    "row": 48
+                },
+                "type/dataset": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C51",
+                    "mode": "single",
+                    "path": "type/dataset",
+                    "row": 51
+                },
+                "type/framework": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C49",
+                    "mode": "single",
+                    "path": "type/framework",
+                    "row": 49
+                },
+                "type/guide": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C50",
+                    "mode": "single",
+                    "path": "type/guide",
+                    "row": 50
+                },
+                "type/principles": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C52",
+                    "mode": "single",
+                    "path": "type/principles",
+                    "row": 52
+                },
+                "type/reporting_standards": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C53",
+                    "mode": "single",
+                    "path": "type/reporting_standards",
+                    "row": 53
+                },
+                "type/resource_repository_or_summary": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C54",
+                    "mode": "single",
+                    "path": "type/resource_repository_or_summary",
+                    "row": 54
+                },
+                "type/tool": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C55",
+                    "mode": "single",
+                    "path": "type/tool",
+                    "row": 55
+                },
+                "type/training_programme": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C56",
+                    "mode": "single",
+                    "path": "type/training_programme",
+                    "row": 56
+                },
+                "used_in_sectors/charity": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C78",
+                    "mode": "single",
+                    "path": "used_in_sectors/charity",
+                    "row": 78
+                },
+                "used_in_sectors/csr": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C79",
+                    "mode": "single",
+                    "path": "used_in_sectors/csr",
+                    "row": 79
+                },
+                "used_in_sectors/developed_countries": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C91",
+                    "mode": "single",
+                    "path": "used_in_sectors/developed_countries",
+                    "row": 91
+                },
+                "used_in_sectors/developing_countries": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C92",
+                    "mode": "single",
+                    "path": "used_in_sectors/developing_countries",
+                    "row": 92
+                },
+                "used_in_sectors/development": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C80",
+                    "mode": "single",
+                    "path": "used_in_sectors/development",
+                    "row": 80
+                },
+                "used_in_sectors/governance_policy": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C81",
+                    "mode": "single",
+                    "path": "used_in_sectors/governance_policy",
+                    "row": 81
+                },
+                "used_in_sectors/green_book": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C82",
+                    "mode": "single",
+                    "path": "used_in_sectors/green_book",
+                    "row": 82
+                },
+                "used_in_sectors/healthcare": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C83",
+                    "mode": "single",
+                    "path": "used_in_sectors/healthcare",
+                    "row": 83
+                },
+                "used_in_sectors/housing": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C84",
+                    "mode": "single",
+                    "path": "used_in_sectors/housing",
+                    "row": 84
+                },
+                "used_in_sectors/igos": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C85",
+                    "mode": "single",
+                    "path": "used_in_sectors/igos",
+                    "row": 85
+                },
+                "used_in_sectors/impact_investing": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C86",
+                    "mode": "single",
+                    "path": "used_in_sectors/impact_investing",
+                    "row": 86
+                },
+                "used_in_sectors/microfinance": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C87",
+                    "mode": "single",
+                    "path": "used_in_sectors/microfinance",
+                    "row": 87
+                },
+                "used_in_sectors/sibs": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C88",
+                    "mode": "single",
+                    "path": "used_in_sectors/sibs",
+                    "row": 88
+                },
+                "used_in_sectors/social_enterprises": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C89",
+                    "mode": "single",
+                    "path": "used_in_sectors/social_enterprises",
+                    "row": 89
+                },
+                "used_in_sectors/sustainability_eco": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C90",
+                    "mode": "single",
+                    "path": "used_in_sectors/sustainability_eco",
+                    "row": 90
+                },
+                "who/private_sector": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C10",
+                    "mode": "single",
+                    "path": "who/private_sector",
+                    "row": 10
+                },
+                "who/public_sector": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C9",
+                    "mode": "single",
+                    "path": "who/public_sector",
+                    "row": 9
+                },
+                "who/third_sector": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C11",
+                    "mode": "single",
+                    "path": "who/third_sector",
+                    "row": 11
+                }
+            }
+        },
+        "Introduction": {
+            "down_configs": {},
+            "right_configs": {},
+            "single_configs": {
+                "id": {
+                    "column": 2,
+                    "column_letter": "B",
+                    "coordinate": "B2",
+                    "mode": "single",
+                    "path": "id",
+                    "row": 2
+                }
+            }
+        },
+        "TechAssistDetsCategoryOptions": {
+            "down_configs": {},
+            "right_configs": {},
+            "single_configs": {}
+        }
+    }
+}

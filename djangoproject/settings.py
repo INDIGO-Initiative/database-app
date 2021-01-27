@@ -180,6 +180,19 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         "spreadsheet_form_guide_spec": load_guide_form_spec("fund_v001.xlsx"),
         "fields": load_json_schema_fields("fund.json"),
     },
+    "assessment_resource": {
+        "json_schema": load_json_schema("assessment_resource.json"),
+        "spreadsheet_form_guide": os.path.join(
+            BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            "assessment_resource_v001.xlsx",
+        ),
+        "spreadsheet_form_guide_spec": load_guide_form_spec(
+            "assessment_resource_v001.xlsx"
+        ),
+        "fields": load_json_schema_fields("assessment_resource.json"),
+    },
 }
 
 CELERY_BROKER_URL = os.getenv("CLOUDAMQP_URL", "localhost")

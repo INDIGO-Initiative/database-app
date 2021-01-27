@@ -4,6 +4,8 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 from jsondataferret.models import Record
 
+from indigo import TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID, TYPE_FUND_PUBLIC_ID
+
 
 class Indigo(models.Model):
     class Meta:
@@ -62,7 +64,11 @@ class Project(BaseModel):
 
 
 class Fund(BaseModel):
-    pass
+    type_id = TYPE_FUND_PUBLIC_ID
+
+
+class AssessmentResource(BaseModel):
+    type_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
 
 class ProjectImport(models.Model):
