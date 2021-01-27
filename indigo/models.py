@@ -57,6 +57,7 @@ class Project(BaseModel):
     social_investment_prototype = models.BooleanField(
         default=False, null=False, blank=True
     )
+    data_quality_report_counts_by_priority = JSONField(default=dict)
 
 
 class Fund(BaseModel):

@@ -15,6 +15,7 @@ from indigo import (
     TYPE_PROJECT_MAP_VALUES_STAGE_DEVELOPMENT,
     TYPE_PROJECT_PUBLIC_ID,
 )
+from indigo.dataqualityreport import DataQualityReportForProject
 from indigo.models import (
     Fund,
     Organisation,
@@ -109,6 +110,14 @@ def update_project(
         )
         == "YES"
     )
+    # Data Quality Report
+    if record.cached_exists:
+        dqr = DataQualityReportForProject(record.cached_data)
+        project.data_quality_report_counts_by_priority = (
+            dqr.get_count_errors_in_priority_levels()
+        )
+    else:
+        project.data_quality_report_counts_by_priority = {}
     # Finally, Save
     project.save()
 

@@ -154,6 +154,11 @@ urlpatterns = [
         views.admin_all_projects_data_quality_report_field_single,
         name="indigo_admin_all_projects_data_quality_report_field_single",
     ),
+    path(
+        "admin/project_data_quality_report/list_projects_by_priority_highest/<priority>",
+        views.admin_all_projects_data_quality_list_projects_by_priority_highest,
+        name="indigo_admin_all_projects_data_quality_list_projects_by_priority_highest",
+    ),
     ########################### Admin - Organisation
     path(
         "admin/organisation_download_blank_form",
