@@ -13,6 +13,7 @@ from indigo.files import (
     update_public_files_for_project,
 )
 from indigo.models import Fund, Organisation, Project, ProjectImport
+from indigo.updatedata import update_project_low_priority
 
 
 @app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
@@ -94,3 +95,22 @@ def task_update_public_files_for_fund(self, fund_id):
 @app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
 def task_update_public_archive_files(self):
     update_public_archive_files()
+
+
+@app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
+def task_after_project_update(self, project_id):
+    project = Project.objects.get(public_id=project_id)
+    update_project_low_priority(project.record)
+    update_public_files_for_project(project)
+
+
+@app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
+def task_after_organisation_update(self, organisation_id):
+    organisation = Organisation.objects.get(public_id=organisation_id)
+    update_public_files_for_organisation(organisation)
+
+
+@app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
+def task_after_fund_update(self, fund_id):
+    fund = Fund.objects.get(public_id=fund_id)
+    update_public_files_for_fund(fund)
