@@ -1,5 +1,31 @@
+import json
+import os
+from functools import lru_cache
+
 import jsonschema
 from django.conf import settings
+
+
+@lru_cache
+def get_project_priority_information():
+    fn = os.path.join(
+        settings.BASE_DIR,
+        "indigo",
+        "jsonschema",
+        "cached_information",
+        "project.json.priorities.json",
+    )
+    with open(fn) as fp:
+        return json.load(fp)
+
+
+def get_priority_for_key(key):
+    if not key.startswith("/"):
+        key = "/" + key
+    for info in get_project_priority_information():
+        if key.startswith(info["key"]):
+            return info["priority"]
+    return 3
 
 
 class DataQualityReportForProject:
@@ -96,6 +122,7 @@ class ValueNotInEnumListDataError(_DataError):
 class ValueNotSetDataError(_DataError):
     def __init__(self, error):
         self._path = "/".join([str(i) for i in error.path])
+        self._priority = get_priority_for_key(self._path)
 
     def get_type(self):
         return "value_not_set"
@@ -104,7 +131,7 @@ class ValueNotSetDataError(_DataError):
         return self._path
 
     def get_priority(self):
-        return 1
+        return self._priority
 
 
 class ValueNotCorrectPatternError(_DataError):

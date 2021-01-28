@@ -20,7 +20,8 @@
     },
     "alternative_names": {
       "title": "Alternative Names",
-      "$ref": "#/definitions/object_with_value_string"
+      "$ref": "#/definitions/object_with_value_string",
+      "priority": 1
     },
     "stage_development": {
       "title": "Stage of Development",
@@ -46,7 +47,8 @@
           "title": "(Status)",
           "type": "string"
         }
-      }
+      },
+      "priority": 1
     },
     "social_investment_prototype": {
       "title": "Social Investment Prototype",
@@ -60,7 +62,8 @@
             "NO"
           ]
         }
-      }
+      },
+      "priority": 1
     },
     "dates": {
       "title": "Dates",
@@ -102,7 +105,8 @@
           "title": "(Notes)",
           "type": "string"
         }
-      }
+      },
+      "priority": 1
     },
     "overall_project_finance": {
       "title": "Overall project finance",
@@ -204,7 +208,8 @@
           "title": "(Notes)",
           "type": "string"
         }
-      }
+      },
+      "priority": 1
     },
     "investment_details": {
       "title": "Investment Details",
@@ -264,7 +269,8 @@
           "title": "(Notes)",
           "type": "string"
         }
-      }
+      },
+      "priority": 3
     },
     "purpose_and_classifications": {
       "title": "Purpose and classifications",
@@ -322,7 +328,8 @@
           "title": "(Notes)",
           "type": "string"
         }
-      }
+      },
+      "priority": 1
     },
     "service_and_beneficiaries": {
       "title": "Service and beneficiaries",
@@ -390,7 +397,8 @@
           "title": "(Notes)",
           "type": "string"
         }
-      }
+      },
+      "priority": 1
     },
     "changes_to_project_due_to_covid19": {
       "title": "Changes to project due to COVID-19",
@@ -414,7 +422,8 @@
           "title": "(Status)",
           "type": "string"
         }
-      }
+      },
+      "priority": 1
     },
     "notes": {
       "title": "Notes",
@@ -428,7 +437,8 @@
           "title": "(Status)",
           "type": "string"
         }
-      }
+      },
+      "priority": 1
     },
     "outcome_funds": {
       "title": "Outcome Funds",
@@ -455,7 +465,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "delivery_locations": {
       "title": "Delivery Locations",
@@ -518,7 +529,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "sources": {
       "title": "Sources",
@@ -571,7 +583,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "service_provisions": {
       "title": "Service Provisions",
@@ -650,7 +663,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "outcome_payment_commitments": {
       "title": "Outcome Payment Commitments",
@@ -747,7 +761,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "investments": {
       "title": "Investments",
@@ -846,7 +861,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "intermediary_services": {
       "title": "Intermediary services",
@@ -879,7 +895,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "outcome_metrics": {
       "title": "Outcome Metrics",
@@ -960,7 +977,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "outcome_pricings": {
       "title": "Outcome Pricings",
@@ -1021,7 +1039,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "transactions": {
       "title": "Transactions",
@@ -1105,7 +1124,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 3
     },
     "grants": {
       "title": "Grants",
@@ -1228,7 +1248,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "technical_assistances": {
       "title": "Technical Assistance",
@@ -1281,7 +1302,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 3
     },
     "technical_assistance_details": {
       "title": "Technical Assistance Details",
@@ -1435,7 +1457,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 3
     },
     "results": {
       "title": "Results",
@@ -1506,7 +1529,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 3
     },
     "open_contracting_datas": {
       "title": "Open Contracting data",
@@ -1531,7 +1555,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "360giving_datas": {
       "title": "360 Giving Data",
@@ -1556,7 +1581,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     },
     "documents": {
       "title": "Documents",
@@ -1581,7 +1607,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "priority": 2
     }
   },
   "definitions": {

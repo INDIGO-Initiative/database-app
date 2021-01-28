@@ -17,9 +17,11 @@
     <p>Project Data Quality Report</p>
 
     <ul>
-        <li>
-            <a href="{% url 'indigo_admin_all_projects_data_quality_list_projects_by_priority_highest' priority=0 %}" class="btn btn-primary">Projects by count of priority 0 issues</a>
-        </li>
+        {% for i in '0123'|make_list %}
+            <li>
+                <a href="{% url 'indigo_admin_all_projects_data_quality_list_projects_by_priority_highest' priority=i %}" class="btn btn-primary">Projects by count of priority {{ i }} issues</a>
+            </li>
+        {% endfor %}
         {% for field_single in fields_single %}
             <li>
                 <a href="{% url 'indigo_admin_all_projects_data_quality_report_field_single' %}?field={{ field_single.key|urlencode:"" }}" class="btn btn-primary">{{ field_single.title }}</a>

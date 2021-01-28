@@ -1,0 +1,110 @@
+[
+    {
+        "key": "/alternative_names",
+        "priority": 1
+    },
+    {
+        "key": "/stage_development",
+        "priority": 1
+    },
+    {
+        "key": "/social_investment_prototype",
+        "priority": 1
+    },
+    {
+        "key": "/dates",
+        "priority": 1
+    },
+    {
+        "key": "/overall_project_finance",
+        "priority": 1
+    },
+    {
+        "key": "/investment_details",
+        "priority": 3
+    },
+    {
+        "key": "/purpose_and_classifications",
+        "priority": 1
+    },
+    {
+        "key": "/service_and_beneficiaries",
+        "priority": 1
+    },
+    {
+        "key": "/changes_to_project_due_to_covid19",
+        "priority": 1
+    },
+    {
+        "key": "/notes",
+        "priority": 1
+    },
+    {
+        "key": "/outcome_funds",
+        "priority": 2
+    },
+    {
+        "key": "/delivery_locations",
+        "priority": 2
+    },
+    {
+        "key": "/sources",
+        "priority": 2
+    },
+    {
+        "key": "/service_provisions",
+        "priority": 2
+    },
+    {
+        "key": "/outcome_payment_commitments",
+        "priority": 2
+    },
+    {
+        "key": "/investments",
+        "priority": 2
+    },
+    {
+        "key": "/intermediary_services",
+        "priority": 2
+    },
+    {
+        "key": "/outcome_metrics",
+        "priority": 2
+    },
+    {
+        "key": "/outcome_pricings",
+        "priority": 2
+    },
+    {
+        "key": "/transactions",
+        "priority": 3
+    },
+    {
+        "key": "/grants",
+        "priority": 2
+    },
+    {
+        "key": "/technical_assistances",
+        "priority": 3
+    },
+    {
+        "key": "/technical_assistance_details",
+        "priority": 3
+    },
+    {
+        "key": "/results",
+        "priority": 3
+    },
+    {
+        "key": "/open_contracting_datas",
+        "priority": 2
+    },
+    {
+        "key": "/360giving_datas",
+        "priority": 2
+    },
+    {
+        "key": "/documents",
+        "priority": 2
+    }
+]
