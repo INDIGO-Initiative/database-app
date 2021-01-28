@@ -5,7 +5,7 @@ import os
 from django.conf import settings
 from spreadsheetforms.api import get_guide_spec
 
-from djangoproject.util import JsonSchemaProcessor
+from indigo.jsonschemaprocessor import JsonSchemaProcessor
 
 
 def cache_spreadsheet_guide_info():
