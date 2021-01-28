@@ -1,0 +1,43 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Projects{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_list' %}">Projects</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_all_projects_data_quality_report' %}">Data Quality Report</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Priority {{ priority }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    {% if projects_with_count %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Project Name</th>
+                <th>Count</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for project, count in projects_with_count %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}">{{ project.public_id }}</a></td>
+                    <td>{{ project.data_private.name.value }}</td>
+                    <td>{{ count }}</td>
+                    <td>
+                        <a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}" class="btn btn-primary">View Project</a>
+                        <a href="{% url 'indigo_admin_project_data_quality_report' public_id=project.public_id %}" class="btn btn-primary">View Report</a>
+                    </td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No projects have any errors at this level.</p>
+    {% endif %}
+
+{% endblock %}

@@ -958,7 +958,6 @@ def admin_all_projects_data_quality_report(request):
         request,
         "indigo/admin/projects_data_quality_report.html",
         {
-            "type": type,
             "fields_single": [
                 i
                 for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
@@ -998,11 +997,40 @@ def admin_all_projects_data_quality_report_field_single(request):
     return render(
         request,
         "indigo/admin/projects_data_quality_report_single_field.html",
+        {"field": field, "count_no_data": count_no_data, "count_data": count_data,},
+    )
+
+
+@permission_required("indigo.admin")
+def admin_all_projects_data_quality_list_projects_by_priority_highest(
+    request, priority
+):
+    priority = int(priority)
+    if priority < 0 or priority > 3:
+        raise Http404("Priority does not exist")
+    projects = Project.objects.filter(exists=True)
+    projects = [
+        p
+        for p in projects
+        if p.data_quality_report_counts_by_priority.get(str(priority), 0) > 0
+    ]
+    projects = sorted(
+        projects,
+        key=lambda x: x.data_quality_report_counts_by_priority.get(str(priority)),
+        reverse=True,
+    )
+    return render(
+        request,
+        "indigo/admin/projects_data_quality_report_list_projects_by_priority_highest.html",
         {
-            "type": type,
-            "field": field,
-            "count_no_data": count_no_data,
-            "count_data": count_data,
+            "priority": priority,
+            "projects_with_count": [
+                (
+                    project,
+                    project.data_quality_report_counts_by_priority.get(str(priority)),
+                )
+                for project in projects
+            ],
         },
     )
 

@@ -1,7 +1,7 @@
 from indigo.tasks import (
-    task_update_public_files_for_fund,
-    task_update_public_files_for_organisation,
-    task_update_public_files_for_project,
+    task_after_fund_update,
+    task_after_organisation_update,
+    task_after_project_update,
 )
 
 from . import TYPE_FUND_PUBLIC_ID, TYPE_ORGANISATION_PUBLIC_ID, TYPE_PROJECT_PUBLIC_ID
@@ -13,10 +13,10 @@ def on_update_callback(record):
         update_project(
             record, update_include_organisations=True, update_include_funds=True
         )
-        task_update_public_files_for_project.delay(record.public_id)
+        task_after_project_update.delay(record.public_id)
     elif record.type.public_id == TYPE_ORGANISATION_PUBLIC_ID:
         update_organisation(record, update_projects=True)
-        task_update_public_files_for_organisation.delay(record.public_id)
+        task_after_organisation_update.delay(record.public_id)
     elif record.type.public_id == TYPE_FUND_PUBLIC_ID:
         update_fund(record, update_projects=True)
-        task_update_public_files_for_fund.delay(record.public_id)
+        task_after_fund_update.delay(record.public_id)

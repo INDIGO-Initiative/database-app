@@ -15,6 +15,7 @@ from indigo import (
     TYPE_PROJECT_MAP_VALUES_STAGE_DEVELOPMENT,
     TYPE_PROJECT_PUBLIC_ID,
 )
+from indigo.dataqualityreport import DataQualityReportForProject
 from indigo.models import (
     Fund,
     Organisation,
@@ -50,6 +51,7 @@ def update_all_data():
             update_project(
                 project, update_include_organisations=True, update_include_funds=True
             )
+            update_project_low_priority(project)
     except Type.DoesNotExist:
         pass
 
@@ -163,6 +165,22 @@ def update_project(
             project_includes_fund.save()
         # TODO also need to set in_current_data=False if fund is removed
         # But at moment, how we use than variable it doesnt matter
+
+
+def update_project_low_priority(record):
+    # This should only ever be called after update_project()
+    # so we don't have to deal with the case that the object does not exist.
+    project = Project.objects.get(public_id=record.public_id)
+    # Data Quality Report
+    if record.cached_exists:
+        dqr = DataQualityReportForProject(record.cached_data)
+        project.data_quality_report_counts_by_priority = (
+            dqr.get_count_errors_in_priority_levels()
+        )
+    else:
+        project.data_quality_report_counts_by_priority = {}
+    # Finally, Save
+    project.save()
 
 
 def update_organisation(record, update_projects=False):
