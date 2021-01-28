@@ -1,10 +1,10 @@
 Vagrant.configure(2) do |config|
 
-    config.vm.box = "ubuntu/bionic64"
+    config.vm.box = "ubuntu/focal64"
 
     config.vm.define "app" do |app|
 
-        app.vm.box = "ubuntu/bionic64"
+        app.vm.box = "ubuntu/focal64"
 
         app.vm.network "forwarded_port", guest: 8000, host: 8000
 

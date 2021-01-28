@@ -4,47 +4,106 @@
 #
 #    pip-compile
 #
--e git+https://github.com/OpenDataServices/json-data-ferret.git@v0.3.0#egg=jsondataferret  # via -r requirements.in
-amqp==2.6.1               # via kombu
-asgiref==3.2.10           # via django
-attrs==19.3.0             # via jsonschema
-billiard==3.6.3.0         # via celery
-boto3==1.16.32            # via django-storages
-botocore==1.19.32         # via boto3, s3transfer
-celery==4.4.7             # via -r requirements.in
-certifi==2020.6.20        # via sentry-sdk
-compiletojsonschema==0.2.0  # via -r requirements.in
-dj-database-url==0.5.0    # via django-heroku
-django-environ==0.4.5     # via -r requirements.in
-django-heroku==0.3.1      # via -r requirements.in
-django-storages[boto3]==1.10.1  # via -r requirements.in
-django==3.1               # via -r requirements.in, django-heroku, django-storages, jsondataferret
-et-xmlfile==1.0.1         # via openpyxl
-gunicorn==20.0.4          # via -r requirements.in
-importlib-metadata==1.7.0  # via jsonschema, kombu
-jdcal==1.4.1              # via openpyxl
-jmespath==0.10.0          # via boto3, botocore
-json-merge-patch==0.2     # via jsondataferret
-jsonmerge==1.7.0          # via jsondataferret
-jsonpointer==2.0          # via spreadsheetforms
-jsonref==0.2              # via compiletojsonschema
-jsonschema==3.2.0         # via compiletojsonschema, jsondataferret, jsonmerge
-kombu==4.6.11             # via celery
-openpyxl==3.0.4           # via spreadsheetforms
-psycopg2==2.8.5           # via -r requirements.in, django-heroku, jsondataferret
-pygments==2.6.1           # via jsondataferret
-pyrsistent==0.16.0        # via jsonschema
-python-dateutil==2.8.1    # via botocore
-pytz==2020.1              # via celery, django
-s3transfer==0.3.3         # via boto3
-sentry-sdk==0.16.3        # via -r requirements.in
-six==1.15.0               # via jsonschema, pyrsistent, python-dateutil
-spreadsheetforms==0.4.1   # via jsondataferret
-sqlparse==0.3.1           # via django
-urllib3==1.25.10          # via botocore, sentry-sdk
-vine==1.3.0               # via amqp, celery
-whitenoise==5.2.0         # via django-heroku
-zipp==3.1.0               # via importlib-metadata
+-e git+https://github.com/OpenDataServices/json-data-ferret.git@v0.3.0#egg=jsondataferret
+    # via -r requirements.in
+amqp==2.6.1
+    # via kombu
+asgiref==3.3.1
+    # via django
+attrs==20.3.0
+    # via jsonschema
+billiard==3.6.3.0
+    # via celery
+boto3==1.16.61
+    # via django-storages
+botocore==1.19.61
+    # via
+    #   boto3
+    #   s3transfer
+celery==4.4.7
+    # via -r requirements.in
+certifi==2020.12.5
+    # via sentry-sdk
+compiletojsonschema==0.3.0
+    # via -r requirements.in
+dj-database-url==0.5.0
+    # via django-heroku
+django-environ==0.4.5
+    # via -r requirements.in
+django-heroku==0.3.1
+    # via -r requirements.in
+django-storages[boto3]==1.11.1
+    # via -r requirements.in
+django==3.1.5
+    # via
+    #   -r requirements.in
+    #   django-heroku
+    #   django-storages
+    #   jsondataferret
+et-xmlfile==1.0.1
+    # via openpyxl
+gunicorn==20.0.4
+    # via -r requirements.in
+jdcal==1.4.1
+    # via openpyxl
+jmespath==0.10.0
+    # via
+    #   boto3
+    #   botocore
+json-merge-patch==0.2
+    # via jsondataferret
+jsonmerge==1.8.0
+    # via jsondataferret
+jsonpointer==2.0
+    # via spreadsheetforms
+jsonref==0.2
+    # via compiletojsonschema
+jsonschema==3.2.0
+    # via
+    #   compiletojsonschema
+    #   jsondataferret
+    #   jsonmerge
+kombu==4.6.11
+    # via celery
+openpyxl==3.0.6
+    # via spreadsheetforms
+psycopg2==2.8.6
+    # via
+    #   -r requirements.in
+    #   django-heroku
+    #   jsondataferret
+pygments==2.7.4
+    # via jsondataferret
+pyrsistent==0.17.3
+    # via jsonschema
+python-dateutil==2.8.1
+    # via botocore
+pytz==2020.5
+    # via
+    #   celery
+    #   django
+s3transfer==0.3.4
+    # via boto3
+sentry-sdk==0.19.5
+    # via -r requirements.in
+six==1.15.0
+    # via
+    #   jsonschema
+    #   python-dateutil
+spreadsheetforms==0.4.1
+    # via jsondataferret
+sqlparse==0.4.1
+    # via django
+urllib3==1.26.3
+    # via
+    #   botocore
+    #   sentry-sdk
+vine==1.3.0
+    # via
+    #   amqp
+    #   celery
+whitenoise==5.2.0
+    # via django-heroku
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
