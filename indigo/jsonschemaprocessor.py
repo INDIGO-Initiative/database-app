@@ -79,3 +79,30 @@ class JsonSchemaProcessor:
                 elif start_pointer != "":
                     out.append(start_pointer.replace("/properties/", "/"))
         return out
+
+    def get_priorities(self):
+        return self._get_priorities_worker(
+            json_schema=self.json_schema_compiled, start_pointer=""
+        )
+
+    def _get_priorities_worker(self, json_schema, start_pointer):
+        out = []
+        our_json_schema = jsonpointer.resolve_pointer(json_schema, start_pointer)
+        if our_json_schema.get("type") == "object":
+            for key in our_json_schema.get("properties").keys():
+                out.extend(
+                    self._get_priorities_worker(
+                        json_schema=json_schema,
+                        start_pointer=start_pointer + "/properties/" + key,
+                    )
+                )
+
+        if "priority" in our_json_schema:
+            out.append(
+                {
+                    "key": start_pointer.replace("/properties/", "/"),
+                    "priority": our_json_schema.get("priority"),
+                }
+            )
+
+        return out
