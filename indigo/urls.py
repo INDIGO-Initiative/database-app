@@ -191,6 +191,11 @@ urlpatterns = [
         name="indigo_admin_organisation_index",
     ),
     path(
+        "admin/project/<public_id>/change_status",
+        views.admin_organisation_change_status,
+        name="indigo_admin_organisation_change_status",
+    ),
+    path(
         "admin/organisation/<public_id>/projects",
         views.admin_organisation_projects,
         name="indigo_admin_organisation_projects",

@@ -31,6 +31,7 @@ class ProcessAddOtherRecordsToProject(TestCase):
                     self.type_organisation,
                     self.organisation_1_record,
                     {
+                        "status": "PUBLIC",
                         "name": {"value": "Bob's Org"},
                         "contact": {
                             "name": {"value": "Bob"},

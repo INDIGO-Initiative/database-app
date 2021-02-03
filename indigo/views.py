@@ -39,6 +39,7 @@ from .forms import (
     ProjectMakeDisputedForm,
     ProjectMakePrivateForm,
     ProjectNewForm,
+    RecordChangeStatusForm,
 )
 from .models import Fund, Organisation, Project, ProjectImport
 
@@ -1149,6 +1150,60 @@ def admin_organisation_index(request, public_id):
 
 
 @permission_required("indigo.admin")
+def admin_organisation_change_status(request, public_id):
+    try:
+        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
+        record = Record.objects.get(type=type, public_id=public_id)
+    except Type.DoesNotExist:
+        raise Http404("Type does not exist")
+    except Record.DoesNotExist:
+        raise Http404("Record does not exist")
+
+    if request.method == "POST":
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = RecordChangeStatusForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+
+            # Save the event
+            new_event_data = NewEventData(
+                type,
+                record,
+                {"status": form.cleaned_data["status"]},
+                mode=jsondataferret.EVENT_MODE_MERGE,
+            )
+            newEvent(
+                [new_event_data],
+                user=request.user,
+                comment=form.cleaned_data["comment"],
+            )
+
+            # redirect to a new URL:
+            messages.add_message(
+                request, messages.INFO, "Done; remember to moderate it!",
+            )
+            return HttpResponseRedirect(
+                reverse(
+                    "indigo_admin_organisation_index",
+                    kwargs={"public_id": record.public_id},
+                )
+            )
+
+    else:
+
+        form = RecordChangeStatusForm()
+
+    context = {
+        "record": record,
+        "form": form,
+    }
+
+    return render(request, "indigo/admin/organisation/change_status.html", context,)
+
+
+@permission_required("indigo.admin")
 def admin_organisation_projects(request, public_id):
     try:
         organisation = Organisation.objects.get(public_id=public_id)
@@ -1175,7 +1230,7 @@ def admin_organisation_download_form(request, public_id):
         raise Http404("Record does not exist")
 
     guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v002.xlsx",
+        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v003.xlsx",
     )
 
     out_file = os.path.join(

@@ -49,3 +49,10 @@ class FundNewForm(forms.Form):
 class FundImportForm(forms.Form):
     file = forms.FileField()
     comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
+
+
+class RecordChangeStatusForm(forms.Form):
+    status = forms.ChoiceField(
+        choices=[("PUBLIC", "PUBLIC"), ("PRIVATE", "PRIVATE"), ("DISPUTED", "DISPUTED")]
+    )
+    comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)

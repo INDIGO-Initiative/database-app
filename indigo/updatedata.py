@@ -195,17 +195,21 @@ def update_organisation(record, update_projects=False):
     organisation.record = record
     # Exists
     organisation.exists = record.cached_exists
-    # Status - at the moment we assume all org's are public
-    organisation.status_public = record.cached_exists
+    # Status
+    record_status = (
+        record.cached_data.get("status", "").strip().lower()
+        if isinstance(record.cached_data.get("status", ""), str)
+        else ""
+    )
+    organisation.status_public = record.cached_exists and record_status == "public"
     # Public data
-    organisation.data_public = (
-        filter_values(
+    if organisation.status_public:
+        organisation.data_public = filter_values(
             record.cached_data,
             keys_always_remove=TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST,
         )
-        if organisation.status_public
-        else {}
-    )
+    else:
+        organisation.data_public = {}
     # Private Data
     organisation.data_private = record.cached_data if record.cached_exists else {}
     # Full Text Search
