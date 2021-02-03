@@ -10,12 +10,14 @@ import spreadsheetforms.api
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.files.storage import default_storage
 from django.db import connection
 from django.db.models.functions import Now
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views import View
 from jsondataferret.models import Edit, Event, Record, Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 
@@ -323,24 +325,45 @@ def organisation_download_form(request, public_id):
 ########################### Public - Fund
 
 
-def funds_list(request):
-    funds = Fund.objects.filter(exists=True, status_public=True).order_by("public_id")
-    return render(request, "indigo/funds.html", {"funds": funds},)
+class ModelList(View):
+    def get(self, request):
+        datas = self.__class__._model.objects.filter(
+            exists=True, status_public=True
+        ).order_by("public_id")
+        return render(
+            request,
+            "indigo/" + self.__class__._model.__name__.lower() + "s.html",
+            {"datas": datas},
+        )
 
 
-def fund_index(request, public_id):
-    try:
-        fund = Fund.objects.get(exists=True, status_public=True, public_id=public_id)
-    except fund.DoesNotExist:
-        raise Http404("fund does not exist")
-    if not fund.status_public or not fund.exists:
-        raise Http404("fund does not exist")
-    field_data = jsondataferret.utils.get_field_list_from_json(
-        TYPE_FUND_PUBLIC_ID, fund.data_public
-    )
-    return render(
-        request, "indigo/fund/index.html", {"fund": fund, "field_data": field_data},
-    )
+class FundList(ModelList):
+    _model = Fund
+
+
+class ModelIndex(View):
+    def get(self, request, public_id):
+        try:
+            data = self.__class__._model.objects.get(
+                exists=True, status_public=True, public_id=public_id
+            )
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+        if not data.status_public or not data.exists:
+            raise Http404("Data does not exist")
+        field_data = jsondataferret.utils.get_field_list_from_json(
+            self.__class__._type_public_id, data.data_public
+        )
+        return render(
+            request,
+            "indigo/" + self.__class__._model.__name__.lower() + "/index.html",
+            {"data": data, "field_data": field_data},
+        )
+
+
+class FundIndex(ModelIndex):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
 
 
 ########################### Public - All
@@ -426,26 +449,44 @@ def api1_organisation_index(request, public_id):
 ########################### Public - Fund - API
 
 
-def api1_funds_list(request):
-    funds = Fund.objects.filter()
-    data = {
-        "funds": [
-            {"id": f.public_id, "public": (f.exists and f.status_public)} for f in funds
-        ]
-    }
-    return JsonResponse(data)
+class API1ModelList(View):
+    def get(self, request):
+        datas = self.__class__._model.objects.filter().order_by("public_id")
+        output = {
+            self.__class__._model.__name__.lower()
+            + "s": [
+                {"id": d.public_id, "public": (d.exists and d.status_public)}
+                for d in datas
+            ]
+        }
+        return JsonResponse(output)
 
 
-def api1_fund_index(request, public_id):
-    try:
-        fund = Fund.objects.get(public_id=public_id)
-    except fund.DoesNotExist:
-        raise Http404("fund does not exist")
-    if not fund.status_public or not fund.exists:
-        raise Http404("fund does not exist")
+class API1FundList(API1ModelList):
+    _model = Fund
 
-    data = {"fund": {"id": fund.public_id, "data": fund.data_public,}}
-    return JsonResponse(data)
+
+class API1ModelIndex(View):
+    def get(self, request, public_id):
+        try:
+            data = self.__class__._model.objects.get(
+                exists=True, status_public=True, public_id=public_id
+            )
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+        if not data.status_public or not data.exists:
+            raise Http404("Data does not exist")
+        data = {
+            self.__class__._model.__name__.lower(): {
+                "id": data.public_id,
+                "data": data.data_public,
+            }
+        }
+        return JsonResponse(data)
+
+
+class API1FundIndex(API1ModelIndex):
+    _model = Fund
 
 
 ########################### Admin
@@ -1450,52 +1491,81 @@ def admin_organisation_history(request, public_id):
 ########################### Admin - funds
 
 
-@permission_required("indigo.admin")
-def admin_fund_download_blank_form(request):
-    type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_FUND_PUBLIC_ID, {})
-    if not type_data.get("spreadsheet_form_guide"):
-        raise Http404("Feature not available")
+class AdminModelDownloadBlankForm(PermissionRequiredMixin, View):
+    permission_required = "indigo.admin"
 
-    out_file = os.path.join(
-        tempfile.gettempdir(),
-        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
-    )
+    def get(self, request):
+        type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+            self.__class__._type_public_id, {}
+        )
+        if not type_data.get("spreadsheet_form_guide"):
+            raise Http404("Feature not available")
 
-    spreadsheetforms.api.make_empty_form(
-        type_data.get("spreadsheet_form_guide"), out_file
-    )
+        out_file = os.path.join(
+            tempfile.gettempdir(),
+            "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
+        )
 
-    with open(out_file, "rb") as fh:
-        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-        response["Content-Disposition"] = "inline; filename=fund.xlsx"
+        spreadsheetforms.api.make_empty_form(
+            type_data.get("spreadsheet_form_guide"), out_file
+        )
 
-    return response
+        with open(out_file, "rb") as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response["Content-Disposition"] = (
+                "inline; filename=" + self.__class__._model.__name__.lower() + ".xlsx"
+            )
 
-
-@permission_required("indigo.admin")
-def admin_funds_list(request):
-    try:
-        type = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    funds = Record.objects.filter(type=type).order_by("public_id")
-    return render(request, "indigo/admin/funds.html", {"funds": funds},)
+        return response
 
 
-@permission_required("indigo.admin")
-def admin_fund_index(request, public_id):
-    try:
-        fund = Fund.objects.get(public_id=public_id)
-    except Fund.DoesNotExist:
-        raise Http404("Fund does not exist")
-    field_data = jsondataferret.utils.get_field_list_from_json(
-        TYPE_FUND_PUBLIC_ID, fund.data_private
-    )
-    return render(
-        request,
-        "indigo/admin/fund/index.html",
-        {"fund": fund, "field_data": field_data},
-    )
+class AdminFundDownloadBlankForm(AdminModelDownloadBlankForm):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
+
+
+class AdminModelList(PermissionRequiredMixin, View):
+    permission_required = "indigo.admin"
+
+    def get(self, request):
+        try:
+            type = Type.objects.get(public_id=self.__class__._type_public_id)
+        except Type.DoesNotExist:
+            raise Http404("Type does not exist")
+        datas = Record.objects.filter(type=type).order_by("public_id")
+        return render(
+            request,
+            "indigo/admin/" + self.__class__._model.__name__.lower() + "s.html",
+            {"datas": datas},
+        )
+
+
+class AdminFundList(AdminModelList):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
+
+
+class AdminModelIndex(PermissionRequiredMixin, View):
+    permission_required = "indigo.admin"
+
+    def get(self, request, public_id):
+        try:
+            data = self.__class__._model.objects.get(public_id=public_id)
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+        field_data = jsondataferret.utils.get_field_list_from_json(
+            self.__class__._type_public_id, data.data_public
+        )
+        return render(
+            request,
+            "indigo/admin/" + self.__class__._model.__name__.lower() + "/index.html",
+            {"data": data, "field_data": field_data},
+        )
+
+
+class AdminFundIndex(AdminModelIndex):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
 
 
 @permission_required("indigo.admin")
@@ -1511,60 +1581,76 @@ def admin_fund_projects(request, public_id):
     )
 
 
-@permission_required("indigo.admin")
-def admin_fund_download_form(request, public_id):
-    try:
-        type = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
-        raise Http404("Record does not exist")
+class AdminModelDownloadForm(PermissionRequiredMixin, View):
+    permission_required = "indigo.admin"
 
-    guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "fund_v001.xlsx",
-    )
+    def get(self, request, public_id):
+        try:
+            data = self.__class__._model.objects.get(public_id=public_id)
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
 
-    out_file = os.path.join(
-        tempfile.gettempdir(),
-        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
-    )
+        guide_file = os.path.join(
+            settings.BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            self.__class__._guide_file_name,
+        )
 
-    data = record.cached_data
-    data["id"] = record.public_id
+        out_file = os.path.join(
+            tempfile.gettempdir(),
+            "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
+        )
 
-    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
+        data_for_form = data.record.cached_data
+        data_for_form["id"] = data.public_id
 
-    with open(out_file, "rb") as fh:
-        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-        response["Content-Disposition"] = "inline; filename=fund.xlsx"
+        spreadsheetforms.api.put_data_in_form(guide_file, data_for_form, out_file)
 
-    return response
+        with open(out_file, "rb") as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response["Content-Disposition"] = (
+                "inline; filename=" + self.__class__._model.__name__.lower() + ".xlsx"
+            )
+
+        return response
 
 
-@permission_required("indigo.admin")
-def admin_fund_import_form(request, public_id):
-    try:
-        type = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
-        data = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
-        raise Http404("Record does not exist")
+class AdminFundDownloadForm(AdminModelDownloadForm):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
+    _guide_file_name = "fund_v001.xlsx"
 
-    if request.method == "POST":
 
-        # Create a form instance and populate it with data from the request (binding):
-        form = FundImportForm(request.POST, request.FILES)
+class AdminModelImportForm(PermissionRequiredMixin, View):
+    permission_required = "indigo.admin"
 
-        # Check if the form is valid:
+    def get(self, request, public_id):
+        try:
+            data = self.__class__._model.objects.get(public_id=public_id)
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+        form = self.__class__._form_class()
+        return render(
+            request,
+            "indigo/admin/"
+            + self.__class__._model.__name__.lower()
+            + "/import_form.html",
+            {"data": data, "form": form,},
+        )
+
+    def post(self, request, public_id):
+        try:
+            data = self.__class__._model.objects.get(public_id=public_id)
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+        form = self.__class__._form_class(request.POST, request.FILES)
         if form.is_valid():
-
             # get data
             json_data = spreadsheetforms.api.get_data_from_form_with_guide_spec(
-                settings.JSONDATAFERRET_TYPE_INFORMATION["fund"][
-                    "spreadsheet_form_guide_spec"
-                ],
+                settings.JSONDATAFERRET_TYPE_INFORMATION[
+                    self.__class__._model.__name__.lower()
+                ]["spreadsheet_form_guide_spec"],
                 request.FILES["file"].temporary_file_path(),
                 date_format=getattr(
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
@@ -1575,7 +1661,7 @@ def admin_fund_import_form(request, public_id):
             # process the data in form.cleaned_data as required
             # Save the event
             new_event_data = NewEventData(
-                TYPE_FUND_PUBLIC_ID,
+                self.__class__._type_public_id,
                 data.public_id,
                 json_data,
                 mode=jsondataferret.EVENT_MODE_MERGE,
@@ -1594,36 +1680,43 @@ def admin_fund_import_form(request, public_id):
             )
             return HttpResponseRedirect(
                 reverse(
-                    "indigo_admin_fund_index", kwargs={"public_id": data.public_id},
+                    self.__class__._redirect_view, kwargs={"public_id": data.public_id},
                 )
             )
-
-        # If this is a GET (or any other method) create the default form.
-    else:
-        form = FundImportForm()
-
-    context = {
-        "record": data,
-        "form": form,
-    }
-
-    return render(request, "indigo/admin/fund/import_form.html", context)
+        else:
+            return render(
+                request,
+                "indigo/admin/"
+                + self.__class__._model.__name__.lower()
+                + "/import_form.html",
+                {"data": data, "form": form,},
+            )
 
 
-@permission_required("indigo.admin")
-def admin_funds_new(request):
-    try:
-        type = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
+class AdminFundImportForm(AdminModelImportForm):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
+    _form_class = FundImportForm
+    _redirect_view = "indigo_admin_fund_index"
 
-    # If this is a POST request then process the Form data
-    if request.method == "POST":
 
-        # Create a form instance and populate it with data from the request (binding):
-        form = FundNewForm(request.POST)
+class AdminModelNew(PermissionRequiredMixin, View):
+    permission_required = "indigo.admin"
 
-        # Check if the form is valid:
+    def get(self, request):
+        form = self.__class__._form_class()
+        return render(
+            request,
+            "indigo/admin/" + self.__class__._model.__name__.lower() + "/new.html",
+            {"form": form,},
+        )
+
+    def post(self, request):
+        try:
+            type = Type.objects.get(public_id=self.__class__._type_public_id)
+        except Type.DoesNotExist:
+            raise Http404("Type does not exist")
+        form = self.__class__._form_class(request.POST)
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # Save the event
@@ -1644,85 +1737,110 @@ def admin_funds_new(request):
 
                 # redirect to a new URL:
                 return HttpResponseRedirect(
-                    reverse("indigo_admin_fund_index", kwargs={"public_id": id},)
+                    reverse(self.__class__._redirect_view, kwargs={"public_id": id},)
                 )
 
-    # If this is a GET (or any other method) create the default form.
-    else:
-        form = FundNewForm()
-
-    context = {
-        "form": form,
-    }
-
-    return render(request, "indigo/admin/fund/new.html", context)
+        return render(
+            request,
+            "indigo/admin/" + self.__class__._model.__name__.lower() + "/new.html",
+            {"form": form,},
+        )
 
 
-@permission_required("indigo.admin")
-def admin_fund_moderate(request, public_id):
-    try:
-        type = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
-        raise Http404("Record does not exist")
+class AdminFundNew(AdminModelNew):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
+    _form_class = FundNewForm
+    _redirect_view = "indigo_admin_fund_index"
 
-    edits = Edit.objects.filter(record=record, approval_event=None, refusal_event=None)
 
-    if request.method == "POST":
+class AdminModelModerate(PermissionRequiredMixin, View):
+    permission_required = "indigo.admin"
 
-        # TODO check CSFR
+    def get(self, request, public_id):
+        return self.post(request, public_id)
 
-        actions = []
+    def post(self, request, public_id):
+        try:
+            type = Type.objects.get(public_id=self.__class__._type_public_id)
+            record = Record.objects.get(type=type, public_id=public_id)
+        except Type.DoesNotExist:
+            raise Http404("Type does not exist")
+        except Record.DoesNotExist:
+            raise Http404("Record does not exist")
+        edits = Edit.objects.filter(
+            record=record, approval_event=None, refusal_event=None
+        )
+
+        if request.method == "POST":
+
+            # TODO check CSFR
+
+            actions = []
+            for edit in edits:
+                action = request.POST.get("action_" + str(edit.id))
+                if action == "approve":
+                    actions.append(
+                        jsondataferret.pythonapi.newevent.NewEventApproval(edit)
+                    )
+                elif action == "reject":
+                    actions.append(
+                        jsondataferret.pythonapi.newevent.NewEventRejection(edit)
+                    )
+
+            if actions:
+                jsondataferret.pythonapi.newevent.newEvent(
+                    actions, user=request.user, comment=request.POST.get("comment")
+                )
+                return HttpResponseRedirect(
+                    reverse(
+                        self.__class__._redirect_view,
+                        kwargs={"public_id": record.public_id},
+                    )
+                )
+
         for edit in edits:
-            action = request.POST.get("action_" + str(edit.id))
-            if action == "approve":
-                actions.append(jsondataferret.pythonapi.newevent.NewEventApproval(edit))
-            elif action == "reject":
-                actions.append(
-                    jsondataferret.pythonapi.newevent.NewEventRejection(edit)
-                )
-
-        if actions:
-            jsondataferret.pythonapi.newevent.newEvent(
-                actions, user=request.user, comment=request.POST.get("comment")
+            # TODO This will not take account of data_key on an edit If we start using that we will need to check this
+            edit.field_datas = jsondataferret.utils.get_field_list_from_json(
+                TYPE_FUND_PUBLIC_ID, edit.data
             )
 
-        return HttpResponseRedirect(
-            reverse("indigo_admin_fund_index", kwargs={"public_id": public_id},)
+        return render(
+            request,
+            "indigo/admin/" + self.__class__._model.__name__.lower() + "/moderate.html",
+            {"type": type, "record": record, "edits": edits},
         )
 
-    for edit in edits:
-        # TODO This will not take account of data_key on an edit If we start using that we will need to check this
-        edit.field_datas = jsondataferret.utils.get_field_list_from_json(
-            TYPE_FUND_PUBLIC_ID, edit.data
+
+class AdminFundModerate(AdminModelModerate):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
+    _redirect_view = "indigo_admin_fund_index"
+
+
+class AdminModelHistory(PermissionRequiredMixin, View):
+    permission_required = "indigo.admin"
+
+    def get(self, request, public_id):
+        try:
+            type = Type.objects.get(public_id=self.__class__._type_public_id)
+            record = Record.objects.get(type=type, public_id=public_id)
+        except Type.DoesNotExist:
+            raise Http404("Type does not exist")
+        except Record.DoesNotExist:
+            raise Http404("Record does not exist")
+        events = Event.objects.filter_by_record(record)
+
+        return render(
+            request,
+            "indigo/admin/" + self.__class__._model.__name__.lower() + "/history.html",
+            {"type": type, "record": record, "events": events},
         )
 
-    return render(
-        request,
-        "indigo/admin/fund/moderate.html",
-        {"type": type, "record": record, "edits": edits},
-    )
 
-
-@permission_required("indigo.admin")
-def admin_fund_history(request, public_id):
-    try:
-        type = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
-        raise Http404("Record does not exist")
-
-    events = Event.objects.filter_by_record(record)
-
-    return render(
-        request,
-        "indigo/admin/fund/history.html",
-        {"type": type, "record": record, "events": events},
-    )
+class AdminFundHistory(AdminModelHistory):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
 
 
 ########################### Admin - Event
