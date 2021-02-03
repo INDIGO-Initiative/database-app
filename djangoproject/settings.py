@@ -162,11 +162,12 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     "organisation": {
         "json_schema": load_json_schema("organisation.json"),
         "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v002.xlsx",
+            BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v003.xlsx",
         ),
-        "spreadsheet_form_guide_spec": load_guide_form_spec("organisation_v002.xlsx"),
+        "spreadsheet_form_guide_spec": load_guide_form_spec("organisation_v003.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
             2: load_guide_form_spec("organisation_v002.xlsx"),
+            3: load_guide_form_spec("organisation_v003.xlsx"),
         },
         "fields": load_json_schema_fields("organisation.json"),
     },

@@ -38,7 +38,9 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
                         org_id.strip() for org_id in field_values if org_id.strip()
                     ]:
                         try:
-                            organisation = Organisation.objects.get(public_id=org_id)
+                            organisation = Organisation.objects.get(
+                                public_id=org_id, exists=True, status_public=True
+                            )
                             organisations[organisation.public_id] = organisation
                         except Organisation.DoesNotExist:
                             pass
@@ -55,7 +57,9 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
                 )
                 if field_value and field_value.strip():
                     try:
-                        organisation = Organisation.objects.get(public_id=field_value)
+                        organisation = Organisation.objects.get(
+                            public_id=field_value, exists=True, status_public=True
+                        )
                         organisations[organisation.public_id] = organisation
                         organisation_data = (
                             organisation.data_public

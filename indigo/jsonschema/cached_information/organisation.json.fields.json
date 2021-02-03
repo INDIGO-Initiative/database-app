@@ -1,5 +1,9 @@
 [
     {
+        "key": "/status",
+        "title": "Status"
+    },
+    {
         "key": "/name/value",
         "title": "Name"
     },
