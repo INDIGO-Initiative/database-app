@@ -7,7 +7,7 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
         <li class="breadcrumb-item"><a href="{% url 'indigo_admin_fund_list' %}">Funds</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_fund_index' public_id=record.public_id  %}">Fund {{ record.public_id }}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_fund_index' public_id=data.public_id  %}">Fund {{ data.public_id }}</a></li>
         <li class="breadcrumb-item active" aria-current="page">Import</li>
       </ol>
     </nav>

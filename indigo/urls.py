@@ -51,8 +51,8 @@ urlpatterns = [
         name="indigo_organisation_download_form",
     ),
     ########################### Public - Fund
-    path("fund", views.funds_list, name="indigo_fund_list",),
-    path("fund/<public_id>", views.fund_index, name="indigo_fund_index",),
+    path("fund", views.FundList.as_view(), name="indigo_fund_list",),
+    path("fund/<public_id>", views.FundIndex.as_view(), name="indigo_fund_index",),
     ########################### Public - All
     path(
         "all_public_data_file_per_record.zip",
@@ -83,9 +83,11 @@ urlpatterns = [
         name="indigo_api1_organisation_index",
     ),
     ########################### Public - Fund - API
-    path("api1/fund", views.api1_funds_list, name="indigo_api1_fund_list",),
+    path("api1/fund", views.API1FundList.as_view(), name="indigo_api1_fund_list",),
     path(
-        "api1/fund/<public_id>", views.api1_fund_index, name="indigo_api1_fund_index",
+        "api1/fund/<public_id>",
+        views.API1FundIndex.as_view(),
+        name="indigo_api1_fund_index",
     ),
     ########################### Admin
     path("admin/", views.admin_index, name="indigo_admin_index"),
@@ -228,13 +230,13 @@ urlpatterns = [
     ########################### Admin - Fund
     path(
         "admin/fund_download_blank_form",
-        views.admin_fund_download_blank_form,
+        views.AdminFundDownloadBlankForm.as_view(),
         name="indigo_admin_fund_download_blank_form",
     ),
-    path("admin/fund", views.admin_funds_list, name="indigo_admin_fund_list",),
+    path("admin/fund", views.AdminFundList.as_view(), name="indigo_admin_fund_list",),
     path(
         "admin/fund/<public_id>",
-        views.admin_fund_index,
+        views.AdminFundIndex.as_view(),
         name="indigo_admin_fund_index",
     ),
     path(
@@ -244,25 +246,25 @@ urlpatterns = [
     ),
     path(
         "admin/fund/<public_id>/download_form",
-        views.admin_fund_download_form,
+        views.AdminFundDownloadForm.as_view(),
         name="indigo_admin_fund_download_form",
     ),
     path(
         "admin/fund/<public_id>/import_form",
-        views.admin_fund_import_form,
+        views.AdminFundImportForm.as_view(),
         name="indigo_admin_fund_import_form",
     ),
     path(
         "admin/fund/<public_id>/moderate",
-        views.admin_fund_moderate,
+        views.AdminFundModerate.as_view(),
         name="indigo_admin_fund_moderate",
     ),
     path(
         "admin/fund/<public_id>/history",
-        views.admin_fund_history,
+        views.AdminFundHistory.as_view(),
         name="indigo_admin_fund_history",
     ),
-    path("admin/new_fund", views.admin_funds_new, name="indigo_admin_fund_new",),
+    path("admin/new_fund", views.AdminFundNew.as_view(), name="indigo_admin_fund_new",),
     ########################### Admin - Event
     path(
         "admin/event/<event_id>",

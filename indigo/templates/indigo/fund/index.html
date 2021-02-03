@@ -1,13 +1,13 @@
 {% extends 'indigo/base.html' %}
 
-{% block head_title %}Fund {{ fund.public_id }}{% endblock %}
+{% block head_title %}Fund {{ data.public_id }}{% endblock %}
 
 {% block content %}
 
-<p>Fund {{ fund.data_public.title }}</p>
+<p>Fund {{ data.data_public.title }}</p>
 
 <table class="table">
-    <tr><th>ID</th><td>{{ fund.public_id }}</td></tr>
+    <tr><th>ID</th><td>{{ data.public_id }}</td></tr>
     {% for field in field_data %}
         <tr><th>{{ field.title }}</th><td>{{ field.value }}</td></tr>
     {% endfor %}

@@ -13,14 +13,14 @@
 
 {% block content %}
 
-    {% if funds %}
+    {% if datas %}
         <table class="table">
             <tr>
                 <th>ID</th>
                 <th>Fund Name</th>
                 <th>&nbsp;</th>
             </tr>
-            {% for fund in funds %}
+            {% for fund in datas %}
                 <tr>
                     <td><a href="{% url 'indigo_admin_fund_index' public_id=fund.public_id %}">{{ fund.public_id }}</a></td>
                     <td>{{ fund.cached_data.name.value }}</td>
