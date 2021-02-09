@@ -96,6 +96,39 @@ def convert_organisation_data_to_spreadsheetforms_data(organisation, public_only
     # Add ID
     data["id"] = organisation.public_id
 
+    # Cases where commas are in values can not be used in data validity options
+    # So replace them with a special value that we can use.
+    # This only applies in spreadsheets we edit; so not public ones
+    if not public_only:
+        # Fix Type
+        if (
+            jsonpointer.resolve_pointer(data, "/type/value", "")
+            == "Registered company, partnership or commercial association"
+        ):
+            jsonpointer.set_pointer(
+                data,
+                "/type/value",
+                "Registered company or partnership or commercial association",
+            )
+        if (
+            jsonpointer.resolve_pointer(data, "/type/value", "")
+            == "Registered non-profit organisation, charity or foundation"
+        ):
+            jsonpointer.set_pointer(
+                data,
+                "/type/value",
+                "Registered non-profit organisation or charity or foundation",
+            )
+        if (
+            jsonpointer.resolve_pointer(data, "/type/value", "")
+            == "Multilateral, bilateral or intergovernmental body"
+        ):
+            jsonpointer.set_pointer(
+                data,
+                "/type/value",
+                "Multilateral or bilateral or intergovernmental body",
+            )
+
     # Done
     return data
 
@@ -103,6 +136,37 @@ def convert_organisation_data_to_spreadsheetforms_data(organisation, public_only
 def extract_edits_from_organisation_spreadsheet(record, import_json):
     # Remove record ID
     del import_json["id"]
+
+    # Cases where commas are in values can not be used in data validity options
+    # So turn special values into values with commas
+    # Fix Type
+    if (
+        jsonpointer.resolve_pointer(import_json, "/type/value", "")
+        == "Registered company or partnership or commercial association"
+    ):
+        jsonpointer.set_pointer(
+            import_json,
+            "/type/value",
+            "Registered company, partnership or commercial association",
+        )
+    if (
+        jsonpointer.resolve_pointer(import_json, "/type/value", "")
+        == "Registered non-profit organisation or charity or foundation"
+    ):
+        jsonpointer.set_pointer(
+            import_json,
+            "/type/value",
+            "Registered non-profit organisation, charity or foundation",
+        )
+    if (
+        jsonpointer.resolve_pointer(import_json, "/type/value", "")
+        == "Multilateral or bilateral or intergovernmental body"
+    ):
+        jsonpointer.set_pointer(
+            import_json,
+            "/type/value",
+            "Multilateral, bilateral or intergovernmental body",
+        )
 
     # Return
     return [

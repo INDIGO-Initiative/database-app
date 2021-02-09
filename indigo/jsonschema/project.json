@@ -108,6 +108,25 @@
       },
       "priority": 1
     },
+    "jurisdiction": {
+      "title": "Jurisdiction",
+      "type": "object",
+      "properties": {
+        "jurisdiction": {
+          "title": "Jurisdiction",
+          "$ref": "#/definitions/object_with_value_string_and_status"
+        },
+        "source_ids": {
+          "title": "(Source ID's)",
+          "type": "string"
+        },
+        "notes": {
+          "title": "(Notes)",
+          "type": "string"
+        }
+      },
+      "priority": 1
+    },
     "overall_project_finance": {
       "title": "Overall project finance",
       "type": "object",

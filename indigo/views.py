@@ -165,7 +165,7 @@ def project_download_blank_form(request):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "project_public_v012.xlsx",
+        "project_public_v013.xlsx",
     )
     spreadsheetforms.api.make_empty_form(guide_file, out_file)
 
@@ -208,7 +208,7 @@ def project_download_form(request, public_id):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "project_public_v012.xlsx",
+        "project_public_v013.xlsx",
     )
     out_file = os.path.join(
         tempfile.gettempdir(),
@@ -278,7 +278,7 @@ def organisation_download_blank_form(request):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "organisation_public_v002.xlsx",
+        "organisation_public_v003.xlsx",
     )
     spreadsheetforms.api.make_empty_form(guide_file, out_file)
 
@@ -323,7 +323,7 @@ def organisation_download_form(request, public_id):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "organisation_public_v002.xlsx",
+        "organisation_public_v003.xlsx",
     )
     out_file = os.path.join(
         tempfile.gettempdir(),
@@ -1303,7 +1303,7 @@ def admin_organisation_download_form(request, public_id):
         raise Http404("Organisation does not exist")
 
     guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v003.xlsx",
+        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v004.xlsx",
     )
 
     out_file = os.path.join(
