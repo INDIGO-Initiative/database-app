@@ -1120,8 +1120,10 @@
             "type": "string"
           },
           "status": {
-            "title": "Status",
-            "type": "string"
+            "$ref": "#/definitions/status"
+          },
+          "sandboxes": {
+            "$ref": "#/definitions/sandboxes"
           }
         }
       },
@@ -1702,9 +1704,14 @@
       "type": "string",
       "enum": [
         "PUBLIC",
+        "SANDBOX",
         "PRIVATE",
         "DISPUTED"
       ]
+    },
+    "sandboxes": {
+      "title": "(In Sandboxes)",
+      "type": "string"
     }
   }
 }

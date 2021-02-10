@@ -265,6 +265,15 @@ urlpatterns = [
         name="indigo_admin_fund_history",
     ),
     path("admin/new_fund", views.AdminFundNew.as_view(), name="indigo_admin_fund_new",),
+    ########################### Admin - Sandboxes
+    path(
+        "admin/sandboxes", views.admin_sandbox_list, name="indigo_admin_sandbox_list",
+    ),
+    path(
+        "admin/sandbox/<public_id>",
+        views.admin_sandbox_index,
+        name="indigo_admin_sandbox_index",
+    ),
     ########################### Admin - Event
     path(
         "admin/event/<event_id>",

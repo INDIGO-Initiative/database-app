@@ -148,13 +148,14 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
         "json_schema": load_json_schema("project.json"),
         "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "project_v009.xlsx",
+            BASE_DIR, "indigo", "spreadsheetform_guides", "project_v010.xlsx",
         ),
-        "spreadsheet_form_guide_spec": load_guide_form_spec("project_v009.xlsx"),
+        "spreadsheet_form_guide_spec": load_guide_form_spec("project_v010.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
             7: load_guide_form_spec("project_v007.xlsx"),
             8: load_guide_form_spec("project_v008.xlsx"),
             9: load_guide_form_spec("project_v009.xlsx"),
+            10: load_guide_form_spec("project_v010.xlsx"),
         },
         "fields": load_json_schema_fields("project.json"),
         "filter_keys": load_json_schema_filter_keys("project.json"),
@@ -184,6 +185,8 @@ JSONDATAFERRET_TYPE_INFORMATION = {
 CELERY_BROKER_URL = os.getenv("CLOUDAMQP_URL", "localhost")
 
 APP_TITLE = os.getenv("APP_TITLE", "INDIGO")
+
+API_SANDBOX_DATA_PASSWORD = os.getenv("API_SANDBOX_DATA_PASSWORD", "")
 
 SENTRY_DSN = os.getenv("SENTRY_DSN")
 if SENTRY_DSN:

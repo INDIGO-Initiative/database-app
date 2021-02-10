@@ -998,7 +998,11 @@
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "(Status)"
+            },
+            {
+                "key": "/sandboxes",
+                "title": "(In Sandboxes)"
             }
         ],
         "key": "/transactions",

@@ -43,7 +43,7 @@ from .forms import (
     ProjectNewForm,
     RecordChangeStatusForm,
 )
-from .models import Fund, Organisation, Project, ProjectImport
+from .models import Fund, Organisation, Project, ProjectImport, Sandbox
 
 ########################### Home Page
 
@@ -412,6 +412,12 @@ def api1_project_index(request, public_id):
         raise Http404("Project does not exist")
 
     data = {"project": {"id": project.public_id, "data": project.data_public,}}
+    if (
+        settings.API_SANDBOX_DATA_PASSWORD
+        and request.GET.get("sandbox_data_password", "")
+        == settings.API_SANDBOX_DATA_PASSWORD
+    ):
+        data["project"]["sandboxes"] = project.data_sandboxes
     return JsonResponse(data)
 
 
@@ -1841,6 +1847,24 @@ class AdminModelHistory(PermissionRequiredMixin, View):
 class AdminFundHistory(AdminModelHistory):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
+
+
+########################### Admin - sandboxes
+
+
+@permission_required("indigo.admin")
+def admin_sandbox_list(request):
+    sandboxes = Sandbox.objects.all()
+    return render(request, "indigo/admin/sandboxes.html", {"sandboxes": sandboxes},)
+
+
+@permission_required("indigo.admin")
+def admin_sandbox_index(request, public_id):
+    try:
+        sandbox = Sandbox.objects.get(public_id=public_id)
+    except Sandbox.DoesNotExist:
+        raise Http404("Sandbox does not exist")
+    return render(request, "indigo/admin/sandbox/index.html", {"sandbox": sandbox},)
 
 
 ########################### Admin - Event

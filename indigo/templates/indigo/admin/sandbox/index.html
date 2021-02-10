@@ -1,0 +1,26 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Sandbox {{ sandbox.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_sandbox_list' %}">Sandboxes</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Sandbox {{ sandbox.public_id }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+
+
+{% block content %}
+
+<p>Sandbox {{ sandbox.public_id  }}</p>
+
+<table class="table">
+    <tr><th>ID</th><td>{{ sandbox.public_id }}</td></tr>
+    <tr><th>Title</th><td>{{ sandbox.title }}</td></tr>
+</table>
+
+{% endblock %}
