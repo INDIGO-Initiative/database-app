@@ -17,6 +17,7 @@ class BaseModel(models.Model):
     status_public = models.BooleanField(default=False)
     data_public = JSONField(default=dict)
     data_private = JSONField(default=dict)
+    data_sandboxes = JSONField(default=dict)
     # record is nullable for historical data - it should be NOT NULL really
     record = models.ForeignKey(Record, on_delete=models.PROTECT, null=True, blank=True)
     full_text_search_private = models.TextField(default="")
@@ -107,3 +108,8 @@ class ProjectIncludesFund(models.Model):
             "project",
             "fund",
         )
+
+
+class Sandbox(models.Model):
+    public_id = models.CharField(max_length=200, unique=True)
+    title = models.TextField(default="")

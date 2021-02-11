@@ -1,0 +1,36 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Sandboxes{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Sandboxes</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    {% if sandboxes %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for sandbox in sandboxes %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_sandbox_index' public_id=sandbox.public_id %}">{{ sandbox.public_id }}</a></td>
+                    <td>{{ sandbox.title }}</td>
+                    <td><a href="{% url 'indigo_admin_sandbox_index' public_id=sandbox.public_id %}" class="btn btn-primary">View</a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No sandboxes are available.</p>
+    {% endif %}
+
+{% endblock %}

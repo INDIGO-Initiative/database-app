@@ -97,6 +97,17 @@ def update_project(
         )
     else:
         project.data_public = {}
+    # Sandbox Data
+    if project.status_public:
+        project.data_sandboxes = get_sandbox_only_data(
+            record.cached_data,
+            keys_with_own_status_subfield=settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+                "project"
+            ).get("filter_keys"),
+            lists_with_items_with_own_status_subfield=TYPE_PROJECT_FILTER_LISTS_LIST,
+        )
+    else:
+        project.data_sandboxes = {}
     # Private Data
     if record.cached_exists:
         project.data_private = indigo.processdata.add_other_records_to_project(
@@ -323,6 +334,68 @@ def filter_values(
 
     # Done
     return data
+
+
+def get_sandbox_only_data(
+    data,
+    keys_with_own_status_subfield=[],
+    lists_with_items_with_own_status_subfield=[],
+):
+    sandbox_data = {}
+
+    # Some single values (or groups of single values) wight be removed, based on a status field.
+    for key in keys_with_own_status_subfield:
+        try:
+            key_data = jsonpointer.resolve_pointer(data, key)
+        except jsonpointer.JsonPointerException:
+            # Data does not exist anyway, nothing to do!
+            continue
+        key_status = key_data.get("status", "") if isinstance(key_data, dict) else ""
+        if isinstance(key_status, str) and key_status.strip().lower() == "sandbox":
+            for sandbox in [
+                i.strip() for i in key_data.get("sandboxes", "").split(",") if i.strip()
+            ]:
+                if sandbox not in sandbox_data:
+                    sandbox_data[sandbox] = {}
+                jsonpointer.set_pointer(sandbox_data[sandbox], key, key_data)
+                jsonpointer.set_pointer(sandbox_data[sandbox], key + "/status", None)
+                jsonpointer.set_pointer(sandbox_data[sandbox], key + "/sandboxes", None)
+
+    # Some lists have items with a status field, which we might remove
+    for list_key in lists_with_items_with_own_status_subfield:
+        try:
+            old_list = jsonpointer.resolve_pointer(data, list_key)
+        except jsonpointer.JsonPointerException:
+            # Data does not exist anyway, nothing to do!
+            continue
+        if isinstance(old_list, list) and old_list:
+            new_lists = {}
+            for item in old_list:
+                key_status = item.get("status", "") if isinstance(item, dict) else ""
+                if (
+                    isinstance(key_status, str)
+                    and key_status.strip().lower() == "sandbox"
+                ):
+                    new_item = copy.deepcopy(item)
+                    if "status" in new_item:
+                        del new_item["status"]
+                    if "sandboxes" in new_item:
+                        del new_item["sandboxes"]
+                    for sandbox in [
+                        i.strip()
+                        for i in item.get("sandboxes", "").split(",")
+                        if i.strip()
+                    ]:
+                        if sandbox not in new_lists:
+                            new_lists[sandbox] = []
+                        new_lists[sandbox].append(new_item)
+            for sandbox, new_list in new_lists.items():
+                if sandbox not in sandbox_data:
+                    sandbox_data[sandbox] = {}
+                jsonpointer.set_pointer(sandbox_data[sandbox], list_key, new_list)
+
+    # Done
+    return sandbox_data
 
 
 def map_project_values(data):
