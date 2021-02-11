@@ -4,8 +4,12 @@ import spreadsheetforms
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-import indigo
 from indigo.models import Fund, Organisation, Project
+from indigo.spreadsheetforms import (
+    convert_fund_data_to_spreadsheetforms_data,
+    convert_organisation_data_to_spreadsheetforms_data,
+    convert_project_data_to_spreadsheetforms_data,
+)
 
 
 class Command(BaseCommand):
@@ -37,8 +41,7 @@ class Command(BaseCommand):
 
             out_file = os.path.join(out_funds_dirname, fund.public_id + ".xlsx")
 
-            data = fund.record.cached_data
-            data["id"] = fund.public_id
+            data = convert_fund_data_to_spreadsheetforms_data(fund, public_only=False)
 
             spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
         # ORGANISATIONS
@@ -55,8 +58,9 @@ class Command(BaseCommand):
                 out_organisations_dirname, organisation.public_id + ".xlsx"
             )
 
-            data = organisation.record.cached_data
-            data["id"] = organisation.public_id
+            data = convert_organisation_data_to_spreadsheetforms_data(
+                organisation, public_only=False
+            )
 
             spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
 
@@ -72,8 +76,8 @@ class Command(BaseCommand):
 
             out_file = os.path.join(out_projects_dirname, project.public_id + ".xlsx")
 
-            data = indigo.processdata.add_other_records_to_project(
-                project.public_id, project.record.cached_data, public_only=False
+            data = convert_project_data_to_spreadsheetforms_data(
+                project, public_only=False
             )
 
             spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)

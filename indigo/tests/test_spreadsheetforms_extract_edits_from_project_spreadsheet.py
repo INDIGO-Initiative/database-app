@@ -2,11 +2,11 @@ import jsondataferret.models
 import jsondataferret.pythonapi.newevent
 from django.test import TestCase  # noqa
 
-import indigo.processdata
 from indigo import TYPE_ORGANISATION_PUBLIC_ID, TYPE_PROJECT_PUBLIC_ID
+from indigo.spreadsheetforms import extract_edits_from_project_spreadsheet
 
 
-class ProcessExtractEditsFromProjectImport(TestCase):
+class SpreadsheetFormsExtractEditsFromProjectSpreadsheet(TestCase):
     type_project = None
     type_organisation = None
     project_record = None
@@ -46,11 +46,9 @@ class ProcessExtractEditsFromProjectImport(TestCase):
 
     def test_no_orgs(self):
 
-        input = {"name": {"value": "Project With Ferrets"}}
+        input = {"id": "PROJ-1", "name": {"value": "Project With Ferrets"}}
 
-        out = indigo.processdata.extract_edits_from_project_import(
-            self.project_record, input
-        )
+        out = extract_edits_from_project_spreadsheet(self.project_record, input)
 
         assert 1 == len(out)
         assert {
@@ -114,6 +112,7 @@ class ProcessExtractEditsFromProjectImport(TestCase):
         # This data must have all the "address": {"value": None} stuff, as this is how
         # new data will appear on top of imported data and we need to make sure that works.
         input = {
+            "id": "PROJ-1",
             "name": {"value": "Project With Ferrets"},
             "organisations": [
                 {
@@ -136,9 +135,7 @@ class ProcessExtractEditsFromProjectImport(TestCase):
             ],
         }
 
-        out = indigo.processdata.extract_edits_from_project_import(
-            self.project_record, input
-        )
+        out = extract_edits_from_project_spreadsheet(self.project_record, input)
 
         assert 1 == len(out)
         assert {

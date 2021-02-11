@@ -10,8 +10,13 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
-import indigo.utils
 from indigo.models import Organisation, Project
+
+from .spreadsheetforms import (
+    convert_fund_data_to_spreadsheetforms_data,
+    convert_organisation_data_to_spreadsheetforms_data,
+    convert_project_data_to_spreadsheetforms_data,
+)
 
 
 def update_public_files_for_project(project):
@@ -31,9 +36,7 @@ def _write_public_files_for_project(project):
     default_storage_name_xlsx = "public/project/" + project.public_id + ".xlsx"
 
     # --- Get Data
-    data = indigo.processdata.add_other_records_to_project(
-        project.public_id, project.data_public, public_only=True
-    )
+    data = convert_project_data_to_spreadsheetforms_data(project, public_only=True)
 
     # --- XLSX File
     guide_file = os.path.join(
@@ -79,8 +82,8 @@ def _write_public_files_for_organisation(organisation):
     )
 
     # --- Get Data
-    data = indigo.processdata.add_other_records_to_organisation(
-        organisation.public_id, organisation.data_public, public_only=True
+    data = convert_organisation_data_to_spreadsheetforms_data(
+        organisation, public_only=True
     )
 
     # --- XLSX File
@@ -123,9 +126,7 @@ def _write_public_files_for_fund(fund):
     default_storage_name_xlsx = "public/fund/" + fund.public_id + ".xlsx"
 
     # --- Get Data
-    data = indigo.processdata.add_other_records_to_fund(
-        fund.public_id, fund.data_public, public_only=True
-    )
+    data = convert_fund_data_to_spreadsheetforms_data(fund, public_only=True)
 
     # --- XLSX File
     guide_file = os.path.join(

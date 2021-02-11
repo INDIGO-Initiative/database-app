@@ -53,6 +53,16 @@ from .models import (
     ProjectImport,
     Sandbox,
 )
+from .spreadsheetforms import (
+    convert_assessment_resource_data_to_spreadsheetforms_data,
+    convert_fund_data_to_spreadsheetforms_data,
+    convert_organisation_data_to_spreadsheetforms_data,
+    convert_project_data_to_spreadsheetforms_data,
+    extract_edits_from_assessment_resource_spreadsheet,
+    extract_edits_from_fund_spreadsheet,
+    extract_edits_from_organisation_spreadsheet,
+    extract_edits_from_project_spreadsheet,
+)
 
 ########################### Home Page
 
@@ -193,9 +203,7 @@ def project_download_form(request, public_id):
     if not project.status_public or not project.exists:
         raise Http404("Project does not exist")
 
-    data = indigo.processdata.add_other_records_to_project(
-        project.public_id, project.data_public, public_only=True
-    )
+    data = convert_project_data_to_spreadsheetforms_data(project, public_only=True)
     guide_file = os.path.join(
         settings.BASE_DIR,
         "indigo",
@@ -308,8 +316,8 @@ def organisation_download_form(request, public_id):
     if not organisation.status_public or not organisation.exists:
         raise Http404("Organisation does not exist")
 
-    data = indigo.processdata.add_other_records_to_organisation(
-        organisation.public_id, organisation.data_public, public_only=True
+    data = convert_organisation_data_to_spreadsheetforms_data(
+        organisation, public_only=True
     )
     guide_file = os.path.join(
         settings.BASE_DIR,
@@ -584,16 +592,11 @@ def admin_project_index(request, public_id):
 def admin_project_download_form(request, public_id):
     type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PROJECT_PUBLIC_ID, {})
     try:
-        type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
-        raise Http404("Record does not exist")
+        project = Project.objects.get(public_id=public_id)
+    except Project.DoesNotExist:
+        raise Http404("Project does not exist")
 
-    data = indigo.processdata.add_other_records_to_project(
-        record.public_id, record.cached_data, public_only=False
-    )
+    data = convert_project_data_to_spreadsheetforms_data(project, public_only=False)
     out_file = os.path.join(
         tempfile.gettempdir(),
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
@@ -741,7 +744,7 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
 
             # process the data as required
             # Save the event
-            new_event_datas = indigo.processdata.extract_edits_from_project_import(
+            new_event_datas = extract_edits_from_project_spreadsheet(
                 record, project_import.data
             )
             newEvent(
@@ -1295,12 +1298,9 @@ def admin_organisation_projects(request, public_id):
 @permission_required("indigo.admin")
 def admin_organisation_download_form(request, public_id):
     try:
-        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
-        raise Http404("Record does not exist")
+        organisation = Organisation.objects.get(public_id=public_id)
+    except Organisation.DoesNotExist:
+        raise Http404("Organisation does not exist")
 
     guide_file = os.path.join(
         settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v003.xlsx",
@@ -1311,8 +1311,9 @@ def admin_organisation_download_form(request, public_id):
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
     )
 
-    data = record.cached_data
-    data["id"] = record.public_id
+    data = convert_organisation_data_to_spreadsheetforms_data(
+        organisation, public_only=False
+    )
 
     spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
 
@@ -1353,7 +1354,7 @@ def admin_organisation_import_form(request, public_id):
             ):
                 raise Exception("This seems to not be a organisation spreadsheet?")
 
-            json_data = spreadsheetforms.api.get_data_from_form_with_guide_spec(
+            import_json = spreadsheetforms.api.get_data_from_form_with_guide_spec(
                 settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"][
                     "spreadsheet_form_guide_spec_versions"
                 ][version],
@@ -1362,18 +1363,14 @@ def admin_organisation_import_form(request, public_id):
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
                 ),
             )
-            del json_data["id"]
 
             # process the data in form.cleaned_data as required
             # Save the event
-            new_event_data = NewEventData(
-                TYPE_ORGANISATION_PUBLIC_ID,
-                data.public_id,
-                json_data,
-                mode=jsondataferret.EVENT_MODE_MERGE,
+            new_event_datas = extract_edits_from_organisation_spreadsheet(
+                data, import_json
             )
             newEvent(
-                [new_event_data],
+                new_event_datas,
                 user=request.user,
                 comment=form.cleaned_data["comment"],
             )
@@ -1647,8 +1644,7 @@ class AdminModelDownloadForm(PermissionRequiredMixin, View):
             "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
         )
 
-        data_for_form = data.record.cached_data
-        data_for_form["id"] = data.public_id
+        data_for_form = self._get_data_for_form(data)
 
         spreadsheetforms.api.put_data_in_form(guide_file, data_for_form, out_file)
 
@@ -1666,11 +1662,19 @@ class AdminFundDownloadForm(AdminModelDownloadForm):
     _type_public_id = TYPE_FUND_PUBLIC_ID
     _guide_file_name = "fund_v001.xlsx"
 
+    def _get_data_for_form(self, data):
+        return convert_fund_data_to_spreadsheetforms_data(data, public_only=False)
+
 
 class AdminAssessmentResourceDownloadForm(AdminModelDownloadForm):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
     _guide_file_name = "assessment_resource_v001.xlsx"
+
+    def _get_data_for_form(self, data):
+        return convert_assessment_resource_data_to_spreadsheetforms_data(
+            data, public_only=False
+        )
 
 
 class AdminModelImportForm(PermissionRequiredMixin, View):
@@ -1698,7 +1702,7 @@ class AdminModelImportForm(PermissionRequiredMixin, View):
         form = self.__class__._form_class(request.POST, request.FILES)
         if form.is_valid():
             # get data
-            json_data = spreadsheetforms.api.get_data_from_form_with_guide_spec(
+            import_json = spreadsheetforms.api.get_data_from_form_with_guide_spec(
                 settings.JSONDATAFERRET_TYPE_INFORMATION[self.__class__._model.type_id][
                     "spreadsheet_form_guide_spec"
                 ],
@@ -1707,18 +1711,11 @@ class AdminModelImportForm(PermissionRequiredMixin, View):
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
                 ),
             )
-            del json_data["id"]
 
             # process the data in form.cleaned_data as required
             # Save the event
-            new_event_data = NewEventData(
-                self.__class__._type_public_id,
-                data.public_id,
-                json_data,
-                mode=jsondataferret.EVENT_MODE_MERGE,
-            )
             newEvent(
-                [new_event_data],
+                self._get_edits(data, import_json),
                 user=request.user,
                 comment=form.cleaned_data["comment"],
             )
@@ -1750,12 +1747,20 @@ class AdminFundImportForm(AdminModelImportForm):
     _form_class = ModelImportForm
     _redirect_view = "indigo_admin_fund_index"
 
+    def _get_edits(self, data, import_json):
+        return extract_edits_from_fund_spreadsheet(data.record, import_json)
+
 
 class AdminAssessmentResourceImportForm(AdminModelImportForm):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
     _form_class = ModelImportForm
     _redirect_view = "indigo_admin_assessment_resource_index"
+
+    def _get_edits(self, data, import_json):
+        return extract_edits_from_assessment_resource_spreadsheet(
+            data.record, import_json
+        )
 
 
 class AdminModelNew(PermissionRequiredMixin, View):

@@ -1,4 +1,3 @@
-import jsondataferret
 import jsonpointer
 import spreadsheetforms.util
 
@@ -7,7 +6,6 @@ from indigo import (
     TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST,
     TYPE_PROJECT_ORGANISATION_LIST,
     TYPE_PROJECT_ORGANISATION_REFERENCES_LIST,
-    TYPE_PROJECT_PUBLIC_ID,
     TYPE_PROJECT_SOURCE_LIST,
     TYPE_PROJECT_SOURCES_REFERENCES,
     TYPE_PROJECT_SOURCES_REFERENCES_LIST,
@@ -138,94 +136,6 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
 
     # Done
     return input_json
-
-
-def add_other_records_to_organisation(organisation_id, input_json, public_only=False):
-    # Add ID
-    input_json["id"] = organisation_id
-
-    # Done
-    return input_json
-
-
-def add_other_records_to_fund(fund_id, input_json, public_only=False):
-    # Add ID
-    input_json["id"] = fund_id
-
-    # Done
-    return input_json
-
-
-def extract_edits_from_project_import(record, import_json):
-    out = []
-    # organisation_data = defaultdict(list)
-
-    ################### Look For Orgs
-    # We could try and extract edits for orgs from spreadsheets, but for now we are not going to do that.
-    # data_list = jsonpointer.resolve_pointer(
-    #     import_json, TYPE_PROJECT_ORGANISATION_LIST["list_key"], default=None
-    # )
-    # if isinstance(data_list, list) and data_list:
-    #     for data_item in data_list:
-    #         # Extract Org data
-    #         org_id = jsonpointer.resolve_pointer(
-    #             data_item, TYPE_PROJECT_ORGANISATION_LIST["item_id_key"], default=None
-    #         )
-    #         if org_id:
-    #             org_data = {}
-    #             for data_key, org_key in TYPE_PROJECT_ORGANISATION_LIST[
-    #                 "item_to_org_map"
-    #             ].items():
-    #                 # We don't use jsonpointer.set_pointer here because it can't cope with setting "deep" paths
-    #                 spreadsheetforms.util.json_set_deep_value(
-    #                     org_data,
-    #                     org_key[1:],
-    #                     jsonpointer.resolve_pointer(data_item, data_key, default=None),
-    #                 )
-    #             organisation_data[org_id] = org_data
-    # Remove Org data from the data we save
-    jsonpointer.set_pointer(
-        import_json, TYPE_PROJECT_ORGANISATION_LIST["list_key"], None,
-    )
-
-    ################### Look For Funds
-    data_list = jsonpointer.resolve_pointer(
-        import_json, TYPE_PROJECT_FUND_LIST["list_key"], default=None
-    )
-    if isinstance(data_list, list) and data_list:
-        for data_item in data_list:
-            # Maybe try and extract fund edits here later?
-            # Remove Fund data from the data we save
-            jsonpointer.set_pointer(
-                data_item, TYPE_PROJECT_FUND_LIST["item_key_with_fund_details"], None,
-            )
-
-    ################### Now we have removed org data, create project edit
-    out.append(
-        jsondataferret.pythonapi.newevent.NewEventData(
-            TYPE_PROJECT_PUBLIC_ID,
-            record,
-            import_json,
-            mode=jsondataferret.EVENT_MODE_MERGE,
-        )
-    )
-
-    ################### Create organisation edits
-    # for org_id, org_data in organisation_data.items():
-    #     try:
-    #         organisation = Organisation.objects.get(public_id=org_id)
-    #         if does_organisation_data_contain_changes(organisation, org_data):
-    #             edit_part = jsondataferret.pythonapi.newevent.NewEventData(
-    #                 TYPE_ORGANISATION_PUBLIC_ID,
-    #                 organisation.public_id,
-    #                 org_data,
-    #                 mode=jsondataferret.EVENT_MODE_MERGE,
-    #             )
-    #             out.append(edit_part)
-    #     except Organisation.DoesNotExist:
-    #         pass  # TODO
-
-    return out
 
 
 def does_organisation_data_contain_changes(organisation_model, new_data):
