@@ -1,6 +1,11 @@
 from django import forms
 
-from indigo.utils import validate_fund_id, validate_organisation_id, validate_project_id
+from indigo.utils import (
+    validate_assessment_resource_id,
+    validate_fund_id,
+    validate_organisation_id,
+    validate_project_id,
+)
 
 COMMENT_LABEL = "Comment for history"
 
@@ -46,7 +51,15 @@ class FundNewForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
 
 
-class FundImportForm(forms.Form):
+class AssessmentResourceNewForm(forms.Form):
+    id = forms.SlugField(
+        validators=[validate_assessment_resource_id], initial="INDIGO-ARES-0000",
+    )
+    name = forms.CharField()
+    comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
+
+
+class ModelImportForm(forms.Form):
     file = forms.FileField()
     comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
 

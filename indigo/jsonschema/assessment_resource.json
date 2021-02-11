@@ -1,0 +1,420 @@
+{
+  "$id": "https://example.com/fund.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Assessment Resource",
+  "type": "object",
+  "required": [
+  ],
+  "properties": {
+    "status": {
+      "title": "Status",
+      "type": "string",
+      "enum": [
+        "PUBLIC",
+        "PRIVATE",
+        "DISPUTED"
+      ]
+    },
+    "name": {
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Name"
+    },
+    "who": {
+      "type": "object",
+      "title": "Who?",
+      "properties": {
+        "public_sector": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Public Sector"
+        },
+        "private_sector": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Private Sector"
+        },
+        "third_sector": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Third Sector"
+        }
+      }
+    },
+    "output_format": {
+      "type": "object",
+      "title": "Output Format",
+      "properties": {
+        "agnostic": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Agnostic"
+        },
+        "monetary_valuation": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Monetary Valuation"
+        },
+        "non_monetary_quant_index": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Non-monetary quant index"
+        },
+        "ordinal": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Ordinal"
+        },
+        "qualitative_only": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Qualitative only"
+        },
+        "quant_but_no_index": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Quant but no index"
+        }
+      }
+    },
+    "time_frame": {
+      "type": "object",
+      "title": "Time frame?",
+      "properties": {
+        "ongoing": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Ongoing"
+        },
+        "prospective": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Prospective"
+        },
+        "retrospective": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Retrospective"
+        }
+      }
+    },
+    "scale": {
+      "type": "object",
+      "title": "Scale?",
+      "properties": {
+        "agnostic": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Agnostic"
+        },
+        "micro": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Micro"
+        },
+        "meso": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Meso"
+        },
+        "macro": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Macro"
+        }
+      }
+    },
+    "impact_goal": {
+      "type": "object",
+      "title": "Impact Goal",
+      "properties": {
+        "agnostic": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Agnostic"
+        },
+        "defence": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Defence"
+        },
+        "democracy": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Democracy"
+        },
+        "development_poverty_reduction": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Development/ Poverty Reduction"
+        },
+        "education": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Education"
+        },
+        "employment_financial_well_being": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Employment/ Financial well-being"
+        },
+        "health": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Health"
+        },
+        "housing": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Housing"
+        },
+        "local_rejuvenation": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Local rejuvenation"
+        },
+        "sdg_oriented": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "SDG oriented"
+        },
+        "social_impact": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Social impact"
+        },
+        "sustainability_eco": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Sustainability/ Eco"
+        },
+        "well_being": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Well-being"
+        }
+      }
+    },
+    "type": {
+      "type": "object",
+      "title": "Type",
+      "properties": {
+        "case_study": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Case Study"
+        },
+        "classification": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Classification"
+        },
+        "consultancy": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Consultancy"
+        },
+        "framework": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Framework"
+        },
+        "guide": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Guide"
+        },
+        "dataset": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Dataset"
+        },
+        "principles": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Principles"
+        },
+        "reporting_standards": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Reporting Standards"
+        },
+        "resource_repository_or_summary": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Resource Repository or Summary"
+        },
+        "tool": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Tool"
+        },
+        "training_programme": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Training Programme"
+        }
+      }
+    },
+    "sourcing": {
+      "type": "object",
+      "title": "Sourcing?",
+      "properties": {
+        "agnostic": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Agnostic"
+        },
+        "outsource_to_vendor": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Outsource to Vendor"
+        },
+        "paid_tool": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Paid tool"
+        },
+        "proprietary_in_house": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Proprietary in-house"
+        },
+        "self_driven": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Self-driven"
+        }
+      }
+    },
+    "method": {
+      "type": "object",
+      "title": "Method?",
+      "properties": {
+        "attribution": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Attribution"
+        },
+        "diff_in_diff_statistical_analysis": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Diff-in-Diff statistical analysis"
+        },
+        "ex_ante_projections": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Ex-ante projections"
+        },
+        "focus_groups": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Focus Groups"
+        },
+        "framework_agnostic": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Framework agnostic"
+        },
+        "interviews": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Interviews"
+        },
+        "mission_alignment": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Mission Alignment"
+        },
+        "observation": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Observation"
+        },
+        "operational_data": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Operational Data"
+        },
+        "rcts": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "RCTs"
+        },
+        "surveys": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Surveys"
+        },
+        "theory_of_change": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Theory of Change"
+        },
+        "before_and_after": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Before and After"
+        }
+      }
+    },
+    "used_in_sectors": {
+      "type": "object",
+      "title": "Used in sectors?",
+      "properties": {
+        "charity": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Charity"
+        },
+        "csr": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "CSR"
+        },
+        "development": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Development"
+        },
+        "governance_policy": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Governance/ Policy"
+        },
+        "green_book": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Green Book"
+        },
+        "healthcare": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Healthcare"
+        },
+        "housing": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Housing"
+        },
+        "igos": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "IGOs"
+        },
+        "impact_investing": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Impact investing"
+        },
+        "microfinance": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Microfinance"
+        },
+        "sibs": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "SIBs"
+        },
+        "social_enterprises": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Social Enterprises"
+        },
+        "sustainability_eco": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Sustainability/ Eco"
+        },
+        "developed_countries": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Developed Countries"
+        },
+        "developing_countries": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Developing Countries"
+        }
+      }
+    },
+    "internal_external": {
+      "type": "object",
+      "title": "Internal / External?",
+      "properties": {
+        "internal": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "Internal"
+        },
+        "external": {
+          "$ref": "#/definitions/string_yes_no",
+          "title": "External"
+        }
+      }
+    },
+    "leader": {
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Leader"
+    },
+    "purpose": {
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Purpose"
+    },
+    "content": {
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Content"
+    },
+    "link": {
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Link"
+    },
+    "notes": {
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Notes"
+    }
+  },
+  "definitions": {
+    "object_with_value_string": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "string_yes_no": {
+      "type": "string",
+      "enum": [
+        "NO",
+        "YES"
+      ]
+    }
+  }
+}

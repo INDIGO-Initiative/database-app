@@ -30,3 +30,10 @@ This works the same as projects, but with different end points:
 
     /app/api1/organisation
     /app/api1/organisation/ID
+
+## Assessment Resources
+
+This works the same as projects, but with different end points:
+
+    /app/api1/assessment_resource
+    /app/api1/assessment_resource/ID

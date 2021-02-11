@@ -1,6 +1,7 @@
 TYPE_PROJECT_PUBLIC_ID = "project"
 TYPE_ORGANISATION_PUBLIC_ID = "organisation"
 TYPE_FUND_PUBLIC_ID = "fund"
+TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID = "assessment_resource"
 
 JSONDATAFERRET_HOOKS = "indigo.jsondataferret"
 

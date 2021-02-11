@@ -31,6 +31,7 @@ Add some `Types` records in the `Jsondataferret` section :
 * public id: `project`, title: `Project`
 * public id: `organisation`, title: `Organisation`
 * public id: `fund`, title: `Fund`
+* public id: `assessment_resource`, title: `Assessment Resource`
 
 ## Python Packages Upgrade
 

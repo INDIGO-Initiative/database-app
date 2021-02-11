@@ -1,0 +1,26 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Import Assessment Resource {{ record.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_assessment_resource_list' %}">Assessment Resources</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_assessment_resource_index' public_id=data.public_id  %}">Assessment Resource {{ data.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Import</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="submit" value="Import" class="btn btn-primary">
+  </form>
+
+{% endblock %}

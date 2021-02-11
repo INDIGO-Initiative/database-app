@@ -33,6 +33,12 @@ def validate_fund_id(value):
         raise ValidationError("Fund IDs should be of the format INDIGO-FUND-0000")
 
 
+def validate_assessment_resource_id(value):
+    m = re.search("^INDIGO-ARES-[0-9][0-9][0-9][0-9]$", value)
+    if not m:
+        raise ValidationError("Fund IDs should be of the format INDIGO-FUND-0000")
+
+
 def validate_organisation_id(value):
     m = re.search("^INDIGO-ORG-[0-9][0-9][0-9][0-9]$", value)
     if not m:

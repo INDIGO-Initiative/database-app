@@ -1,0 +1,33 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Assessment Resource {{ assessment_resource.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_assessment_resource_list' %}">Assessment Resources</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Assessment Resource {{ data.public_id }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+
+
+{% block content %}
+
+<p>Assessment Resource {{ data.data_private.name.value }}</p>
+
+<table class="table">
+    <tr><th>ID</th><td>{{ data.public_id }}</td></tr>
+    {% for field in field_data %}
+        <tr><th>{{ field.title }}</th><td>{{ field.value }}</td></tr>
+    {% endfor %}
+</table>
+
+<P><a href="{% url 'indigo_admin_assessment_resource_download_form' public_id=data.public_id %}" class="btn btn-primary">Download Form</a></P>
+<P><a href="{% url 'indigo_admin_assessment_resource_import_form' public_id=data.public_id %}" class="btn btn-primary">Upload/Import Form</a></P>
+<P><a href="{% url 'indigo_admin_assessment_resource_moderate' public_id=data.public_id %}" class="btn btn-primary">Moderate</a></P>
+<P><a href="{% url 'indigo_admin_assessment_resource_history' public_id=data.public_id %}" class="btn btn-primary">History</a></P>
+
+{% endblock %}

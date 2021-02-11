@@ -24,6 +24,7 @@ from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 import indigo.processdata
 import indigo.utils
 from indigo import (
+    TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PROJECT_PUBLIC_ID,
@@ -32,8 +33,9 @@ from indigo.dataqualityreport import DataQualityReportForProject
 from indigo.tasks import task_process_imported_project_file
 
 from .forms import (
-    FundImportForm,
+    AssessmentResourceNewForm,
     FundNewForm,
+    ModelImportForm,
     OrganisationImportForm,
     OrganisationNewForm,
     ProjectImportForm,
@@ -43,7 +45,14 @@ from .forms import (
     ProjectNewForm,
     RecordChangeStatusForm,
 )
-from .models import Fund, Organisation, Project, ProjectImport, Sandbox
+from .models import (
+    AssessmentResource,
+    Fund,
+    Organisation,
+    Project,
+    ProjectImport,
+    Sandbox,
+)
 
 ########################### Home Page
 
@@ -322,7 +331,7 @@ def organisation_download_form(request, public_id):
     return response
 
 
-########################### Public - Fund
+########################### Public - Fund & Assesment Resource
 
 
 class ModelList(View):
@@ -339,6 +348,10 @@ class ModelList(View):
 
 class FundList(ModelList):
     _model = Fund
+
+
+class AssessmentResourceList(ModelList):
+    _model = AssessmentResource
 
 
 class ModelIndex(View):
@@ -364,6 +377,11 @@ class ModelIndex(View):
 class FundIndex(ModelIndex):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
+
+
+class AssessmentResourceIndex(ModelIndex):
+    _model = AssessmentResource
+    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
 
 ########################### Public - All
@@ -452,14 +470,14 @@ def api1_organisation_index(request, public_id):
     return JsonResponse(data)
 
 
-########################### Public - Fund - API
+########################### Public - Fund & Assesment Resource - API
 
 
 class API1ModelList(View):
     def get(self, request):
         datas = self.__class__._model.objects.filter().order_by("public_id")
         output = {
-            self.__class__._model.__name__.lower()
+            self.__class__._model.type_id
             + "s": [
                 {"id": d.public_id, "public": (d.exists and d.status_public)}
                 for d in datas
@@ -470,6 +488,10 @@ class API1ModelList(View):
 
 class API1FundList(API1ModelList):
     _model = Fund
+
+
+class API1AssessmentResourceList(API1ModelList):
+    _model = AssessmentResource
 
 
 class API1ModelIndex(View):
@@ -483,7 +505,7 @@ class API1ModelIndex(View):
         if not data.status_public or not data.exists:
             raise Http404("Data does not exist")
         data = {
-            self.__class__._model.__name__.lower(): {
+            self.__class__._model.type_id: {
                 "id": data.public_id,
                 "data": data.data_public,
             }
@@ -493,6 +515,10 @@ class API1ModelIndex(View):
 
 class API1FundIndex(API1ModelIndex):
     _model = Fund
+
+
+class API1AssessmentResourceIndex(API1ModelIndex):
+    _model = AssessmentResource
 
 
 ########################### Admin
@@ -1494,7 +1520,7 @@ def admin_organisation_history(request, public_id):
     )
 
 
-########################### Admin - funds
+########################### Admin - funds & assessment resources
 
 
 class AdminModelDownloadBlankForm(PermissionRequiredMixin, View):
@@ -1530,6 +1556,11 @@ class AdminFundDownloadBlankForm(AdminModelDownloadBlankForm):
     _type_public_id = TYPE_FUND_PUBLIC_ID
 
 
+class AdminAssessmentResourceDownloadBlankForm(AdminModelDownloadBlankForm):
+    _model = AssessmentResource
+    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+
+
 class AdminModelList(PermissionRequiredMixin, View):
     permission_required = "indigo.admin"
 
@@ -1551,6 +1582,11 @@ class AdminFundList(AdminModelList):
     _type_public_id = TYPE_FUND_PUBLIC_ID
 
 
+class AdminAssessmentResourceList(AdminModelList):
+    _model = AssessmentResource
+    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+
+
 class AdminModelIndex(PermissionRequiredMixin, View):
     permission_required = "indigo.admin"
 
@@ -1560,7 +1596,7 @@ class AdminModelIndex(PermissionRequiredMixin, View):
         except self._model.DoesNotExist:
             raise Http404("Data does not exist")
         field_data = jsondataferret.utils.get_field_list_from_json(
-            self.__class__._type_public_id, data.data_public
+            self.__class__._model.type_id, data.data_private
         )
         return render(
             request,
@@ -1571,7 +1607,10 @@ class AdminModelIndex(PermissionRequiredMixin, View):
 
 class AdminFundIndex(AdminModelIndex):
     _model = Fund
-    _type_public_id = TYPE_FUND_PUBLIC_ID
+
+
+class AdminAssessmentResourceIndex(AdminModelIndex):
+    _model = AssessmentResource
 
 
 @permission_required("indigo.admin")
@@ -1628,6 +1667,12 @@ class AdminFundDownloadForm(AdminModelDownloadForm):
     _guide_file_name = "fund_v001.xlsx"
 
 
+class AdminAssessmentResourceDownloadForm(AdminModelDownloadForm):
+    _model = AssessmentResource
+    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+    _guide_file_name = "assessment_resource_v001.xlsx"
+
+
 class AdminModelImportForm(PermissionRequiredMixin, View):
     permission_required = "indigo.admin"
 
@@ -1654,9 +1699,9 @@ class AdminModelImportForm(PermissionRequiredMixin, View):
         if form.is_valid():
             # get data
             json_data = spreadsheetforms.api.get_data_from_form_with_guide_spec(
-                settings.JSONDATAFERRET_TYPE_INFORMATION[
-                    self.__class__._model.__name__.lower()
-                ]["spreadsheet_form_guide_spec"],
+                settings.JSONDATAFERRET_TYPE_INFORMATION[self.__class__._model.type_id][
+                    "spreadsheet_form_guide_spec"
+                ],
                 request.FILES["file"].temporary_file_path(),
                 date_format=getattr(
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
@@ -1702,8 +1747,15 @@ class AdminModelImportForm(PermissionRequiredMixin, View):
 class AdminFundImportForm(AdminModelImportForm):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
-    _form_class = FundImportForm
+    _form_class = ModelImportForm
     _redirect_view = "indigo_admin_fund_index"
+
+
+class AdminAssessmentResourceImportForm(AdminModelImportForm):
+    _model = AssessmentResource
+    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+    _form_class = ModelImportForm
+    _redirect_view = "indigo_admin_assessment_resource_index"
 
 
 class AdminModelNew(PermissionRequiredMixin, View):
@@ -1760,6 +1812,13 @@ class AdminFundNew(AdminModelNew):
     _redirect_view = "indigo_admin_fund_index"
 
 
+class AdminAssessmentResourceNew(AdminModelNew):
+    _model = AssessmentResource
+    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+    _form_class = AssessmentResourceNewForm
+    _redirect_view = "indigo_admin_assessment_resource_index"
+
+
 class AdminModelModerate(PermissionRequiredMixin, View):
     permission_required = "indigo.admin"
 
@@ -1768,7 +1827,7 @@ class AdminModelModerate(PermissionRequiredMixin, View):
 
     def post(self, request, public_id):
         try:
-            type = Type.objects.get(public_id=self.__class__._type_public_id)
+            type = Type.objects.get(public_id=self.__class__._model.type_id)
             record = Record.objects.get(type=type, public_id=public_id)
         except Type.DoesNotExist:
             raise Http404("Type does not exist")
@@ -1808,7 +1867,7 @@ class AdminModelModerate(PermissionRequiredMixin, View):
         for edit in edits:
             # TODO This will not take account of data_key on an edit If we start using that we will need to check this
             edit.field_datas = jsondataferret.utils.get_field_list_from_json(
-                TYPE_FUND_PUBLIC_ID, edit.data
+                self.__class__._model.type_id, edit.data
             )
 
         return render(
@@ -1820,8 +1879,12 @@ class AdminModelModerate(PermissionRequiredMixin, View):
 
 class AdminFundModerate(AdminModelModerate):
     _model = Fund
-    _type_public_id = TYPE_FUND_PUBLIC_ID
     _redirect_view = "indigo_admin_fund_index"
+
+
+class AdminAssessmentResourceModerate(AdminModelModerate):
+    _model = AssessmentResource
+    _redirect_view = "indigo_admin_assessment_resource_index"
 
 
 class AdminModelHistory(PermissionRequiredMixin, View):
@@ -1847,6 +1910,11 @@ class AdminModelHistory(PermissionRequiredMixin, View):
 class AdminFundHistory(AdminModelHistory):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
+
+
+class AdminAssessmentResourceHistory(AdminModelHistory):
+    _model = AssessmentResource
+    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
 
 ########################### Admin - sandboxes
