@@ -18,21 +18,81 @@
       "$ref": "#/definitions/object_with_value_string",
       "title": "Name"
     },
+    "trading_name": {
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Trading Name"
+    },
+    "translated_official_name": {
+      "type": "object",
+      "title": "Translated Official Name",
+      "properties": {
+        "english": {
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "English"
+        },
+        "source_language": {
+          "$ref": "#/definitions/object_with_value_string",
+          "title": "Source Language"
+        }
+      }
+    },
+    "description": {
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Description"
+    },
+    "jurisdiction": {
+      "$ref": "#/definitions/object_with_value_string",
+      "title": "Jurisdiction"
+    },
+    "type": {
+      "type": "object",
+      "title": "Type",
+      "properties": {
+        "value": {
+          "title": "(Value)",
+          "type": "string",
+          "enum": [
+            "Registered company, partnership or commercial association",
+            "Registered non-profit organisation, charity or foundation",
+            "Government body",
+            "Multilateral, bilateral or intergovernmental body",
+            "Arrangement",
+            "Crowdfunding",
+            "Unregistered organisation",
+            "Individual",
+            "Collective"
+          ]
+        }
+      }
+    },
     "org-ids": {
       "type": "object",
       "title": "ORG-Ids",
       "properties": {
-        "company": {
+        "primary": {
           "$ref": "#/definitions/object_with_value_string",
-          "title": "Company"
+          "title": "Primary"
         },
-        "charity": {
-          "$ref": "#/definitions/object_with_value_string",
-          "title": "Charity"
-        },
-        "other": {
-          "$ref": "#/definitions/object_with_value_string",
-          "title": "Other"
+        "secondary": {
+          "title": "Secondary",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "organisation_id": {
+                "title": "By Organisation ID",
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "source_ids": {
+                "title": "Sources",
+                "type": "string"
+              },
+              "notes": {
+                "title": "Notes",
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },

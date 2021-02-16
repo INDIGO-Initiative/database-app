@@ -171,4 +171,11 @@ TYPE_PROJECT_SOURCES_REFERENCES_LIST = [
     },
 ]
 
-TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST = ["/contact", "/status"]
+TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST = [
+    "/contact",
+    "/status",
+    # The following are old fields that were removed. To make sure old data is not included in API data, remove them.
+    "/org-ids/company",
+    "/org-ids/charity",
+    "/org-ids/other",
+]

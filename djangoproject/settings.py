@@ -148,14 +148,15 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
         "json_schema": load_json_schema("project.json"),
         "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "project_v010.xlsx",
+            BASE_DIR, "indigo", "spreadsheetform_guides", "project_v011.xlsx",
         ),
-        "spreadsheet_form_guide_spec": load_guide_form_spec("project_v010.xlsx"),
+        "spreadsheet_form_guide_spec": load_guide_form_spec("project_v011.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
             7: load_guide_form_spec("project_v007.xlsx"),
             8: load_guide_form_spec("project_v008.xlsx"),
             9: load_guide_form_spec("project_v009.xlsx"),
             10: load_guide_form_spec("project_v010.xlsx"),
+            11: load_guide_form_spec("project_v011.xlsx"),
         },
         "fields": load_json_schema_fields("project.json"),
         "filter_keys": load_json_schema_filter_keys("project.json"),
@@ -163,12 +164,13 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     "organisation": {
         "json_schema": load_json_schema("organisation.json"),
         "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v003.xlsx",
+            BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v004.xlsx",
         ),
-        "spreadsheet_form_guide_spec": load_guide_form_spec("organisation_v003.xlsx"),
+        "spreadsheet_form_guide_spec": load_guide_form_spec("organisation_v004.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
             2: load_guide_form_spec("organisation_v002.xlsx"),
             3: load_guide_form_spec("organisation_v003.xlsx"),
+            4: load_guide_form_spec("organisation_v004.xlsx"),
         },
         "fields": load_json_schema_fields("organisation.json"),
     },

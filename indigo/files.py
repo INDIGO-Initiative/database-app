@@ -43,7 +43,7 @@ def _write_public_files_for_project(project):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "project_public_v012.xlsx",
+        "project_public_v013.xlsx",
     )
 
     # Create in Temp
@@ -91,7 +91,7 @@ def _write_public_files_for_organisation(organisation):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "organisation_public_v002.xlsx",
+        "organisation_public_v003.xlsx",
     )
 
     # Create in Temp

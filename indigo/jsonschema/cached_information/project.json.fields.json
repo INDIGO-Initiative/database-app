@@ -92,6 +92,22 @@
         "title": "Dates - (Notes)"
     },
     {
+        "key": "/jurisdiction/jurisdiction/value",
+        "title": "Jurisdiction - Jurisdiction - (Value)"
+    },
+    {
+        "key": "/jurisdiction/jurisdiction/status",
+        "title": "Jurisdiction - Jurisdiction - (Status)"
+    },
+    {
+        "key": "/jurisdiction/source_ids",
+        "title": "Jurisdiction - (Source ID's)"
+    },
+    {
+        "key": "/jurisdiction/notes",
+        "title": "Jurisdiction - (Notes)"
+    },
+    {
         "key": "/overall_project_finance/total_investment_commitment/currency/value",
         "title": "Overall project finance - Total investment commitment - Currency - (Value)"
     },

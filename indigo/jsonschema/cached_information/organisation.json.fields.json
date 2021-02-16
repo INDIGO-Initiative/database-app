@@ -8,16 +8,51 @@
         "title": "Name"
     },
     {
-        "key": "/org-ids/company/value",
-        "title": "ORG-Ids - Company"
+        "key": "/trading_name/value",
+        "title": "Trading Name"
     },
     {
-        "key": "/org-ids/charity/value",
-        "title": "ORG-Ids - Charity"
+        "key": "/translated_official_name/english/value",
+        "title": "Translated Official Name - English"
     },
     {
-        "key": "/org-ids/other/value",
-        "title": "ORG-Ids - Other"
+        "key": "/translated_official_name/source_language/value",
+        "title": "Translated Official Name - Source Language"
+    },
+    {
+        "key": "/description/value",
+        "title": "Description"
+    },
+    {
+        "key": "/jurisdiction/value",
+        "title": "Jurisdiction"
+    },
+    {
+        "key": "/type/value",
+        "title": "Type - (Value)"
+    },
+    {
+        "key": "/org-ids/primary/value",
+        "title": "ORG-Ids - Primary"
+    },
+    {
+        "fields": [
+            {
+                "key": "/organisation_id/value",
+                "title": "By Organisation ID"
+            },
+            {
+                "key": "/source_ids",
+                "title": "Sources"
+            },
+            {
+                "key": "/notes",
+                "title": "Notes"
+            }
+        ],
+        "key": "/org-ids/secondary",
+        "title": "ORG-Ids - Secondary",
+        "type": "list"
     },
     {
         "key": "/contact/name/value",
