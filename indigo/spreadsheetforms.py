@@ -106,7 +106,7 @@ def extract_edits_from_organisation_spreadsheet(record, import_json):
     del import_json["id"]
 
     # This isn't needed in newer spreadsheets but we are leaving for old uploads
-    # We were using a data validty type that didn't allow commas, but now we have switched to one that does.
+    # We were using a data validity type that didn't allow commas, but now we have switched to one that does.
     # Fix Type
     if (
         jsonpointer.resolve_pointer(import_json, "/type/value", "")
