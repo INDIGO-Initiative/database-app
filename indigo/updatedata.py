@@ -24,6 +24,7 @@ from indigo.models import (
     Project,
     ProjectIncludesFund,
     ProjectIncludesOrganisation,
+    Sandbox,
 )
 
 
@@ -90,11 +91,24 @@ def update_project(
     project.status_public = record.cached_exists and record_status == "public"
     # Data
     data = map_project_values(record.cached_data)
-    # Public Data
+    # Public and Sandbox Data
     if project.status_public:
+        # Public Data
+        public_filter_values_data = filter_values(
+            data,
+            keys_with_own_status_subfield=settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+                "project"
+            ).get("filter_keys"),
+            keys_always_remove=TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
+            lists_with_items_with_own_status_subfield=TYPE_PROJECT_FILTER_LISTS_LIST,
+        )
         project.data_public = indigo.processdata.add_other_records_to_project(
-            record.public_id,
-            filter_values(
+            record.public_id, public_filter_values_data, public_only=True,
+        )
+        # Sandbox Data
+        project.data_sandboxes = {}
+        for sandbox in Sandbox.objects.all():
+            sandbox_filter_values_data = filter_values(
                 data,
                 keys_with_own_status_subfield=settings.JSONDATAFERRET_TYPE_INFORMATION.get(
                     "project"
@@ -103,21 +117,16 @@ def update_project(
                 ),
                 keys_always_remove=TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
                 lists_with_items_with_own_status_subfield=TYPE_PROJECT_FILTER_LISTS_LIST,
-            ),
-            public_only=True,
-        )
+                sandbox=sandbox,
+            )
+            if sandbox_filter_values_data != public_filter_values_data:
+                project.data_sandboxes[
+                    sandbox.public_id
+                ] = indigo.processdata.add_other_records_to_project(
+                    record.public_id, sandbox_filter_values_data, public_only=True,
+                )
     else:
         project.data_public = {}
-    # Sandbox Data
-    if project.status_public:
-        project.data_sandboxes = get_sandbox_only_data(
-            record.cached_data,
-            keys_with_own_status_subfield=settings.JSONDATAFERRET_TYPE_INFORMATION.get(
-                "project"
-            ).get("filter_keys"),
-            lists_with_items_with_own_status_subfield=TYPE_PROJECT_FILTER_LISTS_LIST,
-        )
-    else:
         project.data_sandboxes = {}
     # Private Data
     if record.cached_exists:
@@ -328,6 +337,7 @@ def filter_values(
     keys_with_own_status_subfield=[],
     keys_always_remove=[],
     lists_with_items_with_own_status_subfield=[],
+    sandbox=None,
 ):
     data = copy.deepcopy(data)
 
@@ -339,17 +349,18 @@ def filter_values(
             # Data does not exist anyway, nothing to do!
             continue
 
-    # Some single values (or groups of single values) wight be removed, based on a status field.
+    # Some single values (or groups of single values) might be removed, based on a status field.
     for key in keys_with_own_status_subfield:
         try:
             key_data = jsonpointer.resolve_pointer(data, key)
         except jsonpointer.JsonPointerException:
             # Data does not exist anyway, nothing to do!
             continue
-        key_status = key_data.get("status", "") if isinstance(key_data, dict) else ""
-        if isinstance(key_status, str) and key_status.strip().lower() == "public":
+        if is_block_status_public_or_in_sandbox(key_data, sandbox):
             # Remove Status key, it must be public, people don't need to see that.
             jsonpointer.set_pointer(data, key + "/status", None)
+            if jsonpointer.resolve_pointer(data, key + "/sandboxes", None):
+                jsonpointer.set_pointer(data, key + "/sandboxes", None)
         else:
             # Remove all data!
             jsonpointer.set_pointer(data, key, None)
@@ -364,12 +375,10 @@ def filter_values(
         if isinstance(old_list, list) and old_list:
             new_list = []
             for item in old_list:
-                key_status = item.get("status", "") if isinstance(item, dict) else ""
-                if (
-                    isinstance(key_status, str)
-                    and key_status.strip().lower() == "public"
-                ):
+                if is_block_status_public_or_in_sandbox(item, sandbox):
                     del item["status"]
+                    if "sandboxes" in item:
+                        del item["sandboxes"]
                     # We temporarily are removing source ID's and treating as private data
                     if "source_ids" in item:
                         del item["source_ids"]
@@ -380,66 +389,27 @@ def filter_values(
     return data
 
 
-def get_sandbox_only_data(
-    data,
-    keys_with_own_status_subfield=[],
-    lists_with_items_with_own_status_subfield=[],
-):
-    sandbox_data = {}
-
-    # Some single values (or groups of single values) wight be removed, based on a status field.
-    for key in keys_with_own_status_subfield:
-        try:
-            key_data = jsonpointer.resolve_pointer(data, key)
-        except jsonpointer.JsonPointerException:
-            # Data does not exist anyway, nothing to do!
-            continue
-        key_status = key_data.get("status", "") if isinstance(key_data, dict) else ""
-        if isinstance(key_status, str) and key_status.strip().lower() == "sandbox":
-            for sandbox in [
-                i.strip() for i in key_data.get("sandboxes", "").split(",") if i.strip()
-            ]:
-                if sandbox not in sandbox_data:
-                    sandbox_data[sandbox] = {}
-                jsonpointer.set_pointer(sandbox_data[sandbox], key, key_data)
-                jsonpointer.set_pointer(sandbox_data[sandbox], key + "/status", None)
-                jsonpointer.set_pointer(sandbox_data[sandbox], key + "/sandboxes", None)
-
-    # Some lists have items with a status field, which we might remove
-    for list_key in lists_with_items_with_own_status_subfield:
-        try:
-            old_list = jsonpointer.resolve_pointer(data, list_key)
-        except jsonpointer.JsonPointerException:
-            # Data does not exist anyway, nothing to do!
-            continue
-        if isinstance(old_list, list) and old_list:
-            new_lists = {}
-            for item in old_list:
-                key_status = item.get("status", "") if isinstance(item, dict) else ""
-                if (
-                    isinstance(key_status, str)
-                    and key_status.strip().lower() == "sandbox"
-                ):
-                    new_item = copy.deepcopy(item)
-                    if "status" in new_item:
-                        del new_item["status"]
-                    if "sandboxes" in new_item:
-                        del new_item["sandboxes"]
-                    for sandbox in [
-                        i.strip()
-                        for i in item.get("sandboxes", "").split(",")
-                        if i.strip()
-                    ]:
-                        if sandbox not in new_lists:
-                            new_lists[sandbox] = []
-                        new_lists[sandbox].append(new_item)
-            for sandbox, new_list in new_lists.items():
-                if sandbox not in sandbox_data:
-                    sandbox_data[sandbox] = {}
-                jsonpointer.set_pointer(sandbox_data[sandbox], list_key, new_list)
-
-    # Done
-    return sandbox_data
+def is_block_status_public_or_in_sandbox(data, sandbox=None):
+    # Sanity Check Incoming Data
+    if not isinstance(data, dict):
+        return False
+    # Status Public?
+    key_status = data.get("status", "")
+    if isinstance(key_status, str) and key_status.strip().lower() == "public":
+        return True
+    # In correct sandbox?
+    if (
+        sandbox
+        and isinstance(key_status, str)
+        and key_status.strip().lower() == "sandbox"
+    ):
+        sandboxes = [
+            i.strip() for i in data.get("sandboxes", "").split(",") if i.strip()
+        ]
+        if sandbox.public_id in sandboxes:
+            return True
+    # No :-(
+    return False
 
 
 def map_project_values(data):

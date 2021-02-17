@@ -1,3 +1,5 @@
+import copy
+
 import jsonpointer
 import spreadsheetforms.util
 
@@ -14,6 +16,8 @@ from indigo.models import Fund, Organisation
 
 
 def add_other_records_to_project(project_id, input_json, public_only=False):
+    input_json = copy.deepcopy(input_json)
+
     # Add ID
     input_json["id"] = project_id
 
