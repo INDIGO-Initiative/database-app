@@ -309,6 +309,11 @@
             },
             "right_configs": {},
             "single_configs": {}
+        },
+        "TypeOptions": {
+            "down_configs": {},
+            "right_configs": {},
+            "single_configs": {}
         }
     }
 }
