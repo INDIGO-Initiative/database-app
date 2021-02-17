@@ -11,6 +11,7 @@ from indigo import (
     TYPE_PROJECT_ORGANISATION_LIST,
     TYPE_PROJECT_PUBLIC_ID,
 )
+from indigo.processdata import set_values_if_agnostic_on_assessment_resource_data
 
 
 def convert_project_data_to_spreadsheetforms_data(project, public_only=False):
@@ -225,6 +226,9 @@ def convert_assessment_resource_data_to_spreadsheetforms_data(
 def extract_edits_from_assessment_resource_spreadsheet(record, import_json):
     # Remove record ID
     del import_json["id"]
+
+    # Set Agnostic values
+    import_json = set_values_if_agnostic_on_assessment_resource_data(import_json)
 
     # Return
     return [

@@ -2,8 +2,10 @@ import copy
 
 import jsonpointer
 import spreadsheetforms.util
+from django.conf import settings
 
 from indigo import (
+    TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_PROJECT_FUND_LIST,
     TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST,
     TYPE_PROJECT_ORGANISATION_LIST,
@@ -302,3 +304,22 @@ def check_project_data_for_source_errors(input_json):
         source_ids_referenced_that_are_not_in_sources_table,
         source_table_entries_that_are_not_used,
     )
+
+
+def set_values_if_agnostic_on_assessment_resource_data(data):
+    keys = [
+        i["key"]
+        for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+            TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+        ).get("fields")
+    ]
+    for primary_key in keys:
+        if (
+            primary_key.endswith("/agnostic")
+            and jsonpointer.resolve_pointer(data, primary_key, None) == "YES"
+        ):
+            primary_key_prefix = primary_key[: -len("/agnostic")]
+            for secondary_key in keys:
+                if secondary_key.startswith(primary_key_prefix):
+                    jsonpointer.set_pointer(data, secondary_key, "YES")
+    return data
