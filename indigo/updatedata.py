@@ -321,7 +321,12 @@ def update_assessment_resource(record):
     )
     # Public data
     if assessment_resource.status_public:
-        assessment_resource.data_public = record.cached_data
+        # set_values_if_agnostic_on_assessment_resource_data is also called in extract_edits_from_assessment_resource_spreadsheet
+        # So why do we need it here?
+        # There is old imported data that may not have these values set correctly, and we call it here to correct them
+        assessment_resource.data_public = indigo.processdata.set_values_if_agnostic_on_assessment_resource_data(
+            record.cached_data
+        )
     else:
         assessment_resource.data_public = {}
     # Private Data
