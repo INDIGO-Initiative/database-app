@@ -1341,5 +1341,64 @@
         "key": "/documents",
         "title": "Documents",
         "type": "list"
+    },
+    {
+        "fields": [
+            {
+                "key": "/outcome_metric_id/value",
+                "title": "Outcome Metric Id - (Value)"
+            },
+            {
+                "key": "/period/start_date/value",
+                "title": "Period - Start - (Value)"
+            },
+            {
+                "key": "/period/end_date/value",
+                "title": "Period - End - (Value)"
+            },
+            {
+                "key": "/payer_organisation_id/value",
+                "title": "Payer Organisation ID - (Value)"
+            },
+            {
+                "key": "/recipient_organisation_id/value",
+                "title": "Recipient Organisation ID - (Value)"
+            },
+            {
+                "key": "/type/value",
+                "title": "Type - (Value)"
+            },
+            {
+                "key": "/money/currency/value",
+                "title": "Payments - Currency - (Value)"
+            },
+            {
+                "key": "/money/amount/value",
+                "title": "Payments - Amount - (Value)"
+            },
+            {
+                "key": "/money/amount_usd/value",
+                "title": "Payments - Amount USD - (Value)"
+            },
+            {
+                "key": "/status",
+                "title": "(Status)"
+            },
+            {
+                "key": "/sandboxes",
+                "title": "(In Sandboxes)"
+            },
+            {
+                "key": "/source_ids",
+                "title": "Sources"
+            },
+            {
+                "key": "/notes",
+                "title": "Notes"
+            }
+        ],
+        "key": "/outcome_payments",
+        "title": "Outcome Payments",
+        "type": "list"
     }
 ]

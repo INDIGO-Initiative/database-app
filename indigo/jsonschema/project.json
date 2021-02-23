@@ -1630,6 +1630,87 @@
         }
       },
       "priority": 2
+    },
+    "outcome_payments": {
+      "title": "Outcome Payments",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "outcome_metric_id": {
+            "title": "Outcome Metric Id",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "period": {
+            "title": "Period",
+            "type": "object",
+            "properties": {
+              "start_date": {
+                "title": "Start",
+                "$ref": "#/definitions/object_with_value_date"
+              },
+              "end_date": {
+                "title": "End",
+                "$ref": "#/definitions/object_with_value_date"
+              }
+            }
+          },
+          "payer_organisation_id": {
+            "title": "Payer Organisation ID",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "recipient_organisation_id": {
+            "title": "Recipient Organisation ID",
+            "$ref": "#/definitions/object_with_value_string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "object",
+            "properties": {
+              "value": {
+                "title": "(Value)",
+                "type": "string",
+                "enum": [
+                  "Planned",
+                  "Actual"
+                ]
+              }
+            }
+          },
+          "money": {
+            "title": "Payments",
+            "type": "object",
+            "properties": {
+              "currency": {
+                "title": "Currency",
+                "$ref": "#/definitions/object_with_value_string"
+              },
+              "amount": {
+                "title": "Amount",
+                "$ref": "#/definitions/object_with_value_number"
+              },
+              "amount_usd": {
+                "title": "Amount USD",
+                "$ref": "#/definitions/object_with_value_number"
+              }
+            }
+          },
+          "status": {
+            "$ref": "#/definitions/status"
+          },
+          "sandboxes": {
+            "$ref": "#/definitions/sandboxes"
+          },
+          "source_ids": {
+            "title": "Sources",
+            "type": "string"
+          },
+          "notes": {
+            "title": "Notes",
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "definitions": {
