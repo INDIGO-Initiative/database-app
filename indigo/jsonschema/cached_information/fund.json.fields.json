@@ -1,5 +1,9 @@
 [
     {
+        "key": "/status",
+        "title": "Fund - Status"
+    },
+    {
         "key": "/name/value",
         "title": "Fund - Name"
     },

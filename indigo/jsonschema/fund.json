@@ -6,6 +6,15 @@
   "required": [
   ],
   "properties": {
+    "status": {
+      "title": "Status",
+      "type": "string",
+      "enum": [
+        "PUBLIC",
+        "PRIVATE",
+        "DISPUTED"
+      ]
+    },
     "name": {
       "$ref": "#/definitions/object_with_value_string",
       "title": "Name"

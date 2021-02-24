@@ -7,6 +7,7 @@ from jsondataferret.models import Record, Type
 import indigo.processdata
 from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
+    TYPE_FUND_ALWAYS_FILTER_KEYS_LIST,
     TYPE_FUND_PUBLIC_ID,
     TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST,
     TYPE_ORGANISATION_PUBLIC_ID,
@@ -279,10 +280,20 @@ def update_fund(record, update_projects=False):
 
     # Exists
     fund.exists = record.cached_exists
-    # Status - all fund's are public
-    fund.status_public = record.cached_exists
+    # Status
+    record_status = (
+        record.cached_data.get("status", "").strip().lower()
+        if isinstance(record.cached_data.get("status", ""), str)
+        else ""
+    )
+    fund.status_public = record.cached_exists and record_status == "public"
     # Public data
-    fund.data_public = record.cached_data if fund.status_public else {}
+    if fund.status_public:
+        fund.data_public = filter_values(
+            record.cached_data, keys_always_remove=TYPE_FUND_ALWAYS_FILTER_KEYS_LIST,
+        )
+    else:
+        fund.data_public = {}
     # Private Data
     fund.data_private = record.cached_data if record.cached_exists else {}
     # Finally, Save
