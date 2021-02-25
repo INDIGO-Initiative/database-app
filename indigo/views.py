@@ -1660,7 +1660,7 @@ class AdminModelDownloadForm(PermissionRequiredMixin, View):
 class AdminFundDownloadForm(AdminModelDownloadForm):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
-    _guide_file_name = "fund_v001.xlsx"
+    _guide_file_name = "fund_v002.xlsx"
 
     def _get_data_for_form(self, data):
         return convert_fund_data_to_spreadsheetforms_data(data, public_only=False)

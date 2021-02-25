@@ -189,3 +189,7 @@ TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST = [
     "/org-ids/charity",
     "/org-ids/other",
 ]
+
+TYPE_FUND_ALWAYS_FILTER_KEYS_LIST = [
+    "/status",
+]
