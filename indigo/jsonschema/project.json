@@ -114,7 +114,7 @@
       "properties": {
         "jurisdiction": {
           "title": "Jurisdiction",
-          "$ref": "#/definitions/object_with_value_string_and_status"
+          "$ref": "#/definitions/object_with_value_country_and_status"
         },
         "source_ids": {
           "title": "(Source ID's)",
@@ -507,7 +507,7 @@
           },
           "location_country": {
             "title": "Location - Country",
-            "$ref": "#/definitions/object_with_value_string"
+            "$ref": "#/definitions/object_with_value_country"
           },
           "lat_lng": {
             "title": "Lat/Lng",
@@ -1723,6 +1723,16 @@
         }
       }
     },
+    "object_with_value_country": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "title": "(Value)",
+          "type": "string",
+          "codelist": "countries.csv"
+        }
+      }
+    },
     "object_with_value_number": {
       "type": "object",
       "properties": {
@@ -1749,6 +1759,25 @@
         "value": {
           "title": "(Value)",
           "type": "string"
+        },
+        "status": {
+          "title": "(Status)",
+          "type": "string",
+          "enum": [
+            "PUBLIC",
+            "PRIVATE",
+            "DISPUTED"
+          ]
+        }
+      }
+    },
+    "object_with_value_country_and_status": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "title": "(Value)",
+          "type": "string",
+          "codelist": "countries.csv"
         },
         "status": {
           "title": "(Status)",

@@ -1,0 +1,320 @@
+{
+    "$id": "https://example.com/project.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "object_with_value_string": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "properties": {
+        "address": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Address",
+            "type": "object"
+        },
+        "contact": {
+            "properties": {
+                "email": {
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Email",
+                    "type": "object"
+                },
+                "name": {
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Name",
+                    "type": "object"
+                }
+            },
+            "title": "Contact",
+            "type": "object"
+        },
+        "controlled_by": {
+            "items": {
+                "properties": {
+                    "notes": {
+                        "title": "Notes",
+                        "type": "string"
+                    },
+                    "organisation_id": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "By Organisation ID",
+                        "type": "object"
+                    },
+                    "source_ids": {
+                        "title": "Sources",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "title": "Controlled By",
+            "type": "array"
+        },
+        "country": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Country",
+            "type": "object"
+        },
+        "description": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Description",
+            "type": "object"
+        },
+        "jurisdiction": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Jurisdiction",
+            "type": "object"
+        },
+        "name": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Name",
+            "type": "object"
+        },
+        "org-ids": {
+            "properties": {
+                "primary": {
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Primary",
+                    "type": "object"
+                },
+                "secondary": {
+                    "items": {
+                        "properties": {
+                            "notes": {
+                                "title": "Notes",
+                                "type": "string"
+                            },
+                            "organisation_id": {
+                                "properties": {
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                },
+                                "title": "By Organisation ID",
+                                "type": "object"
+                            },
+                            "source_ids": {
+                                "title": "Sources",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "title": "Secondary",
+                    "type": "array"
+                }
+            },
+            "title": "ORG-Ids",
+            "type": "object"
+        },
+        "postcode": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Postcode",
+            "type": "object"
+        },
+        "sources": {
+            "items": {
+                "properties": {
+                    "accessed_date": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "Accessed Date",
+                        "type": "object"
+                    },
+                    "archive_url": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "Archive URL",
+                        "type": "object"
+                    },
+                    "id": {
+                        "title": "Id",
+                        "type": "string"
+                    },
+                    "internal_url": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "Internal URL",
+                        "type": "object"
+                    },
+                    "name": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "Name",
+                        "type": "object"
+                    },
+                    "publication_date": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "Publication Date",
+                        "type": "object"
+                    },
+                    "publishing_organisation_ids": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "Publishing Organisations",
+                        "type": "object"
+                    },
+                    "type": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "Type",
+                        "type": "object"
+                    },
+                    "url": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "URL",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "title": "Sources",
+            "type": "array"
+        },
+        "status": {
+            "enum": [
+                "PUBLIC",
+                "PRIVATE",
+                "DISPUTED"
+            ],
+            "title": "Status",
+            "type": "string"
+        },
+        "trading_name": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Trading Name",
+            "type": "object"
+        },
+        "translated_official_name": {
+            "properties": {
+                "english": {
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "English",
+                    "type": "object"
+                },
+                "source_language": {
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Source Language",
+                    "type": "object"
+                }
+            },
+            "title": "Translated Official Name",
+            "type": "object"
+        },
+        "type": {
+            "properties": {
+                "value": {
+                    "enum": [
+                        "Registered company, partnership or commercial association",
+                        "Registered non-profit organisation, charity or foundation",
+                        "Government body",
+                        "Multilateral, bilateral or intergovernmental body",
+                        "Arrangement",
+                        "Crowdfunding",
+                        "Unregistered organisation",
+                        "Individual",
+                        "Collective"
+                    ],
+                    "title": "(Value)",
+                    "type": "string"
+                }
+            },
+            "title": "Type",
+            "type": "object"
+        },
+        "website": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Website",
+            "type": "object"
+        }
+    },
+    "required": [],
+    "type": "object"
+}
