@@ -3,13 +3,18 @@ from compiletojsonschema.compiletojsonschema import CompileToJsonSchema
 
 
 class JsonSchemaProcessor:
-    def __init__(self, input_filename):
-        compile = CompileToJsonSchema(input_filename)
-        self.json_schema_compiled = compile.get()
+    def __init__(self, input_filename, codelist_base_directory=None):
+        compile = CompileToJsonSchema(
+            input_filename, codelist_base_directory=codelist_base_directory
+        )
+        self._json_schema_compiled = compile.get()
+
+    def get_json_schema_compiled(self):
+        return self._json_schema_compiled
 
     def get_fields(self):
         return self._get_fields_worker(
-            json_schema=self.json_schema_compiled, start_pointer="", title=""
+            json_schema=self._json_schema_compiled, start_pointer="", title=""
         )
 
     def _get_fields_worker(self, json_schema, start_pointer, title):
@@ -66,7 +71,7 @@ class JsonSchemaProcessor:
     ):
         out = []
         our_json_schema = jsonpointer.resolve_pointer(
-            self.json_schema_compiled, start_pointer
+            self._json_schema_compiled, start_pointer
         )
         if our_json_schema.get("type") == "object":
             for key in our_json_schema.get("properties").keys():
@@ -82,7 +87,7 @@ class JsonSchemaProcessor:
 
     def get_priorities(self):
         return self._get_priorities_worker(
-            json_schema=self.json_schema_compiled, start_pointer=""
+            json_schema=self._json_schema_compiled, start_pointer=""
         )
 
     def _get_priorities_worker(self, json_schema, start_pointer):

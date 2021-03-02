@@ -1,0 +1,749 @@
+{
+    "$id": "https://example.com/fund.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "object_with_value_string": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "string_yes_no": {
+            "enum": [
+                "NO",
+                "YES"
+            ],
+            "type": "string"
+        }
+    },
+    "properties": {
+        "content": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Content",
+            "type": "object"
+        },
+        "impact_goal": {
+            "properties": {
+                "agnostic": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Agnostic",
+                    "type": "string"
+                },
+                "defence": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Defence",
+                    "type": "string"
+                },
+                "democracy": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Democracy",
+                    "type": "string"
+                },
+                "development_poverty_reduction": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Development/ Poverty Reduction",
+                    "type": "string"
+                },
+                "education": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Education",
+                    "type": "string"
+                },
+                "employment_financial_well_being": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Employment/ Financial well-being",
+                    "type": "string"
+                },
+                "health": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Health",
+                    "type": "string"
+                },
+                "housing": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Housing",
+                    "type": "string"
+                },
+                "local_rejuvenation": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Local rejuvenation",
+                    "type": "string"
+                },
+                "sdg_oriented": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "SDG oriented",
+                    "type": "string"
+                },
+                "social_impact": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Social impact",
+                    "type": "string"
+                },
+                "sustainability_eco": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Sustainability/ Eco",
+                    "type": "string"
+                },
+                "well_being": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Well-being",
+                    "type": "string"
+                }
+            },
+            "title": "Impact Goal",
+            "type": "object"
+        },
+        "internal_external": {
+            "properties": {
+                "external": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "External",
+                    "type": "string"
+                },
+                "internal": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Internal",
+                    "type": "string"
+                }
+            },
+            "title": "Internal / External?",
+            "type": "object"
+        },
+        "leader": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Leader",
+            "type": "object"
+        },
+        "link": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Link",
+            "type": "object"
+        },
+        "method": {
+            "properties": {
+                "attribution": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Attribution",
+                    "type": "string"
+                },
+                "before_and_after": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Before and After",
+                    "type": "string"
+                },
+                "diff_in_diff_statistical_analysis": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Diff-in-Diff statistical analysis",
+                    "type": "string"
+                },
+                "ex_ante_projections": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Ex-ante projections",
+                    "type": "string"
+                },
+                "focus_groups": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Focus Groups",
+                    "type": "string"
+                },
+                "framework_agnostic": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Framework agnostic",
+                    "type": "string"
+                },
+                "interviews": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Interviews",
+                    "type": "string"
+                },
+                "mission_alignment": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Mission Alignment",
+                    "type": "string"
+                },
+                "observation": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Observation",
+                    "type": "string"
+                },
+                "operational_data": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Operational Data",
+                    "type": "string"
+                },
+                "rcts": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "RCTs",
+                    "type": "string"
+                },
+                "surveys": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Surveys",
+                    "type": "string"
+                },
+                "theory_of_change": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Theory of Change",
+                    "type": "string"
+                }
+            },
+            "title": "Method?",
+            "type": "object"
+        },
+        "name": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Name",
+            "type": "object"
+        },
+        "notes": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Notes",
+            "type": "object"
+        },
+        "output_format": {
+            "properties": {
+                "agnostic": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Agnostic",
+                    "type": "string"
+                },
+                "monetary_valuation": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Monetary Valuation",
+                    "type": "string"
+                },
+                "non_monetary_quant_index": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Non-monetary quant index",
+                    "type": "string"
+                },
+                "ordinal": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Ordinal",
+                    "type": "string"
+                },
+                "qualitative_only": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Qualitative only",
+                    "type": "string"
+                },
+                "quant_but_no_index": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Quant but no index",
+                    "type": "string"
+                }
+            },
+            "title": "Output Format",
+            "type": "object"
+        },
+        "purpose": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Purpose",
+            "type": "object"
+        },
+        "scale": {
+            "properties": {
+                "agnostic": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Agnostic",
+                    "type": "string"
+                },
+                "macro": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Macro",
+                    "type": "string"
+                },
+                "meso": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Meso",
+                    "type": "string"
+                },
+                "micro": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Micro",
+                    "type": "string"
+                }
+            },
+            "title": "Scale?",
+            "type": "object"
+        },
+        "sourcing": {
+            "properties": {
+                "agnostic": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Agnostic",
+                    "type": "string"
+                },
+                "outsource_to_vendor": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Outsource to Vendor",
+                    "type": "string"
+                },
+                "paid_tool": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Paid tool",
+                    "type": "string"
+                },
+                "proprietary_in_house": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Proprietary in-house",
+                    "type": "string"
+                },
+                "self_driven": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Self-driven",
+                    "type": "string"
+                }
+            },
+            "title": "Sourcing?",
+            "type": "object"
+        },
+        "status": {
+            "enum": [
+                "PUBLIC",
+                "PRIVATE",
+                "DISPUTED"
+            ],
+            "title": "Status",
+            "type": "string"
+        },
+        "time_frame": {
+            "properties": {
+                "ongoing": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Ongoing",
+                    "type": "string"
+                },
+                "prospective": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Prospective",
+                    "type": "string"
+                },
+                "retrospective": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Retrospective",
+                    "type": "string"
+                }
+            },
+            "title": "Time frame?",
+            "type": "object"
+        },
+        "type": {
+            "properties": {
+                "case_study": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Case Study",
+                    "type": "string"
+                },
+                "classification": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Classification",
+                    "type": "string"
+                },
+                "consultancy": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Consultancy",
+                    "type": "string"
+                },
+                "dataset": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Dataset",
+                    "type": "string"
+                },
+                "framework": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Framework",
+                    "type": "string"
+                },
+                "guide": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Guide",
+                    "type": "string"
+                },
+                "principles": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Principles",
+                    "type": "string"
+                },
+                "reporting_standards": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Reporting Standards",
+                    "type": "string"
+                },
+                "resource_repository_or_summary": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Resource Repository or Summary",
+                    "type": "string"
+                },
+                "tool": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Tool",
+                    "type": "string"
+                },
+                "training_programme": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Training Programme",
+                    "type": "string"
+                }
+            },
+            "title": "Type",
+            "type": "object"
+        },
+        "used_in_sectors": {
+            "properties": {
+                "charity": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Charity",
+                    "type": "string"
+                },
+                "csr": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "CSR",
+                    "type": "string"
+                },
+                "developed_countries": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Developed Countries",
+                    "type": "string"
+                },
+                "developing_countries": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Developing Countries",
+                    "type": "string"
+                },
+                "development": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Development",
+                    "type": "string"
+                },
+                "governance_policy": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Governance/ Policy",
+                    "type": "string"
+                },
+                "green_book": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Green Book",
+                    "type": "string"
+                },
+                "healthcare": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Healthcare",
+                    "type": "string"
+                },
+                "housing": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Housing",
+                    "type": "string"
+                },
+                "igos": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "IGOs",
+                    "type": "string"
+                },
+                "impact_investing": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Impact investing",
+                    "type": "string"
+                },
+                "microfinance": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Microfinance",
+                    "type": "string"
+                },
+                "sibs": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "SIBs",
+                    "type": "string"
+                },
+                "social_enterprises": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Social Enterprises",
+                    "type": "string"
+                },
+                "sustainability_eco": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Sustainability/ Eco",
+                    "type": "string"
+                }
+            },
+            "title": "Used in sectors?",
+            "type": "object"
+        },
+        "who": {
+            "properties": {
+                "private_sector": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Private Sector",
+                    "type": "string"
+                },
+                "public_sector": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Public Sector",
+                    "type": "string"
+                },
+                "third_sector": {
+                    "enum": [
+                        "NO",
+                        "YES"
+                    ],
+                    "title": "Third Sector",
+                    "type": "string"
+                }
+            },
+            "title": "Who?",
+            "type": "object"
+        }
+    },
+    "required": [],
+    "title": "Assessment Resource",
+    "type": "object"
+}

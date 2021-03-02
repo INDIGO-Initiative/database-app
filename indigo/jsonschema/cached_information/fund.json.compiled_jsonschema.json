@@ -1,0 +1,82 @@
+{
+    "$id": "https://example.com/fund.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "object_with_value_string": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "properties": {
+        "country": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Country",
+            "type": "object"
+        },
+        "identifier": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Identifier",
+            "type": "object"
+        },
+        "identifier_scheme": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Identifier Scheme",
+            "type": "object"
+        },
+        "name": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Name",
+            "type": "object"
+        },
+        "organisations": {
+            "items": {
+                "properties": {
+                    "organisation_id": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "Organisation ID",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "title": "Organisations",
+            "type": "array"
+        },
+        "status": {
+            "enum": [
+                "PUBLIC",
+                "PRIVATE",
+                "DISPUTED"
+            ],
+            "title": "Status",
+            "type": "string"
+        }
+    },
+    "required": [],
+    "title": "Fund",
+    "type": "object"
+}

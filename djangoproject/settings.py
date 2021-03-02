@@ -115,7 +115,13 @@ def load_guide_form_spec(filename):
 
 
 def load_json_schema(filename):
-    fn = os.path.join(BASE_DIR, "indigo", "jsonschema", filename)
+    fn = os.path.join(
+        BASE_DIR,
+        "indigo",
+        "jsonschema",
+        "cached_information",
+        filename + ".compiled_jsonschema.json",
+    )
     with open(fn) as fp:
         return json.load(fp)
 

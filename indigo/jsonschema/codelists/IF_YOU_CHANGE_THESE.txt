@@ -1,0 +1,5 @@
+If you update these schema, you must run the command
+
+    python manage.py updatestaticcache
+
+and check the resulting changes into git.
