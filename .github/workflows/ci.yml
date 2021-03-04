@@ -28,11 +28,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
     - run: pip install -r requirements_dev.txt
-    - run: black --check *.py */
+    - run: black --exclude data-standard --check *.py */
       if: always()
     #- run: isort --check-only --recursive *.py */
     #  if: always()
-    - run: flake8
+    - run: flake8 --extend-exclude data-standard
       if: always()
     - env:
         JSONDATAFERRET_DATABASE_NAME: postgres
