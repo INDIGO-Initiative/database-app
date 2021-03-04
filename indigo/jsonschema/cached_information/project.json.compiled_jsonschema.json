@@ -1002,6 +1002,17 @@
                         "description": "The role(s) or key functions performed by each of the named intermediaries.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Impact bond design",
+                                    "Financial and commercial modeling",
+                                    "Impact bond investment structure",
+                                    "Capital raise",
+                                    "Loan arranger",
+                                    "Performance management",
+                                    "Legal counsel",
+                                    "Technical assistance",
+                                    "Other"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -1314,6 +1325,11 @@
                         "description": "This variable identifies whether this investment qualifies as debt, equity or a combination of both.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Debt",
+                                    "Equity",
+                                    "Combination"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -1325,6 +1341,13 @@
                         "description": "Extent to which investment and return was paid to investor.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "No repayment (no principle or return)",
+                                    "Some repayment (but below value of principle)",
+                                    "Principal repaid (but no net return)",
+                                    "Principal + positive financial returns",
+                                    "Not publicly available"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -1358,6 +1381,10 @@
                         "description": "This variable specifies whether the maximum potential return type is measured as average annual return or IRR.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "IRR",
+                                    "Average annual return"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -1936,6 +1963,10 @@
                         "description": "Description of the unit of measurement that is used to account for targeted service users or beneficiaries.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Individual",
+                                    "Other"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -2104,6 +2135,10 @@
                         "description": "This variable specifies whether a result is interim or over all (final).",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Interim",
+                                    "Overall"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -3050,6 +3085,10 @@
                         "description": "This variable specifies whether a result was captured at the outcome level or project level.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Project level",
+                                    "Outcome level"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -3061,6 +3100,10 @@
                         "description": "This variable specifies whether a result is interim or final.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Interim",
+                                    "Final"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -3338,6 +3381,13 @@
                         "description": "Category of service provider.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Nonprofit/NGO",
+                                    "Foundation/Philanthropist",
+                                    "Government/Public Sector/Public Bank",
+                                    "For-profit",
+                                    "Other"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
