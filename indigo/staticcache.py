@@ -27,14 +27,16 @@ def cache_spreadsheet_guide_info():
 
 
 def cache_json_schema_info():
-    guide_file_glob = os.path.join(settings.BASE_DIR, "indigo", "jsonschema", "*.json",)
+    guide_file_glob = os.path.join(
+        settings.BASE_DIR, "data-standard", "schema", "*.json",
+    )
     for filename in glob.glob(guide_file_glob):
 
         filename_bits = filename.split("/")
         data = JsonSchemaProcessor(
             filename,
             codelist_base_directory=os.path.join(
-                settings.BASE_DIR, "indigo", "jsonschema", "codelists",
+                settings.BASE_DIR, "data-standard", "schema", "codelists",
             ),
         )
         # Compiled JSONSchema

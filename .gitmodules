@@ -1,0 +1,4 @@
+[submodule "data-standard"]
+	path = data-standard
+	branch = main
+	url = https://github.com/INDIGO-Initiative/indigo-data-standard.git
