@@ -8,6 +8,166 @@
         "title": "Fund - Name"
     },
     {
+        "key": "/stage_development/value",
+        "title": "Fund - Stage of Development - (Value)"
+    },
+    {
+        "key": "/host_institution_of_outcome_fund/value",
+        "title": "Fund - Host institution of Outcome Fund"
+    },
+    {
+        "key": "/mechanism/value",
+        "title": "Fund - Mechanism"
+    },
+    {
+        "key": "/dates/expression_of_interest/value",
+        "title": "Fund - Dates - Expression of interest - (Value)"
+    },
+    {
+        "key": "/dates/launch_date/value",
+        "title": "Fund - Dates - Launch date - (Value)"
+    },
+    {
+        "key": "/dates/anticipated_end_date/value",
+        "title": "Fund - Dates - Anticipated End date - (Value)"
+    },
+    {
+        "key": "/dates/actual_end_date/value",
+        "title": "Fund - Dates - Actual End date - (Value)"
+    },
+    {
+        "key": "/dates/notes",
+        "title": "Fund - Dates - (Notes)"
+    },
+    {
+        "key": "/purpose_and_classifications/purpose/value",
+        "title": "Fund - Purpose and classifications - Purpose"
+    },
+    {
+        "key": "/purpose_and_classifications/primary_sdg_goal/value",
+        "title": "Fund - Purpose and classifications - Primary SDG goal"
+    },
+    {
+        "key": "/purpose_and_classifications/secondary_sdg_goals/value",
+        "title": "Fund - Purpose and classifications - Secondary SDG goals"
+    },
+    {
+        "key": "/purpose_and_classifications/primary_sdg_target/value",
+        "title": "Fund - Purpose and classifications - Primary SDG target"
+    },
+    {
+        "key": "/purpose_and_classifications/secondary_sdg_targets/value",
+        "title": "Fund - Purpose and classifications - Secondary SDG targets"
+    },
+    {
+        "key": "/purpose_and_classifications/notes",
+        "title": "Fund - Purpose and classifications - (Notes)"
+    },
+    {
+        "key": "/service_and_beneficiaries/target_population/value",
+        "title": "Fund - Service and beneficiaries - Target population"
+    },
+    {
+        "key": "/service_and_beneficiaries/targeted_number_service_users_or_beneficiaries_total/value",
+        "title": "Fund - Service and beneficiaries - Targeted number of unique service users or beneficiaries (total) - (Value)"
+    },
+    {
+        "key": "/service_and_beneficiaries/unit_type_targeted_service_users_or_beneficiaries/value",
+        "title": "Fund - Service and beneficiaries - Unit type of targeted service users or beneficiaries - (Value)"
+    },
+    {
+        "key": "/service_and_beneficiaries/unit_description_of_service_user_or_beneficiaries/value",
+        "title": "Fund - Service and beneficiaries - Unit description of targeted service user or beneficiaries"
+    },
+    {
+        "key": "/service_and_beneficiaries/notes",
+        "title": "Fund - Service and beneficiaries - (Notes)"
+    },
+    {
+        "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/currency/value",
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Currency"
+    },
+    {
+        "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/aspiration/amount/value",
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Aspiration - Amount - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/aspiration/amount_usd/value",
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Aspiration - Amount USD - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/actual/amount/value",
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Actual - Amount - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/actual/amount_usd/value",
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Actual - Amount USD - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/notes",
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - (Notes)"
+    },
+    {
+        "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/currency/value",
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Currency"
+    },
+    {
+        "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/aspiration/amount/value",
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Aspiration - Amount - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/aspiration/amount_usd/value",
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Aspiration - Amount USD - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/actual/amount/value",
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Actual - Amount - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/actual/amount_usd/value",
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Actual - Amount USD - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/notes",
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - (Notes)"
+    },
+    {
+        "key": "/dimensions_of_scale/number_of_outcome_contracts/aspiration/value",
+        "title": "Fund - Dimensions of Scale - Number of outcome contracts - Aspiration - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/number_of_outcome_contracts/actual/value",
+        "title": "Fund - Dimensions of Scale - Number of outcome contracts - Actual - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/number_of_outcome_contracts/notes",
+        "title": "Fund - Dimensions of Scale - Number of outcome contracts - (Notes)"
+    },
+    {
+        "key": "/dimensions_of_scale/number_of_contributing_outcome_funders/aspiration/value",
+        "title": "Fund - Dimensions of Scale - Number of Contributing Outcome Funders - Aspiration - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/number_of_contributing_outcome_funders/actual/value",
+        "title": "Fund - Dimensions of Scale - Number of Contributing Outcome Funders - Actual - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/number_of_contributing_outcome_funders/notes",
+        "title": "Fund - Dimensions of Scale - Number of Contributing Outcome Funders - (Notes)"
+    },
+    {
+        "key": "/dimensions_of_scale/number_of_independent_investor_organisations/aspiration/value",
+        "title": "Fund - Dimensions of Scale - Number of independent investor organisations - Aspiration - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/number_of_independent_investor_organisations/actual/value",
+        "title": "Fund - Dimensions of Scale - Number of independent investor organisations - Actual - (Value)"
+    },
+    {
+        "key": "/dimensions_of_scale/number_of_independent_investor_organisations/notes",
+        "title": "Fund - Dimensions of Scale - Number of independent investor organisations - (Notes)"
+    },
+    {
         "key": "/identifier_scheme/value",
         "title": "Fund - Identifier Scheme"
     },
@@ -28,6 +188,40 @@
         ],
         "key": "/organisations",
         "title": "Fund - Organisations",
+        "type": "list"
+    },
+    {
+        "fields": [
+            {
+                "key": "/country/value",
+                "title": "Country - (Value)"
+            }
+        ],
+        "key": "/geographic_areas_for_outcome_payment",
+        "title": "Fund - Geographic area for outcome payment",
+        "type": "list"
+    },
+    {
+        "fields": [
+            {
+                "key": "/title/value",
+                "title": "Title"
+            },
+            {
+                "key": "/url/value",
+                "title": "URL"
+            },
+            {
+                "key": "/notes",
+                "title": "Notes"
+            },
+            {
+                "key": "/status",
+                "title": "Status"
+            }
+        ],
+        "key": "/documents",
+        "title": "Fund - Documents",
         "type": "list"
     }
 ]

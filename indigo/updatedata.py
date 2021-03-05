@@ -16,6 +16,7 @@ from indigo import (
     TYPE_PROJECT_MAP_VALUES_PURPOSE_AND_CLASSIFICATIONS_POLICY_SECTOR,
     TYPE_PROJECT_MAP_VALUES_STAGE_DEVELOPMENT,
     TYPE_PROJECT_PUBLIC_ID,
+    TYPE_FUND_FILTER_LISTS_LIST,
 )
 from indigo.dataqualityreport import DataQualityReportForProject
 from indigo.models import (
@@ -290,7 +291,9 @@ def update_fund(record, update_projects=False):
     # Public data
     if fund.status_public:
         fund.data_public = filter_values(
-            record.cached_data, keys_always_remove=TYPE_FUND_ALWAYS_FILTER_KEYS_LIST,
+            record.cached_data,
+            keys_always_remove=TYPE_FUND_ALWAYS_FILTER_KEYS_LIST,
+            lists_with_items_with_own_status_subfield=TYPE_FUND_FILTER_LISTS_LIST,
         )
     else:
         fund.data_public = {}

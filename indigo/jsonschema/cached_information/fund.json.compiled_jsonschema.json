@@ -2,6 +2,37 @@
     "$id": "https://example.com/fund.schema.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
+        "object_with_value_country": {
+            "properties": {
+                "value": {
+                    "codelist": "countries.csv",
+                    "codelistDescription": "A 2 character country code from ISO 3166. Eg: GB, US",
+                    "title": "(Value)",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "object_with_value_date": {
+            "properties": {
+                "value": {
+                    "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                    "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                    "title": "(Value)",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "object_with_value_number": {
+            "properties": {
+                "value": {
+                    "title": "(Value)",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
         "object_with_value_string": {
             "properties": {
                 "value": {
@@ -19,6 +50,640 @@
                 }
             },
             "title": "Country",
+            "type": "object"
+        },
+        "dates": {
+            "properties": {
+                "actual_end_date": {
+                    "description": "",
+                    "properties": {
+                        "value": {
+                            "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                            "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Actual End date",
+                    "type": "object"
+                },
+                "anticipated_end_date": {
+                    "description": "",
+                    "properties": {
+                        "value": {
+                            "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                            "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Anticipated End date",
+                    "type": "object"
+                },
+                "expression_of_interest": {
+                    "description": "Announcement date/date Expression of Interest launched for the Outcome Fund",
+                    "properties": {
+                        "value": {
+                            "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                            "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Expression of interest",
+                    "type": "object"
+                },
+                "launch_date": {
+                    "description": "Earliest date when an outcomes contract was signed",
+                    "properties": {
+                        "value": {
+                            "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                            "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Launch date",
+                    "type": "object"
+                },
+                "notes": {
+                    "title": "(Notes)",
+                    "type": "string"
+                }
+            },
+            "title": "Dates",
+            "type": "object"
+        },
+        "dimensions_of_scale": {
+            "properties": {
+                "number_of_contributing_outcome_funders": {
+                    "properties": {
+                        "actual": {
+                            "description": "Actual number of funder organisations contributing to outcome payments",
+                            "properties": {
+                                "value": {
+                                    "title": "(Value)",
+                                    "type": "number"
+                                }
+                            },
+                            "title": "Actual",
+                            "type": "object"
+                        },
+                        "aspiration": {
+                            "description": "Aspired number of funder organisations contributing to outcome payments (e.g. a few large donor institutions or lots of local government actors?)",
+                            "properties": {
+                                "value": {
+                                    "title": "(Value)",
+                                    "type": "number"
+                                }
+                            },
+                            "title": "Aspiration",
+                            "type": "object"
+                        },
+                        "notes": {
+                            "title": "(Notes)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Number of Contributing Outcome Funders",
+                    "type": "object"
+                },
+                "number_of_independent_investor_organisations": {
+                    "properties": {
+                        "actual": {
+                            "description": "Actual number of institutions who are putting capital at risk as investors across the Outcome Fund (or rather projects supported by the Outcome Fund?) as a whole",
+                            "properties": {
+                                "value": {
+                                    "title": "(Value)",
+                                    "type": "number"
+                                }
+                            },
+                            "title": "Actual",
+                            "type": "object"
+                        },
+                        "aspiration": {
+                            "description": "Aspired number of institutions who are putting capital at risk as investors across the Outcome Fund (or rather projects supported by the Outcome Fund?) as a whole",
+                            "properties": {
+                                "value": {
+                                    "title": "(Value)",
+                                    "type": "number"
+                                }
+                            },
+                            "title": "Aspiration",
+                            "type": "object"
+                        },
+                        "notes": {
+                            "title": "(Notes)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Number of independent investor organisations",
+                    "type": "object"
+                },
+                "number_of_outcome_contracts": {
+                    "properties": {
+                        "actual": {
+                            "description": "Resulting number of distinct outcomes contracts supported by the Outcome Fund",
+                            "properties": {
+                                "value": {
+                                    "title": "(Value)",
+                                    "type": "number"
+                                }
+                            },
+                            "title": "Actual",
+                            "type": "object"
+                        },
+                        "aspiration": {
+                            "description": "Aspired number of distinct outcomes contracts to be supported by the Outcome Fund",
+                            "properties": {
+                                "value": {
+                                    "title": "(Value)",
+                                    "type": "number"
+                                }
+                            },
+                            "title": "Aspiration",
+                            "type": "object"
+                        },
+                        "notes": {
+                            "title": "(Notes)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Number of outcome contracts",
+                    "type": "object"
+                },
+                "total_outcome_fund_value_outcomes_funding": {
+                    "properties": {
+                        "actual": {
+                            "properties": {
+                                "amount": {
+                                    "description": "Actual size of funding available from the Outcome Fund (to be made for outcome payments directly or assistance to support the development of outcome-contracts)",
+                                    "properties": {
+                                        "value": {
+                                            "title": "(Value)",
+                                            "type": "number"
+                                        }
+                                    },
+                                    "title": "Amount",
+                                    "type": "object"
+                                },
+                                "amount_usd": {
+                                    "description": "Actual size of funding available from the Outcome Fund (to be made for outcome payments directly or assistance to support the development of outcome-contracts)  (Conversion by INDIGO using World Bank exchange rate of the moment of expression of interest. If there is no data on dates of expression of interest, then we will use the exchange rate of the launch date)",
+                                    "properties": {
+                                        "value": {
+                                            "title": "(Value)",
+                                            "type": "number"
+                                        }
+                                    },
+                                    "title": "Amount USD",
+                                    "type": "object"
+                                }
+                            },
+                            "title": "Actual",
+                            "type": "object"
+                        },
+                        "aspiration": {
+                            "properties": {
+                                "amount": {
+                                    "description": "Ambition for maximum funding available from the Outcome Fund (to be made for outcome payments directly or assistance to support the development of outcome-contracts)",
+                                    "properties": {
+                                        "value": {
+                                            "title": "(Value)",
+                                            "type": "number"
+                                        }
+                                    },
+                                    "title": "Amount",
+                                    "type": "object"
+                                },
+                                "amount_usd": {
+                                    "description": "Ambition for maximum funding available from the Outcome Fund (to be made for outcome payments directly or assistance to support the development of outcome-contracts) (Conversion by INDIGO using World Bank exchange rate of the moment of expression of interest. If there is no data on dates of expression of interest, then we will use the exchange rate of the launch date)",
+                                    "properties": {
+                                        "value": {
+                                            "title": "(Value)",
+                                            "type": "number"
+                                        }
+                                    },
+                                    "title": "Amount USD",
+                                    "type": "object"
+                                }
+                            },
+                            "title": "Aspiration",
+                            "type": "object"
+                        },
+                        "currency": {
+                            "description": "Currency used to describe the size of Outcome Fund",
+                            "properties": {
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "title": "Currency",
+                            "type": "object"
+                        },
+                        "notes": {
+                            "title": "(Notes)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Total Outcome Fund value (outcomes funding)",
+                    "type": "object"
+                },
+                "total_value_of_repayable_investment_linked_to_outcome_fund": {
+                    "properties": {
+                        "actual": {
+                            "properties": {
+                                "amount": {
+                                    "description": "Actual value of repayable investment associated with the Outcome Fund (i.e., the value of repayable investment committed to resultant Impact Bond projects)",
+                                    "properties": {
+                                        "value": {
+                                            "title": "(Value)",
+                                            "type": "number"
+                                        }
+                                    },
+                                    "title": "Amount",
+                                    "type": "object"
+                                },
+                                "amount_usd": {
+                                    "description": "Actual value of repayable investment associated with the Outcome Fund (i.e., the value of repayable investment made available to resultant Impact Bond projects)",
+                                    "properties": {
+                                        "value": {
+                                            "title": "(Value)",
+                                            "type": "number"
+                                        }
+                                    },
+                                    "title": "Amount USD",
+                                    "type": "object"
+                                }
+                            },
+                            "title": "Actual",
+                            "type": "object"
+                        },
+                        "aspiration": {
+                            "properties": {
+                                "amount": {
+                                    "description": "Ambition for value of repayable investment associated with the Outcome Fund (i.e., the value of repayable investment committed to resultant Impact Bond projects)",
+                                    "properties": {
+                                        "value": {
+                                            "title": "(Value)",
+                                            "type": "number"
+                                        }
+                                    },
+                                    "title": "Amount",
+                                    "type": "object"
+                                },
+                                "amount_usd": {
+                                    "description": "Ambition for value of repayable investment associated with the Outcome Fund (i.e., the value of repayable investment committed to resultant Impact Bond projects)",
+                                    "properties": {
+                                        "value": {
+                                            "title": "(Value)",
+                                            "type": "number"
+                                        }
+                                    },
+                                    "title": "Amount USD",
+                                    "type": "object"
+                                }
+                            },
+                            "title": "Aspiration",
+                            "type": "object"
+                        },
+                        "currency": {
+                            "description": "Currency used to describe the size of repayable investment",
+                            "properties": {
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "title": "Currency",
+                            "type": "object"
+                        },
+                        "notes": {
+                            "title": "(Notes)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Total value of repayable investment linked to Outcome Fund",
+                    "type": "object"
+                }
+            },
+            "title": "Dimensions of Scale",
+            "type": "object"
+        },
+        "documents": {
+            "items": {
+                "properties": {
+                    "notes": {
+                        "title": "Notes",
+                        "type": "string"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "type": "string"
+                    },
+                    "title": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "Title",
+                        "type": "object"
+                    },
+                    "url": {
+                        "properties": {
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "title": "URL",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "title": "Documents",
+            "type": "array"
+        },
+        "geographic_areas_for_outcome_payment": {
+            "items": {
+                "properties": {
+                    "country": {
+                        "description": "Country within which the Outcome Fund allocates funds.",
+                        "properties": {
+                            "value": {
+                                "codelist": "countries.csv",
+                                "codelistDescription": "A 2 character country code from ISO 3166. Eg: GB, US",
+                                "enum": [
+                                    "AD",
+                                    "AE",
+                                    "AF",
+                                    "AG",
+                                    "AI",
+                                    "AL",
+                                    "AM",
+                                    "AO",
+                                    "AQ",
+                                    "AR",
+                                    "AS",
+                                    "AT",
+                                    "AU",
+                                    "AW",
+                                    "AX",
+                                    "AZ",
+                                    "BA",
+                                    "BB",
+                                    "BD",
+                                    "BE",
+                                    "BF",
+                                    "BG",
+                                    "BH",
+                                    "BI",
+                                    "BJ",
+                                    "BL",
+                                    "BM",
+                                    "BN",
+                                    "BO",
+                                    "BQ",
+                                    "BR",
+                                    "BS",
+                                    "BT",
+                                    "BV",
+                                    "BW",
+                                    "BY",
+                                    "BZ",
+                                    "CA",
+                                    "CC",
+                                    "CD",
+                                    "CF",
+                                    "CG",
+                                    "CH",
+                                    "CI",
+                                    "CK",
+                                    "CL",
+                                    "CM",
+                                    "CN",
+                                    "CO",
+                                    "CR",
+                                    "CU",
+                                    "CV",
+                                    "CW",
+                                    "CX",
+                                    "CY",
+                                    "CZ",
+                                    "DE",
+                                    "DJ",
+                                    "DK",
+                                    "DM",
+                                    "DO",
+                                    "DZ",
+                                    "EC",
+                                    "EE",
+                                    "EG",
+                                    "EH",
+                                    "ER",
+                                    "ES",
+                                    "ET",
+                                    "FI",
+                                    "FJ",
+                                    "FK",
+                                    "FM",
+                                    "FO",
+                                    "FR",
+                                    "GA",
+                                    "GB",
+                                    "GD",
+                                    "GE",
+                                    "GF",
+                                    "GG",
+                                    "GH",
+                                    "GI",
+                                    "GL",
+                                    "GM",
+                                    "GN",
+                                    "GP",
+                                    "GQ",
+                                    "GR",
+                                    "GS",
+                                    "GT",
+                                    "GU",
+                                    "GW",
+                                    "GY",
+                                    "HK",
+                                    "HM",
+                                    "HN",
+                                    "HR",
+                                    "HT",
+                                    "HU",
+                                    "ID",
+                                    "IE",
+                                    "IL",
+                                    "IM",
+                                    "IN",
+                                    "IO",
+                                    "IQ",
+                                    "IR",
+                                    "IS",
+                                    "IT",
+                                    "JE",
+                                    "JM",
+                                    "JO",
+                                    "JP",
+                                    "KE",
+                                    "KG",
+                                    "KH",
+                                    "KI",
+                                    "KM",
+                                    "KN",
+                                    "KP",
+                                    "KR",
+                                    "KW",
+                                    "KY",
+                                    "KZ",
+                                    "LA",
+                                    "LB",
+                                    "LC",
+                                    "LI",
+                                    "LK",
+                                    "LR",
+                                    "LS",
+                                    "LT",
+                                    "LU",
+                                    "LV",
+                                    "LY",
+                                    "MA",
+                                    "MC",
+                                    "MD",
+                                    "ME",
+                                    "MF",
+                                    "MG",
+                                    "MH",
+                                    "MK",
+                                    "ML",
+                                    "MM",
+                                    "MN",
+                                    "MO",
+                                    "MP",
+                                    "MQ",
+                                    "MR",
+                                    "MS",
+                                    "MT",
+                                    "MU",
+                                    "MV",
+                                    "MW",
+                                    "MX",
+                                    "MY",
+                                    "MZ",
+                                    "NA",
+                                    "NC",
+                                    "NE",
+                                    "NF",
+                                    "NG",
+                                    "NI",
+                                    "NL",
+                                    "NO",
+                                    "NP",
+                                    "NR",
+                                    "NU",
+                                    "NZ",
+                                    "OM",
+                                    "PA",
+                                    "PE",
+                                    "PF",
+                                    "PG",
+                                    "PH",
+                                    "PK",
+                                    "PL",
+                                    "PM",
+                                    "PN",
+                                    "PR",
+                                    "PS",
+                                    "PT",
+                                    "PW",
+                                    "PY",
+                                    "QA",
+                                    "RE",
+                                    "RO",
+                                    "RS",
+                                    "RU",
+                                    "RW",
+                                    "SA",
+                                    "SB",
+                                    "SC",
+                                    "SD",
+                                    "SE",
+                                    "SG",
+                                    "SH",
+                                    "SI",
+                                    "SJ",
+                                    "SK",
+                                    "SL",
+                                    "SM",
+                                    "SN",
+                                    "SO",
+                                    "SR",
+                                    "SS",
+                                    "ST",
+                                    "SV",
+                                    "SX",
+                                    "SY",
+                                    "SZ",
+                                    "TC",
+                                    "TD",
+                                    "TF",
+                                    "TG",
+                                    "TH",
+                                    "TJ",
+                                    "TK",
+                                    "TL",
+                                    "TM",
+                                    "TN",
+                                    "TO",
+                                    "TR",
+                                    "TT",
+                                    "TV",
+                                    "TW",
+                                    "TZ",
+                                    "UA",
+                                    "UG",
+                                    "UM",
+                                    "US",
+                                    "UY",
+                                    "UZ",
+                                    "VA",
+                                    "VC",
+                                    "VE",
+                                    "VG",
+                                    "VI",
+                                    "VN",
+                                    "VU",
+                                    "WF",
+                                    "WS",
+                                    "YE",
+                                    "YT",
+                                    "ZA",
+                                    "ZM",
+                                    "ZW"
+                                ],
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Country",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "title": "Geographic area for outcome payment",
+            "type": "array"
+        },
+        "host_institution_of_outcome_fund": {
+            "description": "Name of organistion acting as host or administrative lead for the Outcome Fund",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Host institution of Outcome Fund",
             "type": "object"
         },
         "identifier": {
@@ -39,7 +704,18 @@
             "title": "Identifier Scheme",
             "type": "object"
         },
+        "mechanism": {
+            "description": "The mechanism should describe the 'how' of the outcomes fund - i.e. the means by which the Outcomes Fund will achieve the Fund objective/purpose.",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "Mechanism",
+            "type": "object"
+        },
         "name": {
+            "description": "Name typically used to refer to the Outcome Fund",
             "properties": {
                 "value": {
                     "type": "string"
@@ -65,6 +741,137 @@
             },
             "title": "Organisations",
             "type": "array"
+        },
+        "purpose_and_classifications": {
+            "properties": {
+                "notes": {
+                    "title": "(Notes)",
+                    "type": "string"
+                },
+                "primary_sdg_goal": {
+                    "description": "Primary Sustainable Development Goal (SDG) in which the project is based. To be selected from the 17 SDGs defined in the United Nations 2030 Agenda (2015) https://sdgs.un.org/2030agenda. [This is at the project level. This is also captured at the outcome level]",
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Primary SDG goal",
+                    "type": "object"
+                },
+                "primary_sdg_target": {
+                    "description": "This variable identifies what primary SGD target the project is addressing. See United Nations 2030 Agenda (2015)  https://sdgs.un.org/2030agenda. [This is at the project level. This is also captured at the outcome level]",
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Primary SDG target",
+                    "type": "object"
+                },
+                "purpose": {
+                    "description": "Stated policy objective of the Outcomes Fund. e.g. improved learning outcomes for target population or to promote the adoption of outcomes-based approaches amongst local government commissioners.",
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Purpose",
+                    "type": "object"
+                },
+                "secondary_sdg_goals": {
+                    "description": "Secondary Sustainable Development Goal (SDG) in which the project is based. Primary SDG Goal must not be included in this variable. [This is at the project level. This is also captured at the outcome level]",
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Secondary SDG goals",
+                    "type": "object"
+                },
+                "secondary_sdg_targets": {
+                    "description": "This variable identifies what secondary SGD target the project is addressing. Primary SDG target must not be included in this variable. See United Nations 2030 Agenda (2015)  https://sdgs.un.org/2030agenda. [This is at the project level. This is also captured at the outcome level]",
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Secondary SDG targets",
+                    "type": "object"
+                }
+            },
+            "title": "Purpose and classifications",
+            "type": "object"
+        },
+        "service_and_beneficiaries": {
+            "properties": {
+                "notes": {
+                    "title": "(Notes)",
+                    "type": "string"
+                },
+                "target_population": {
+                    "description": "Description of the population targeted by the project and any eligibility requirement for the cohort of people who are to be offered support.",
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Target population",
+                    "type": "object"
+                },
+                "targeted_number_service_users_or_beneficiaries_total": {
+                    "description": "Intended number of individuals in the target population who will be engaged in the service/intervention and/or whose social outcomes will be evaluated for outcome contract payment calculation.",
+                    "properties": {
+                        "value": {
+                            "title": "(Value)",
+                            "type": "number"
+                        }
+                    },
+                    "title": "Targeted number of unique service users or beneficiaries (total)",
+                    "type": "object"
+                },
+                "unit_description_of_service_user_or_beneficiaries": {
+                    "description": "This field will only be completed if the answer to the last variable was \u201cother\u201d. This variable identifies what type of unit of measurement is used to account for targeted service users or beneficiaries.",
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "title": "Unit description of targeted service user or beneficiaries",
+                    "type": "object"
+                },
+                "unit_type_targeted_service_users_or_beneficiaries": {
+                    "description": "Description of the unit of measurement that is used to account for targeted service users or beneficiaries.",
+                    "properties": {
+                        "value": {
+                            "enum": [
+                                "Individual",
+                                "Other"
+                            ],
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Unit type of targeted service users or beneficiaries",
+                    "type": "object"
+                }
+            },
+            "title": "Service and beneficiaries",
+            "type": "object"
+        },
+        "stage_development": {
+            "description": "Stage of development.",
+            "properties": {
+                "value": {
+                    "enum": [
+                        "Active",
+                        "Inactive"
+                    ],
+                    "title": "(Value)",
+                    "type": "string"
+                }
+            },
+            "title": "Stage of Development",
+            "type": "object"
         },
         "status": {
             "enum": [
