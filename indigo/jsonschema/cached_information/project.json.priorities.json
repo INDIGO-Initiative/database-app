@@ -84,10 +84,6 @@
         "priority": 3
     },
     {
-        "key": "/grants",
-        "priority": 2
-    },
-    {
         "key": "/technical_assistances",
         "priority": 3
     },

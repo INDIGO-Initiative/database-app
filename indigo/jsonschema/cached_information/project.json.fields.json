@@ -939,11 +939,11 @@
             },
             {
                 "key": "/contracted_increases_to_outcome_pricing/value",
-                "title": "Currency - (Value)"
+                "title": "Contracted increases to outcome pricing - (Value)"
             },
             {
                 "key": "/price_description/value",
-                "title": "Currency - (Value)"
+                "title": "Price Description - (Value)"
             },
             {
                 "key": "/source_ids",
@@ -1032,85 +1032,6 @@
                 "title": "Id"
             },
             {
-                "key": "/360giving_id/value",
-                "title": "360Giving Id - (Value)"
-            },
-            {
-                "key": "/title/value",
-                "title": "Title - (Value)"
-            },
-            {
-                "key": "/award_date/value",
-                "title": "Award Date - (Value)"
-            },
-            {
-                "key": "/currency/value",
-                "title": "Currency - (Value)"
-            },
-            {
-                "key": "/amount_applied_for/amount/value",
-                "title": "Amount Applied For - Amount - (Value)"
-            },
-            {
-                "key": "/amount_applied_for/amount_usd/value",
-                "title": "Amount Applied For - Amount USD - (Value)"
-            },
-            {
-                "key": "/amount_awarded/amount/value",
-                "title": "Amount Awarded - Amount - (Value)"
-            },
-            {
-                "key": "/amount_awarded/amount_usd/value",
-                "title": "Amount Awarded - Amount USD - (Value)"
-            },
-            {
-                "key": "/amount_disbursed/amount/value",
-                "title": "Amount Disbursed - Amount - (Value)"
-            },
-            {
-                "key": "/amount_disbursed/amount_usd/value",
-                "title": "Amount Disbursed - Amount USD - (Value)"
-            },
-            {
-                "key": "/recipient_organisation_id/value",
-                "title": "Recipient Organisation Id - (Value)"
-            },
-            {
-                "key": "/funding_organisation_id/value",
-                "title": "Funding Organisation Id - (Value)"
-            },
-            {
-                "key": "/description/value",
-                "title": "Description - (Value)"
-            },
-            {
-                "key": "/purpose/value",
-                "title": "Purpose - (Value)"
-            },
-            {
-                "key": "/source_ids",
-                "title": "Sources"
-            },
-            {
-                "key": "/notes",
-                "title": "Notes"
-            },
-            {
-                "key": "/status",
-                "title": "Status"
-            }
-        ],
-        "key": "/grants",
-        "title": "Grants",
-        "type": "list"
-    },
-    {
-        "fields": [
-            {
-                "key": "/id",
-                "title": "Id"
-            },
-            {
                 "key": "/title/value",
                 "title": "Title - (Value)"
             },
@@ -1183,15 +1104,15 @@
             },
             {
                 "key": "/cost_of_activities/amount/value",
-                "title": "Cost Of Activities - Amount - (Value)"
+                "title": "Cost of Activities - Amount - (Value)"
             },
             {
                 "key": "/cost_of_activities/amount_usd/value",
-                "title": "Cost Of Activities - Amount USD - (Value)"
+                "title": "Cost of Activities - Amount USD - (Value)"
             },
             {
                 "key": "/number_of_days/value",
-                "title": "Number Of Days - (Value)"
+                "title": "Number of Days - (Value)"
             },
             {
                 "key": "/source_ids",

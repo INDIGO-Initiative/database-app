@@ -1127,176 +1127,6 @@
                 }
             }
         },
-        "Grants": {
-            "down_configs": {
-                "grants": [
-                    {
-                        "column": 1,
-                        "column_letter": "A",
-                        "coordinate": "A5",
-                        "item_path": "id",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 2,
-                        "column_letter": "B",
-                        "coordinate": "B5",
-                        "item_path": "360giving_id/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 3,
-                        "column_letter": "C",
-                        "coordinate": "C5",
-                        "item_path": "title/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 4,
-                        "column_letter": "D",
-                        "coordinate": "D5",
-                        "item_path": "award_date/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 5,
-                        "column_letter": "E",
-                        "coordinate": "E5",
-                        "item_path": "currency/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 6,
-                        "column_letter": "F",
-                        "coordinate": "F5",
-                        "item_path": "amount_applied_for/amount/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 7,
-                        "column_letter": "G",
-                        "coordinate": "G5",
-                        "item_path": "amount_applied_for/amount_usd/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 8,
-                        "column_letter": "H",
-                        "coordinate": "H5",
-                        "item_path": "amount_awarded/amount/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 9,
-                        "column_letter": "I",
-                        "coordinate": "I5",
-                        "item_path": "amount_awarded/amount_usd/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 10,
-                        "column_letter": "J",
-                        "coordinate": "J5",
-                        "item_path": "amount_disbursed/amount/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 11,
-                        "column_letter": "K",
-                        "coordinate": "K5",
-                        "item_path": "amount_disbursed/amount_usd/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 12,
-                        "column_letter": "L",
-                        "coordinate": "L5",
-                        "item_path": "recipient_organisation_id/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 13,
-                        "column_letter": "M",
-                        "coordinate": "M5",
-                        "item_path": "funding_organisation_id/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 14,
-                        "column_letter": "N",
-                        "coordinate": "N5",
-                        "item_path": "description/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 15,
-                        "column_letter": "O",
-                        "coordinate": "O5",
-                        "item_path": "purpose/value",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 16,
-                        "column_letter": "P",
-                        "coordinate": "P5",
-                        "item_path": "source_ids",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 17,
-                        "column_letter": "Q",
-                        "coordinate": "Q5",
-                        "item_path": "notes",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 18,
-                        "column_letter": "R",
-                        "coordinate": "R5",
-                        "item_path": "status",
-                        "list_path": "grants",
-                        "mode": "down",
-                        "row": 5
-                    }
-                ]
-            },
-            "right_configs": {},
-            "single_configs": {}
-        },
         "Intermediary services": {
             "down_configs": {
                 "intermediary_services": [
@@ -1540,6 +1370,11 @@
                     }
                 ]
             },
+            "right_configs": {},
+            "single_configs": {}
+        },
+        "InvestmentsOrgRoleOptions": {
+            "down_configs": {},
             "right_configs": {},
             "single_configs": {}
         },

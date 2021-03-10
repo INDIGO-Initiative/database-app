@@ -13,6 +13,7 @@
     },
     "properties": {
         "address": {
+            "description": "Address of the organisation/party.",
             "properties": {
                 "value": {
                     "type": "string"
@@ -22,8 +23,10 @@
             "type": "object"
         },
         "contact": {
+            "description": "Name of the person to contact from that party/organisation.",
             "properties": {
                 "email": {
+                    "description": "Email of the person to contact from that party/organisation.",
                     "properties": {
                         "value": {
                             "type": "string"
@@ -53,6 +56,7 @@
                         "type": "string"
                     },
                     "organisation_id": {
+                        "description": "Organisation ID of the controlling organisation, if applicable.",
                         "properties": {
                             "value": {
                                 "type": "string"
@@ -72,6 +76,7 @@
             "type": "array"
         },
         "country": {
+            "description": "Country of the organisation/party.",
             "properties": {
                 "value": {
                     "type": "string"
@@ -81,6 +86,7 @@
             "type": "object"
         },
         "description": {
+            "description": "A description of the party or organisation.",
             "properties": {
                 "value": {
                     "type": "string"
@@ -90,6 +96,7 @@
             "type": "object"
         },
         "jurisdiction": {
+            "description": "A 2 character ISO code or the special value \u2018INTL\u2019. The primary jurisdiction in which the organisation is based.",
             "properties": {
                 "value": {
                     "type": "string"
@@ -99,6 +106,7 @@
             "type": "object"
         },
         "name": {
+            "description": "The official name of the party as recorded in any official register.",
             "properties": {
                 "value": {
                     "type": "string"
@@ -108,6 +116,7 @@
             "type": "object"
         },
         "org-ids": {
+            "description": "For legal entities, a primary identifier from a relevant identifier issuing authority.",
             "properties": {
                 "primary": {
                     "properties": {
@@ -119,6 +128,7 @@
                     "type": "object"
                 },
                 "secondary": {
+                    "description": "Any secondary organisation id that parties or organisations may have.",
                     "items": {
                         "properties": {
                             "notes": {
@@ -149,6 +159,7 @@
             "type": "object"
         },
         "postcode": {
+            "description": "Postcode of the organisation/party.",
             "properties": {
                 "value": {
                     "type": "string"
@@ -161,6 +172,7 @@
             "items": {
                 "properties": {
                     "accessed_date": {
+                        "description": "Accessed date of the document, report or website",
                         "properties": {
                             "value": {
                                 "type": "string"
@@ -179,6 +191,7 @@
                         "type": "object"
                     },
                     "id": {
+                        "description": "A within-project original, flexible identifiers to be referenced in another sheet. This can be set by a GO Lab analyst.",
                         "title": "Id",
                         "type": "string"
                     },
@@ -192,6 +205,7 @@
                         "type": "object"
                     },
                     "name": {
+                        "description": "Name of the person or institution who shared information about this organisation/party.",
                         "properties": {
                             "value": {
                                 "type": "string"
@@ -201,6 +215,7 @@
                         "type": "object"
                     },
                     "publication_date": {
+                        "description": "Publication date of the document, report or website",
                         "properties": {
                             "value": {
                                 "type": "string"
@@ -210,6 +225,7 @@
                         "type": "object"
                     },
                     "publishing_organisation_ids": {
+                        "description": "Name of the organisation that published the report, evaluation or document about this organisation/party.",
                         "properties": {
                             "value": {
                                 "type": "string"
@@ -219,6 +235,7 @@
                         "type": "object"
                     },
                     "type": {
+                        "description": "Type of source of information.",
                         "properties": {
                             "value": {
                                 "type": "string"
@@ -228,6 +245,7 @@
                         "type": "object"
                     },
                     "url": {
+                        "description": "URL of the document about this organisation/party.",
                         "properties": {
                             "value": {
                                 "type": "string"
@@ -252,6 +270,7 @@
             "type": "string"
         },
         "trading_name": {
+            "description": "The name by which a party is commonly known, where different from an official name.",
             "properties": {
                 "value": {
                     "type": "string"
@@ -261,6 +280,7 @@
             "type": "object"
         },
         "translated_official_name": {
+            "description": "An English representation of an official name.",
             "properties": {
                 "english": {
                     "properties": {
@@ -272,6 +292,7 @@
                     "type": "object"
                 },
                 "source_language": {
+                    "description": "An ISO 639-1 language code. Where a translated name is given the language of the original used in the name field should be provided here.",
                     "properties": {
                         "value": {
                             "type": "string"
@@ -287,6 +308,7 @@
         "type": {
             "properties": {
                 "value": {
+                    "description": "The type of party or organisation.",
                     "enum": [
                         "Registered company, partnership or commercial association",
                         "Registered non-profit organisation, charity or foundation",
@@ -306,6 +328,7 @@
             "type": "object"
         },
         "website": {
+            "description": "Website of the organisation/party.",
             "properties": {
                 "value": {
                     "type": "string"
