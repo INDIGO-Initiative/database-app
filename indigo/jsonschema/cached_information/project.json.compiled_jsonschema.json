@@ -138,6 +138,7 @@
             "items": {
                 "properties": {
                     "grant_id": {
+                        "description": "360Giving identifier that links this impact bond project with data on received grants.",
                         "title": "Grant ID",
                         "type": "string"
                     },
@@ -400,7 +401,7 @@
                         "type": "object"
                     },
                     "lat_lng": {
-                        "description": "GO Lab will add or double check this variable. This variable feeds into the map(s) on the GO Lab website.",
+                        "description": "Latitude and longitude coordinates. GO Lab will add or double check this variable. This variable feeds into the map(s) on the GO Lab website.",
                         "properties": {
                             "lat": {
                                 "properties": {
@@ -753,6 +754,7 @@
                         "type": "string"
                     },
                     "title": {
+                        "description": "Title of related document or case study.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -763,6 +765,7 @@
                         "type": "object"
                     },
                     "url": {
+                        "description": "URL of related document or case study.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -779,208 +782,6 @@
             "title": "Documents",
             "type": "array"
         },
-        "grants": {
-            "items": {
-                "properties": {
-                    "360giving_id": {
-                        "properties": {
-                            "value": {
-                                "title": "(Value)",
-                                "type": "string"
-                            }
-                        },
-                        "title": "360Giving Id",
-                        "type": "object"
-                    },
-                    "amount_applied_for": {
-                        "properties": {
-                            "amount": {
-                                "properties": {
-                                    "value": {
-                                        "title": "(Value)",
-                                        "type": "number"
-                                    }
-                                },
-                                "title": "Amount",
-                                "type": "object"
-                            },
-                            "amount_usd": {
-                                "properties": {
-                                    "value": {
-                                        "title": "(Value)",
-                                        "type": "number"
-                                    }
-                                },
-                                "title": "Amount USD",
-                                "type": "object"
-                            }
-                        },
-                        "title": "Amount Applied For",
-                        "type": "object"
-                    },
-                    "amount_awarded": {
-                        "properties": {
-                            "amount": {
-                                "properties": {
-                                    "value": {
-                                        "title": "(Value)",
-                                        "type": "number"
-                                    }
-                                },
-                                "title": "Amount",
-                                "type": "object"
-                            },
-                            "amount_usd": {
-                                "properties": {
-                                    "value": {
-                                        "title": "(Value)",
-                                        "type": "number"
-                                    }
-                                },
-                                "title": "Amount USD",
-                                "type": "object"
-                            }
-                        },
-                        "title": "Amount Awarded",
-                        "type": "object"
-                    },
-                    "amount_disbursed": {
-                        "properties": {
-                            "amount": {
-                                "properties": {
-                                    "value": {
-                                        "title": "(Value)",
-                                        "type": "number"
-                                    }
-                                },
-                                "title": "Amount",
-                                "type": "object"
-                            },
-                            "amount_usd": {
-                                "properties": {
-                                    "value": {
-                                        "title": "(Value)",
-                                        "type": "number"
-                                    }
-                                },
-                                "title": "Amount USD",
-                                "type": "object"
-                            }
-                        },
-                        "title": "Amount Disbursed",
-                        "type": "object"
-                    },
-                    "award_date": {
-                        "properties": {
-                            "value": {
-                                "title": "(Value)",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Award Date",
-                        "type": "object"
-                    },
-                    "currency": {
-                        "properties": {
-                            "value": {
-                                "title": "(Value)",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Currency",
-                        "type": "object"
-                    },
-                    "description": {
-                        "properties": {
-                            "value": {
-                                "title": "(Value)",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Description",
-                        "type": "object"
-                    },
-                    "funding_organisation_id": {
-                        "properties": {
-                            "value": {
-                                "title": "(Value)",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Funding Organisation Id",
-                        "type": "object"
-                    },
-                    "id": {
-                        "title": "Id",
-                        "type": "string"
-                    },
-                    "notes": {
-                        "title": "Notes",
-                        "type": "string"
-                    },
-                    "purpose": {
-                        "properties": {
-                            "value": {
-                                "enum": [
-                                    "Acquisition",
-                                    "Asset",
-                                    "Bridging Loan",
-                                    "Capital",
-                                    "DevelopmentCapital",
-                                    "Growth Finance",
-                                    "Multiple",
-                                    "Program Funding",
-                                    "Property",
-                                    "Property Refurbishment",
-                                    "Other",
-                                    "Restructuring Finance",
-                                    "Startup Costs",
-                                    "Technical Assistance",
-                                    "Unrestricted",
-                                    "Working Capital"
-                                ],
-                                "title": "(Value)",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Purpose",
-                        "type": "object"
-                    },
-                    "recipient_organisation_id": {
-                        "properties": {
-                            "value": {
-                                "title": "(Value)",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Recipient Organisation Id",
-                        "type": "object"
-                    },
-                    "source_ids": {
-                        "title": "Sources",
-                        "type": "string"
-                    },
-                    "status": {
-                        "title": "Status",
-                        "type": "string"
-                    },
-                    "title": {
-                        "properties": {
-                            "value": {
-                                "title": "(Value)",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Title",
-                        "type": "object"
-                    }
-                },
-                "type": "object"
-            },
-            "priority": 2,
-            "title": "Grants",
-            "type": "array"
-        },
         "intermediary_services": {
             "items": {
                 "properties": {
@@ -989,6 +790,7 @@
                         "type": "string"
                     },
                     "organisation_id": {
+                        "description": "INDIGO identifier for the organisation that provides intermediary services for this project. See INDIGO Identifiers section.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -1227,15 +1029,16 @@
             "items": {
                 "properties": {
                     "id": {
+                        "description": "A within-project original, flexible identifiers to be referenced in another sheet. This can be set by the GO Lab analyst.",
                         "title": "Id",
                         "type": "string"
                     },
                     "investment_commitment": {
                         "properties": {
                             "amount": {
-                                "description": "Amount committed by each investor, in relevant currency.",
                                 "properties": {
                                     "exact": {
+                                        "description": "Exact amount of committed investment from each investor.",
                                         "properties": {
                                             "value": {
                                                 "title": "(Value)",
@@ -1246,6 +1049,7 @@
                                         "type": "object"
                                     },
                                     "max": {
+                                        "description": "When it is not possible to share exact amounts, projects can share a range with minimum and maximum amount of investment committed by each investor.",
                                         "properties": {
                                             "value": {
                                                 "title": "(Value)",
@@ -1256,6 +1060,7 @@
                                         "type": "object"
                                     },
                                     "min": {
+                                        "description": "When it is not possible to share exact amounts, projects can share a range with minimum and maximum amount of investment committed by each investor.",
                                         "properties": {
                                             "value": {
                                                 "title": "(Value)",
@@ -1270,9 +1075,9 @@
                                 "type": "object"
                             },
                             "amount_usd": {
-                                "description": "Amount committed by each investor in USD.",
                                 "properties": {
                                     "exact": {
+                                        "description": "Exact amount of investment committed by each investor in USD.",
                                         "properties": {
                                             "value": {
                                                 "title": "(Value)",
@@ -1283,6 +1088,7 @@
                                         "type": "object"
                                     },
                                     "max": {
+                                        "description": "Maximum amount of investment committed by each investor in USD (when it is not possible to have exact amount in USD).",
                                         "properties": {
                                             "value": {
                                                 "title": "(Value)",
@@ -1293,6 +1099,7 @@
                                         "type": "object"
                                     },
                                     "min": {
+                                        "description": "Minimum amount of investment committed by each investor in USD (when it is not possible to have exact amount in USD).",
                                         "properties": {
                                             "value": {
                                                 "title": "(Value)",
@@ -1397,6 +1204,7 @@
                         "type": "string"
                     },
                     "organisation_id": {
+                        "description": "INDIGO identifier for the organisation that invested upfront capital for this project. See INDIGO Identifiers section.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -1407,8 +1215,20 @@
                         "type": "object"
                     },
                     "organisation_role_category": {
+                        "description": "",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Nonprofit/NGO",
+                                    "Foundation/Philanthropist",
+                                    "Government/Public Sector/Public Bank",
+                                    "Multilateral/Bilateral/Intergovernmental Financial Institution",
+                                    "Corporate Giving",
+                                    "Investment Fund",
+                                    "High Net Worth Individual/Family Office/Private Bank",
+                                    "Impact Investor",
+                                    "Commercial"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -1435,6 +1255,7 @@
             "priority": 1,
             "properties": {
                 "jurisdiction": {
+                    "description": "Project jurisdiction describes a project\u2019s origins, using the place it is governed or organised from, under law, as a proxy.",
                     "properties": {
                         "status": {
                             "enum": [
@@ -1719,7 +1540,7 @@
             "type": "object"
         },
         "name": {
-            "description": "Full name of the Social Impact Bond or Outcome-based Contract.",
+            "description": "Full name of the Social Impact Bond. What counts as an Impact Bond project? It is a contractual relationship that includes two core factors:\n\u2022 Payment for social or environmental outcomes achieved\n\u2022 Up-front repayable finance provided by a third party, the repayment of which is (at least partially) conditional on achieving specified outcomes.\n\nEach impact bond project that begins work under a new contract, with a new target cohort, a distinct geography, and/or with a later start date is counted separately.",
             "properties": {
                 "value": {
                     "title": "(Value)",
@@ -1752,6 +1573,7 @@
                         "type": "string"
                     },
                     "ocid": {
+                        "description": "OCID identifier that links this impact bond project with data on the contracting process.",
                         "title": "OCID",
                         "type": "string"
                     },
@@ -1987,6 +1809,7 @@
                     "alterations": {
                         "properties": {
                             "description": {
+                                "description": "Detail of the modifications to payment commitments occured during the life of the impact bond project.",
                                 "properties": {
                                     "status": {
                                         "enum": [
@@ -2006,6 +1829,7 @@
                                 "type": "object"
                             },
                             "reason": {
+                                "description": "Brief explanation of the reasons behind the modifications to payment commitments occured during the life of the impact bond project.",
                                 "properties": {
                                     "status": {
                                         "enum": [
@@ -2029,9 +1853,9 @@
                         "type": "object"
                     },
                     "maximum_potential_outcome_payment": {
-                        "description": "Total maximum payments for outcomes from each outcome payer.",
                         "properties": {
                             "amount": {
+                                "description": "Total maximum payments for outcomes from each outcome payer.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -2042,6 +1866,7 @@
                                 "type": "object"
                             },
                             "amount_usd": {
+                                "description": "Total maximum payments for outcomes from each outcome payer. In USD.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -2052,6 +1877,7 @@
                                 "type": "object"
                             },
                             "currency": {
+                                "description": "Total maximum payments for outcomes from each outcome payer. Currency.",
                                 "properties": {
                                     "status": {
                                         "enum": [
@@ -2079,6 +1905,7 @@
                         "type": "string"
                     },
                     "organisation_id": {
+                        "description": "INDIGO identifier of the organisation that pays for social outcomes in this impact bond project. See INDIGO Identifiers section.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -2092,6 +1919,15 @@
                         "description": "Category of outcome payer",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Nonprofit/NGO",
+                                    "Foundation/Philanthropist",
+                                    "Government/Public Sector/Public Bank",
+                                    "Multilateral/Bilateral/Intergovernmental Financial Institution",
+                                    "Corporate Giving",
+                                    "Investment Fund",
+                                    "Other"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -2215,6 +2051,7 @@
                     "money": {
                         "properties": {
                             "amount": {
+                                "description": "Amount of outcome payments received in this period in relevant currency.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -2225,6 +2062,7 @@
                                 "type": "object"
                             },
                             "amount_usd": {
+                                "description": "Amount of outcome payments received in this period in USD.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -2235,6 +2073,7 @@
                                 "type": "object"
                             },
                             "currency": {
+                                "description": "Currency in which outcome payments are reported for this project.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -2253,6 +2092,7 @@
                         "type": "string"
                     },
                     "outcome_metric_id": {
+                        "description": "A within-project original, flexible identifier to be referenced in another sheet. This can be set by a GO Lab analyst.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -2263,6 +2103,7 @@
                         "type": "object"
                     },
                     "payer_organisation_id": {
+                        "description": "INDIGO ID of organisation that is paying for outcomes.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -2275,6 +2116,7 @@
                     "period": {
                         "properties": {
                             "end_date": {
+                                "description": "End date of claim period.",
                                 "properties": {
                                     "value": {
                                         "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
@@ -2287,6 +2129,7 @@
                                 "type": "object"
                             },
                             "start_date": {
+                                "description": "Start date of claim period.",
                                 "properties": {
                                     "value": {
                                         "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
@@ -2303,6 +2146,7 @@
                         "type": "object"
                     },
                     "recipient_organisation_id": {
+                        "description": "INDIGO ID of organisation that is receiving payment for outcomes.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -2361,11 +2205,11 @@
                                 "type": "string"
                             }
                         },
-                        "title": "Currency",
+                        "title": "Contracted increases to outcome pricing",
                         "type": "object"
                     },
                     "currency": {
-                        "description": "Currency in which outcome pricing information is reported for this project.",
+                        "description": "Currency in which outcome pricing data is reported for this project.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -2378,6 +2222,7 @@
                     "maximum_price_if_all_targets_achieved": {
                         "properties": {
                             "amount": {
+                                "description": "Maximum price if all targets related to that outcome are achieved.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -2396,7 +2241,7 @@
                         "type": "string"
                     },
                     "outcome_metric_id": {
-                        "description": "Name of the outcome for which information is reported. This ID should be equal to the ID that was stated in the \u201cResults\u201d and \u201cOutcome metrics\u201d sections.",
+                        "description": "A within-project original, flexible identifier to be referenced in another sheet. This can be set by the GO Lab analyst. This ID should be equal to the ID that was stated in the \u201cResults\u201d and \u201cOutcome metrics\u201d sections.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -2407,19 +2252,20 @@
                         "type": "object"
                     },
                     "price_description": {
+                        "description": "",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
                                 "type": "string"
                             }
                         },
-                        "title": "Currency",
+                        "title": "Price Description",
                         "type": "object"
                     },
                     "price_per_unit": {
-                        "description": "Price per unit, often participant, for whom outcomes are achieved. Price here is the cost to the outcome payer. This is to be populated only if there is a single outcome which is measured at the unit /individual level. Use the currency stated in the above field.",
                         "properties": {
                             "amount": {
+                                "description": "Price per unit, often a participant, for whom outcomes are achieved. Price here is the cost to the outcome payer. This is to be populated only if there is a single outcome which is measured at the unit /individual level. Use the currency stated in the above field.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -2430,6 +2276,7 @@
                                 "type": "object"
                             },
                             "amount_usd": {
+                                "description": "Price per unit, often a participant, for whom outcomes are achieved in USD. Price here is the cost to the outcome payer.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -2594,6 +2441,7 @@
                         "amount": {
                             "properties": {
                                 "exact": {
+                                    "description": "Total investment amount committed by investors (capital raised), as contractually agreed. Note that this should not include any recycled outcome payments.",
                                     "properties": {
                                         "status": {
                                             "enum": [
@@ -2613,6 +2461,7 @@
                                     "type": "object"
                                 },
                                 "max": {
+                                    "description": "When it is not possible to share the exact amount of total investment, projects can present a range with minimun and maximum values.",
                                     "properties": {
                                         "status": {
                                             "enum": [
@@ -2632,6 +2481,7 @@
                                     "type": "object"
                                 },
                                 "min": {
+                                    "description": "When it is not possible to share the exact amount of total investment, projects can present a range with minimun and maximum values.",
                                     "properties": {
                                         "status": {
                                             "enum": [
@@ -2657,6 +2507,7 @@
                         "amount_usd": {
                             "properties": {
                                 "exact": {
+                                    "description": "Exact investment amount in US dollars.",
                                     "properties": {
                                         "status": {
                                             "enum": [
@@ -2676,6 +2527,7 @@
                                     "type": "object"
                                 },
                                 "max": {
+                                    "description": "Maximum investment amount in US dollars.",
                                     "properties": {
                                         "status": {
                                             "enum": [
@@ -2695,6 +2547,7 @@
                                     "type": "object"
                                 },
                                 "min": {
+                                    "description": "Minimum investment amount in US dollars.",
                                     "properties": {
                                         "status": {
                                             "enum": [
@@ -2815,6 +2668,7 @@
             "priority": 1,
             "properties": {
                 "intervention": {
+                    "description": "Description of the intervention supported by the Impact Bond.",
                     "properties": {
                         "status": {
                             "enum": [
@@ -3018,6 +2872,7 @@
                         "type": "object"
                     },
                     "outcome_metric_id": {
+                        "description": "A within-project original, flexible identifiers to be referenced in another sheet. This can be set by a GO Lab analyst.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -3130,6 +2985,7 @@
             "priority": 1,
             "properties": {
                 "actual_number_service_users_or_beneficiaries_total": {
+                    "description": "Effective number of service users after the project was completed. The actual number of service users may differ from the targeted number, as forecasted at the beginnings of the project.",
                     "properties": {
                         "status": {
                             "enum": [
@@ -3197,6 +3053,7 @@
                     "type": "object"
                 },
                 "unit_description_of_actual_service_user_or_beneficiaries": {
+                    "description": "This field will only be completed if the answer to the last variable was \u201cother\u201d. This variable identifies what type of unit of measurement is used to account for actual number of service users or beneficiaries.",
                     "properties": {
                         "status": {
                             "enum": [
@@ -3248,6 +3105,7 @@
                             "type": "string"
                         },
                         "value": {
+                            "description": "Description of the unit of measurement that is used to account for targeted service users or beneficiaries.",
                             "enum": [
                                 "Individual",
                                 "Other"
@@ -3322,7 +3180,7 @@
                     "alterations": {
                         "properties": {
                             "description": {
-                                "description": "his variable specifies whether there has been a modification in the service delivery. Where there are multiple alterations, this field should describe all alterations that have taken place.",
+                                "description": "This variable specifies whether there has been a modification in the service delivery. Where there are multiple alterations, this field should describe all alterations that have taken place.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -3368,6 +3226,7 @@
                         "type": "string"
                     },
                     "organisation_id": {
+                        "description": "INDIGO identifier of the organisation that provides services for this impact bond project. See INDIGO Identifiers section.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -3479,7 +3338,7 @@
                         "type": "object"
                     },
                     "id": {
-                        "description": "A within-project original, flexible identifiers to be referenced in another sheet. This can be set by the analyst.",
+                        "description": "A within-project original, flexible identifiers to be referenced in another sheet. This can be set by the GO Lab analyst.",
                         "title": "Id",
                         "type": "string"
                     },
@@ -3521,7 +3380,7 @@
                         "type": "object"
                     },
                     "publishing_organisation_ids": {
-                        "description": "",
+                        "description": "Organisation that published the evaluation, report, document or website that is cited as a source.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -3696,6 +3555,7 @@
                     "cost_of_activities": {
                         "properties": {
                             "amount": {
+                                "description": "Cost of Technical Assistance activities in relevant currency.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -3706,6 +3566,7 @@
                                 "type": "object"
                             },
                             "amount_usd": {
+                                "description": "Cost of Technical Assistance activities in USD.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -3716,7 +3577,7 @@
                                 "type": "object"
                             }
                         },
-                        "title": "Cost Of Activities",
+                        "title": "Cost of Activities",
                         "type": "object"
                     },
                     "cost_type": {
@@ -3751,13 +3612,14 @@
                         "type": "string"
                     },
                     "number_of_days": {
+                        "description": "Cost of Technical Assistance activities in days of work.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
                                 "type": "number"
                             }
                         },
-                        "title": "Number Of Days",
+                        "title": "Number of Days",
                         "type": "object"
                     },
                     "source_ids": {
@@ -3769,6 +3631,7 @@
                         "type": "string"
                     },
                     "technical_assistance_id": {
+                        "description": "A within-project original, flexible identifier to be referenced in another sheet.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -3929,6 +3792,7 @@
                         "type": "object"
                     },
                     "investment_id": {
+                        "description": "A within-project original, flexible identifier to be referenced in another sheet.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -3952,6 +3816,7 @@
                                 "type": "object"
                             },
                             "amount_usd": {
+                                "description": "Total amount of the transaction in USD.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -3962,6 +3827,7 @@
                                 "type": "object"
                             },
                             "currency": {
+                                "description": "Currency in which transaction data is reported.",
                                 "properties": {
                                     "value": {
                                         "title": "(Value)",
@@ -3980,6 +3846,7 @@
                         "type": "string"
                     },
                     "outcome_metric_id": {
+                        "description": "A within-project original, flexible identifier to be referenced in another sheet.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -3990,7 +3857,7 @@
                         "type": "object"
                     },
                     "receiving_organisation_id": {
-                        "description": "Id of the organization that receives the transaction. ",
+                        "description": "INDIGO ID of the organisation that receives the transaction. ",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -4005,7 +3872,7 @@
                         "type": "string"
                     },
                     "sending_organisation_id": {
-                        "description": "Id of the organization that makes the transaction.",
+                        "description": "INDIGO ID of the organisation that makes the transaction.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
