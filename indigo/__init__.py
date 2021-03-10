@@ -198,3 +198,10 @@ TYPE_FUND_ALWAYS_FILTER_KEYS_LIST = [
 TYPE_FUND_FILTER_LISTS_LIST = [
     "/documents",
 ]
+
+TYPE_FUND_ORGANISATION_REFERENCES_LIST = [
+    {
+        "list_key": "/organisations",
+        "item_organisation_id_key": "/organisation_id/value",
+    },
+]

@@ -6,6 +6,7 @@ from django.conf import settings
 
 from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
+    TYPE_FUND_ORGANISATION_REFERENCES_LIST,
     TYPE_PROJECT_FUND_LIST,
     TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST,
     TYPE_PROJECT_ORGANISATION_LIST,
@@ -139,6 +140,46 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
                         )
             except Fund.DoesNotExist:
                 pass
+
+    # Done
+    return input_json
+
+
+def add_other_records_to_fund(fund_id, input_json, public_only=False):
+    input_json = copy.deepcopy(input_json)
+
+    # Add ID
+    input_json["id"] = fund_id
+
+    # Look up Organisations, add more info in place
+    for config in TYPE_FUND_ORGANISATION_REFERENCES_LIST:
+        data_list = jsonpointer.resolve_pointer(
+            input_json, config["list_key"], default=None
+        )
+        if isinstance(data_list, list) and data_list:
+            for item in data_list:
+                field_value = jsonpointer.resolve_pointer(
+                    item, config["item_organisation_id_key"], default=None
+                )
+                if field_value and field_value.strip():
+                    try:
+                        organisation = Organisation.objects.get(
+                            public_id=field_value, exists=True, status_public=True
+                        )
+                        organisation_data = (
+                            organisation.data_public
+                            if public_only
+                            else organisation.data_private
+                        )
+                        spreadsheetforms.util.json_set_deep_value(
+                            item,
+                            "organisation_names" + config["item_organisation_id_key"],
+                            jsonpointer.resolve_pointer(
+                                organisation_data, "/name/value", default=None
+                            ),
+                        )
+                    except Organisation.DoesNotExist:
+                        pass
 
     # Done
     return input_json
