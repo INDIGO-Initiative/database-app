@@ -392,6 +392,47 @@ class AssessmentResourceIndex(ModelIndex):
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
 
+class ModelDownloadForm(View):
+    def get(self, request, public_id):
+        try:
+            data = self.__class__._model.objects.get(
+                exists=True, status_public=True, public_id=public_id
+            )
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+        if not data.status_public or not data.exists:
+            raise Http404("Data does not exist")
+
+        data_for_spreadsheet = self.__class__._convert_function(data, public_only=True)
+        guide_file = os.path.join(
+            settings.BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            self.__class__._spreadsheet_file_name,
+        )
+        out_file = os.path.join(
+            tempfile.gettempdir(),
+            "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
+        )
+        spreadsheetforms.api.put_data_in_form(
+            guide_file, data_for_spreadsheet, out_file
+        )
+
+        with open(out_file, "rb") as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response["Content-Disposition"] = (
+                "inline; filename=" + data.__class__.__name__ + data.public_id + ".xlsx"
+            )
+        return response
+
+
+class FundDownloadForm(ModelDownloadForm):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
+    _spreadsheet_file_name = "fund_public_v001.xlsx"
+    _convert_function = convert_fund_data_to_spreadsheetforms_data
+
+
 ########################### Public - All
 
 

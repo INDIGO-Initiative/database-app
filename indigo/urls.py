@@ -53,6 +53,11 @@ urlpatterns = [
     ########################### Public - Fund
     path("fund", views.FundList.as_view(), name="indigo_fund_list",),
     path("fund/<public_id>", views.FundIndex.as_view(), name="indigo_fund_index",),
+    path(
+        "fund/<public_id>/download_form",
+        views.FundDownloadForm.as_view(),
+        name="indigo_fund_download_form",
+    ),
     ########################### Public - AssessmentResource
     path(
         "assessment_resource",
