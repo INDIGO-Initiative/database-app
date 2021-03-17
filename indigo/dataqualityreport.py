@@ -89,6 +89,9 @@ class DataQualityReportForProject:
             out[error.get_priority()].append(error)
         return out
 
+    def get_errors_for_priority_level(self, level):
+        return [e for e in self.errors if e.get_priority() == 0]
+
     def get_count_errors_in_priority_levels(self):
         out = {0: 0, 1: 0, 2: 0, 3: 0}
         for error in self.errors:

@@ -769,6 +769,9 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
         )
     )
 
+    data_quality_report = DataQualityReportForProject(project_import.data)
+    level_zero_errors = data_quality_report.get_errors_for_priority_level(0)
+
     can_import_now = (
         not source_ids_used_that_are_not_in_sources_table
         and not organisation_ids_that_do_not_exist
@@ -825,6 +828,7 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
         "source_table_entries_that_are_not_used": source_table_entries_that_are_not_used,
         "organisation_ids_that_do_not_exist": organisation_ids_that_do_not_exist,
         "fund_ids_that_do_not_exist": fund_ids_that_do_not_exist,
+        "level_zero_errors": level_zero_errors,
         "can_import_now": can_import_now,
     }
 

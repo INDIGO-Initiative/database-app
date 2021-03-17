@@ -55,6 +55,11 @@
     </ul>
   {% endif %}
 
+  {% if level_zero_errors %}
+    <h3>Warning: Some problems were found</h3>
+    {% include 'indigo/admin/project/common_data_quality_report_show_data.html' with errors=level_zero_errors %}
+  {% endif %}
+
   {% if can_import_now %}
     <form action="" method="post">
       {% csrf_token %}
