@@ -1178,7 +1178,7 @@
                         "properties": {
                             "value": {
                                 "title": "(Value)",
-                                "type": "string"
+                                "type": "number"
                             }
                         },
                         "title": "Maximum Potential Return",
@@ -1596,6 +1596,7 @@
             "items": {
                 "properties": {
                     "id": {
+                        "description": "",
                         "title": "Id",
                         "type": "string"
                     },
@@ -1764,7 +1765,7 @@
                         "properties": {
                             "value": {
                                 "title": "(Value)",
-                                "type": "string"
+                                "type": "number"
                             }
                         },
                         "title": "Targeted number of service users Or beneficiaries (total)",
@@ -1799,6 +1800,7 @@
                 },
                 "type": "object"
             },
+            "minItems": 1,
             "priority": 2,
             "title": "Outcome Metrics",
             "type": "array"
@@ -2329,7 +2331,7 @@
                     "type": "object"
                 },
                 "investor_repayment": {
-                    "description": "To be completed at the of the project. Extent to which investment and return was paid to investor.",
+                    "description": "To be completed at the end of the project. Extent to which investment and return was paid to investor.",
                     "properties": {
                         "status": {
                             "enum": [
@@ -2843,7 +2845,7 @@
                         "properties": {
                             "value": {
                                 "title": "(Value)",
-                                "type": "string"
+                                "type": "number"
                             }
                         },
                         "title": "Number engaged In impact bond",
@@ -2854,7 +2856,7 @@
                         "properties": {
                             "value": {
                                 "title": "(Value)",
-                                "type": "string"
+                                "type": "number"
                             }
                         },
                         "title": "Number with Positive social outcomes",
@@ -3419,6 +3421,7 @@
                 },
                 "type": "object"
             },
+            "minItems": 1,
             "priority": 2,
             "title": "Sources",
             "type": "array"
@@ -3774,6 +3777,8 @@
                         "description": "Date when the transaction occurred.",
                         "properties": {
                             "value": {
+                                "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                                "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
                                 "title": "(Value)",
                                 "type": "string"
                             }
