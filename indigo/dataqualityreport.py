@@ -11,6 +11,11 @@ from indigo import (
     TYPE_PROJECT_SOURCES_REFERENCES,
     TYPE_PROJECT_SOURCES_REFERENCES_LIST,
 )
+from indigo.models import Fund, Organisation
+from indigo.processdata import (
+    find_unique_fund_ids_referenced_in_project_data,
+    find_unique_organisation_ids_referenced_in_project_data,
+)
 
 
 @lru_cache
@@ -96,6 +101,18 @@ class DataQualityReportForProject:
             )
         for source_data in source_table_entries_that_are_not_used:
             errors.append(SourceIdNotUsed(source_data.get("source_id")))
+
+        organisation_ids_that_do_not_exist = _filter_organisation_ids_that_do_not_exist_in_database(
+            find_unique_organisation_ids_referenced_in_project_data(self.project_data)
+        )
+        for id in organisation_ids_that_do_not_exist:
+            errors.append(OrganisationIdDoesNotExist(id))
+
+        fund_ids_that_do_not_exist = _filter_fund_ids_that_do_not_exist_in_database(
+            find_unique_fund_ids_referenced_in_project_data(self.project_data)
+        )
+        for id in fund_ids_that_do_not_exist:
+            errors.append(FundIdDoesNotExist(id))
 
         self.errors = errors
 
@@ -191,6 +208,30 @@ def _check_project_data_for_source_errors(input_json):
         source_ids_referenced_that_are_not_in_sources_table,
         source_table_entries_that_are_not_used,
     )
+
+
+def _filter_organisation_ids_that_do_not_exist_in_database(list_of_ids):
+    """Takes list of public_ids of orgs, returns a list of those that do NOT exist in the database.
+    Hint: feed find_unique_organisation_ids_referenced_in_project_data into this."""
+    out = []
+    for id in list_of_ids:
+        try:
+            Organisation.objects.get(public_id=id)
+        except Organisation.DoesNotExist:
+            out.append(id)
+    return out
+
+
+def _filter_fund_ids_that_do_not_exist_in_database(list_of_ids):
+    """Takes list of public_ids of funds, returns a list of those that do NOT exist in the database.
+    Hint: feed find_unique_fund_ids_referenced_in_project_data into this."""
+    out = []
+    for id in list_of_ids:
+        try:
+            Fund.objects.get(public_id=id)
+        except Fund.DoesNotExist:
+            out.append(id)
+    return out
 
 
 class _DataError:
@@ -321,6 +362,40 @@ class SourceIdNotUsed(_DataError):
 
     def get_value(self):
         return self.source_id
+
+    def get_priority(self):
+        return 0
+
+
+class OrganisationIdDoesNotExist(_DataError):
+    def __init__(self, organisation_id):
+        self.organisation_id = organisation_id
+
+    def get_type(self):
+        return "organisation_id_does_not_exist"
+
+    def get_path(self):
+        return None
+
+    def get_value(self):
+        return self.organisation_id
+
+    def get_priority(self):
+        return 0
+
+
+class FundIdDoesNotExist(_DataError):
+    def __init__(self, fund_id):
+        self.fund_id = fund_id
+
+    def get_type(self):
+        return "fund_id_does_not_exist"
+
+    def get_path(self):
+        return None
+
+    def get_value(self):
+        return self.fund_id
 
     def get_priority(self):
         return 0

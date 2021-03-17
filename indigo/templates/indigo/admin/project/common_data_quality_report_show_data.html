@@ -60,6 +60,18 @@
                         <td>-</td>
                         <td>Id: {{ error.get_value }}</td>
                     </tr>
+                {% elif error.get_type == 'organisation_id_does_not_exist' %}
+                    <tr>
+                        <td>Organisation Id does not exist</td>
+                        <td>-</td>
+                        <td>Id: {{ error.get_value }}</td>
+                    </tr>
+                {% elif error.get_type == 'fund_id_does_not_exist' %}
+                    <tr>
+                        <td>Fund Id does not exist</td>
+                        <td>-</td>
+                        <td>Id: {{ error.get_value }}</td>
+                    </tr>
                 {% endif %}
             {% empty %}
                 <tr>

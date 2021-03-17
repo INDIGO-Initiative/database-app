@@ -16,26 +16,6 @@
 
 {% block content %}
 
-
-  {% if organisation_ids_that_do_not_exist %}
-    <h3>Problems: Some organisation ID's were used that are not in the database</h3>
-    <ul>
-      {% for id in organisation_ids_that_do_not_exist %}
-        <li>{{ id }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-  {% if fund_ids_that_do_not_exist %}
-    <h3>Problems: Some fund ID's were used that are not in the database</h3>
-    <ul>
-      {% for id in fund_ids_that_do_not_exist %}
-        <li>{{ id }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-
   {% if level_zero_errors %}
     <h3>Warning: Some problems were found</h3>
     {% include 'indigo/admin/project/common_data_quality_report_show_data.html' with errors=level_zero_errors %}
