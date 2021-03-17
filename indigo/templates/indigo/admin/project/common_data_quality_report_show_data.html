@@ -48,6 +48,18 @@
                         <td>{{ error.get_path }}</td>
                         <td></td>
                     </tr>
+                {% elif error.get_type == 'source_id_used_that_is_not_in_sources_table' %}
+                    <tr>
+                        <td>Source Id used that is not in sources table</td>
+                        <td>-</td>
+                        <td>Id: {{ error.get_value }}</td>
+                    </tr>
+                {% elif error.get_type == 'source_id_not_used' %}
+                    <tr>
+                        <td>Source Id is not used anywhere</td>
+                        <td>-</td>
+                        <td>Id: {{ error.get_value }}</td>
+                    </tr>
                 {% endif %}
             {% empty %}
                 <tr>

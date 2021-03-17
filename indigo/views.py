@@ -752,11 +752,6 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
             {"record": record, "project": project, "import": project_import},
         )
 
-    (
-        source_ids_used_that_are_not_in_sources_table,
-        source_table_entries_that_are_not_used,
-    ) = indigo.processdata.check_project_data_for_source_errors(project_import.data)
-
     organisation_ids_that_do_not_exist = indigo.processdata.filter_organisation_ids_that_do_not_exist_in_database(
         indigo.processdata.find_unique_organisation_ids_referenced_in_project_data(
             project_import.data
@@ -816,8 +811,6 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
         "record": record,
         "project": project,
         "form": form,
-        "source_ids_used_that_are_not_in_sources_table": source_ids_used_that_are_not_in_sources_table,
-        "source_table_entries_that_are_not_used": source_table_entries_that_are_not_used,
         "organisation_ids_that_do_not_exist": organisation_ids_that_do_not_exist,
         "fund_ids_that_do_not_exist": fund_ids_that_do_not_exist,
         "level_zero_errors": level_zero_errors,

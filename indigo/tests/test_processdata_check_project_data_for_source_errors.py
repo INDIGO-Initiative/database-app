@@ -11,7 +11,7 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.processdata.check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
 
         assert 0 == len(source_ids_used_that_are_not_in_sources_table)
         assert 0 == len(source_table_entries_that_are_not_used)
@@ -27,7 +27,7 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.processdata.check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
 
         assert 0 == len(source_ids_used_that_are_not_in_sources_table)
         assert 0 == len(source_table_entries_that_are_not_used)
@@ -42,7 +42,7 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.processdata.check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
 
         assert 1 == len(source_ids_used_that_are_not_in_sources_table)
         assert {"source_id": "BOOK1"} == source_ids_used_that_are_not_in_sources_table[
@@ -60,7 +60,7 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.processdata.check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
 
         assert 1 == len(source_ids_used_that_are_not_in_sources_table)
         assert {"source_id": "BOOK1"} == source_ids_used_that_are_not_in_sources_table[
@@ -78,7 +78,7 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.processdata.check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
 
         assert 0 == len(source_ids_used_that_are_not_in_sources_table)
         assert 1 == len(source_table_entries_that_are_not_used)
@@ -95,7 +95,7 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.processdata.check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
 
         assert 1 == len(source_ids_used_that_are_not_in_sources_table)
         assert {"source_id": "BOOK1"} == source_ids_used_that_are_not_in_sources_table[

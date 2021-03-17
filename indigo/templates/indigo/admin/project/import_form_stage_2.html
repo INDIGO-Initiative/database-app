@@ -17,16 +17,6 @@
 {% block content %}
 
 
-  {% if source_ids_used_that_are_not_in_sources_table %}
-    <h3>Problems: Some sources ID's were used that are not in the sources table</h3>
-    <ul>
-      {% for data in source_ids_used_that_are_not_in_sources_table %}
-        <li>{{ data.source_id }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-
   {% if organisation_ids_that_do_not_exist %}
     <h3>Problems: Some organisation ID's were used that are not in the database</h3>
     <ul>
@@ -45,15 +35,6 @@
     </ul>
   {% endif %}
 
-
-  {% if source_table_entries_that_are_not_used %}
-    <h3>Warning: Some sources table entries are not used</h3>
-    <ul>
-      {% for data in source_table_entries_that_are_not_used %}
-        <li>{{ data.source_id }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
 
   {% if level_zero_errors %}
     <h3>Warning: Some problems were found</h3>
