@@ -68,6 +68,9 @@ class DataQualityReportForProject:
             ):
                 errors.append(ValueNotANumberDataError(error))
 
+            elif error.validator == "minItems":
+                errors.append(ArrayHasTooFewItemsError(error))
+
             else:
                 pass
                 # print("UNCAUGHT JSON SCHEMA ERROR")
@@ -163,6 +166,24 @@ class ValueNotANumberDataError(_DataError):
 
     def get_type(self):
         return "value_not_a_number"
+
+    def get_path(self):
+        return self._path
+
+    def get_value(self):
+        return self._value
+
+    def get_priority(self):
+        return 0
+
+
+class ArrayHasTooFewItemsError(_DataError):
+    def __init__(self, error):
+        self._path = "/".join([str(i) for i in error.path])
+        self._value = error.instance
+
+    def get_type(self):
+        return "array_has_too_few_items"
 
     def get_path(self):
         return self._path
