@@ -60,16 +60,12 @@
     {% include 'indigo/admin/project/common_data_quality_report_show_data.html' with errors=level_zero_errors %}
   {% endif %}
 
-  {% if can_import_now %}
-    <form action="" method="post">
-      {% csrf_token %}
-      <table>
-        {{ form.as_table }}
-      </table>
-      <input type="submit" value="Import" class="btn btn-primary">
-    </form>
-  {% else %}
-    <p>Because of the problems above, you can not import this spreadsheet. Please fix the problems and try again.</p>
-  {% endif %}
+  <form action="" method="post">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="submit" value="Import" class="btn btn-primary">
+  </form>
 
 {% endblock %}

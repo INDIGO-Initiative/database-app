@@ -772,13 +772,7 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
     data_quality_report = DataQualityReportForProject(project_import.data)
     level_zero_errors = data_quality_report.get_errors_for_priority_level(0)
 
-    can_import_now = (
-        not source_ids_used_that_are_not_in_sources_table
-        and not organisation_ids_that_do_not_exist
-        and not fund_ids_that_do_not_exist
-    )
-
-    if request.method == "POST" and can_import_now:
+    if request.method == "POST":
 
         # Create a form instance and populate it with data from the request (binding):
         form = ProjectImportStage2Form(request.POST, request.FILES)
@@ -815,10 +809,8 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
             )
 
         # If this is a GET (or any other method) create the default form.
-    elif can_import_now:
-        form = ProjectImportStage2Form()
     else:
-        form = None
+        form = ProjectImportStage2Form()
 
     context = {
         "record": record,
@@ -829,7 +821,6 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
         "organisation_ids_that_do_not_exist": organisation_ids_that_do_not_exist,
         "fund_ids_that_do_not_exist": fund_ids_that_do_not_exist,
         "level_zero_errors": level_zero_errors,
-        "can_import_now": can_import_now,
     }
 
     return render(request, "indigo/admin/project/import_form_stage_2.html", context)
