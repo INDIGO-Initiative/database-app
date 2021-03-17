@@ -94,7 +94,7 @@
                     "type": "object"
                 },
                 "launch_date": {
-                    "description": "Earliest date when an outcomes contract was signed",
+                    "description": "Earliest date when an outcomes contract supported by this Fund was signed",
                     "properties": {
                         "value": {
                             "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
@@ -228,7 +228,7 @@
                                     "type": "object"
                                 },
                                 "amount_usd": {
-                                    "description": "Actual size of funding available from the Outcome Fund (to be made for outcome payments directly or assistance to support the development of outcome-contracts)  (Conversion by INDIGO using World Bank exchange rate of the moment of expression of interest. If there is no data on dates of expression of interest, then we will use the exchange rate of the launch date)",
+                                    "description": "Actual size of funding available from the Outcome Fund (to be made for outcome payments directly or assistance to support the development of outcome-contracts)in USD. (Conversion by INDIGO using World Bank exchange rate of the moment of expression of interest. If there is no data on dates of expression of interest, then we will use the exchange rate of the launch date)",
                                     "properties": {
                                         "value": {
                                             "title": "(Value)",
@@ -256,7 +256,7 @@
                                     "type": "object"
                                 },
                                 "amount_usd": {
-                                    "description": "Ambition for maximum funding available from the Outcome Fund (to be made for outcome payments directly or assistance to support the development of outcome-contracts) (Conversion by INDIGO using World Bank exchange rate of the moment of expression of interest. If there is no data on dates of expression of interest, then we will use the exchange rate of the launch date)",
+                                    "description": "Ambition for maximum funding available from the Outcome Fund (to be made for outcome payments directly or assistance to support the development of outcome-contracts)in USD. (Conversion by INDIGO using World Bank exchange rate of the moment of expression of interest. If there is no data on dates of expression of interest, then we will use the exchange rate of the launch date)",
                                     "properties": {
                                         "value": {
                                             "title": "(Value)",
@@ -304,7 +304,7 @@
                                     "type": "object"
                                 },
                                 "amount_usd": {
-                                    "description": "Actual value of repayable investment associated with the Outcome Fund (i.e., the value of repayable investment made available to resultant Impact Bond projects)",
+                                    "description": "Actual value of repayable investment associated with the Outcome Fund in USD (i.e., the value of repayable investment made available to resultant Impact Bond projects)",
                                     "properties": {
                                         "value": {
                                             "title": "(Value)",
@@ -332,7 +332,7 @@
                                     "type": "object"
                                 },
                                 "amount_usd": {
-                                    "description": "Ambition for value of repayable investment associated with the Outcome Fund (i.e., the value of repayable investment committed to resultant Impact Bond projects)",
+                                    "description": "Ambition for value of repayable investment associated with the Outcome Fund in USD (i.e., the value of repayable investment committed to resultant Impact Bond projects)",
                                     "properties": {
                                         "value": {
                                             "title": "(Value)",
@@ -380,6 +380,7 @@
                         "type": "string"
                     },
                     "title": {
+                        "description": "Title of related document.",
                         "properties": {
                             "value": {
                                 "type": "string"
@@ -389,6 +390,7 @@
                         "type": "object"
                     },
                     "url": {
+                        "description": "URL of related document.",
                         "properties": {
                             "value": {
                                 "type": "string"
@@ -677,7 +679,7 @@
             "type": "array"
         },
         "host_institution_of_outcome_fund": {
-            "description": "Name of organistion acting as host or administrative lead for the Outcome Fund",
+            "description": "INDIGO ID of organisation acting as host or administrative lead for the Outcome Fund",
             "properties": {
                 "value": {
                     "type": "string"
@@ -749,7 +751,7 @@
                     "type": "string"
                 },
                 "primary_sdg_goal": {
-                    "description": "Primary Sustainable Development Goal (SDG) in which the project is based. To be selected from the 17 SDGs defined in the United Nations 2030 Agenda (2015) https://sdgs.un.org/2030agenda. [This is at the project level. This is also captured at the outcome level]",
+                    "description": "Primary Sustainable Development Goal (SDG) in which the fund is based. To be selected from the 17 SDGs defined in the United Nations 2030 Agenda (2015) https://sdgs.un.org/2030agenda. [This is at the fund level. This is also captured at the project level]",
                     "properties": {
                         "value": {
                             "type": "string"
@@ -759,7 +761,7 @@
                     "type": "object"
                 },
                 "primary_sdg_target": {
-                    "description": "This variable identifies what primary SGD target the project is addressing. See United Nations 2030 Agenda (2015)  https://sdgs.un.org/2030agenda. [This is at the project level. This is also captured at the outcome level]",
+                    "description": "This variable identifies what primary SGD target the fund is addressing. See United Nations 2030 Agenda (2015)  https://sdgs.un.org/2030agenda. [This is at the fund level. This is also captured at the project level]",
                     "properties": {
                         "value": {
                             "type": "string"
@@ -779,7 +781,7 @@
                     "type": "object"
                 },
                 "secondary_sdg_goals": {
-                    "description": "Secondary Sustainable Development Goal (SDG) in which the project is based. Primary SDG Goal must not be included in this variable. [This is at the project level. This is also captured at the outcome level]",
+                    "description": "Secondary Sustainable Development Goal (SDG) in which the fund is based. Primary SDG Goal must not be included in this variable. [This is at the fund level. This is also captured at the project level]",
                     "properties": {
                         "value": {
                             "type": "string"
@@ -789,7 +791,7 @@
                     "type": "object"
                 },
                 "secondary_sdg_targets": {
-                    "description": "This variable identifies what secondary SGD target the project is addressing. Primary SDG target must not be included in this variable. See United Nations 2030 Agenda (2015)  https://sdgs.un.org/2030agenda. [This is at the project level. This is also captured at the outcome level]",
+                    "description": "This variable identifies what secondary SGD target the fund is addressing. Primary SDG target must not be included in this variable. See United Nations 2030 Agenda (2015)  https://sdgs.un.org/2030agenda. [This is at the fund level. This is also captured at the project level]",
                     "properties": {
                         "value": {
                             "type": "string"
@@ -809,7 +811,7 @@
                     "type": "string"
                 },
                 "target_population": {
-                    "description": "Description of the population targeted by the project and any eligibility requirement for the cohort of people who are to be offered support.",
+                    "description": "Description of the population targeted by the fund and any eligibility requirement for the cohort of people who are to be offered support.",
                     "properties": {
                         "value": {
                             "type": "string"

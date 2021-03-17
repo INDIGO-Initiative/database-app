@@ -313,7 +313,7 @@ def check_project_data_for_source_errors(input_json):
                 source_item, TYPE_PROJECT_SOURCE_LIST["item_id_key"], default=""
             )
             if source_id:
-                source_id = source_id.strip()
+                source_id = str(source_id).strip()
                 source_ids_found.append(source_id)
                 # Is this source ID used? Add to list if not
                 if (

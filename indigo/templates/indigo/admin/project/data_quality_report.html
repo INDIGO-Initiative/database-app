@@ -64,6 +64,12 @@
                         <td>{{ error.get_path }}</td>
                         <td></td>
                     </tr>
+                {% elif error.get_type == 'array_has_too_few_items' %}
+                    <tr>
+                        <td>List needs more items</td>
+                        <td>{{ error.get_path }}</td>
+                        <td></td>
+                    </tr>
                 {% endif %}
             {% empty %}
                 <tr>
