@@ -16,55 +16,18 @@
 
 {% block content %}
 
-
-  {% if source_ids_used_that_are_not_in_sources_table %}
-    <h3>Problems: Some sources ID's were used that are not in the sources table</h3>
-    <ul>
-      {% for data in source_ids_used_that_are_not_in_sources_table %}
-        <li>{{ data.source_id }}</li>
-      {% endfor %}
-    </ul>
+  {% if level_zero_errors %}
+    <h3>Warning: Some problems were found</h3>
+    {% include 'indigo/admin/project/common_data_quality_report_show_data.html' with errors=level_zero_errors %}
   {% endif %}
 
-
-  {% if organisation_ids_that_do_not_exist %}
-    <h3>Problems: Some organisation ID's were used that are not in the database</h3>
-    <ul>
-      {% for id in organisation_ids_that_do_not_exist %}
-        <li>{{ id }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-  {% if fund_ids_that_do_not_exist %}
-    <h3>Problems: Some fund ID's were used that are not in the database</h3>
-    <ul>
-      {% for id in fund_ids_that_do_not_exist %}
-        <li>{{ id }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-
-  {% if source_table_entries_that_are_not_used %}
-    <h3>Warning: Some sources table entries are not used</h3>
-    <ul>
-      {% for data in source_table_entries_that_are_not_used %}
-        <li>{{ data.source_id }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-  {% if can_import_now %}
-    <form action="" method="post">
-      {% csrf_token %}
-      <table>
-        {{ form.as_table }}
-      </table>
-      <input type="submit" value="Import" class="btn btn-primary">
-    </form>
-  {% else %}
-    <p>Because of the problems above, you can not import this spreadsheet. Please fix the problems and try again.</p>
-  {% endif %}
+  <h3>Import</h3>
+  <form action="" method="post">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="submit" value="Import" class="btn btn-primary">
+  </form>
 
 {% endblock %}

@@ -2,8 +2,20 @@ import json
 import os
 from functools import lru_cache
 
+import jsonpointer
 import jsonschema
 from django.conf import settings
+
+from indigo import (
+    TYPE_PROJECT_SOURCE_LIST,
+    TYPE_PROJECT_SOURCES_REFERENCES,
+    TYPE_PROJECT_SOURCES_REFERENCES_LIST,
+)
+from indigo.models import Fund, Organisation
+from indigo.processdata import (
+    find_unique_fund_ids_referenced_in_project_data,
+    find_unique_organisation_ids_referenced_in_project_data,
+)
 
 
 @lru_cache
@@ -78,6 +90,30 @@ class DataQualityReportForProject:
                 # print(error.validator)
                 # TODO should log and work on more errors here
 
+        (
+            source_ids_used_that_are_not_in_sources_table,
+            source_table_entries_that_are_not_used,
+        ) = _check_project_data_for_source_errors(self.project_data)
+
+        for source_data in source_ids_used_that_are_not_in_sources_table:
+            errors.append(
+                SourceIdUsedThatIsNotInSourcesTable(source_data.get("source_id"))
+            )
+        for source_data in source_table_entries_that_are_not_used:
+            errors.append(SourceIdNotUsed(source_data.get("source_id")))
+
+        organisation_ids_that_do_not_exist = _filter_organisation_ids_that_do_not_exist_in_database(
+            find_unique_organisation_ids_referenced_in_project_data(self.project_data)
+        )
+        for id in organisation_ids_that_do_not_exist:
+            errors.append(OrganisationIdDoesNotExist(id))
+
+        fund_ids_that_do_not_exist = _filter_fund_ids_that_do_not_exist_in_database(
+            find_unique_fund_ids_referenced_in_project_data(self.project_data)
+        )
+        for id in fund_ids_that_do_not_exist:
+            errors.append(FundIdDoesNotExist(id))
+
         self.errors = errors
 
     def get_errors(self):
@@ -89,11 +125,113 @@ class DataQualityReportForProject:
             out[error.get_priority()].append(error)
         return out
 
+    def get_errors_for_priority_level(self, level):
+        return [e for e in self.errors if e.get_priority() == 0]
+
     def get_count_errors_in_priority_levels(self):
         out = {0: 0, 1: 0, 2: 0, 3: 0}
         for error in self.errors:
             out[error.get_priority()] += 1
         return out
+
+
+def _check_project_data_for_source_errors(input_json):
+    source_table_entries_that_are_not_used = []
+    source_ids_referenced_that_are_not_in_sources_table = []
+    source_ids_referenced = []
+    source_ids_found = []
+
+    # ----------------- Find all Source ID's referenced in data
+    for key in TYPE_PROJECT_SOURCES_REFERENCES:
+        field_value = jsonpointer.resolve_pointer(input_json, key, default="")
+        if isinstance(field_value, str):
+            for source_id in [s.strip() for s in field_value.strip().split(",")]:
+                if source_id:
+                    source_ids_referenced.append({"source_id": source_id})
+
+    for config in TYPE_PROJECT_SOURCES_REFERENCES_LIST:
+        data_list = jsonpointer.resolve_pointer(
+            input_json, config["list_key"], default=None
+        )
+        if isinstance(data_list, list) and data_list:
+            for item in data_list:
+                field_value = jsonpointer.resolve_pointer(
+                    item, config["item_source_ids_key"], default=""
+                )
+                if field_value:
+                    for source_id in [
+                        s.strip() for s in field_value.strip().split(",")
+                    ]:
+                        if source_id:
+                            source_ids_referenced.append({"source_id": source_id})
+
+    # -------------------- Now look through source table
+    source_list = jsonpointer.resolve_pointer(
+        input_json, TYPE_PROJECT_SOURCE_LIST["list_key"], default=None
+    )
+    if isinstance(source_list, list) and source_list:
+        # Look through source table looking for problems
+        for source_item in source_list:
+            source_id = jsonpointer.resolve_pointer(
+                source_item, TYPE_PROJECT_SOURCE_LIST["item_id_key"], default=""
+            )
+            if source_id:
+                source_id = str(source_id).strip()
+                source_ids_found.append(source_id)
+                # Is this source ID used? Add to list if not
+                if (
+                    len(
+                        [
+                            s
+                            for s in source_ids_referenced
+                            if s["source_id"] == source_id
+                        ]
+                    )
+                    == 0
+                ):
+                    source_table_entries_that_are_not_used.append(
+                        {"source_id": source_id}
+                    )
+
+    # ----------------- Finally find any sources referenced that aren't in source table
+    for source_id_reference in source_ids_referenced:
+        if (
+            len([s for s in source_ids_found if s == source_id_reference["source_id"]])
+            == 0
+        ):
+            source_ids_referenced_that_are_not_in_sources_table.append(
+                source_id_reference
+            )
+
+    # ----------------- Done
+    return (
+        source_ids_referenced_that_are_not_in_sources_table,
+        source_table_entries_that_are_not_used,
+    )
+
+
+def _filter_organisation_ids_that_do_not_exist_in_database(list_of_ids):
+    """Takes list of public_ids of orgs, returns a list of those that do NOT exist in the database.
+    Hint: feed find_unique_organisation_ids_referenced_in_project_data into this."""
+    out = []
+    for id in list_of_ids:
+        try:
+            Organisation.objects.get(public_id=id)
+        except Organisation.DoesNotExist:
+            out.append(id)
+    return out
+
+
+def _filter_fund_ids_that_do_not_exist_in_database(list_of_ids):
+    """Takes list of public_ids of funds, returns a list of those that do NOT exist in the database.
+    Hint: feed find_unique_fund_ids_referenced_in_project_data into this."""
+    out = []
+    for id in list_of_ids:
+        try:
+            Fund.objects.get(public_id=id)
+        except Fund.DoesNotExist:
+            out.append(id)
+    return out
 
 
 class _DataError:
@@ -190,6 +328,74 @@ class ArrayHasTooFewItemsError(_DataError):
 
     def get_value(self):
         return self._value
+
+    def get_priority(self):
+        return 0
+
+
+class SourceIdUsedThatIsNotInSourcesTable(_DataError):
+    def __init__(self, source_id):
+        self.source_id = source_id
+
+    def get_type(self):
+        return "source_id_used_that_is_not_in_sources_table"
+
+    def get_path(self):
+        return None
+
+    def get_value(self):
+        return self.source_id
+
+    def get_priority(self):
+        return 0
+
+
+class SourceIdNotUsed(_DataError):
+    def __init__(self, source_id):
+        self.source_id = source_id
+
+    def get_type(self):
+        return "source_id_not_used"
+
+    def get_path(self):
+        return None
+
+    def get_value(self):
+        return self.source_id
+
+    def get_priority(self):
+        return 0
+
+
+class OrganisationIdDoesNotExist(_DataError):
+    def __init__(self, organisation_id):
+        self.organisation_id = organisation_id
+
+    def get_type(self):
+        return "organisation_id_does_not_exist"
+
+    def get_path(self):
+        return None
+
+    def get_value(self):
+        return self.organisation_id
+
+    def get_priority(self):
+        return 0
+
+
+class FundIdDoesNotExist(_DataError):
+    def __init__(self, fund_id):
+        self.fund_id = fund_id
+
+    def get_type(self):
+        return "fund_id_does_not_exist"
+
+    def get_path(self):
+        return None
+
+    def get_value(self):
+        return self.fund_id
 
     def get_priority(self):
         return 0

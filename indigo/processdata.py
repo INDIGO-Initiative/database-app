@@ -11,9 +11,6 @@ from indigo import (
     TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST,
     TYPE_PROJECT_ORGANISATION_LIST,
     TYPE_PROJECT_ORGANISATION_REFERENCES_LIST,
-    TYPE_PROJECT_SOURCE_LIST,
-    TYPE_PROJECT_SOURCES_REFERENCES,
-    TYPE_PROJECT_SOURCES_REFERENCES_LIST,
 )
 from indigo.models import Fund, Organisation
 
@@ -229,18 +226,6 @@ def find_unique_organisation_ids_referenced_in_project_data(input_json):
     return list(set(org_ids))
 
 
-def filter_organisation_ids_that_do_not_exist_in_database(list_of_ids):
-    """Takes list of public_ids of orgs, returns a list of those that do NOT exist in the database.
-    Hint: feed find_unique_organisation_ids_referenced_in_project_data into this."""
-    out = []
-    for id in list_of_ids:
-        try:
-            Organisation.objects.get(public_id=id)
-        except Organisation.DoesNotExist:
-            out.append(id)
-    return out
-
-
 def find_unique_fund_ids_referenced_in_project_data(input_json):
     fund_ids = []
 
@@ -258,93 +243,6 @@ def find_unique_fund_ids_referenced_in_project_data(input_json):
                 fund_ids.append(field_value)
 
     return list(set(fund_ids))
-
-
-def filter_fund_ids_that_do_not_exist_in_database(list_of_ids):
-    """Takes list of public_ids of funds, returns a list of those that do NOT exist in the database.
-    Hint: feed find_unique_fund_ids_referenced_in_project_data into this."""
-    out = []
-    for id in list_of_ids:
-        try:
-            Fund.objects.get(public_id=id)
-        except Fund.DoesNotExist:
-            out.append(id)
-    return out
-
-
-def check_project_data_for_source_errors(input_json):
-    source_table_entries_that_are_not_used = []
-    source_ids_referenced_that_are_not_in_sources_table = []
-    source_ids_referenced = []
-    source_ids_found = []
-
-    # ----------------- Find all Source ID's referenced in data
-    for key in TYPE_PROJECT_SOURCES_REFERENCES:
-        field_value = jsonpointer.resolve_pointer(input_json, key, default="")
-        if isinstance(field_value, str):
-            for source_id in [s.strip() for s in field_value.strip().split(",")]:
-                if source_id:
-                    source_ids_referenced.append({"source_id": source_id})
-
-    for config in TYPE_PROJECT_SOURCES_REFERENCES_LIST:
-        data_list = jsonpointer.resolve_pointer(
-            input_json, config["list_key"], default=None
-        )
-        if isinstance(data_list, list) and data_list:
-            for item in data_list:
-                field_value = jsonpointer.resolve_pointer(
-                    item, config["item_source_ids_key"], default=""
-                )
-                if field_value:
-                    for source_id in [
-                        s.strip() for s in field_value.strip().split(",")
-                    ]:
-                        if source_id:
-                            source_ids_referenced.append({"source_id": source_id})
-
-    # -------------------- Now look through source table
-    source_list = jsonpointer.resolve_pointer(
-        input_json, TYPE_PROJECT_SOURCE_LIST["list_key"], default=None
-    )
-    if isinstance(source_list, list) and source_list:
-        # Look through source table looking for problems
-        for source_item in source_list:
-            source_id = jsonpointer.resolve_pointer(
-                source_item, TYPE_PROJECT_SOURCE_LIST["item_id_key"], default=""
-            )
-            if source_id:
-                source_id = str(source_id).strip()
-                source_ids_found.append(source_id)
-                # Is this source ID used? Add to list if not
-                if (
-                    len(
-                        [
-                            s
-                            for s in source_ids_referenced
-                            if s["source_id"] == source_id
-                        ]
-                    )
-                    == 0
-                ):
-                    source_table_entries_that_are_not_used.append(
-                        {"source_id": source_id}
-                    )
-
-    # ----------------- Finally find any sources referenced that aren't in source table
-    for source_id_reference in source_ids_referenced:
-        if (
-            len([s for s in source_ids_found if s == source_id_reference["source_id"]])
-            == 0
-        ):
-            source_ids_referenced_that_are_not_in_sources_table.append(
-                source_id_reference
-            )
-
-    # ----------------- Done
-    return (
-        source_ids_referenced_that_are_not_in_sources_table,
-        source_table_entries_that_are_not_used,
-    )
 
 
 def set_values_if_agnostic_on_assessment_resource_data(data):
