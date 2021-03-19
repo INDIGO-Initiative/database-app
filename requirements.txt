@@ -34,7 +34,7 @@ django-heroku==0.3.1
     # via -r requirements.in
 django-storages[boto3]==1.11.1
     # via -r requirements.in
-django==3.1.5
+django==3.1.6
     # via
     #   -r requirements.in
     #   django-heroku
