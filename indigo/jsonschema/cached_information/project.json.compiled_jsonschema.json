@@ -2370,21 +2370,68 @@
                     "title": "Maximum potential loss",
                     "type": "object"
                 },
-                "maximum_potential_outcome_payment": {
+                "maximum_potential_outcome_payment_v2": {
                     "description": "Total maximum payments for outcomes from outcome funders. This should be equal to \"contract cap\".",
                     "properties": {
-                        "status": {
-                            "enum": [
-                                "PUBLIC",
-                                "PRIVATE",
-                                "DISPUTED"
-                            ],
-                            "title": "(Status)",
-                            "type": "string"
+                        "amount": {
+                            "description": "",
+                            "properties": {
+                                "status": {
+                                    "enum": [
+                                        "PUBLIC",
+                                        "PRIVATE",
+                                        "DISPUTED"
+                                    ],
+                                    "title": "(Status)",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "title": "(Value)",
+                                    "type": "number"
+                                }
+                            },
+                            "title": "Amount",
+                            "type": "object"
                         },
-                        "value": {
-                            "title": "(Value)",
-                            "type": "string"
+                        "amount_usd": {
+                            "description": "",
+                            "properties": {
+                                "status": {
+                                    "enum": [
+                                        "PUBLIC",
+                                        "PRIVATE",
+                                        "DISPUTED"
+                                    ],
+                                    "title": "(Status)",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "title": "(Value)",
+                                    "type": "number"
+                                }
+                            },
+                            "title": "Amount USD",
+                            "type": "object"
+                        },
+                        "currency": {
+                            "description": "",
+                            "properties": {
+                                "status": {
+                                    "enum": [
+                                        "PUBLIC",
+                                        "PRIVATE",
+                                        "DISPUTED"
+                                    ],
+                                    "title": "(Status)",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "title": "(Value)",
+                                    "type": "string"
+                                }
+                            },
+                            "title": "Currency",
+                            "type": "object"
                         }
                     },
                     "title": "Maximum potential outcome payment",
