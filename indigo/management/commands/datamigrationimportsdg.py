@@ -68,8 +68,8 @@ class Command(BaseCommand):
 
     def _process_project(self, project, data):
 
-        source_id = "sourcehackandlearn2020"
-        source_name = "Hack and Learn - September 2020"
+        source_id = "sourcehackandlearn2021"
+        source_name = "Hack and Learn - March 2021"
 
         print("Project " + project.public_id)
         changes_project = False
