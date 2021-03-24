@@ -165,7 +165,7 @@ def project_download_blank_form(request):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "project_public_v014.xlsx",
+        "project_public_v015.xlsx",
     )
     spreadsheetforms.api.make_empty_form(guide_file, out_file)
 
@@ -208,7 +208,7 @@ def project_download_form(request, public_id):
         settings.BASE_DIR,
         "indigo",
         "spreadsheetform_guides",
-        "project_public_v014.xlsx",
+        "project_public_v015.xlsx",
     )
     out_file = os.path.join(
         tempfile.gettempdir(),

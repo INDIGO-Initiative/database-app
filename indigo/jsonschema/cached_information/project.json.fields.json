@@ -164,12 +164,28 @@
         "title": "Overall project finance - Total investment commitment - Amount USD - Max - (Status)"
     },
     {
-        "key": "/overall_project_finance/maximum_potential_outcome_payment/value",
-        "title": "Overall project finance - Maximum potential outcome payment - (Value)"
+        "key": "/overall_project_finance/maximum_potential_outcome_payment_v2/currency/value",
+        "title": "Overall project finance - Maximum potential outcome payment - Currency - (Value)"
     },
     {
-        "key": "/overall_project_finance/maximum_potential_outcome_payment/status",
-        "title": "Overall project finance - Maximum potential outcome payment - (Status)"
+        "key": "/overall_project_finance/maximum_potential_outcome_payment_v2/currency/status",
+        "title": "Overall project finance - Maximum potential outcome payment - Currency - (Status)"
+    },
+    {
+        "key": "/overall_project_finance/maximum_potential_outcome_payment_v2/amount/value",
+        "title": "Overall project finance - Maximum potential outcome payment - Amount - (Value)"
+    },
+    {
+        "key": "/overall_project_finance/maximum_potential_outcome_payment_v2/amount/status",
+        "title": "Overall project finance - Maximum potential outcome payment - Amount - (Status)"
+    },
+    {
+        "key": "/overall_project_finance/maximum_potential_outcome_payment_v2/amount_usd/value",
+        "title": "Overall project finance - Maximum potential outcome payment - Amount USD - (Value)"
+    },
+    {
+        "key": "/overall_project_finance/maximum_potential_outcome_payment_v2/amount_usd/status",
+        "title": "Overall project finance - Maximum potential outcome payment - Amount USD - (Status)"
     },
     {
         "key": "/overall_project_finance/maximum_potential_loss/value",
