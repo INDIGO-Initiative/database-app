@@ -393,17 +393,17 @@
                 }
             }
         },
-        "Geographic areas for outcome payments": {
+        "Geography for outcome payments": {
             "down_configs": {
                 "geographic_areas_for_outcome_payment": [
                     {
                         "column": 1,
                         "column_letter": "A",
-                        "coordinate": "A10",
+                        "coordinate": "A11",
                         "item_path": "country/value",
                         "list_path": "geographic_areas_for_outcome_payment",
                         "mode": "down",
-                        "row": 10
+                        "row": 11
                     }
                 ]
             },
