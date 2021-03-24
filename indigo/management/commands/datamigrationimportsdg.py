@@ -9,12 +9,13 @@ from indigo.models import Project
 
 # CSV Columns should be
 # 0 - Project ID
-# 1 - Outcome Definition
-# 2 - Primary SDG Goal
-# 3 - Primary SDG Target
-# 4 - Secondary SDG goal
-# 5 - Secondary SDG target
-# 6 - Notes for outcome row
+# 1 - Outcome ID
+# 2 - Outcome Definition
+# 3 - Primary SDG Goal
+# 4 - Primary SDG Target
+# 5 - Secondary SDG goal
+# 6 - Secondary SDG target
+# 7 - Notes for outcome row
 #
 # CSV Rows should be all data rows - no header
 #
@@ -33,18 +34,44 @@ class Command(BaseCommand):
             csvreader = csv.reader(csvfile, delimiter=",", quotechar='"')
             for row in csvreader:
                 project_id = row[0]
-                outcome_definition = row[1]
-                primary_sdg_goal = row[2]
-                primary_sdg_target = row[3]
-                secondary_sdg_goal = row[4]
-                secondary_sdg_target = row[5]
-                notes = row[6]
-                if project_id and outcome_definition:
+                outcome_id = row[1]
+                outcome_definition = row[2]
+                primary_sdg_goal = row[3]
+                primary_sdg_target = row[4]
+                secondary_sdg_goal = row[5]
+                secondary_sdg_target = row[6]
+                notes = row[7]
+                if project_id and outcome_id:
                     if project_id not in data_grouped.keys():
-                        data_grouped[project_id] = {}
-                    if outcome_definition in data_grouped[project_id].keys():
-                        raise Exception("Are rows repeated?")
-                    data_grouped[project_id][outcome_definition] = {
+                        data_grouped[project_id] = {"ids": {}, "definitions": {}}
+                    if outcome_id in data_grouped[project_id]["ids"].keys():
+                        raise Exception(
+                            "Are rows repeated? Project: "
+                            + project_id
+                            + " Outcome Id: "
+                            + outcome_id
+                        )
+                    data_grouped[project_id]["ids"][outcome_id] = {
+                        "primary_sdg_goal": parse_goal(primary_sdg_goal),
+                        "primary_sdg_target": parse_target(primary_sdg_target),
+                        "secondary_sdg_goal": parse_goal(secondary_sdg_goal),
+                        "secondary_sdg_target": parse_target(secondary_sdg_target),
+                        "notes": notes,
+                    }
+                elif project_id and outcome_definition:
+                    if project_id not in data_grouped.keys():
+                        data_grouped[project_id] = {"ids": {}, "definitions": {}}
+                    if (
+                        outcome_definition
+                        in data_grouped[project_id]["definitions"].keys()
+                    ):
+                        raise Exception(
+                            "Are rows repeated? Project: "
+                            + project_id
+                            + " Outcome Definition: "
+                            + outcome_definition
+                        )
+                    data_grouped[project_id]["definitions"][outcome_definition] = {
                         "primary_sdg_goal": parse_goal(primary_sdg_goal),
                         "primary_sdg_target": parse_target(primary_sdg_target),
                         "secondary_sdg_goal": parse_goal(secondary_sdg_goal),
@@ -97,19 +124,48 @@ class Command(BaseCommand):
         outcome_metrics = project.data_private.get("outcome_metrics", [])
         for outcome_metric in outcome_metrics:
             changes_row = False
+            primary_sdg_goal = None
+            primary_sdg_target = None
+            secondary_sdg_goal = None
+            secondary_sdg_target = None
+            notes = None
+            outcome_metric_id = outcome_metric.get("id")
             outcome_metric_definition = outcome_metric.get("definition").get("value")
-            if outcome_metric_definition in data:
-                primary_sdg_goal = data[outcome_metric_definition]["primary_sdg_goal"]
-                primary_sdg_target = data[outcome_metric_definition][
+            if outcome_metric_id and outcome_metric_id in data["ids"]:
+                primary_sdg_goal = data["ids"][outcome_metric_id]["primary_sdg_goal"]
+                primary_sdg_target = data["ids"][outcome_metric_id][
                     "primary_sdg_target"
                 ]
-                secondary_sdg_goal = data[outcome_metric_definition][
+                secondary_sdg_goal = data["ids"][outcome_metric_id][
                     "secondary_sdg_goal"
                 ]
-                secondary_sdg_target = data[outcome_metric_definition][
+                secondary_sdg_target = data["ids"][outcome_metric_id][
                     "secondary_sdg_target"
                 ]
-                notes = data[outcome_metric_definition]["notes"]
+                notes = data["ids"][outcome_metric_id]["notes"]
+            elif (
+                outcome_metric_definition
+                and outcome_metric_definition in data["definitions"]
+            ):
+                primary_sdg_goal = data["definitions"][outcome_metric_definition][
+                    "primary_sdg_goal"
+                ]
+                primary_sdg_target = data["definitions"][outcome_metric_definition][
+                    "primary_sdg_target"
+                ]
+                secondary_sdg_goal = data["definitions"][outcome_metric_definition][
+                    "secondary_sdg_goal"
+                ]
+                secondary_sdg_target = data["definitions"][outcome_metric_definition][
+                    "secondary_sdg_target"
+                ]
+                notes = data["definitions"][outcome_metric_definition]["notes"]
+            if (
+                primary_sdg_goal
+                or primary_sdg_target
+                or secondary_sdg_target
+                or secondary_sdg_goal
+            ):
                 if primary_sdg_goal and not outcome_metric.get("primary_sdg_goal").get(
                     "value"
                 ):
