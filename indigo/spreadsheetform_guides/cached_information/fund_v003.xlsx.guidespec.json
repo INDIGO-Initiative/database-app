@@ -415,7 +415,7 @@
                 }
             }
         },
-        "Geographic areas for outcome payments": {
+        "Geography for outcome payments": {
             "down_configs": {
                 "geographic_areas_for_outcome_payment": [
                     {
