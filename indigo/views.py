@@ -161,12 +161,9 @@ def project_download_blank_form(request):
         tempfile.gettempdir(),
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
     )
-    guide_file = os.path.join(
-        settings.BASE_DIR,
-        "indigo",
-        "spreadsheetform_guides",
-        "project_public_v015.xlsx",
-    )
+    guide_file = settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
+        "spreadsheet_public_form_guide"
+    ]
     spreadsheetforms.api.make_empty_form(guide_file, out_file)
 
     with open(out_file, "rb") as fh:
@@ -204,12 +201,9 @@ def project_download_form(request, public_id):
         raise Http404("Project does not exist")
 
     data = convert_project_data_to_spreadsheetforms_data(project, public_only=True)
-    guide_file = os.path.join(
-        settings.BASE_DIR,
-        "indigo",
-        "spreadsheetform_guides",
-        "project_public_v015.xlsx",
-    )
+    guide_file = settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
+        "spreadsheet_public_form_guide"
+    ]
     out_file = os.path.join(
         tempfile.gettempdir(),
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",

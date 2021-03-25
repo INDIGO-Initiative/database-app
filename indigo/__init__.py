@@ -28,6 +28,7 @@ TYPE_PROJECT_FILTER_LISTS_LIST = [
     "/documents",
     "/sources",
     "/outcome_payments",
+    "/scenarios",
 ]
 
 TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [
@@ -179,6 +180,7 @@ TYPE_PROJECT_SOURCES_REFERENCES_LIST = [
         "item_source_ids_key": "/source_ids",
     },
     {"list_key": "/outcome_payments", "item_source_ids_key": "/source_ids",},
+    {"list_key": "/scenarios", "item_source_ids_key": "/source_ids",},
 ]
 
 TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST = [

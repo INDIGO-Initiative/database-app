@@ -39,12 +39,9 @@ def _write_public_files_for_project(project):
     data = convert_project_data_to_spreadsheetforms_data(project, public_only=True)
 
     # --- XLSX File
-    guide_file = os.path.join(
-        settings.BASE_DIR,
-        "indigo",
-        "spreadsheetform_guides",
-        "project_public_v015.xlsx",
-    )
+    guide_file = settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
+        "spreadsheet_public_form_guide"
+    ]
 
     # Create in Temp
     file = tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx")
