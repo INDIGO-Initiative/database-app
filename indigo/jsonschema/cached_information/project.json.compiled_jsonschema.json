@@ -3030,6 +3030,126 @@
             "title": "Results",
             "type": "array"
         },
+        "scenarios": {
+            "items": {
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "title": "Scenario Id",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "",
+                        "properties": {
+                            "value": {
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Name",
+                        "type": "object"
+                    },
+                    "notes": {
+                        "title": "Notes",
+                        "type": "string"
+                    },
+                    "overall_project_finance": {
+                        "properties": {
+                            "maximum_potential_outcome_payment_v2": {
+                                "description": "",
+                                "properties": {
+                                    "amount": {
+                                        "description": "",
+                                        "properties": {
+                                            "status": {
+                                                "enum": [
+                                                    "PUBLIC",
+                                                    "PRIVATE",
+                                                    "DISPUTED"
+                                                ],
+                                                "title": "(Status)",
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "title": "(Value)",
+                                                "type": "number"
+                                            }
+                                        },
+                                        "title": "Amount",
+                                        "type": "object"
+                                    },
+                                    "amount_usd": {
+                                        "description": "",
+                                        "properties": {
+                                            "status": {
+                                                "enum": [
+                                                    "PUBLIC",
+                                                    "PRIVATE",
+                                                    "DISPUTED"
+                                                ],
+                                                "title": "(Status)",
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "title": "(Value)",
+                                                "type": "number"
+                                            }
+                                        },
+                                        "title": "Amount USD",
+                                        "type": "object"
+                                    },
+                                    "currency": {
+                                        "description": "",
+                                        "properties": {
+                                            "status": {
+                                                "enum": [
+                                                    "PUBLIC",
+                                                    "PRIVATE",
+                                                    "DISPUTED"
+                                                ],
+                                                "title": "(Status)",
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "title": "(Value)",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "title": "Currency",
+                                        "type": "object"
+                                    }
+                                },
+                                "title": "Maximum potential outcome payment",
+                                "type": "object"
+                            }
+                        },
+                        "title": "Overall project finance",
+                        "type": "object"
+                    },
+                    "sandboxes": {
+                        "title": "(In Sandboxes)",
+                        "type": "string"
+                    },
+                    "source_ids": {
+                        "title": "Sources",
+                        "type": "string"
+                    },
+                    "status": {
+                        "enum": [
+                            "PUBLIC",
+                            "SANDBOX",
+                            "PRIVATE",
+                            "DISPUTED"
+                        ],
+                        "title": "(Status)",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "title": "Scenarios",
+            "type": "array"
+        },
         "service_and_beneficiaries": {
             "priority": 1,
             "properties": {
