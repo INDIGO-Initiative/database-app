@@ -42,7 +42,7 @@ Add some `Types` records in the `Jsondataferret` section :
     
 ## Tests
 
-The Vagrant box setups up a second database, so running tests won't alter your current working data.
+The Vagrant box sets up a second database, so running tests won't alter your current working data.
 
 Run:
 

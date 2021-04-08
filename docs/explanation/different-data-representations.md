@@ -89,7 +89,7 @@ So we can essentially think of this as:
 
 There is no conceptual reason why the "Public API Data" and the "Spreadsheet Data" should be related at all.
 
-In practice, it turns out we want to do some of the same things to both sets of data. 
+In practice, we want to do some of the same things to both sets of data. 
 
 For that reason, the `convert_*_data_to_spreadsheetforms_data` functions may work off the cached `data_public` column/variable. Eg:
 
