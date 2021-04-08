@@ -16,7 +16,9 @@ Go to `http://localhost:8000`
 
     celery -A indigo worker -l info
 
-## Set up app first time
+## Set up app for first time
+
+If you have a database to import, you can do that instead (see below) and skip this.
 
 Run normal Django database migrations.
 
@@ -40,13 +42,15 @@ Add some `Types` records in the `Jsondataferret` section :
     
 ## Tests
 
-Run tests  (with Vagrant DB credentials):
+The Vagrant box sets up a second database, so running tests won't alter your current working data.
+
+Run:
 
     JSONDATAFERRET_DATABASE_NAME=test JSONDATAFERRET_DATABASE_USER=test JSONDATAFERRET_DATABASE_PASSWORD=test CLOUDAMQP_URL=memory:// python manage.py test
 
 ## Code Quality
 
-Clean up code before commit:
+Clean up code before you commit:
 
     isort --recursive djangoproject/ indigo/
     black djangoproject/ indigo/
@@ -63,4 +67,4 @@ If you have a database you want to restore into your vagrant box, put the file i
     exit
     pg_restore -d app -U app -h localhost    /vagrant/indigo-backup-01.sql
 
-Be very aware you will have data here that should be kept PRIVATE.
+**Be very aware you will have data here that must be kept PRIVATE.**
