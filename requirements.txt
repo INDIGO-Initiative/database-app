@@ -94,7 +94,7 @@ spreadsheetforms==0.4.1
     # via jsondataferret
 sqlparse==0.4.1
     # via django
-urllib3==1.26.3
+urllib3==1.26.5
     # via
     #   botocore
     #   sentry-sdk
