@@ -95,8 +95,8 @@ class Command(BaseCommand):
 
     def _process_project(self, project, data):
 
-        source_id = "sourcehackandlearn2021"
-        source_name = "Hack and Learn - March 2021"
+        source_id = "sourcehackandlearn2021-08"
+        source_name = "Hack and Learn - August 2021"
 
         print("Project " + project.public_id)
         changes_project = False
@@ -160,12 +160,16 @@ class Command(BaseCommand):
                     "secondary_sdg_target"
                 ]
                 notes = data["definitions"][outcome_metric_definition]["notes"]
+            else:
+                print("**** INFO **** ID or definition not found")
             if (
                 primary_sdg_goal
                 or primary_sdg_target
                 or secondary_sdg_target
                 or secondary_sdg_goal
             ):
+                # TODO: Consider checking against existing values and updating. e.g.:
+                # primary_sdg_goal and primary_sdg_goal != outcome_metric.get("primary_sdg_goal").get("value"):
                 if primary_sdg_goal and not outcome_metric.get("primary_sdg_goal").get(
                     "value"
                 ):
@@ -173,7 +177,9 @@ class Command(BaseCommand):
                         ".... Setting primary_sdg_goal to "
                         + primary_sdg_goal
                         + " for outcome: "
-                        + outcome_metric_definition[0:20]
+                        + str(outcome_metric_id)
+                        + " - "
+                        + str(outcome_metric_definition)[0:20]
                     )
                     outcome_metric["primary_sdg_goal"] = {"value": primary_sdg_goal}
                     changes_project = True
@@ -185,7 +191,9 @@ class Command(BaseCommand):
                         ".... Setting primary_sdg_target to "
                         + primary_sdg_target
                         + " for outcome: "
-                        + outcome_metric_definition[0:20]
+                        + str(outcome_metric_id)
+                        + " - "
+                        + str(outcome_metric_definition)[0:20]
                     )
                     outcome_metric["primary_sdg_target"] = {"value": primary_sdg_target}
                     changes_project = True
@@ -197,7 +205,9 @@ class Command(BaseCommand):
                         ".... Setting secondary_sdg_goals to "
                         + secondary_sdg_goal
                         + " for outcome: "
-                        + outcome_metric_definition[0:20]
+                        + str(outcome_metric_id)
+                        + " - "
+                        + str(outcome_metric_definition)[0:20]
                     )
                     outcome_metric["secondary_sdg_goals"] = {
                         "value": secondary_sdg_goal
@@ -211,7 +221,9 @@ class Command(BaseCommand):
                         ".... Setting secondary_sdg_targets to "
                         + secondary_sdg_target
                         + " for outcome: "
-                        + outcome_metric_definition[0:20]
+                        + str(outcome_metric_id)
+                        + " - "
+                        + str(outcome_metric_definition)[0:20]
                     )
                     outcome_metric["secondary_sdg_targets"] = {
                         "value": secondary_sdg_target

@@ -2,3 +2,6 @@
 /.vagrant
 __pycache__
 /static
+.DS_Store
+*.log
+*.dump
