@@ -161,7 +161,7 @@ class Command(BaseCommand):
                 ]
                 notes = data["definitions"][outcome_metric_definition]["notes"]
             else:
-                print('**** INFO **** ID or definition not found')
+                print("**** INFO **** ID or definition not found")
             if (
                 primary_sdg_goal
                 or primary_sdg_target
