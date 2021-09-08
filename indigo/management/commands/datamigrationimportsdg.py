@@ -82,7 +82,12 @@ class Command(BaseCommand):
         # Now Process project at a time, working out writes
         writes = []
         for project_id in data_grouped.keys():
-            project = Project.objects.get(public_id=project_id)
+            try:
+                project = Project.objects.get(public_id=project_id)
+            except Project.DoesNotExist:
+                project = None
+                print("Project does not exist:", project_id)
+
             if project:
                 writes.extend(self._process_project(project, data_grouped[project_id]))
 
