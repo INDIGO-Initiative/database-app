@@ -52,18 +52,18 @@ dj-database-url==0.5.0
     # via
     #   -r requirements.txt
     #   django-heroku
-django-environ==0.4.5
-    # via -r requirements.txt
-django-heroku==0.3.1
-    # via -r requirements.txt
-django-storages[boto3]==1.11.1
-    # via -r requirements.txt
 django==3.1.5
     # via
     #   -r requirements.txt
     #   django-heroku
     #   django-storages
     #   jsondataferret
+django-environ==0.4.5
+    # via -r requirements.txt
+django-heroku==0.3.1
+    # via -r requirements.txt
+django-storages[boto3]==1.11.1
+    # via -r requirements.txt
 et-xmlfile==1.0.1
     # via
     #   -r requirements.txt
@@ -162,7 +162,7 @@ spreadsheetforms==0.4.1
     # via
     #   -r requirements.txt
     #   jsondataferret
-sqlparse==0.4.1
+sqlparse==0.4.2
     # via
     #   -r requirements.txt
     #   django

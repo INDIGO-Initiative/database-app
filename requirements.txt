@@ -28,18 +28,18 @@ compiletojsonschema==0.3.0
     # via -r requirements.in
 dj-database-url==0.5.0
     # via django-heroku
-django-environ==0.4.5
-    # via -r requirements.in
-django-heroku==0.3.1
-    # via -r requirements.in
-django-storages[boto3]==1.11.1
-    # via -r requirements.in
 django==3.1.5
     # via
     #   -r requirements.in
     #   django-heroku
     #   django-storages
     #   jsondataferret
+django-environ==0.4.5
+    # via -r requirements.in
+django-heroku==0.3.1
+    # via -r requirements.in
+django-storages[boto3]==1.11.1
+    # via -r requirements.in
 et-xmlfile==1.0.1
     # via openpyxl
 gunicorn==20.0.4
@@ -92,7 +92,7 @@ six==1.15.0
     #   python-dateutil
 spreadsheetforms==0.4.1
     # via jsondataferret
-sqlparse==0.4.1
+sqlparse==0.4.2
     # via django
 urllib3==1.26.3
     # via
