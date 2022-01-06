@@ -7,5 +7,5 @@ django-heroku
 compiletojsonschema
 sentry-sdk
 # Upgrading to Celery 5 involves changing our config, so hold off on that for now.
-celery==4.4.*
+celery==5.2.*
 django-storages[boto3]
