@@ -1,4 +1,4 @@
-Django
+Django<4
 psycopg2
 django-environ
 -e git+https://github.com/OpenDataServices/json-data-ferret.git@v0.3.0#egg=jsondataferret
