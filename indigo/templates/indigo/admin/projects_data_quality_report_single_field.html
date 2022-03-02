@@ -19,6 +19,8 @@
 
     <div id="plotly_count_data_no_data" style="width: 400px; height: 400px; margin: 20px auto;"></div>
 
+    <p>(Public data only)</p>
+
 {% endblock %}
 
 
@@ -29,7 +31,7 @@
         Plotly.newPlot(
             holder_count_data_no_data,
             [{
-                y: [{{ count_data }}, {{ count_no_data }}],
+                y: [{{ count_public_projects_with_public_value }}, {{ count_public_projects_without_public_value }}],
                 x: ["Projects with Data", "Projects with No data"],
                 type: 'bar'
             }],

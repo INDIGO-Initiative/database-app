@@ -239,20 +239,35 @@ def get_single_field_statistics_across_all_projects_for_field(field):
     """The single part means a field that only has one value - not a list."""
 
     field_bits = ["'" + i + "'" for i in field["key"].split("/") if i]
-    sql_start = "select count(*) as c from indigo_project"
-    sql_where = "CAST(data_private::json->" + "->".join(field_bits) + " as text)"
+    sql_where_for_field = "data_public::json->" + "->".join(field_bits)
+    sql_where_for_field_as_text = "CAST(" + sql_where_for_field + " as text)"
 
     with connection.cursor() as cursor:
+        # How many public projects?
         cursor.execute(
-            sql_start + " WHERE " + sql_where + " = 'null' OR " + sql_where + " IS NULL"
+            "select count(*) as c from indigo_project WHERE status_public=True"
         )
-        count_no_data = cursor.fetchone()[0]
-        cursor.execute(sql_start + " WHERE " + sql_where + " != 'null'")
-        count_data = cursor.fetchone()[0]
+        count_public_projects = cursor.fetchone()[0]
+        # How many public projects have a value for this field?
+        cursor.execute(
+            "select count(*) as c from indigo_project WHERE status_public=True "
+            + "AND "
+            + sql_where_for_field
+            + " IS NOT NULL "
+            + "AND "
+            + sql_where_for_field_as_text
+            + " != '\"\"' "
+            + "AND "
+            + sql_where_for_field_as_text
+            + " != 'null' "
+        )
+        count_public_projects_with_public_value = cursor.fetchone()[0]
 
     return {
-        "count_no_data": count_no_data,
-        "count_data": count_data,
+        "count_public_projects": count_public_projects,
+        "count_public_projects_with_public_value": count_public_projects_with_public_value,
+        "count_public_projects_without_public_value": count_public_projects
+        - count_public_projects_with_public_value,
     }
 
 
