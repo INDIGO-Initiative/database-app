@@ -1065,6 +1065,8 @@ def admin_all_projects_data_quality_report(request):
                 i
                 for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
                 if i.get("type") != "list"
+                # Because we only generate stats on public data anyway, running stats on the status field makes no sense.
+                and i.get("key") != "/status"
             ],
         },
     )
