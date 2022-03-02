@@ -73,6 +73,39 @@ class DataQualityReportForAllProjectsTest(TestCase):
         assert data["count_public_projects_with_public_value"] == 0
         assert data["count_public_projects_without_public_value"] == 0
 
+    def test_public_project_with_public_data_numbers(self):
+        inputs = {
+            "PROJ1": {
+                "status": "PUBLIC",
+                "overall_project_finance": {
+                    "total_investment_commitment": {
+                        "amount": {"min": {"value": 100, "status": "PUBLIC"}}
+                    }
+                },
+            },
+            "PROJ2": {
+                "status": "PUBLIC",
+                "overall_project_finance": {
+                    "total_investment_commitment": {
+                        "amount": {"min": {"value": 0, "status": "PUBLIC"}}
+                    }
+                },
+            },
+        }
+
+        self.create_records(inputs)
+
+        data = get_single_field_statistics_across_all_projects_for_field(
+            {
+                "key": "/overall_project_finance/total_investment_commitment/amount/min/value",
+                "title": "Overall project finance - Total investment commitment - Amount - Min - (Value)",
+            }
+        )
+
+        assert data["count_public_projects"] == 2
+        assert data["count_public_projects_with_public_value"] == 2
+        assert data["count_public_projects_without_public_value"] == 0
+
     def test_public_project_with_no_data(self):
         inputs = {
             "PROJ1": {
