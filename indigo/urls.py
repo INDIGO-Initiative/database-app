@@ -32,7 +32,7 @@ urlpatterns = [
     path("organisation", views.organisations_list, name="indigo_organisation_list",),
     path(
         "organisation_download",
-        views.organisations_list_download,
+        views.OrganisationListDownload.as_view(),
         name="indigo_organisation_list_download",
     ),
     path(
@@ -52,6 +52,11 @@ urlpatterns = [
     ),
     ########################### Public - Fund
     path("fund", views.FundList.as_view(), name="indigo_fund_list",),
+    path(
+        "fund_download",
+        views.FundListDownload.as_view(),
+        name="indigo_fund_list_download",
+    ),
     path("fund/<public_id>", views.FundIndex.as_view(), name="indigo_fund_index",),
     path(
         "fund/<public_id>/download_form",

@@ -230,39 +230,6 @@ def organisations_list(request):
     )
 
 
-def organisations_list_download(request):
-    organisations = Organisation.objects.filter(
-        exists=True, status_public=True
-    ).order_by("public_id")
-
-    response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="organisations.csv"'
-
-    labels = ["ID"]
-    keys = []
-
-    for config in settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"]["fields"]:
-        if (
-            config.get("type", "") != "list"
-            and config.get("key").find("/contact") == -1
-        ):
-            labels.append(config.get("title"))
-            keys.append(config.get("key"))
-
-    writer = csv.writer(response)
-    writer.writerow(labels)
-    for organisation in organisations:
-        row = [organisation.public_id]
-        for key in keys:
-            try:
-                row.append(jsonpointer.resolve_pointer(organisation.data_public, key))
-            except jsonpointer.JsonPointerException:
-                row.append("")
-        writer.writerow(row)
-
-    return response
-
-
 def organisation_download_blank_form(request):
     out_file = os.path.join(
         tempfile.gettempdir(),
@@ -333,7 +300,8 @@ def organisation_download_form(request, public_id):
     return response
 
 
-########################### Public - Fund & Assesment Resource
+########################### Public - For Multiple Models
+# To try and reduce repeated code in very similar views, we move views to the classes below as we work on them.
 
 
 class ModelList(View):
@@ -354,6 +322,53 @@ class FundList(ModelList):
 
 class AssessmentResourceList(ModelList):
     _model = AssessmentResource
+
+
+class ModelListDownload(View):
+    def get(self, request):
+        datas = self.__class__._model.objects.filter(
+            exists=True, status_public=True
+        ).order_by("public_id")
+
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = (
+            'attachment; filename="' + self.__class__._model.type_id + 's.csv"'
+        )
+
+        labels = ["ID"]
+        keys = []
+
+        for config in settings.JSONDATAFERRET_TYPE_INFORMATION[
+            self.__class__._model.type_id
+        ]["fields"]:
+            if (
+                config.get("type", "") != "list"
+                # We don't want Organisation contact details
+                and config.get("key").find("/contact") == -1
+            ):
+                labels.append(config.get("title"))
+                keys.append(config.get("key"))
+
+        writer = csv.writer(response)
+        writer.writerow(labels)
+        for data in datas:
+            row = [data.public_id]
+            for key in keys:
+                try:
+                    row.append(jsonpointer.resolve_pointer(data.data_public, key))
+                except jsonpointer.JsonPointerException:
+                    row.append("")
+            writer.writerow(row)
+
+        return response
+
+
+class FundListDownload(ModelListDownload):
+    _model = Fund
+
+
+class OrganisationListDownload(ModelListDownload):
+    _model = Organisation
 
 
 class ModelIndex(View):
