@@ -5,6 +5,7 @@ from functools import lru_cache
 import jsonpointer
 import jsonschema
 from django.conf import settings
+from django.db import connection
 
 from indigo import (
     TYPE_PROJECT_SOURCE_LIST,
@@ -232,6 +233,27 @@ def _filter_fund_ids_that_do_not_exist_in_database(list_of_ids):
         except Fund.DoesNotExist:
             out.append(id)
     return out
+
+
+def get_single_field_statistics_across_all_projects_for_field(field):
+    """The single part means a field that only has one value - not a list."""
+
+    field_bits = ["'" + i + "'" for i in field["key"].split("/") if i]
+    sql_start = "select count(*) as c from indigo_project"
+    sql_where = "CAST(data_private::json->" + "->".join(field_bits) + " as text)"
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            sql_start + " WHERE " + sql_where + " = 'null' OR " + sql_where + " IS NULL"
+        )
+        count_no_data = cursor.fetchone()[0]
+        cursor.execute(sql_start + " WHERE " + sql_where + " != 'null'")
+        count_data = cursor.fetchone()[0]
+
+    return {
+        "count_no_data": count_no_data,
+        "count_data": count_data,
+    }
 
 
 class _DataError:

@@ -12,7 +12,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.files.storage import default_storage
-from django.db import connection
 from django.db.models.functions import Now
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -29,7 +28,10 @@ from indigo import (
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PROJECT_PUBLIC_ID,
 )
-from indigo.dataqualityreport import DataQualityReportForProject
+from indigo.dataqualityreport import (
+    DataQualityReportForProject,
+    get_single_field_statistics_across_all_projects_for_field,
+)
 from indigo.tasks import task_process_imported_project_file
 
 from .forms import (
@@ -1083,22 +1085,11 @@ def admin_all_projects_data_quality_report_field_single(request):
         raise Http404("Field does not exist")  #
     field = fields[0]
 
-    field_bits = ["'" + i + "'" for i in field["key"].split("/") if i]
-    sql_start = "select count(*) as c from indigo_project"
-    sql_where = "CAST(data_private::json->" + "->".join(field_bits) + " as text)"
-
-    with connection.cursor() as cursor:
-        cursor.execute(
-            sql_start + " WHERE " + sql_where + " = 'null' OR " + sql_where + " IS NULL"
-        )
-        count_no_data = cursor.fetchone()[0]
-        cursor.execute(sql_start + " WHERE " + sql_where + " != 'null'")
-        count_data = cursor.fetchone()[0]
+    data = {"field": field}
+    data.update(get_single_field_statistics_across_all_projects_for_field(field))
 
     return render(
-        request,
-        "indigo/admin/projects_data_quality_report_single_field.html",
-        {"field": field, "count_no_data": count_no_data, "count_data": count_data,},
+        request, "indigo/admin/projects_data_quality_report_single_field.html", data,
     )
 
 
