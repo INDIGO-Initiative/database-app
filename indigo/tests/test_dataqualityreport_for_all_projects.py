@@ -83,6 +83,10 @@ class DataQualityReportForAllProjectsTest(TestCase):
                 "status": "PUBLIC",
                 "stage_development": {"value": None, "status": "PUBLIC"},
             },
+            "PROJ3": {
+                "status": "PUBLIC",
+                "stage_development": {"value": "             ", "status": "PUBLIC"},
+            },
         }
 
         self.create_records(inputs)
@@ -94,9 +98,9 @@ class DataQualityReportForAllProjectsTest(TestCase):
             }
         )
 
-        assert data["count_public_projects"] == 2
+        assert data["count_public_projects"] == 3
         assert data["count_public_projects_with_public_value"] == 0
-        assert data["count_public_projects_without_public_value"] == 2
+        assert data["count_public_projects_without_public_value"] == 3
 
     def test_public_project_with_private_data(self):
         inputs = {

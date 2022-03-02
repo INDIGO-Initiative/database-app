@@ -240,7 +240,9 @@ def get_single_field_statistics_across_all_projects_for_field(field):
 
     field_bits = ["'" + i + "'" for i in field["key"].split("/") if i]
     sql_where_for_field = "data_public::json->" + "->".join(field_bits)
-    sql_where_for_field_as_text = "CAST(" + sql_where_for_field + " as text)"
+    sql_where_for_field_as_text = (
+        "trim(CAST(" + sql_where_for_field + " as text), '\" ')"
+    )
 
     with connection.cursor() as cursor:
         # How many public projects?
@@ -256,7 +258,7 @@ def get_single_field_statistics_across_all_projects_for_field(field):
             + " IS NOT NULL "
             + "AND "
             + sql_where_for_field_as_text
-            + " != '\"\"' "
+            + " != '' "
             + "AND "
             + sql_where_for_field_as_text
             + " != 'null' "
