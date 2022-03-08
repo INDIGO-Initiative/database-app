@@ -5,6 +5,7 @@ from functools import lru_cache
 import jsonpointer
 import jsonschema
 from django.conf import settings
+from django.db import connection
 
 from indigo import (
     TYPE_PROJECT_SOURCE_LIST,
@@ -232,6 +233,44 @@ def _filter_fund_ids_that_do_not_exist_in_database(list_of_ids):
         except Fund.DoesNotExist:
             out.append(id)
     return out
+
+
+def get_single_field_statistics_across_all_projects_for_field(field):
+    """The single part means a field that only has one value - not a list."""
+
+    field_bits = ["'" + i + "'" for i in field["key"].split("/") if i]
+    sql_where_for_field = "data_public::json->" + "->".join(field_bits)
+    sql_where_for_field_as_text = (
+        "trim(CAST(" + sql_where_for_field + " as text), '\" ')"
+    )
+
+    with connection.cursor() as cursor:
+        # How many public projects?
+        cursor.execute(
+            "select count(*) as c from indigo_project WHERE status_public=True"
+        )
+        count_public_projects = cursor.fetchone()[0]
+        # How many public projects have a value for this field?
+        cursor.execute(
+            "select count(*) as c from indigo_project WHERE status_public=True "
+            + "AND "
+            + sql_where_for_field
+            + " IS NOT NULL "
+            + "AND "
+            + sql_where_for_field_as_text
+            + " != '' "
+            + "AND "
+            + sql_where_for_field_as_text
+            + " != 'null' "
+        )
+        count_public_projects_with_public_value = cursor.fetchone()[0]
+
+    return {
+        "count_public_projects": count_public_projects,
+        "count_public_projects_with_public_value": count_public_projects_with_public_value,
+        "count_public_projects_without_public_value": count_public_projects
+        - count_public_projects_with_public_value,
+    }
 
 
 class _DataError:
