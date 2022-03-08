@@ -1,8 +1,14 @@
 from django.core.management.base import BaseCommand
 
-from indigo.files import update_public_files_for_project
+from indigo.files import (
+    update_data_quality_report_file_for_all_projects,
+    update_public_files_for_project,
+)
 from indigo.models import Project
-from indigo.tasks import task_update_public_files_for_project
+from indigo.tasks import (
+    task_update_data_quality_report_file_for_all_projects,
+    task_update_public_files_for_project,
+)
 
 
 class Command(BaseCommand):
@@ -22,3 +28,8 @@ class Command(BaseCommand):
                 update_public_files_for_project(project)
             else:
                 task_update_public_files_for_project.delay(project.public_id)
+
+        if options["direct"]:
+            update_data_quality_report_file_for_all_projects()
+        else:
+            task_update_data_quality_report_file_for_all_projects.delay()

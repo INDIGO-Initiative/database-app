@@ -7,6 +7,7 @@ from django.conf import settings
 import indigo.utils
 from indigo.celery import app
 from indigo.files import (
+    update_data_quality_report_file_for_all_projects,
     update_public_archive_files,
     update_public_files_for_fund,
     update_public_files_for_organisation,
@@ -78,6 +79,11 @@ def task_process_imported_project_file(self, project_import_id):
 @app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
 def task_update_public_files_for_project(self, project_id):
     update_public_files_for_project(Project.objects.get(public_id=project_id))
+
+
+@app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
+def task_update_data_quality_report_file_for_all_projects(self):
+    update_data_quality_report_file_for_all_projects()
 
 
 @app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)

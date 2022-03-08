@@ -175,6 +175,16 @@ def project_download_blank_form(request):
     return response
 
 
+def project_download_data_quality_report(request):
+    if default_storage.exists("public/project_data_quality_report.xlsx"):
+        wrapper = default_storage.open("public/project_data_quality_report.xlsx")
+        response = HttpResponse(wrapper, content_type="application/vnd.ms-excel")
+        response[
+            "Content-Disposition"
+        ] = "inline; filename=data_quality_report_on_all_projects.xlsx"
+        return response
+
+
 def project_index(request, public_id):
     try:
         project = Project.objects.get(

@@ -22,6 +22,11 @@ urlpatterns = [
         views.project_download_blank_form,
         name="indigo_project_download_blank_form",
     ),
+    path(
+        "project_download_data_quality_report",
+        views.project_download_data_quality_report,
+        name="indigo_project_download_data_quality_report",
+    ),
     path("project/<public_id>", views.project_index, name="indigo_project_index",),
     path(
         "project/<public_id>/download_form",

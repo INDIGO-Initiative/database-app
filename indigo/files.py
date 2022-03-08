@@ -10,6 +10,9 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
+from indigo.dataqualityreport import (
+    get_single_field_statistics_across_all_projects_for_field,
+)
 from indigo.models import Fund, Organisation, Project
 
 from .spreadsheetforms import (
@@ -309,3 +312,42 @@ def _put_file_in_zip_file(zipfiles, file_name_in_storage, file_name_in_zip):
             data = fp.read()
             for zipfile in zipfiles:
                 zipfile.writestr(file_name_in_zip, data)
+
+
+def update_data_quality_report_file_for_all_projects():
+
+    # Data
+    data = {"single_fields": []}
+
+    fields = [
+        i
+        for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
+        if i.get("type") != "list"
+        # Because we only generate stats on public data anyway, running stats on the status field makes no sense.
+        and i.get("key") != "/status"
+        # Also, field level status fields don't make any sense either
+        and not i.get("key").endswith("/status")
+    ]
+
+    for field in fields:
+        field_data = get_single_field_statistics_across_all_projects_for_field(field)
+        field_data["field"] = field
+        data["single_fields"].append(field_data)
+
+    # Create in Temp
+    guide_file = settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
+        "spreadsheet_data_quality_report_public_guide"
+    ]
+    file = tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx")
+    out_file = file.name
+    file.close()
+    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
+
+    # Move to Django Storage
+    default_storage_name_xlsx = "public/project_data_quality_report.xlsx"
+    default_storage.delete(default_storage_name_xlsx)
+    with open(out_file, "rb") as fp:
+        default_storage.save(default_storage_name_xlsx, ContentFile(fp.read()))
+
+    # Delete Temp file
+    os.remove(out_file)

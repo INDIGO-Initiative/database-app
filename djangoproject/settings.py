@@ -172,6 +172,12 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         },
         "fields": load_json_schema_fields("project.json"),
         "filter_keys": load_json_schema_filter_keys("project.json"),
+        "spreadsheet_data_quality_report_public_guide": os.path.join(
+            BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            "project_data_quality_report_public.xlsx",
+        ),
     },
     "organisation": {
         "json_schema": load_json_schema("organisation.json"),
