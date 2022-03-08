@@ -1067,6 +1067,8 @@ def admin_all_projects_data_quality_report(request):
                 if i.get("type") != "list"
                 # Because we only generate stats on public data anyway, running stats on the status field makes no sense.
                 and i.get("key") != "/status"
+                # Also, field level status fields don't make any sense either
+                and not i.get("key").endswith("/status")
             ],
         },
     )
