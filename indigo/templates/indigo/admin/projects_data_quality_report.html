@@ -27,5 +27,10 @@
                 <a href="{% url 'indigo_admin_all_projects_data_quality_report_field_single' %}?field={{ field_single.key|urlencode:"" }}" class="btn btn-primary">{{ field_single.title }}</a>
             </li>
         {% endfor %}
+        {% for field_list in fields_list %}
+            <li>
+                <a href="{% url 'indigo_admin_all_projects_data_quality_report_field_list' %}?field={{ field_list.key|urlencode:"" }}" class="btn btn-primary">{{ field_list.title }}</a>
+            </li>
+        {% endfor %}
     </ul>
 {% endblock %}

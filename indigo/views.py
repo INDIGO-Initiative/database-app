@@ -30,6 +30,7 @@ from indigo import (
 )
 from indigo.dataqualityreport import (
     DataQualityReportForProject,
+    get_list_field_statistics_across_all_projects_for_field,
     get_single_field_statistics_across_all_projects_for_field,
 )
 from indigo.tasks import task_process_imported_project_file
@@ -1080,6 +1081,11 @@ def admin_all_projects_data_quality_report(request):
                 # Also, field level status fields don't make any sense either
                 and not i.get("key").endswith("/status")
             ],
+            "fields_list": [
+                i
+                for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
+                if i.get("type") == "list"
+            ],
         },
     )
 
@@ -1104,6 +1110,29 @@ def admin_all_projects_data_quality_report_field_single(request):
 
     return render(
         request, "indigo/admin/projects_data_quality_report_single_field.html", data,
+    )
+
+
+@permission_required("indigo.admin")
+def admin_all_projects_data_quality_report_field_list(request):
+
+    field_path = request.GET.get("field", "")
+    # Note we MUST explicitly check the field the user passed is in our pre-calculated Config list!
+    # If we don't, we open ourselves up to SQL Injection security holes.
+    fields = [
+        i
+        for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
+        if i.get("type") == "list" and i.get("key") == field_path
+    ]
+    if not fields:
+        raise Http404("Field does not exist")  #
+    field = fields[0]
+
+    data = {"field": field}
+    data.update(get_list_field_statistics_across_all_projects_for_field(field))
+
+    return render(
+        request, "indigo/admin/projects_data_quality_report_list_field.html", data,
     )
 
 

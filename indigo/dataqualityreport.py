@@ -273,6 +273,38 @@ def get_single_field_statistics_across_all_projects_for_field(field):
     }
 
 
+def get_list_field_statistics_across_all_projects_for_field(field):
+    """The list part means a field that is a list."""
+
+    field_bits = ["'" + i + "'" for i in field["key"].split("/") if i]
+    sql_where_for_field = "data_public::jsonb->" + "->".join(field_bits)
+
+    with connection.cursor() as cursor:
+        # How many public projects?
+        cursor.execute(
+            "select count(*) as c from indigo_project WHERE status_public=True"
+        )
+        count_public_projects = cursor.fetchone()[0]
+        # How many public projects have a value for this field?
+        cursor.execute(
+            "select count(*) as c from indigo_project WHERE status_public=True "
+            + "AND "
+            + sql_where_for_field
+            + " IS NOT NULL "
+            + "AND JSONB_ARRAY_LENGTH("
+            + sql_where_for_field
+            + ") > 0 "
+        )
+        count_public_projects_with_public_value = cursor.fetchone()[0]
+
+    return {
+        "count_public_projects": count_public_projects,
+        "count_public_projects_with_at_least_one_public_value": count_public_projects_with_public_value,
+        "count_public_projects_without_any_public_values": count_public_projects
+        - count_public_projects_with_public_value,
+    }
+
+
 class _DataError:
     pass
 

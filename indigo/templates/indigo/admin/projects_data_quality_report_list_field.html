@@ -1,0 +1,43 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Project {{ project.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_list' %}">Projects</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_all_projects_data_quality_report' %}">Data Quality Report</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Field {{ field.title }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    <p>Project Data Quality Report: Field {{ field.title }}</p>
+
+    <div id="plotly_count_data_no_data" style="width: 400px; height: 400px; margin: 20px auto;"></div>
+
+    <p>(Public data only)</p>
+
+{% endblock %}
+
+
+{% block javascript %}
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        var holder_count_data_no_data = document.getElementById('plotly_count_data_no_data');
+        Plotly.newPlot(
+            holder_count_data_no_data,
+            [{
+                y: [{{ count_public_projects_with_at_least_one_public_value }}, {{ count_public_projects_without_any_public_values }}],
+                x: ["Projects, at least 1 Data", "Projects, No data"],
+                type: 'bar'
+            }],
+            {
+                margin: { t: 0 }
+            }
+        );
+    </script>
+{% endblock %}

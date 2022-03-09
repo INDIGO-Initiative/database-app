@@ -11,6 +11,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
 from indigo.dataqualityreport import (
+    get_list_field_statistics_across_all_projects_for_field,
     get_single_field_statistics_across_all_projects_for_field,
 )
 from indigo.models import Fund, Organisation, Project
@@ -317,8 +318,9 @@ def _put_file_in_zip_file(zipfiles, file_name_in_storage, file_name_in_zip):
 def update_data_quality_report_file_for_all_projects():
 
     # Data
-    data = {"single_fields": []}
+    data = {"single_fields": [], "list_fields": []}
 
+    # Single Field data
     fields = [
         i
         for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
@@ -333,6 +335,18 @@ def update_data_quality_report_file_for_all_projects():
         field_data = get_single_field_statistics_across_all_projects_for_field(field)
         field_data["field"] = field
         data["single_fields"].append(field_data)
+
+    # List Field data
+    fields = [
+        i
+        for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
+        if i.get("type") == "list"
+    ]
+
+    for field in fields:
+        field_data = get_list_field_statistics_across_all_projects_for_field(field)
+        field_data["field"] = field
+        data["list_fields"].append(field_data)
 
     # Create in Temp
     guide_file = settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
