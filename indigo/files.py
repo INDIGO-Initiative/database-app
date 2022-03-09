@@ -320,29 +320,13 @@ def update_data_quality_report_file_for_all_projects():
     data = {"single_fields": [], "list_fields": []}
 
     # Single Field data
-    fields = [
-        i
-        for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
-        if i.get("type") != "list"
-        # Because we only generate stats on public data anyway, running stats on the status field makes no sense.
-        and i.get("key") != "/status"
-        # Also, field level status fields don't make any sense either
-        and not i.get("key").endswith("/status")
-    ]
-
-    for field in fields:
+    for field in data_quality_report.get_possible_fields_for_single_field_statistics():
         field_data = data_quality_report.get_single_field_statistics_for_field(field)
         field_data["field"] = field
         data["single_fields"].append(field_data)
 
     # List Field data
-    fields = [
-        i
-        for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
-        if i.get("type") == "list"
-    ]
-
-    for field in fields:
+    for field in data_quality_report.get_possible_fields_for_list_field_statistics():
         field_data = data_quality_report.get_list_field_statistics_for_field(field)
         field_data["field"] = field
         data["list_fields"].append(field_data)

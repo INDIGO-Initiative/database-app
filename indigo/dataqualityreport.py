@@ -249,6 +249,17 @@ class DataQualityReportForAllProjects:
                 self.cache_count_public_projects = cursor.fetchone()[0]
         return self.cache_count_public_projects
 
+    def get_possible_fields_for_single_field_statistics(self):
+        return [
+            i
+            for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
+            if i.get("type") != "list"
+            # Because we only generate stats on public data anyway, running stats on the status field makes no sense.
+            and i.get("key") != "/status"
+            # Also, field level status fields don't make any sense either
+            and not i.get("key").endswith("/status")
+        ]
+
     def get_single_field_statistics_for_field(self, field):
         """The single part means a field that only has one value - not a list."""
 
@@ -281,6 +292,13 @@ class DataQualityReportForAllProjects:
             "count_public_projects_without_public_value": count_public_projects
             - count_public_projects_with_public_value,
         }
+
+    def get_possible_fields_for_list_field_statistics(self):
+        return [
+            i
+            for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
+            if i.get("type") == "list"
+        ]
 
     def get_list_field_statistics_for_field(self, field):
         """The list part means a field that is a list."""
