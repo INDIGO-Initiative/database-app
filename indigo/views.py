@@ -2,6 +2,7 @@ import csv
 import os
 import random
 import tempfile
+from abc import ABC
 
 import jsondataferret
 import jsondataferret.utils
@@ -316,7 +317,7 @@ def organisation_download_form(request, public_id):
 # To try and reduce repeated code in very similar views, we move views to the classes below as we work on them.
 
 
-class ModelList(View):
+class ModelList(View, ABC):
     def get(self, request):
         datas = self.__class__._model.objects.filter(
             exists=True, status_public=True
@@ -336,7 +337,7 @@ class AssessmentResourceList(ModelList):
     _model = AssessmentResource
 
 
-class ModelListDownload(View):
+class ModelListDownload(View, ABC):
     def get(self, request):
         datas = self.__class__._model.objects.filter(
             exists=True, status_public=True
@@ -383,7 +384,7 @@ class OrganisationListDownload(ModelListDownload):
     _model = Organisation
 
 
-class ModelIndex(View):
+class ModelIndex(View, ABC):
     def get(self, request, public_id):
         try:
             data = self.__class__._model.objects.get(
@@ -413,7 +414,7 @@ class AssessmentResourceIndex(ModelIndex):
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
 
-class ModelDownloadForm(View):
+class ModelDownloadForm(View, ABC):
     def get(self, request, public_id):
         try:
             data = self.__class__._model.objects.get(
@@ -543,7 +544,7 @@ def api1_organisation_index(request, public_id):
 ########################### Public - Fund & Assesment Resource - API
 
 
-class API1ModelList(View):
+class API1ModelList(View, ABC):
     def get(self, request):
         datas = self.__class__._model.objects.filter().order_by("public_id")
         output = {
@@ -564,7 +565,7 @@ class API1AssessmentResourceList(API1ModelList):
     _model = AssessmentResource
 
 
-class API1ModelIndex(View):
+class API1ModelIndex(View, ABC):
     def get(self, request, public_id):
         try:
             data = self.__class__._model.objects.get(
@@ -1569,7 +1570,7 @@ def admin_organisation_history(request, public_id):
 ########################### Admin - funds & assessment resources
 
 
-class AdminModelDownloadBlankForm(PermissionRequiredMixin, View):
+class AdminModelDownloadBlankForm(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
     def get(self, request):
@@ -1607,7 +1608,7 @@ class AdminAssessmentResourceDownloadBlankForm(AdminModelDownloadBlankForm):
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
 
-class AdminModelList(PermissionRequiredMixin, View):
+class AdminModelList(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
     def get(self, request):
@@ -1633,7 +1634,7 @@ class AdminAssessmentResourceList(AdminModelList):
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
 
-class AdminModelIndex(PermissionRequiredMixin, View):
+class AdminModelIndex(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
     def get(self, request, public_id):
@@ -1672,7 +1673,7 @@ def admin_fund_projects(request, public_id):
     )
 
 
-class AdminModelDownloadForm(PermissionRequiredMixin, View):
+class AdminModelDownloadForm(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
     def get(self, request, public_id):
@@ -1726,7 +1727,7 @@ class AdminAssessmentResourceDownloadForm(AdminModelDownloadForm):
         )
 
 
-class AdminModelImportForm(PermissionRequiredMixin, View):
+class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
     def get(self, request, public_id):
@@ -1812,7 +1813,7 @@ class AdminAssessmentResourceImportForm(AdminModelImportForm):
         )
 
 
-class AdminModelNew(PermissionRequiredMixin, View):
+class AdminModelNew(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
     def get(self, request):
@@ -1873,7 +1874,7 @@ class AdminAssessmentResourceNew(AdminModelNew):
     _redirect_view = "indigo_admin_assessment_resource_index"
 
 
-class AdminModelModerate(PermissionRequiredMixin, View):
+class AdminModelModerate(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
     def get(self, request, public_id):
@@ -1941,7 +1942,7 @@ class AdminAssessmentResourceModerate(AdminModelModerate):
     _redirect_view = "indigo_admin_assessment_resource_index"
 
 
-class AdminModelHistory(PermissionRequiredMixin, View):
+class AdminModelHistory(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
     def get(self, request, public_id):
