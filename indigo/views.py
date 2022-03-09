@@ -29,9 +29,8 @@ from indigo import (
     TYPE_PROJECT_PUBLIC_ID,
 )
 from indigo.dataqualityreport import (
+    DataQualityReportForAllProjects,
     DataQualityReportForProject,
-    get_list_field_statistics_across_all_projects_for_field,
-    get_single_field_statistics_across_all_projects_for_field,
 )
 from indigo.tasks import task_process_imported_project_file
 
@@ -1106,7 +1105,8 @@ def admin_all_projects_data_quality_report_field_single(request):
     field = fields[0]
 
     data = {"field": field}
-    data.update(get_single_field_statistics_across_all_projects_for_field(field))
+    data_quality_report = DataQualityReportForAllProjects()
+    data.update(data_quality_report.get_single_field_statistics_for_field(field))
 
     return render(
         request, "indigo/admin/projects_data_quality_report_single_field.html", data,
@@ -1129,7 +1129,8 @@ def admin_all_projects_data_quality_report_field_list(request):
     field = fields[0]
 
     data = {"field": field}
-    data.update(get_list_field_statistics_across_all_projects_for_field(field))
+    data_quality_report = DataQualityReportForAllProjects()
+    data.update(data_quality_report.get_list_field_statistics_for_field(field))
 
     return render(
         request, "indigo/admin/projects_data_quality_report_list_field.html", data,

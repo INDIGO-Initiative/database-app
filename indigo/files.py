@@ -10,10 +10,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
-from indigo.dataqualityreport import (
-    get_list_field_statistics_across_all_projects_for_field,
-    get_single_field_statistics_across_all_projects_for_field,
-)
+from indigo.dataqualityreport import DataQualityReportForAllProjects
 from indigo.models import Fund, Organisation, Project
 
 from .spreadsheetforms import (
@@ -317,6 +314,8 @@ def _put_file_in_zip_file(zipfiles, file_name_in_storage, file_name_in_zip):
 
 def update_data_quality_report_file_for_all_projects():
 
+    data_quality_report = DataQualityReportForAllProjects()
+
     # Data
     data = {"single_fields": [], "list_fields": []}
 
@@ -332,7 +331,7 @@ def update_data_quality_report_file_for_all_projects():
     ]
 
     for field in fields:
-        field_data = get_single_field_statistics_across_all_projects_for_field(field)
+        field_data = data_quality_report.get_single_field_statistics_for_field(field)
         field_data["field"] = field
         data["single_fields"].append(field_data)
 
@@ -344,7 +343,7 @@ def update_data_quality_report_file_for_all_projects():
     ]
 
     for field in fields:
-        field_data = get_list_field_statistics_across_all_projects_for_field(field)
+        field_data = data_quality_report.get_list_field_statistics_for_field(field)
         field_data["field"] = field
         data["list_fields"].append(field_data)
 

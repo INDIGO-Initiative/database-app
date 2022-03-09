@@ -3,10 +3,7 @@ import jsondataferret.pythonapi.newevent
 from django.test import TestCase  # noqa
 
 from indigo import TYPE_PROJECT_PUBLIC_ID
-from indigo.dataqualityreport import (
-    get_list_field_statistics_across_all_projects_for_field,
-    get_single_field_statistics_across_all_projects_for_field,
-)
+from indigo.dataqualityreport import DataQualityReportForAllProjects
 
 
 class GetSingleFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
@@ -39,7 +36,8 @@ class GetSingleFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_single_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_single_field_statistics_for_field(
             {
                 "key": "/stage_development/value",
                 "title": "Stage of Development - (Value)",
@@ -63,7 +61,8 @@ class GetSingleFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_single_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_single_field_statistics_for_field(
             {
                 "key": "/stage_development/value",
                 "title": "Stage of Development - (Value)",
@@ -96,7 +95,8 @@ class GetSingleFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_single_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_single_field_statistics_for_field(
             {
                 "key": "/overall_project_finance/total_investment_commitment/amount/min/value",
                 "title": "Overall project finance - Total investment commitment - Amount - Min - (Value)",
@@ -125,7 +125,8 @@ class GetSingleFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_single_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_single_field_statistics_for_field(
             {
                 "key": "/stage_development/value",
                 "title": "Stage of Development - (Value)",
@@ -149,7 +150,8 @@ class GetSingleFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_single_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_single_field_statistics_for_field(
             {
                 "key": "/stage_development/value",
                 "title": "Stage of Development - (Value)",
@@ -190,7 +192,8 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_list_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_list_field_statistics_for_field(
             {
                 "key": "/delivery_locations",
                 "title": "Delivery Locations",
@@ -214,7 +217,8 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_list_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_list_field_statistics_for_field(
             {
                 "key": "/delivery_locations",
                 "title": "Delivery Locations",
@@ -231,7 +235,8 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_list_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_list_field_statistics_for_field(
             {
                 "key": "/delivery_locations",
                 "title": "Delivery Locations",
@@ -248,7 +253,8 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_list_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_list_field_statistics_for_field(
             {
                 "key": "/delivery_locations",
                 "title": "Delivery Locations",
@@ -273,7 +279,8 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_list_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_list_field_statistics_for_field(
             {
                 "key": "/delivery_locations",
                 "title": "Delivery Locations",
@@ -299,7 +306,8 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
 
         self.create_records(inputs)
 
-        data = get_list_field_statistics_across_all_projects_for_field(
+        data_quality_report = DataQualityReportForAllProjects()
+        data = data_quality_report.get_list_field_statistics_for_field(
             {
                 "key": "/delivery_locations",
                 "title": "Delivery Locations",
