@@ -20,35 +20,26 @@ from .spreadsheetforms import (
 )
 
 
-def update_public_files_for_project(project):
-    if project.exists and project.status_public:
-        _write_public_files_for_project(project)
-    else:
-        _remove_public_files_for_project(project)
-
-
-def _remove_public_files_for_project(project):
-    default_storage_name_xlsx = "public/project/" + project.public_id + ".xlsx"
+def _remove_public_files_for_model(model, directory_name):
+    default_storage_name_xlsx = "public/{}/{}.xlsx".format(
+        directory_name, model.public_id
+    )
     if default_storage.exists(default_storage_name_xlsx):
         default_storage.delete(default_storage_name_xlsx)
 
 
-def _write_public_files_for_project(project):
-    default_storage_name_xlsx = "public/project/" + project.public_id + ".xlsx"
-
-    # --- Get Data
-    data = convert_project_data_to_spreadsheetforms_data(project, public_only=True)
-
-    # --- XLSX File
-    guide_file = settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
-        "spreadsheet_public_form_guide"
-    ]
+def _write_public_files_for_model(
+    model, directory_name, spreadsheetforms_data, guide_file
+):
+    default_storage_name_xlsx = "public/{}/{}.xlsx".format(
+        directory_name, model.public_id
+    )
 
     # Create in Temp
     file = tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx")
     out_file = file.name
     file.close()
-    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
+    spreadsheetforms.api.put_data_in_form(guide_file, spreadsheetforms_data, out_file)
 
     # Move to Django Storage
     default_storage.delete(default_storage_name_xlsx)
@@ -57,93 +48,58 @@ def _write_public_files_for_project(project):
 
     # Delete Temp file
     os.remove(out_file)
+
+
+def update_public_files_for_project(project):
+    if project.exists and project.status_public:
+        _write_public_files_for_model(
+            project,
+            "project",
+            convert_project_data_to_spreadsheetforms_data(project, public_only=True),
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"][
+                "spreadsheet_public_form_guide"
+            ],
+        )
+    else:
+        _remove_public_files_for_model(project, "project")
 
 
 def update_public_files_for_organisation(organisation):
     if organisation.exists and organisation.status_public:
-        _write_public_files_for_organisation(organisation)
+        _write_public_files_for_model(
+            organisation,
+            "organisation",
+            convert_organisation_data_to_spreadsheetforms_data(
+                organisation, public_only=True
+            ),
+            os.path.join(
+                settings.BASE_DIR,
+                "indigo",
+                "spreadsheetform_guides",
+                "organisation_public_v003.xlsx",
+            ),
+        )
     else:
-        _remove_public_files_for_organisation(organisation)
-
-
-def _remove_public_files_for_organisation(organisation):
-    default_storage_name_xlsx = (
-        "public/organisation/" + organisation.public_id + ".xlsx"
-    )
-    if default_storage.exists(default_storage_name_xlsx):
-        default_storage.delete(default_storage_name_xlsx)
-
-
-def _write_public_files_for_organisation(organisation):
-    default_storage_name_xlsx = (
-        "public/organisation/" + organisation.public_id + ".xlsx"
-    )
-
-    # --- Get Data
-    data = convert_organisation_data_to_spreadsheetforms_data(
-        organisation, public_only=True
-    )
-
-    # --- XLSX File
-    guide_file = os.path.join(
-        settings.BASE_DIR,
-        "indigo",
-        "spreadsheetform_guides",
-        "organisation_public_v003.xlsx",
-    )
-
-    # Create in Temp
-    file = tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx")
-    out_file = file.name
-    file.close()
-    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
-
-    # Move to Django Storage
-    default_storage.delete(default_storage_name_xlsx)
-    with open(out_file, "rb") as fp:
-        default_storage.save(default_storage_name_xlsx, ContentFile(fp.read()))
-
-    # Delete Temp file
-    os.remove(out_file)
+        _remove_public_files_for_model(organisation, "organisation")
 
 
 def update_public_files_for_fund(fund):
     if fund.exists and fund.status_public:
-        _write_public_files_for_fund(fund)
+
+        _write_public_files_for_model(
+            fund,
+            "fund",
+            convert_fund_data_to_spreadsheetforms_data(fund, public_only=True),
+            os.path.join(
+                settings.BASE_DIR,
+                "indigo",
+                "spreadsheetform_guides",
+                "fund_public_v001.xlsx",
+            ),
+        )
     else:
-        _remove_public_files_for_fund(fund)
 
-
-def _remove_public_files_for_fund(fund):
-    default_storage_name_xlsx = "public/fund/" + fund.public_id + ".xlsx"
-    if default_storage.exists(default_storage_name_xlsx):
-        default_storage.delete(default_storage_name_xlsx)
-
-
-def _write_public_files_for_fund(fund):
-    default_storage_name_xlsx = "public/fund/" + fund.public_id + ".xlsx"
-
-    # --- Get Data
-    data = convert_fund_data_to_spreadsheetforms_data(fund, public_only=True)
-
-    # --- XLSX File
-    guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "fund_public_v001.xlsx",
-    )
-
-    # Create in Temp
-    file = tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx")
-    out_file = file.name
-    file.close()
-    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
-
-    # Move to Django Storage
-    default_storage.delete(default_storage_name_xlsx)
-    with open(out_file, "rb") as fp:
-        default_storage.save(default_storage_name_xlsx, ContentFile(fp.read()))
-
-    # Delete Temp file
-    os.remove(out_file)
+        _remove_public_files_for_model(fund, "fund")
 
 
 def update_public_archive_files():
