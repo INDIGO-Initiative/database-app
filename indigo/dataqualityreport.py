@@ -235,42 +235,97 @@ def _filter_fund_ids_that_do_not_exist_in_database(list_of_ids):
     return out
 
 
-def get_single_field_statistics_across_all_projects_for_field(field):
-    """The single part means a field that only has one value - not a list."""
+class DataQualityReportForAllProjects:
+    def __init__(self):
+        # Cache this per request to make sure we get fresh data but don't repeat the same query tons when building the file to download
+        self.cache_count_public_projects = None
 
-    field_bits = ["'" + i + "'" for i in field["key"].split("/") if i]
-    sql_where_for_field = "data_public::json->" + "->".join(field_bits)
-    sql_where_for_field_as_text = (
-        "trim(CAST(" + sql_where_for_field + " as text), '\" ')"
-    )
+    def _get_count_public_projects(self):
+        if self.cache_count_public_projects is None:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "select count(*) as c from indigo_project WHERE status_public=True"
+                )
+                self.cache_count_public_projects = cursor.fetchone()[0]
+        return self.cache_count_public_projects
 
-    with connection.cursor() as cursor:
-        # How many public projects?
-        cursor.execute(
-            "select count(*) as c from indigo_project WHERE status_public=True"
+    def get_possible_fields_for_single_field_statistics(self):
+        return [
+            i
+            for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
+            if i.get("type") != "list"
+            # Because we only generate stats on public data anyway, running stats on the status field makes no sense.
+            and i.get("key") != "/status"
+            # Also, field level status fields don't make any sense either
+            and not i.get("key").endswith("/status")
+        ]
+
+    def get_single_field_statistics_for_field(self, field):
+        """The single part means a field that only has one value - not a list."""
+
+        field_bits = ["'" + i + "'" for i in field["key"].split("/") if i]
+        sql_where_for_field = "data_public::json->" + "->".join(field_bits)
+        sql_where_for_field_as_text = (
+            "trim(CAST(" + sql_where_for_field + " as text), '\" ')"
         )
-        count_public_projects = cursor.fetchone()[0]
-        # How many public projects have a value for this field?
-        cursor.execute(
-            "select count(*) as c from indigo_project WHERE status_public=True "
-            + "AND "
-            + sql_where_for_field
-            + " IS NOT NULL "
-            + "AND "
-            + sql_where_for_field_as_text
-            + " != '' "
-            + "AND "
-            + sql_where_for_field_as_text
-            + " != 'null' "
-        )
-        count_public_projects_with_public_value = cursor.fetchone()[0]
 
-    return {
-        "count_public_projects": count_public_projects,
-        "count_public_projects_with_public_value": count_public_projects_with_public_value,
-        "count_public_projects_without_public_value": count_public_projects
-        - count_public_projects_with_public_value,
-    }
+        count_public_projects = self._get_count_public_projects()
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select count(*) as c from indigo_project WHERE status_public=True "
+                + "AND "
+                + sql_where_for_field
+                + " IS NOT NULL "
+                + "AND "
+                + sql_where_for_field_as_text
+                + " != '' "
+                + "AND "
+                + sql_where_for_field_as_text
+                + " != 'null' "
+            )
+            count_public_projects_with_public_value = cursor.fetchone()[0]
+
+        return {
+            "count_public_projects": count_public_projects,
+            "count_public_projects_with_public_value": count_public_projects_with_public_value,
+            "count_public_projects_without_public_value": count_public_projects
+            - count_public_projects_with_public_value,
+        }
+
+    def get_possible_fields_for_list_field_statistics(self):
+        return [
+            i
+            for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
+            if i.get("type") == "list"
+        ]
+
+    def get_list_field_statistics_for_field(self, field):
+        """The list part means a field that is a list."""
+
+        field_bits = ["'" + i + "'" for i in field["key"].split("/") if i]
+        sql_where_for_field = "data_public::jsonb->" + "->".join(field_bits)
+
+        count_public_projects = self._get_count_public_projects()
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select count(*) as c from indigo_project WHERE status_public=True "
+                + "AND "
+                + sql_where_for_field
+                + " IS NOT NULL "
+                + "AND JSONB_ARRAY_LENGTH("
+                + sql_where_for_field
+                + ") > 0 "
+            )
+            count_public_projects_with_public_value = cursor.fetchone()[0]
+
+        return {
+            "count_public_projects": count_public_projects,
+            "count_public_projects_with_at_least_one_public_value": count_public_projects_with_public_value,
+            "count_public_projects_without_any_public_values": count_public_projects
+            - count_public_projects_with_public_value,
+        }
 
 
 class _DataError:

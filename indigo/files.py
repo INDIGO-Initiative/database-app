@@ -10,9 +10,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
-from indigo.dataqualityreport import (
-    get_single_field_statistics_across_all_projects_for_field,
-)
+from indigo.dataqualityreport import DataQualityReportForAllProjects
 from indigo.models import Fund, Organisation, Project
 
 from .spreadsheetforms import (
@@ -316,23 +314,22 @@ def _put_file_in_zip_file(zipfiles, file_name_in_storage, file_name_in_zip):
 
 def update_data_quality_report_file_for_all_projects():
 
+    data_quality_report = DataQualityReportForAllProjects()
+
     # Data
-    data = {"single_fields": []}
+    data = {"single_fields": [], "list_fields": []}
 
-    fields = [
-        i
-        for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
-        if i.get("type") != "list"
-        # Because we only generate stats on public data anyway, running stats on the status field makes no sense.
-        and i.get("key") != "/status"
-        # Also, field level status fields don't make any sense either
-        and not i.get("key").endswith("/status")
-    ]
-
-    for field in fields:
-        field_data = get_single_field_statistics_across_all_projects_for_field(field)
+    # Single Field data
+    for field in data_quality_report.get_possible_fields_for_single_field_statistics():
+        field_data = data_quality_report.get_single_field_statistics_for_field(field)
         field_data["field"] = field
         data["single_fields"].append(field_data)
+
+    # List Field data
+    for field in data_quality_report.get_possible_fields_for_list_field_statistics():
+        field_data = data_quality_report.get_list_field_statistics_for_field(field)
+        field_data["field"] = field
+        data["list_fields"].append(field_data)
 
     # Create in Temp
     guide_file = settings.JSONDATAFERRET_TYPE_INFORMATION["project"][

@@ -29,8 +29,8 @@ from indigo import (
     TYPE_PROJECT_PUBLIC_ID,
 )
 from indigo.dataqualityreport import (
+    DataQualityReportForAllProjects,
     DataQualityReportForProject,
-    get_single_field_statistics_across_all_projects_for_field,
 )
 from indigo.tasks import task_process_imported_project_file
 
@@ -1066,20 +1066,13 @@ def admin_project_data_quality_report(request, public_id):
 
 @permission_required("indigo.admin")
 def admin_all_projects_data_quality_report(request):
-
+    data_quality_report = DataQualityReportForAllProjects()
     return render(
         request,
         "indigo/admin/projects_data_quality_report.html",
         {
-            "fields_single": [
-                i
-                for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
-                if i.get("type") != "list"
-                # Because we only generate stats on public data anyway, running stats on the status field makes no sense.
-                and i.get("key") != "/status"
-                # Also, field level status fields don't make any sense either
-                and not i.get("key").endswith("/status")
-            ],
+            "fields_single": data_quality_report.get_possible_fields_for_single_field_statistics(),
+            "fields_list": data_quality_report.get_possible_fields_for_list_field_statistics(),
         },
     )
 
@@ -1087,23 +1080,50 @@ def admin_all_projects_data_quality_report(request):
 @permission_required("indigo.admin")
 def admin_all_projects_data_quality_report_field_single(request):
 
+    data_quality_report = DataQualityReportForAllProjects()
+
     field_path = request.GET.get("field", "")
     # Note we MUST explicitly check the field the user passed is in our pre-calculated Config list!
     # If we don't, we open ourselves up to SQL Injection security holes.
     fields = [
         i
-        for i in settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"]
-        if i.get("type") != "list" and i.get("key") == field_path
+        for i in data_quality_report.get_possible_fields_for_single_field_statistics()
+        if i.get("key") == field_path
     ]
     if not fields:
         raise Http404("Field does not exist")  #
     field = fields[0]
 
     data = {"field": field}
-    data.update(get_single_field_statistics_across_all_projects_for_field(field))
+    data.update(data_quality_report.get_single_field_statistics_for_field(field))
 
     return render(
         request, "indigo/admin/projects_data_quality_report_single_field.html", data,
+    )
+
+
+@permission_required("indigo.admin")
+def admin_all_projects_data_quality_report_field_list(request):
+
+    data_quality_report = DataQualityReportForAllProjects()
+
+    field_path = request.GET.get("field", "")
+    # Note we MUST explicitly check the field the user passed is in our pre-calculated Config list!
+    # If we don't, we open ourselves up to SQL Injection security holes.
+    fields = [
+        i
+        for i in data_quality_report.get_possible_fields_for_list_field_statistics()
+        if i.get("key") == field_path
+    ]
+    if not fields:
+        raise Http404("Field does not exist")  #
+    field = fields[0]
+
+    data = {"field": field}
+    data.update(data_quality_report.get_list_field_statistics_for_field(field))
+
+    return render(
+        request, "indigo/admin/projects_data_quality_report_list_field.html", data,
     )
 
 

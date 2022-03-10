@@ -194,6 +194,11 @@ urlpatterns = [
         name="indigo_admin_all_projects_data_quality_report_field_single",
     ),
     path(
+        "admin/project_data_quality_report/field_list",
+        views.admin_all_projects_data_quality_report_field_list,
+        name="indigo_admin_all_projects_data_quality_report_field_list",
+    ),
+    path(
         "admin/project_data_quality_report/list_projects_by_priority_highest/<priority>",
         views.admin_all_projects_data_quality_list_projects_by_priority_highest,
         name="indigo_admin_all_projects_data_quality_list_projects_by_priority_highest",
