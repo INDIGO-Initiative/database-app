@@ -101,6 +101,13 @@ FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHand
 
 JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT = "%Y-%m-%d"
 
+# New setting in Django 3.2
+# https://docs.djangoproject.com/en/4.0/releases/3.2/#customizing-type-of-auto-created-primary-keys
+# Set to what we were using before then so no database migrations needed at this time
+# and to prevent a surprise change in the default behavior that will come in future Django versions
+# (We may want to change to BigAutoField manually later tho)
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
 
 def load_guide_form_spec(filename):
     fn = os.path.join(
