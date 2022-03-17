@@ -2,3 +2,7 @@
 	path = data-standard
 	branch = main
 	url = https://github.com/INDIGO-Initiative/indigo-data-standard.git
+[submodule "data-standard-impact-wayfinder"]
+	path = data-standard-impact-wayfinder
+	branch = main
+	url = https://github.com/INDIGO-Initiative/indigo-data-standard-impact-wayfinder.git
