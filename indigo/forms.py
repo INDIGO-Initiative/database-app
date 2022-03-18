@@ -4,6 +4,7 @@ from indigo.utils import (
     validate_assessment_resource_id,
     validate_fund_id,
     validate_organisation_id,
+    validate_pipeline_id,
     validate_project_id,
 )
 
@@ -55,6 +56,12 @@ class AssessmentResourceNewForm(forms.Form):
     id = forms.SlugField(
         validators=[validate_assessment_resource_id], initial="INDIGO-ARES-0000",
     )
+    name = forms.CharField()
+    comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
+
+
+class PipelineNewForm(forms.Form):
+    id = forms.SlugField(validators=[validate_pipeline_id], initial="INDIGO-PL-0000")
     name = forms.CharField()
     comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
 

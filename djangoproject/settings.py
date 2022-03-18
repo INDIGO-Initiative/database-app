@@ -225,6 +225,15 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         ),
         "fields": load_json_schema_fields("assessment_resource.json"),
     },
+    "pipeline": {
+        "json_schema": load_json_schema("pipeline.json"),
+        "spreadsheet_form_guide": os.path.join(
+            BASE_DIR, "indigo", "spreadsheetform_guides", "pipeline_v001.xlsx",
+        ),
+        "spreadsheet_form_guide_spec": load_guide_form_spec("pipeline_v001.xlsx"),
+        "fields": load_json_schema_fields("pipeline.json"),
+        "filter_keys": load_json_schema_filter_keys("pipeline.json"),
+    },
 }
 
 CELERY_BROKER_URL = os.getenv("CLOUDAMQP_URL", "localhost")

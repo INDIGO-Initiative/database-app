@@ -8,6 +8,7 @@ from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
+    TYPE_PIPELINE_PUBLIC_ID,
 )
 
 
@@ -73,6 +74,10 @@ class Fund(BaseModel):
 
 class AssessmentResource(BaseModel):
     type_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+
+
+class Pipeline(BaseModel):
+    type_id = TYPE_PIPELINE_PUBLIC_ID
 
 
 class ProjectImport(models.Model):

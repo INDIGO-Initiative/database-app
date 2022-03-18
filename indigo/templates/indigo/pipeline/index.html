@@ -1,0 +1,18 @@
+{% extends 'indigo/base.html' %}
+
+{% block head_title %}Pipeline {{ data.public_id }}{% endblock %}
+
+{% block content %}
+
+<p>Pipeline {{ data.data_public.title }}</p>
+
+<table class="table">
+    <tr><th>ID</th><td>{{ data.public_id }}</td></tr>
+    {% for field in field_data %}
+        <tr><th>{{ field.title }}</th><td>{{ field.value }}</td></tr>
+    {% endfor %}
+</table>
+
+<p><a href="{% url 'indigo_pipeline_download_form' public_id=data.public_id %}" class="btn btn-primary">Download Form</a></p>
+
+{% endblock %}

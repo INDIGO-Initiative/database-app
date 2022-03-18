@@ -27,6 +27,7 @@ from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
+    TYPE_PIPELINE_PUBLIC_ID,
     TYPE_PROJECT_PUBLIC_ID,
 )
 from indigo.dataqualityreport import (
@@ -41,6 +42,7 @@ from .forms import (
     ModelImportForm,
     OrganisationImportForm,
     OrganisationNewForm,
+    PipelineNewForm,
     ProjectImportForm,
     ProjectImportStage2Form,
     ProjectMakeDisputedForm,
@@ -52,6 +54,7 @@ from .models import (
     AssessmentResource,
     Fund,
     Organisation,
+    Pipeline,
     Project,
     ProjectImport,
     Sandbox,
@@ -60,10 +63,12 @@ from .spreadsheetforms import (
     convert_assessment_resource_data_to_spreadsheetforms_data,
     convert_fund_data_to_spreadsheetforms_data,
     convert_organisation_data_to_spreadsheetforms_data,
+    convert_pipeline_data_to_spreadsheetforms_data,
     convert_project_data_to_spreadsheetforms_data,
     extract_edits_from_assessment_resource_spreadsheet,
     extract_edits_from_fund_spreadsheet,
     extract_edits_from_organisation_spreadsheet,
+    extract_edits_from_pipeline_spreadsheet,
     extract_edits_from_project_spreadsheet,
 )
 
@@ -337,6 +342,10 @@ class AssessmentResourceList(ModelList):
     _model = AssessmentResource
 
 
+class PipelineList(ModelList):
+    _model = Pipeline
+
+
 class ModelListDownload(View, ABC):
     def get(self, request):
         datas = self.__class__._model.objects.filter(
@@ -384,6 +393,10 @@ class OrganisationListDownload(ModelListDownload):
     _model = Organisation
 
 
+class PipelineListDownload(ModelListDownload):
+    _model = Pipeline
+
+
 class ModelIndex(View, ABC):
     def get(self, request, public_id):
         try:
@@ -412,6 +425,11 @@ class FundIndex(ModelIndex):
 class AssessmentResourceIndex(ModelIndex):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+
+
+class PipelineIndex(ModelIndex):
+    _model = Pipeline
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
 
 
 class ModelDownloadForm(View, ABC):
@@ -453,6 +471,13 @@ class FundDownloadForm(ModelDownloadForm):
     _type_public_id = TYPE_FUND_PUBLIC_ID
     _spreadsheet_file_name = "fund_public_v001.xlsx"
     _convert_function = convert_fund_data_to_spreadsheetforms_data
+
+
+class PipelineDownloadForm(ModelDownloadForm):
+    _model = Pipeline
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+    _spreadsheet_file_name = "pipeline_v001.xlsx"  # TODO should be a public file
+    _convert_function = convert_pipeline_data_to_spreadsheetforms_data
 
 
 ########################### Public - All
@@ -565,6 +590,10 @@ class API1AssessmentResourceList(API1ModelList):
     _model = AssessmentResource
 
 
+class API1PipelineList(API1ModelList):
+    _model = Pipeline
+
+
 class API1ModelIndex(View, ABC):
     def get(self, request, public_id):
         try:
@@ -590,6 +619,10 @@ class API1FundIndex(API1ModelIndex):
 
 class API1AssessmentResourceIndex(API1ModelIndex):
     _model = AssessmentResource
+
+
+class API1PipelineIndex(API1ModelIndex):
+    _model = Pipeline
 
 
 ########################### Admin
@@ -1608,6 +1641,11 @@ class AdminAssessmentResourceDownloadBlankForm(AdminModelDownloadBlankForm):
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
 
+class AdminPipelineDownloadBlankForm(AdminModelDownloadBlankForm):
+    _model = Pipeline
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+
+
 class AdminModelList(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
@@ -1634,6 +1672,11 @@ class AdminAssessmentResourceList(AdminModelList):
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
 
+class AdminPipelineList(AdminModelList):
+    _model = Pipeline
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+
+
 class AdminModelIndex(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
@@ -1658,6 +1701,10 @@ class AdminFundIndex(AdminModelIndex):
 
 class AdminAssessmentResourceIndex(AdminModelIndex):
     _model = AssessmentResource
+
+
+class AdminPipelineIndex(AdminModelIndex):
+    _model = Pipeline
 
 
 @permission_required("indigo.admin")
@@ -1725,6 +1772,15 @@ class AdminAssessmentResourceDownloadForm(AdminModelDownloadForm):
         return convert_assessment_resource_data_to_spreadsheetforms_data(
             data, public_only=False
         )
+
+
+class AdminPipelineDownloadForm(AdminModelDownloadForm):
+    _model = Pipeline
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+    _guide_file_name = "pipeline_v001.xlsx"
+
+    def _get_data_for_form(self, data):
+        return convert_pipeline_data_to_spreadsheetforms_data(data, public_only=False)
 
 
 class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
@@ -1813,6 +1869,16 @@ class AdminAssessmentResourceImportForm(AdminModelImportForm):
         )
 
 
+class AdminPipelineImportForm(AdminModelImportForm):
+    _model = Pipeline
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+    _form_class = ModelImportForm
+    _redirect_view = "indigo_admin_pipeline_index"
+
+    def _get_edits(self, data, import_json):
+        return extract_edits_from_pipeline_spreadsheet(data.record, import_json)
+
+
 class AdminModelNew(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
@@ -1872,6 +1938,13 @@ class AdminAssessmentResourceNew(AdminModelNew):
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
     _form_class = AssessmentResourceNewForm
     _redirect_view = "indigo_admin_assessment_resource_index"
+
+
+class AdminPipelineNew(AdminModelNew):
+    _model = Pipeline
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+    _form_class = PipelineNewForm
+    _redirect_view = "indigo_admin_pipeline_index"
 
 
 class AdminModelModerate(PermissionRequiredMixin, View, ABC):
@@ -1942,6 +2015,11 @@ class AdminAssessmentResourceModerate(AdminModelModerate):
     _redirect_view = "indigo_admin_assessment_resource_index"
 
 
+class AdminPipelineModerate(AdminModelModerate):
+    _model = Pipeline
+    _redirect_view = "indigo_admin_pipeline_index"
+
+
 class AdminModelHistory(PermissionRequiredMixin, View, ABC):
     permission_required = "indigo.admin"
 
@@ -1970,6 +2048,11 @@ class AdminFundHistory(AdminModelHistory):
 class AdminAssessmentResourceHistory(AdminModelHistory):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+
+
+class AdminPipelineHistory(AdminModelHistory):
+    _model = Pipeline
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
 
 
 ########################### Admin - sandboxes

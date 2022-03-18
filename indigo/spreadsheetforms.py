@@ -7,6 +7,7 @@ from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
+    TYPE_PIPELINE_PUBLIC_ID,
     TYPE_PROJECT_FUND_LIST,
     TYPE_PROJECT_ORGANISATION_LIST,
     TYPE_PROJECT_PUBLIC_ID,
@@ -201,6 +202,32 @@ def extract_edits_from_assessment_resource_spreadsheet(record, import_json):
     return [
         jsondataferret.pythonapi.newevent.NewEventData(
             TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
+            record,
+            import_json,
+            mode=jsondataferret.EVENT_MODE_MERGE,
+        )
+    ]
+
+
+def convert_pipeline_data_to_spreadsheetforms_data(pipeline, public_only=False):
+    # Get data
+    data = deepcopy(pipeline.data_public if public_only else pipeline.data_private)
+
+    # Add ID
+    data["id"] = pipeline.public_id
+
+    # Done
+    return data
+
+
+def extract_edits_from_pipeline_spreadsheet(record, import_json):
+    # Remove record ID
+    del import_json["id"]
+
+    # Return
+    return [
+        jsondataferret.pythonapi.newevent.NewEventData(
+            TYPE_PIPELINE_PUBLIC_ID,
             record,
             import_json,
             mode=jsondataferret.EVENT_MODE_MERGE,

@@ -1,0 +1,28 @@
+{% extends 'indigo/base.html' %}
+
+{% block head_title %}Pipelines{% endblock %}
+
+{% block content %}
+
+    {% if datas %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for pipeline in datas %}
+                <tr>
+                    <td><a href="{% url 'indigo_pipeline_index' public_id=pipeline.public_id %}">{{ pipeline.public_id }}</a></td>
+                    <td>{{ pipeline.data_public.name.value }}</td>
+                    <td><a href="{% url 'indigo_pipeline_index' public_id=pipeline.public_id %}" class="btn btn-primary">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No pipelines are available.</p>
+    {% endif %}
+
+    <p><a href="{% url 'indigo_pipeline_list_download' %}" class="btn btn-primary">Download List</a></p>
+
+{% endblock %}
