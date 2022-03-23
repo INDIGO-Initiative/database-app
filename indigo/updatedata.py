@@ -12,6 +12,9 @@ from indigo import (
     TYPE_FUND_PUBLIC_ID,
     TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST,
     TYPE_ORGANISATION_PUBLIC_ID,
+    TYPE_PIPELINE_ALWAYS_FILTER_KEYS_LIST,
+    TYPE_PIPELINE_FILTER_LISTS_LIST,
+    TYPE_PIPELINE_PUBLIC_ID,
     TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST,
     TYPE_PROJECT_FILTER_LISTS_LIST,
     TYPE_PROJECT_MAP_VALUES_PURPOSE_AND_CLASSIFICATIONS_POLICY_SECTOR,
@@ -23,6 +26,7 @@ from indigo.models import (
     AssessmentResource,
     Fund,
     Organisation,
+    Pipeline,
     Project,
     ProjectIncludesFund,
     ProjectIncludesOrganisation,
@@ -66,6 +70,13 @@ def update_all_data():
                 project, update_include_organisations=True, update_include_funds=True
             )
             update_project_low_priority(project)
+    except Type.DoesNotExist:
+        pass
+
+    try:
+        type_pipeline = Type.objects.get(public_id=TYPE_PIPELINE_PUBLIC_ID)
+        for pipeline in Record.objects.filter(type=type_pipeline):
+            update_pipeline(pipeline)
     except Type.DoesNotExist:
         pass
 
@@ -315,6 +326,42 @@ def update_fund(record, update_projects=False):
                 update_include_funds=False,
                 update_include_organisations=False,
             )
+
+
+def update_pipeline(record):
+
+    try:
+        pipeline = Pipeline.objects.get(public_id=record.public_id)
+    except Pipeline.DoesNotExist:
+        pipeline = Pipeline()
+        pipeline.public_id = record.public_id
+        pipeline.record = record
+
+    # Exists
+    pipeline.exists = record.cached_exists
+    # Status
+    record_status = (
+        record.cached_data.get("status", "").strip().lower()
+        if isinstance(record.cached_data.get("status", ""), str)
+        else ""
+    )
+    pipeline.status_public = record.cached_exists and record_status == "public"
+    # Public data
+    if pipeline.status_public:
+        pipeline.data_public = filter_values(
+            record.cached_data,
+            keys_with_own_status_subfield=settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+                "pipeline"
+            ).get("filter_keys"),
+            keys_always_remove=TYPE_PIPELINE_ALWAYS_FILTER_KEYS_LIST,
+            lists_with_items_with_own_status_subfield=TYPE_PIPELINE_FILTER_LISTS_LIST,
+        )
+    else:
+        pipeline.data_public = {}
+    # Private Data
+    pipeline.data_private = record.cached_data if record.cached_exists else {}
+    # Finally, Save
+    pipeline.save()
 
 
 def update_assessment_resource(record):

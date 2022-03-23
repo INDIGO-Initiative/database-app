@@ -1,0 +1,80 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Moderate Pipeline {{ record.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_pipeline_list' %}">Pipelines</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_pipeline_index' public_id=record.public_id  %}">Pipeline {{ record.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Moderate</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+
+    <h2>Moderate</h2>
+
+    {% if edits %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for edit in edits %}
+
+            <table>
+                {% for field_data in edit.field_datas %}
+                    <tr><th>Field: {{ field_data.title }}</th><td>{{ field_data.value }}</td></tr>
+                {% endfor %}
+                <tr>
+                    <th>Made</th>
+                    <td>
+                        {{ edit.creation_event.created }}{% if edit.creation_event.user %} by {{ edit.creation_event.user }}{% endif %}
+                    </td>
+                </tr>
+                {% if edit.creation_event.comment %}
+                    <tr>
+                        <th>Comment</th>
+                        <td>
+                            {{ edit.creation_event.comment|linebreaks }}
+                        </td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Action</th>
+                    <td>
+                        <label>
+                            <input type="radio" name="action_{{ edit.id }}" value="approve">
+                            Approve
+                        </label>
+                        <label>
+                            <input type="radio" name="action_{{ edit.id }}" value="reject">
+                            Reject
+                        </label>
+                        <label>
+                            <input type="radio" name="action_{{ edit.id }}" value="" checked>
+                            No Action
+                        </label>
+                    </td>
+                </tr>
+            </table>
+
+            {% endfor %}
+
+            <div>
+                <label>
+                    Comment for history
+                    <textarea name="comment"></textarea>
+                </label>
+            </div>
+
+            <input type="submit" value="Moderate" class="btn btn-primary">
+        </form>
+
+    {% else %}
+        <p>There is nothing to moderate, well done!</p>
+    {% endif %}
+
+
+{% endblock %}

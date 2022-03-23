@@ -45,3 +45,9 @@ def validate_organisation_id(value):
         raise ValidationError(
             "Organisation IDs should be of the format INDIGO-ORG-0000"
         )
+
+
+def validate_pipeline_id(value):
+    m = re.search("^INDIGO-PL-[0-9][0-9][0-9][0-9]$", value)
+    if not m:
+        raise ValidationError("Pipeline IDs should be of the format INDIGO-FUND-0000")

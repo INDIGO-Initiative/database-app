@@ -1,0 +1,39 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Pipelines{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Pipelines</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    {% if datas %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Pipeline Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for pipeline in datas %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_pipeline_index' public_id=pipeline.public_id %}">{{ pipeline.public_id }}</a></td>
+                    <td>{{ pipeline.cached_data.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_pipeline_index' public_id=pipeline.public_id %}" class="btn btn-primary">View</a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No pipelines are available.</p>
+    {% endif %}
+
+    <p><a href="{% url 'indigo_admin_pipeline_download_blank_form' %}" class="btn btn-primary">Download Blank Form</a></p>
+    <p><a href="{% url 'indigo_admin_pipeline_new' %}" class="btn btn-primary">New Pipeline</a></p>
+
+{% endblock %}

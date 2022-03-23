@@ -79,6 +79,23 @@ urlpatterns = [
         views.AssessmentResourceIndex.as_view(),
         name="indigo_assessment_resource_index",
     ),
+    ########################### Public - Pipeline
+    path("pipeline", views.PipelineList.as_view(), name="indigo_pipeline_list",),
+    path(
+        "pipeline_download",
+        views.PipelineListDownload.as_view(),
+        name="indigo_pipeline_list_download",
+    ),
+    path(
+        "pipeline/<public_id>",
+        views.PipelineIndex.as_view(),
+        name="indigo_pipeline_index",
+    ),
+    path(
+        "pipeline/<public_id>/download_form",
+        views.PipelineDownloadForm.as_view(),
+        name="indigo_pipeline_download_form",
+    ),
     ########################### Public - All
     path(
         "all_public_data_file_per_record.zip",
@@ -125,6 +142,17 @@ urlpatterns = [
         "api1/assessment_resource/<public_id>",
         views.API1AssessmentResourceIndex.as_view(),
         name="indigo_api1_assessment_resource_index",
+    ),
+    ########################### Public - Pipeline - API
+    path(
+        "api1/pipeline",
+        views.API1PipelineList.as_view(),
+        name="indigo_api1_pipeline_list",
+    ),
+    path(
+        "api1/pipeline/<public_id>",
+        views.API1PipelineIndex.as_view(),
+        name="indigo_api1_pipeline_index",
     ),
     ########################### Admin
     path("admin/", views.admin_index, name="indigo_admin_index"),
@@ -347,6 +375,47 @@ urlpatterns = [
         "admin/new_assessment_resource",
         views.AdminAssessmentResourceNew.as_view(),
         name="indigo_admin_assessment_resource_new",
+    ),
+    ########################### Admin - Pipeline
+    path(
+        "admin/pipeline_download_blank_form",
+        views.AdminPipelineDownloadBlankForm.as_view(),
+        name="indigo_admin_pipeline_download_blank_form",
+    ),
+    path(
+        "admin/pipeline",
+        views.AdminPipelineList.as_view(),
+        name="indigo_admin_pipeline_list",
+    ),
+    path(
+        "admin/pipeline/<public_id>",
+        views.AdminPipelineIndex.as_view(),
+        name="indigo_admin_pipeline_index",
+    ),
+    path(
+        "admin/pipeline/<public_id>/download_form",
+        views.AdminPipelineDownloadForm.as_view(),
+        name="indigo_admin_pipeline_download_form",
+    ),
+    path(
+        "admin/pipeline/<public_id>/import_form",
+        views.AdminPipelineImportForm.as_view(),
+        name="indigo_admin_pipeline_import_form",
+    ),
+    path(
+        "admin/pipeline/<public_id>/moderate",
+        views.AdminPipelineModerate.as_view(),
+        name="indigo_admin_pipeline_moderate",
+    ),
+    path(
+        "admin/pipeline/<public_id>/history",
+        views.AdminPipelineHistory.as_view(),
+        name="indigo_admin_pipeline_history",
+    ),
+    path(
+        "admin/new_pipeline",
+        views.AdminPipelineNew.as_view(),
+        name="indigo_admin_pipeline_new",
     ),
     ########################### Admin - Sandboxes
     path(

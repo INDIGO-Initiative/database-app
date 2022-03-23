@@ -2,6 +2,7 @@ TYPE_PROJECT_PUBLIC_ID = "project"
 TYPE_ORGANISATION_PUBLIC_ID = "organisation"
 TYPE_FUND_PUBLIC_ID = "fund"
 TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID = "assessment_resource"
+TYPE_PIPELINE_PUBLIC_ID = "pipeline"
 
 JSONDATAFERRET_HOOKS = "indigo.jsondataferret"
 
@@ -206,4 +207,20 @@ TYPE_FUND_ORGANISATION_REFERENCES_LIST = [
         "list_key": "/organisations",
         "item_organisation_id_key": "/organisation_id/value",
     },
+]
+
+
+TYPE_PIPELINE_ALWAYS_FILTER_KEYS_LIST = [
+    "/status",
+]
+
+TYPE_PIPELINE_FILTER_LISTS_LIST = [
+    "/delivery_locations",
+    "/service_provisions",
+    "/outcome_payment_commitments",
+    "/investments",
+    "/intermediary_services",
+    "/outcome_metrics",
+    "/documents",
+    "/sources",
 ]

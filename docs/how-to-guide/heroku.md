@@ -40,6 +40,7 @@ In the Django admin console, go to the `Jsondataferret` section, `Types` option.
 * public id: organisation, title: Organisation
 * public id: fund, title: Fund
 * public id: assessment_resource, title: Assessment Resource
+* public id: pipeline, title: Pipeline
 
 The app is now ready to use!
 
