@@ -33,6 +33,17 @@
             },
             "type": "object"
         },
+        "object_with_value_organisation_reference": {
+            "properties": {
+                "value": {
+                    "references-model": "organisation",
+                    "title": "(Value)",
+                    "type": "string"
+                }
+            },
+            "title": "Organisation ID",
+            "type": "object"
+        },
         "object_with_value_string": {
             "properties": {
                 "value": {
@@ -732,6 +743,8 @@
                     "organisation_id": {
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
+                                "title": "(Value)",
                                 "type": "string"
                             }
                         },

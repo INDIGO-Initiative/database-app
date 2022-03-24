@@ -91,6 +91,29 @@
             },
             "type": "object"
         },
+        "object_with_value_organisation_reference": {
+            "properties": {
+                "value": {
+                    "references-model": "organisation",
+                    "title": "(Value)",
+                    "type": "string"
+                }
+            },
+            "title": "Organisation ID",
+            "type": "object"
+        },
+        "object_with_value_organisation_references_comma_separated": {
+            "properties": {
+                "value": {
+                    "references-model": "organisation",
+                    "references-models-seperator": ",",
+                    "title": "(Value)",
+                    "type": "string"
+                }
+            },
+            "title": "Organisation ID",
+            "type": "object"
+        },
         "object_with_value_string": {
             "properties": {
                 "value": {
@@ -793,6 +816,7 @@
                         "description": "INDIGO identifier for the organisation that provides intermediary services for this project. See INDIGO Identifiers section.",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -1207,6 +1231,7 @@
                         "description": "INDIGO identifier for the organisation that invested upfront capital for this project. See INDIGO Identifiers section.",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -1910,6 +1935,7 @@
                         "description": "INDIGO identifier of the organisation that pays for social outcomes in this impact bond project. See INDIGO Identifiers section.",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -2108,6 +2134,7 @@
                         "description": "INDIGO ID of organisation that is paying for outcomes.",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -2151,6 +2178,7 @@
                         "description": "INDIGO ID of organisation that is receiving payment for outcomes.",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -2946,6 +2974,8 @@
                         "description": "Name(s) of organization(s) responsible for validating the achievement of outcomes or otherwise assessing the metrics underpinning outcome payments. One outcome can have two or more validators.",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
+                                "references-models-seperator": ",",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -3398,6 +3428,7 @@
                         "description": "INDIGO identifier of the organisation that provides services for this impact bond project. See INDIGO Identifiers section.",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -3858,6 +3889,7 @@
                         "description": "Id of the organization that pays for technical assistance.",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -3904,6 +3936,7 @@
                         "description": "Id of the organization that receives technical assistance. ",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -4032,6 +4065,7 @@
                         "description": "INDIGO ID of the organisation that receives the transaction. ",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -4047,6 +4081,7 @@
                         "description": "INDIGO ID of the organisation that makes the transaction.",
                         "properties": {
                             "value": {
+                                "references-model": "organisation",
                                 "title": "(Value)",
                                 "type": "string"
                             }
