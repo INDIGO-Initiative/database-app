@@ -8,8 +8,8 @@ from indigo import (
     TYPE_FUND_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PIPELINE_PUBLIC_ID,
+    TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST,
     TYPE_PROJECT_FUND_LIST,
-    TYPE_PROJECT_ORGANISATION_LIST,
     TYPE_PROJECT_PUBLIC_ID,
 )
 from indigo.processdata import set_values_if_agnostic_on_assessment_resource_data
@@ -49,7 +49,7 @@ def extract_edits_from_project_spreadsheet(record, import_json):
 
     # Remove Org data from the data we save
     jsonpointer.set_pointer(
-        import_json, TYPE_PROJECT_ORGANISATION_LIST["list_key"], None,
+        import_json, TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST["list_key"], None,
     )
 
     # Remove Fund data

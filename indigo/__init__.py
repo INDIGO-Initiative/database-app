@@ -32,7 +32,7 @@ TYPE_PROJECT_FILTER_LISTS_LIST = [
     "/scenarios",
 ]
 
-TYPE_PROJECT_ORGANISATION_LIST = {
+TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST = {
     # The key in the whole project data where we look for the list
     "list_key": "/organisations",
     # In each item in the list, the key where we find the public ID of the organisation

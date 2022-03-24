@@ -7,8 +7,9 @@ from django.conf import settings
 from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
+    TYPE_PIPELINE_PUBLIC_ID,
+    TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST,
     TYPE_PROJECT_FUND_LIST,
-    TYPE_PROJECT_ORGANISATION_LIST,
     TYPE_PROJECT_PUBLIC_ID,
 )
 from indigo.models import Fund, Organisation
@@ -98,10 +99,10 @@ def _get_organisations_list_json_for_dict_of_organisations(organisations, public
         this_org_data = {}
         jsonpointer.set_pointer(
             this_org_data,
-            TYPE_PROJECT_ORGANISATION_LIST["item_id_key"],
+            TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST["item_id_key"],
             organisation.public_id,
         )
-        for data_key, org_key in TYPE_PROJECT_ORGANISATION_LIST[
+        for data_key, org_key in TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST[
             "item_to_org_map"
         ].items():
             # We don't use jsonpointer.set_pointer here because it can't cope with setting "deep" paths
@@ -137,7 +138,9 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
         organisations, public_only
     )
     jsonpointer.set_pointer(
-        input_json, TYPE_PROJECT_ORGANISATION_LIST["list_key"], organisations_list
+        input_json,
+        TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST["list_key"],
+        organisations_list,
     )
 
     # Place funds in proper list place
@@ -200,8 +203,42 @@ def add_other_records_to_fund(fund_id, input_json, public_only=False):
     return input_json
 
 
+def add_other_records_to_pipeline(pipeline_id, input_json, public_only=False):
+    input_json = copy.deepcopy(input_json)
+
+    # Add ID
+    input_json["id"] = pipeline_id
+
+    # Organisations
+    ref_models = [
+        i
+        for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+            TYPE_PIPELINE_PUBLIC_ID
+        ).get("references_models")
+        if i.get("model") == "organisation"
+    ]
+    organisations = _add_organisation_info_in_place_where_possible_and_build_dict(
+        input_json, ref_models, public_only
+    )
+
+    # Put organisations list into organisations tab
+    organisations_list = _get_organisations_list_json_for_dict_of_organisations(
+        organisations, public_only
+    )
+    jsonpointer.set_pointer(
+        input_json,
+        TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST["list_key"],
+        organisations_list,
+    )
+
+    # Done
+    return input_json
+
+
 def does_organisation_data_contain_changes(organisation_model, new_data):
-    for data_key, org_key in TYPE_PROJECT_ORGANISATION_LIST["item_to_org_map"].items():
+    for data_key, org_key in TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST[
+        "item_to_org_map"
+    ].items():
         old_data_value = jsonpointer.resolve_pointer(
             organisation_model.record.cached_data, org_key, default=None
         )
