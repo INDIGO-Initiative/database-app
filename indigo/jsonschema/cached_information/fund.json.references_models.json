@@ -1,0 +1,8 @@
+[
+    {
+        "item_key": "/organisation_id/value",
+        "list_key": "/organisations",
+        "model": "organisation",
+        "multiple-seperator": null
+    }
+]

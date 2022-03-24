@@ -1,0 +1,68 @@
+[
+    {
+        "item_key": "/organisation_id/value",
+        "list_key": "/service_provisions",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/organisation_id/value",
+        "list_key": "/outcome_payment_commitments",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/organisation_id/value",
+        "list_key": "/investments",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/organisation_id/value",
+        "list_key": "/intermediary_services",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/sending_organisation_id/value",
+        "list_key": "/transactions",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/receiving_organisation_id/value",
+        "list_key": "/transactions",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/funding_organisation_id/value",
+        "list_key": "/technical_assistances",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/recipient_organisation_id/value",
+        "list_key": "/technical_assistances",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/outcomes_validator_organisation_ids/value",
+        "list_key": "/results",
+        "model": "organisation",
+        "multiple-seperator": ","
+    },
+    {
+        "item_key": "/payer_organisation_id/value",
+        "list_key": "/outcome_payments",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/recipient_organisation_id/value",
+        "list_key": "/outcome_payments",
+        "model": "organisation",
+        "multiple-seperator": null
+    }
+]

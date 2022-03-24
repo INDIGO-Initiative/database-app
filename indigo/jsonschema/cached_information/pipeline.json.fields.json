@@ -942,5 +942,28 @@
         "key": "/documents",
         "title": "Documents",
         "type": "list"
+    },
+    {
+        "fields": [
+            {
+                "key": "/project/value",
+                "title": "Id of project"
+            },
+            {
+                "key": "/source_ids",
+                "title": "Sources"
+            },
+            {
+                "key": "/notes",
+                "title": "Notes"
+            },
+            {
+                "key": "/status",
+                "title": "Status"
+            }
+        ],
+        "key": "/projects",
+        "title": "Projects",
+        "type": "list"
     }
 ]

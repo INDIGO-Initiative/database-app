@@ -157,6 +157,18 @@ def load_json_schema_filter_keys(filename):
         return json.load(fp)
 
 
+def load_json_schema_references_models(filename):
+    fn = os.path.join(
+        BASE_DIR,
+        "indigo",
+        "jsonschema",
+        "cached_information",
+        filename + ".references_models.json",
+    )
+    with open(fn) as fp:
+        return json.load(fp)
+
+
 JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
         "json_schema": load_json_schema("project.json"),
@@ -185,6 +197,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             "spreadsheetform_guides",
             "project_data_quality_report_public.xlsx",
         ),
+        "references_models": load_json_schema_references_models("project.json"),
     },
     "organisation": {
         "json_schema": load_json_schema("organisation.json"),
@@ -211,6 +224,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             3: load_guide_form_spec("fund_v003.xlsx"),
         },
         "fields": load_json_schema_fields("fund.json"),
+        "references_models": load_json_schema_references_models("fund.json"),
     },
     "assessment_resource": {
         "json_schema": load_json_schema("assessment_resource.json"),
@@ -233,6 +247,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         "spreadsheet_form_guide_spec": load_guide_form_spec("pipeline_v001.xlsx"),
         "fields": load_json_schema_fields("pipeline.json"),
         "filter_keys": load_json_schema_filter_keys("pipeline.json"),
+        "references_models": load_json_schema_references_models("pipeline.json"),
     },
 }
 

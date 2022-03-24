@@ -82,3 +82,13 @@ def cache_json_schema_info():
         )
         with open(out_filename_filter_keys, "w") as fp:
             json.dump(data.get_priorities(), fp, sort_keys=True, indent=4)
+        # References Models
+        out_filename_references_models = os.path.join(
+            settings.BASE_DIR,
+            "indigo",
+            "jsonschema",
+            "cached_information",
+            filename_bits[-1] + ".references_models.json",
+        )
+        with open(out_filename_references_models, "w") as fp:
+            json.dump(data.get_references_to_model(), fp, sort_keys=True, indent=4)

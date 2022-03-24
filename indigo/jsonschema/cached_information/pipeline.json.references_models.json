@@ -1,0 +1,32 @@
+[
+    {
+        "item_key": "/organisation_id/value",
+        "list_key": "/service_provisions",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/organisation_id/value",
+        "list_key": "/outcome_payment_commitments",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/organisation_id/value",
+        "list_key": "/investments",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/organisation_id/value",
+        "list_key": "/intermediary_services",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/project/value",
+        "list_key": "/projects",
+        "model": "project",
+        "multiple-seperator": null
+    }
+]

@@ -62,7 +62,7 @@ def update_all_data():
     except Type.DoesNotExist:
         pass
 
-    # Because Projects can include Organisation & Fund data, we update projects last
+    # Because Projects can include Organisation & Fund data, we update projects after
     try:
         type_project = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
         for project in Record.objects.filter(type=type_project):
@@ -73,6 +73,7 @@ def update_all_data():
     except Type.DoesNotExist:
         pass
 
+    # Because Pipeline can include Organisation & Project data, we update Pipeline after
     try:
         type_pipeline = Type.objects.get(public_id=TYPE_PIPELINE_PUBLIC_ID)
         for pipeline in Record.objects.filter(type=type_pipeline):
@@ -348,18 +349,31 @@ def update_pipeline(record):
     pipeline.status_public = record.cached_exists and record_status == "public"
     # Public data
     if pipeline.status_public:
-        pipeline.data_public = filter_values(
-            record.cached_data,
-            keys_with_own_status_subfield=settings.JSONDATAFERRET_TYPE_INFORMATION.get(
-                "pipeline"
-            ).get("filter_keys"),
-            keys_always_remove=TYPE_PIPELINE_ALWAYS_FILTER_KEYS_LIST,
-            lists_with_items_with_own_status_subfield=TYPE_PIPELINE_FILTER_LISTS_LIST,
+        pipeline.data_public = indigo.processdata.add_other_records_to_pipeline(
+            record.public_id,
+            filter_values(
+                record.cached_data,
+                keys_with_own_status_subfield=settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+                    "pipeline"
+                ).get(
+                    "filter_keys"
+                ),
+                keys_always_remove=TYPE_PIPELINE_ALWAYS_FILTER_KEYS_LIST,
+                lists_with_items_with_own_status_subfield=TYPE_PIPELINE_FILTER_LISTS_LIST,
+            ),
+            public_only=True,
         )
+
     else:
         pipeline.data_public = {}
     # Private Data
-    pipeline.data_private = record.cached_data if record.cached_exists else {}
+    pipeline.data_private = (
+        indigo.processdata.add_other_records_to_pipeline(
+            record.public_id, record.cached_data, public_only=False
+        )
+        if record.cached_exists
+        else {}
+    )
     # Finally, Save
     pipeline.save()
 
