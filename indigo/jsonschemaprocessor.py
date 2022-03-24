@@ -111,3 +111,41 @@ class JsonSchemaProcessor:
             )
 
         return out
+
+    def get_references_to_model(self):
+        return self._get_references_to_model_worker(
+            json_schema=self._json_schema_compiled, start_pointer=""
+        )
+
+    def _get_references_to_model_worker(self, json_schema, start_pointer):
+        out = []
+        our_json_schema = jsonpointer.resolve_pointer(json_schema, start_pointer)
+        if our_json_schema.get("type") == "object":
+            for key in our_json_schema.get("properties").keys():
+                out.extend(
+                    self._get_references_to_model_worker(
+                        json_schema=json_schema,
+                        start_pointer=start_pointer + "/properties/" + key,
+                    )
+                )
+        if our_json_schema.get("type") == "array":
+            out.extend(
+                self._get_references_to_model_worker(
+                    json_schema=json_schema, start_pointer=start_pointer + "/items",
+                )
+            )
+
+        if our_json_schema.get("references-model"):
+            key_bits = start_pointer.replace("/properties/", "/").split("/items", 2)
+            out.append(
+                {
+                    "list_key": key_bits[0],
+                    "item_key": key_bits[1],
+                    "model": our_json_schema.get("references-model"),
+                    "multiple-seperator": our_json_schema.get(
+                        "references-models-seperator"
+                    ),
+                }
+            )
+
+        return out
