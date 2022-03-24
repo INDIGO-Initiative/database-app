@@ -32,62 +32,6 @@ TYPE_PROJECT_FILTER_LISTS_LIST = [
     "/scenarios",
 ]
 
-TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [
-    {
-        "list_key": "/service_provisions",
-        "item_organisation_id_key": "/organisation_id/value",
-    },
-    {
-        "list_key": "/outcome_payment_commitments",
-        "item_organisation_id_key": "/organisation_id/value",
-    },
-    {"list_key": "/investments", "item_organisation_id_key": "/organisation_id/value"},
-    {
-        "list_key": "/intermediary_services",
-        "item_organisation_id_key": "/organisation_id/value",
-    },
-    {
-        "list_key": "/transactions",
-        "item_organisation_id_key": "/sending_organisation_id/value",
-    },
-    {
-        "list_key": "/transactions",
-        "item_organisation_id_key": "/receiving_organisation_id/value",
-    },
-    {
-        "list_key": "/grants",
-        "item_organisation_id_key": "/recipient_organisation_id/value",
-    },
-    {
-        "list_key": "/grants",
-        "item_organisation_id_key": "/funding_organisation_id/value",
-    },
-    {
-        "list_key": "/technical_assistances",
-        "item_organisation_id_key": "/recipient_organisation_id/value",
-    },
-    {
-        "list_key": "/technical_assistances",
-        "item_organisation_id_key": "/funding_organisation_id/value",
-    },
-    {
-        "list_key": "/outcome_payments",
-        "item_organisation_id_key": "/payer_organisation_id/value",
-    },
-    {
-        "list_key": "/outcome_payments",
-        "item_organisation_id_key": "/recipient_organisation_id/value",
-    },
-]
-
-TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST = [
-    {
-        "list_key": "/results",
-        "item_organisation_id_key": "/outcomes_validator_organisation_ids/value",
-    },
-    # TODO the comma separated orgs in outcome funds tab
-]
-
 TYPE_PROJECT_ORGANISATION_LIST = {
     # The key in the whole project data where we look for the list
     "list_key": "/organisations",
@@ -200,13 +144,6 @@ TYPE_FUND_ALWAYS_FILTER_KEYS_LIST = [
 
 TYPE_FUND_FILTER_LISTS_LIST = [
     "/documents",
-]
-
-TYPE_FUND_ORGANISATION_REFERENCES_LIST = [
-    {
-        "list_key": "/organisations",
-        "item_organisation_id_key": "/organisation_id/value",
-    },
 ]
 
 

@@ -6,13 +6,36 @@ from django.conf import settings
 
 from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
-    TYPE_FUND_ORGANISATION_REFERENCES_LIST,
+    TYPE_FUND_PUBLIC_ID,
     TYPE_PROJECT_FUND_LIST,
-    TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST,
     TYPE_PROJECT_ORGANISATION_LIST,
-    TYPE_PROJECT_ORGANISATION_REFERENCES_LIST,
+    TYPE_PROJECT_PUBLIC_ID,
 )
 from indigo.models import Fund, Organisation
+
+TYPE_PROJECT_ORGANISATION_REFERENCES_LIST = [
+    i
+    for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PROJECT_PUBLIC_ID).get(
+        "references_models"
+    )
+    if i.get("model") == "organisation" and not i.get("multiple-seperator")
+]
+
+TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST = [
+    i
+    for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PROJECT_PUBLIC_ID).get(
+        "references_models"
+    )
+    if i.get("model") == "organisation" and i.get("multiple-seperator") == ","
+]
+
+TYPE_FUND_ORGANISATION_REFERENCES_LIST = [
+    i
+    for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_FUND_PUBLIC_ID).get(
+        "references_models"
+    )
+    if i.get("model") == "organisation" and not i.get("multiple-seperator")
+]
 
 
 def add_other_records_to_project(project_id, input_json, public_only=False):
@@ -32,7 +55,7 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
         if isinstance(data_list, list) and data_list:
             for item in data_list:
                 field_value = jsonpointer.resolve_pointer(
-                    item, config["item_organisation_id_key"], default=None
+                    item, config["item_key"], default=None
                 )
                 if field_value and field_value.strip():
                     field_values = field_value.split(",")
@@ -55,7 +78,7 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
         if isinstance(data_list, list) and data_list:
             for item in data_list:
                 field_value = jsonpointer.resolve_pointer(
-                    item, config["item_organisation_id_key"], default=None
+                    item, config["item_key"], default=None
                 )
                 if field_value and field_value.strip():
                     try:
@@ -70,7 +93,7 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
                         )
                         spreadsheetforms.util.json_set_deep_value(
                             item,
-                            "organisation_names" + config["item_organisation_id_key"],
+                            "organisation_names" + config["item_key"],
                             jsonpointer.resolve_pointer(
                                 organisation_data, "/name/value", default=None
                             ),
@@ -156,7 +179,7 @@ def add_other_records_to_fund(fund_id, input_json, public_only=False):
         if isinstance(data_list, list) and data_list:
             for item in data_list:
                 field_value = jsonpointer.resolve_pointer(
-                    item, config["item_organisation_id_key"], default=None
+                    item, config["item_key"], default=None
                 )
                 if field_value and field_value.strip():
                     try:
@@ -170,7 +193,7 @@ def add_other_records_to_fund(fund_id, input_json, public_only=False):
                         )
                         spreadsheetforms.util.json_set_deep_value(
                             item,
-                            "organisation_names" + config["item_organisation_id_key"],
+                            "organisation_names" + config["item_key"],
                             jsonpointer.resolve_pointer(
                                 organisation_data, "/name/value", default=None
                             ),
@@ -204,7 +227,7 @@ def find_unique_organisation_ids_referenced_in_project_data(input_json):
         if isinstance(data_list, list) and data_list:
             for item in data_list:
                 field_value = jsonpointer.resolve_pointer(
-                    item, config["item_organisation_id_key"], default=None
+                    item, config["item_key"], default=None
                 )
                 if field_value and field_value.strip():
                     org_ids.append(field_value)
@@ -217,7 +240,7 @@ def find_unique_organisation_ids_referenced_in_project_data(input_json):
         if isinstance(data_list, list) and data_list:
             for item in data_list:
                 field_value = jsonpointer.resolve_pointer(
-                    item, config["item_organisation_id_key"], default=None
+                    item, config["item_key"], default=None
                 )
                 if field_value and field_value.strip():
                     field_values = field_value.split(",")
