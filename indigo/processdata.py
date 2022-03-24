@@ -29,79 +29,67 @@ TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST = [
     if i.get("model") == "organisation" and i.get("multiple-seperator") == ","
 ]
 
-TYPE_FUND_ORGANISATION_REFERENCES_LIST = [
-    i
-    for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_FUND_PUBLIC_ID).get(
-        "references_models"
-    )
-    if i.get("model") == "organisation" and not i.get("multiple-seperator")
-]
 
-
-def add_other_records_to_project(project_id, input_json, public_only=False):
-    input_json = copy.deepcopy(input_json)
-
-    # Add ID
-    input_json["id"] = project_id
-
-    # Organisations
+def _add_organisation_info_in_place_where_possible_and_build_dict(
+    input_json, references_models_list, public_only
+):
+    """Adds organisation info in place (so alters input_json) and return dict of organisations."""
     organisations = {}
 
-    # Look up organisations and add to list (where we can't add more info in place)
-    for config in TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST:
+    # For each field we look in ....
+    for config in references_models_list:
         data_list = jsonpointer.resolve_pointer(
             input_json, config["list_key"], default=None
         )
+        # Currently each field is inside a list - so get list and look in each item ...
         if isinstance(data_list, list) and data_list:
             for item in data_list:
+                # Get value of field ...
                 field_value = jsonpointer.resolve_pointer(
                     item, config["item_key"], default=None
                 )
                 if field_value and field_value.strip():
-                    field_values = field_value.split(",")
-                    for org_id in [
-                        org_id.strip() for org_id in field_values if org_id.strip()
-                    ]:
+                    # Extract org-ids from value of field ...
+                    if config["multiple-seperator"]:
+                        org_ids = [
+                            s.strip()
+                            for s in field_value.split(config["multiple-seperator"])
+                            if s.strip()
+                        ]
+                        add_in_place = False
+                    else:
+                        org_ids = [field_value.strip()]
+                        add_in_place = True
+                    # For each org-id ...
+                    for org_id in org_ids:
                         try:
+                            # Get information and store ...
                             organisation = Organisation.objects.get(
                                 public_id=org_id, exists=True, status_public=True
                             )
                             organisations[organisation.public_id] = organisation
+                            # If add in place in allowed, do so ...
+                            if add_in_place:
+                                organisation_data = (
+                                    organisation.data_public
+                                    if public_only
+                                    else organisation.data_private
+                                )
+                                spreadsheetforms.util.json_set_deep_value(
+                                    item,
+                                    "organisation_names" + config["item_key"],
+                                    jsonpointer.resolve_pointer(
+                                        organisation_data, "/name/value", default=None
+                                    ),
+                                )
                         except Organisation.DoesNotExist:
                             pass
 
-    # Look up Organisations, add to list and add more info in place
-    for config in TYPE_PROJECT_ORGANISATION_REFERENCES_LIST:
-        data_list = jsonpointer.resolve_pointer(
-            input_json, config["list_key"], default=None
-        )
-        if isinstance(data_list, list) and data_list:
-            for item in data_list:
-                field_value = jsonpointer.resolve_pointer(
-                    item, config["item_key"], default=None
-                )
-                if field_value and field_value.strip():
-                    try:
-                        organisation = Organisation.objects.get(
-                            public_id=field_value, exists=True, status_public=True
-                        )
-                        organisations[organisation.public_id] = organisation
-                        organisation_data = (
-                            organisation.data_public
-                            if public_only
-                            else organisation.data_private
-                        )
-                        spreadsheetforms.util.json_set_deep_value(
-                            item,
-                            "organisation_names" + config["item_key"],
-                            jsonpointer.resolve_pointer(
-                                organisation_data, "/name/value", default=None
-                            ),
-                        )
-                    except Organisation.DoesNotExist:
-                        pass
+    # Finally return organisations we found
+    return organisations
 
-    # Put organisations list into organisations tab
+
+def _get_organisations_list_json_for_dict_of_organisations(organisations, public_only):
     organisations_list = []
     for org_id, organisation in sorted(organisations.items(), key=lambda x: x[0]):
         organisation_data = (
@@ -123,6 +111,31 @@ def add_other_records_to_project(project_id, input_json, public_only=False):
                 jsonpointer.resolve_pointer(organisation_data, org_key, default=None),
             )
         organisations_list.append(this_org_data)
+    return organisations_list
+
+
+def add_other_records_to_project(project_id, input_json, public_only=False):
+    input_json = copy.deepcopy(input_json)
+
+    # Add ID
+    input_json["id"] = project_id
+
+    # Organisations
+    ref_models = [
+        i
+        for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+            TYPE_PROJECT_PUBLIC_ID
+        ).get("references_models")
+        if i.get("model") == "organisation"
+    ]
+    organisations = _add_organisation_info_in_place_where_possible_and_build_dict(
+        input_json, ref_models, public_only
+    )
+
+    # Put organisations list into organisations tab
+    organisations_list = _get_organisations_list_json_for_dict_of_organisations(
+        organisations, public_only
+    )
     jsonpointer.set_pointer(
         input_json, TYPE_PROJECT_ORGANISATION_LIST["list_key"], organisations_list
     )
@@ -172,34 +185,16 @@ def add_other_records_to_fund(fund_id, input_json, public_only=False):
     input_json["id"] = fund_id
 
     # Look up Organisations, add more info in place
-    for config in TYPE_FUND_ORGANISATION_REFERENCES_LIST:
-        data_list = jsonpointer.resolve_pointer(
-            input_json, config["list_key"], default=None
+    ref_models = [
+        i
+        for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_FUND_PUBLIC_ID).get(
+            "references_models"
         )
-        if isinstance(data_list, list) and data_list:
-            for item in data_list:
-                field_value = jsonpointer.resolve_pointer(
-                    item, config["item_key"], default=None
-                )
-                if field_value and field_value.strip():
-                    try:
-                        organisation = Organisation.objects.get(
-                            public_id=field_value, exists=True, status_public=True
-                        )
-                        organisation_data = (
-                            organisation.data_public
-                            if public_only
-                            else organisation.data_private
-                        )
-                        spreadsheetforms.util.json_set_deep_value(
-                            item,
-                            "organisation_names" + config["item_key"],
-                            jsonpointer.resolve_pointer(
-                                organisation_data, "/name/value", default=None
-                            ),
-                        )
-                    except Organisation.DoesNotExist:
-                        pass
+        if i.get("model") == "organisation"
+    ]
+    _add_organisation_info_in_place_where_possible_and_build_dict(
+        input_json, ref_models, public_only
+    )
 
     # Done
     return input_json
