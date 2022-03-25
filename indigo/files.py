@@ -16,6 +16,7 @@ from indigo.models import Fund, Organisation, Project
 from .spreadsheetforms import (
     convert_fund_data_to_spreadsheetforms_data,
     convert_organisation_data_to_spreadsheetforms_data,
+    convert_pipeline_data_to_spreadsheetforms_data,
     convert_project_data_to_spreadsheetforms_data,
 )
 
@@ -102,6 +103,25 @@ def update_public_files_for_fund(fund):
         _remove_public_files_for_model(fund, "fund")
 
 
+def update_public_files_for_pipeline(pipeline):
+    if pipeline.exists and pipeline.status_public:
+
+        _write_public_files_for_model(
+            pipeline,
+            "pipeline",
+            convert_pipeline_data_to_spreadsheetforms_data(pipeline, public_only=True),
+            os.path.join(
+                settings.BASE_DIR,
+                "indigo",
+                "spreadsheetform_guides",
+                "pipeline_v001.xlsx",  # TODO should be public
+            ),
+        )
+    else:
+
+        _remove_public_files_for_model(pipeline, "pipeline")
+
+
 def update_public_archive_files():
 
     _update_public_archive_files_file_per_record_in_zip()
@@ -143,6 +163,9 @@ def _update_public_archive_files_file_per_data_type_csv_in_zip():
             Fund.objects.filter(exists=True, status_public=True).order_by("public_id"),
             zipfile,
         )
+
+        # Pipeline
+        # TODO when ready to launch
 
     # Move to Django Storage
     default_storage_name = "public/all_data_per_data_type_csv.zip"
@@ -248,6 +271,9 @@ def _update_public_archive_files_file_per_record_in_zip():
                 "public/project/" + project.public_id + ".xlsx",
                 "project/" + project.public_id + ".xlsx",
             )
+
+        # Pipeline
+        # TODO when ready to launch
 
     # Move to Django Storage
     default_storage.delete("public/all_data_as_spreadsheets.zip")
