@@ -58,7 +58,10 @@ class Command(BaseCommand):
                         },
                         "purpose_and_classifications": {
                             "secondary_sdg_goals": {
-                                "value": row[8].strip(),
+                                "value": row[8]
+                                .strip()
+                                .replace("Goal", "")
+                                .replace("/", ","),
                                 "status": "PUBLIC",
                             },
                             "social_challenge": {
@@ -67,6 +70,10 @@ class Command(BaseCommand):
                             },
                             "intervention": {
                                 "value": row[15].strip(),
+                                "status": "PUBLIC",
+                            },
+                            "policy_sector": {
+                                "other": {"value": row[7].strip()},
                                 "status": "PUBLIC",
                             },
                         },
@@ -95,7 +102,7 @@ class Command(BaseCommand):
                         "overall_project_finance": {
                             "maximum_potential_outcome_payment_v2": {
                                 "amount": {
-                                    "value": row[28].strip(),
+                                    "value": row[28].strip().replace("€", ""),
                                     "status": "PUBLIC",
                                 },
                                 "currency": {
@@ -104,9 +111,33 @@ class Command(BaseCommand):
                                 },
                             }
                         },
+                        "misc1": {
+                            "type_instrument_project": {
+                                "other": {"value": row[4].strip()},
+                                "status": "PUBLIC",
+                            }
+                        },
+                        "misc4": {
+                            "role_domestic_government": {
+                                "other": {"value": row[27].strip()},
+                                "status": "PUBLIC",
+                            }
+                        },
+                        "misc5": {
+                            "service_providers_identified_selected": {
+                                "other": {"value": row[35].strip()},
+                                "status": "PUBLIC",
+                            }
+                        },
                         "misc6": {
                             "feasibility_study": {
                                 "value": row[33].strip(),
+                                "status": "PUBLIC",
+                            }
+                        },
+                        "misc7": {
+                            "proposed_financing_instruments": {
+                                "other": {"value": row[32].strip()},
                                 "status": "PUBLIC",
                             }
                         },
@@ -218,11 +249,11 @@ class Command(BaseCommand):
                             }
                         )
 
-                    # TODO Column e 4 2.2 Type of instrument and project
-                    # TODO Column h 7 2.5 Sector
-                    # TODO Column ab 27 4.7 What is or will be the role of the domestic government? (select all that apply)
-                    # TODO Column ag 32 5.5 Proposed financing instruments (select all that apply)
-                    # TODO Column aj 35 6.3 How were service providers identified and selected?
+                    # TODO Column e 4 2.2 Type of instrument and project (other only currently)
+                    # TODO Column h 7 2.5 Sector (other only currently)
+                    # TODO Column ab 27 4.7 What is or will be the role of the domestic government? (select all that apply) (other only currently)
+                    # TODO Column ag 32 5.5 Proposed financing instruments (select all that apply) (other only currently)
+                    # TODO Column aj 35 6.3 How were service providers identified and selected? (other only currently)
 
                     writes.append(
                         NewEventData(
