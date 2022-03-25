@@ -114,7 +114,7 @@ def update_public_files_for_pipeline(pipeline):
                 settings.BASE_DIR,
                 "indigo",
                 "spreadsheetform_guides",
-                "pipeline_v001.xlsx",  # TODO should be public
+                "pipeline_public_v001.xlsx",
             ),
         )
     else:

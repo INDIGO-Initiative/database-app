@@ -1,0 +1,56 @@
+{
+    "worksheets": {
+        "Fields with Multiple Values": {
+            "down_configs": {
+                "list_fields": [
+                    {
+                        "column": 1,
+                        "column_letter": "A",
+                        "coordinate": "A10",
+                        "item_path": "field/title",
+                        "list_path": "list_fields",
+                        "mode": "down",
+                        "row": 10
+                    },
+                    {
+                        "column": 2,
+                        "column_letter": "B",
+                        "coordinate": "B10",
+                        "item_path": "count_public_projects_with_at_least_one_public_value",
+                        "list_path": "list_fields",
+                        "mode": "down",
+                        "row": 10
+                    }
+                ]
+            },
+            "right_configs": {},
+            "single_configs": {}
+        },
+        "Fields with Single value": {
+            "down_configs": {
+                "single_fields": [
+                    {
+                        "column": 1,
+                        "column_letter": "A",
+                        "coordinate": "A8",
+                        "item_path": "field/title",
+                        "list_path": "single_fields",
+                        "mode": "down",
+                        "row": 8
+                    },
+                    {
+                        "column": 2,
+                        "column_letter": "B",
+                        "coordinate": "B8",
+                        "item_path": "count_public_projects_with_public_value",
+                        "list_path": "single_fields",
+                        "mode": "down",
+                        "row": 8
+                    }
+                ]
+            },
+            "right_configs": {},
+            "single_configs": {}
+        }
+    }
+}
