@@ -11,9 +11,10 @@ from indigo.files import (
     update_public_archive_files,
     update_public_files_for_fund,
     update_public_files_for_organisation,
+    update_public_files_for_pipeline,
     update_public_files_for_project,
 )
-from indigo.models import Fund, Organisation, Project, ProjectImport
+from indigo.models import Fund, Organisation, Pipeline, Project, ProjectImport
 from indigo.updatedata import update_project_low_priority
 
 
@@ -96,6 +97,11 @@ def task_update_public_files_for_organisation(self, organisation_id):
 @app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
 def task_update_public_files_for_fund(self, fund_id):
     update_public_files_for_fund(Fund.objects.get(public_id=fund_id))
+
+
+@app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)
+def task_update_public_files_for_pipeline(self, pipeline_id):
+    update_public_files_for_pipeline(Pipeline.objects.get(public_id=pipeline_id))
 
 
 @app.task(bind=True, acks_late=True, acks_on_failure_or_timeout=False)

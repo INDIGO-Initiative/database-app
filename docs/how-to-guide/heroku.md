@@ -69,6 +69,7 @@ The commands:
     python manage.py updateprojectfiles
     python manage.py updateorganisationfile
     python manage.py updatefundfiles
+    python manage.py updatepipelinefiles
     python manage.py updatearchivefiles
 
 Should be run once per day.

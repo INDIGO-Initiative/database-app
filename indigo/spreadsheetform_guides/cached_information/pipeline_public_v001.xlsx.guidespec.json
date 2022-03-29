@@ -106,15 +106,6 @@
                         "list_path": "delivery_locations",
                         "mode": "down",
                         "row": 4
-                    },
-                    {
-                        "column": 12,
-                        "column_letter": "L",
-                        "coordinate": "L4",
-                        "item_path": "status",
-                        "list_path": "delivery_locations",
-                        "mode": "down",
-                        "row": 4
                     }
                 ]
             },
@@ -150,15 +141,6 @@
                         "list_path": "documents",
                         "mode": "down",
                         "row": 4
-                    },
-                    {
-                        "column": 4,
-                        "column_letter": "D",
-                        "coordinate": "D4",
-                        "item_path": "status",
-                        "list_path": "documents",
-                        "mode": "down",
-                        "row": 4
                     }
                 ]
             },
@@ -172,1026 +154,746 @@
                 "alternative_names/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C6",
+                    "coordinate": "C4",
                     "mode": "single",
                     "path": "alternative_names/value",
-                    "row": 6
-                },
-                "contact/email/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D10",
-                    "mode": "single",
-                    "path": "contact/email/status",
-                    "row": 10
+                    "row": 4
                 },
                 "contact/email/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C10",
+                    "coordinate": "C8",
                     "mode": "single",
                     "path": "contact/email/value",
-                    "row": 10
-                },
-                "contact/name/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D9",
-                    "mode": "single",
-                    "path": "contact/name/status",
-                    "row": 9
+                    "row": 8
                 },
                 "contact/name/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C9",
+                    "coordinate": "C7",
                     "mode": "single",
                     "path": "contact/name/value",
-                    "row": 9
-                },
-                "dates/design_process_began/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D45",
-                    "mode": "single",
-                    "path": "dates/design_process_began/status",
-                    "row": 45
+                    "row": 7
                 },
                 "dates/design_process_began/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C45",
+                    "coordinate": "C43",
                     "mode": "single",
                     "path": "dates/design_process_began/value",
-                    "row": 45
-                },
-                "dates/expected_development_time/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D43",
-                    "mode": "single",
-                    "path": "dates/expected_development_time/status",
                     "row": 43
                 },
                 "dates/expected_development_time/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C43",
+                    "coordinate": "C41",
                     "mode": "single",
                     "path": "dates/expected_development_time/value",
-                    "row": 43
-                },
-                "dates/expected_launch_date/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D42",
-                    "mode": "single",
-                    "path": "dates/expected_launch_date/status",
-                    "row": 42
+                    "row": 41
                 },
                 "dates/expected_launch_date/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C42",
+                    "coordinate": "C40",
                     "mode": "single",
                     "path": "dates/expected_launch_date/value",
-                    "row": 42
-                },
-                "dates/expected_length/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D44",
-                    "mode": "single",
-                    "path": "dates/expected_length/status",
-                    "row": 44
+                    "row": 40
                 },
                 "dates/expected_length/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C44",
+                    "coordinate": "C42",
                     "mode": "single",
                     "path": "dates/expected_length/value",
-                    "row": 44
+                    "row": 42
                 },
                 "dates/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C47",
+                    "coordinate": "C45",
                     "mode": "single",
                     "path": "dates/notes",
-                    "row": 47
+                    "row": 45
                 },
                 "dates/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C46",
+                    "coordinate": "C44",
                     "mode": "single",
                     "path": "dates/source_ids",
-                    "row": 46
+                    "row": 44
                 },
                 "misc1/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C33",
+                    "coordinate": "C31",
                     "mode": "single",
                     "path": "misc1/notes",
-                    "row": 33
+                    "row": 31
                 },
                 "misc1/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C32",
+                    "coordinate": "C30",
                     "mode": "single",
                     "path": "misc1/source_ids",
-                    "row": 32
+                    "row": 30
                 },
                 "misc1/type_instrument_project/impact_bond/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C24",
+                    "coordinate": "C22",
                     "mode": "single",
                     "path": "misc1/type_instrument_project/impact_bond/value",
-                    "row": 24
+                    "row": 22
                 },
                 "misc1/type_instrument_project/other/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C30",
+                    "coordinate": "C28",
                     "mode": "single",
                     "path": "misc1/type_instrument_project/other/value",
-                    "row": 30
+                    "row": 28
                 },
                 "misc1/type_instrument_project/outcomes_fund/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C25",
+                    "coordinate": "C23",
                     "mode": "single",
                     "path": "misc1/type_instrument_project/outcomes_fund/value",
-                    "row": 25
+                    "row": 23
                 },
                 "misc1/type_instrument_project/payment_by_results_no_prefinancing/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C28",
+                    "coordinate": "C26",
                     "mode": "single",
                     "path": "misc1/type_instrument_project/payment_by_results_no_prefinancing/value",
-                    "row": 28
+                    "row": 26
                 },
                 "misc1/type_instrument_project/social_impact_guarantee/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C27",
+                    "coordinate": "C25",
                     "mode": "single",
                     "path": "misc1/type_instrument_project/social_impact_guarantee/value",
-                    "row": 27
+                    "row": 25
                 },
                 "misc1/type_instrument_project/social_impact_incentives_siinc/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C26",
+                    "coordinate": "C24",
                     "mode": "single",
                     "path": "misc1/type_instrument_project/social_impact_incentives_siinc/value",
-                    "row": 26
-                },
-                "misc1/type_instrument_project/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D31",
-                    "mode": "single",
-                    "path": "misc1/type_instrument_project/status",
-                    "row": 31
+                    "row": 24
                 },
                 "misc1/type_instrument_project/technical_assistance_and_market_building_programme_with_dedicated_grant/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C29",
+                    "coordinate": "C27",
                     "mode": "single",
                     "path": "misc1/type_instrument_project/technical_assistance_and_market_building_programme_with_dedicated_grant/value",
-                    "row": 29
+                    "row": 27
                 },
                 "misc2/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C52",
+                    "coordinate": "C50",
                     "mode": "single",
                     "path": "misc2/notes",
-                    "row": 52
-                },
-                "misc2/rationale_outcomes_based_financing/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D50",
-                    "mode": "single",
-                    "path": "misc2/rationale_outcomes_based_financing/status",
                     "row": 50
                 },
                 "misc2/rationale_outcomes_based_financing/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C50",
+                    "coordinate": "C48",
                     "mode": "single",
                     "path": "misc2/rationale_outcomes_based_financing/value",
-                    "row": 50
+                    "row": 48
                 },
                 "misc2/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C51",
+                    "coordinate": "C49",
                     "mode": "single",
                     "path": "misc2/source_ids",
-                    "row": 51
-                },
-                "misc3/key_challenges_launch/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D55",
-                    "mode": "single",
-                    "path": "misc3/key_challenges_launch/status",
-                    "row": 55
+                    "row": 49
                 },
                 "misc3/key_challenges_launch/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C55",
+                    "coordinate": "C53",
                     "mode": "single",
                     "path": "misc3/key_challenges_launch/value",
-                    "row": 55
+                    "row": 53
                 },
                 "misc3/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C57",
+                    "coordinate": "C55",
                     "mode": "single",
                     "path": "misc3/notes",
-                    "row": 57
+                    "row": 55
                 },
                 "misc3/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C56",
+                    "coordinate": "C54",
                     "mode": "single",
                     "path": "misc3/source_ids",
-                    "row": 56
+                    "row": 54
                 },
                 "misc4/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C67",
+                    "coordinate": "C65",
                     "mode": "single",
                     "path": "misc4/notes",
-                    "row": 67
+                    "row": 65
                 },
                 "misc4/role_domestic_government/member_project_committee/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C62",
+                    "coordinate": "C60",
                     "mode": "single",
                     "path": "misc4/role_domestic_government/member_project_committee/value",
-                    "row": 62
+                    "row": 60
                 },
                 "misc4/role_domestic_government/no_formal_role/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C63",
+                    "coordinate": "C61",
                     "mode": "single",
                     "path": "misc4/role_domestic_government/no_formal_role/value",
-                    "row": 63
+                    "row": 61
                 },
                 "misc4/role_domestic_government/other/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C64",
+                    "coordinate": "C62",
                     "mode": "single",
                     "path": "misc4/role_domestic_government/other/value",
-                    "row": 64
+                    "row": 62
                 },
                 "misc4/role_domestic_government/outcomes_funder/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C60",
+                    "coordinate": "C58",
                     "mode": "single",
                     "path": "misc4/role_domestic_government/outcomes_funder/value",
-                    "row": 60
+                    "row": 58
                 },
                 "misc4/role_domestic_government/service_provider/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C61",
+                    "coordinate": "C59",
                     "mode": "single",
                     "path": "misc4/role_domestic_government/service_provider/value",
-                    "row": 61
-                },
-                "misc4/role_domestic_government/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D65",
-                    "mode": "single",
-                    "path": "misc4/role_domestic_government/status",
-                    "row": 65
+                    "row": 59
                 },
                 "misc4/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C66",
+                    "coordinate": "C64",
                     "mode": "single",
                     "path": "misc4/source_ids",
-                    "row": 66
+                    "row": 64
                 },
                 "misc5/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C76",
+                    "coordinate": "C74",
                     "mode": "single",
                     "path": "misc5/notes",
-                    "row": 76
+                    "row": 74
                 },
                 "misc5/service_providers_identified_selected/direct_contracting/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C71",
+                    "coordinate": "C69",
                     "mode": "single",
                     "path": "misc5/service_providers_identified_selected/direct_contracting/value",
-                    "row": 71
+                    "row": 69
                 },
                 "misc5/service_providers_identified_selected/other/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C73",
+                    "coordinate": "C71",
                     "mode": "single",
                     "path": "misc5/service_providers_identified_selected/other/value",
-                    "row": 73
+                    "row": 71
                 },
                 "misc5/service_providers_identified_selected/provider_led_development/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C72",
+                    "coordinate": "C70",
                     "mode": "single",
                     "path": "misc5/service_providers_identified_selected/provider_led_development/value",
-                    "row": 72
+                    "row": 70
                 },
                 "misc5/service_providers_identified_selected/request_for_proposals/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C70",
+                    "coordinate": "C68",
                     "mode": "single",
                     "path": "misc5/service_providers_identified_selected/request_for_proposals/value",
-                    "row": 70
-                },
-                "misc5/service_providers_identified_selected/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D74",
-                    "mode": "single",
-                    "path": "misc5/service_providers_identified_selected/status",
-                    "row": 74
+                    "row": 68
                 },
                 "misc5/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C75",
+                    "coordinate": "C73",
                     "mode": "single",
                     "path": "misc5/source_ids",
-                    "row": 75
-                },
-                "misc6/feasibility_study/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D79",
-                    "mode": "single",
-                    "path": "misc6/feasibility_study/status",
-                    "row": 79
+                    "row": 73
                 },
                 "misc6/feasibility_study/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C79",
+                    "coordinate": "C77",
                     "mode": "single",
                     "path": "misc6/feasibility_study/value",
-                    "row": 79
+                    "row": 77
                 },
                 "misc6/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C81",
+                    "coordinate": "C79",
                     "mode": "single",
                     "path": "misc6/notes",
-                    "row": 81
+                    "row": 79
                 },
                 "misc6/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C80",
+                    "coordinate": "C78",
                     "mode": "single",
                     "path": "misc6/source_ids",
-                    "row": 80
+                    "row": 78
                 },
                 "misc7/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C97",
+                    "coordinate": "C95",
                     "mode": "single",
                     "path": "misc7/notes",
-                    "row": 97
+                    "row": 95
                 },
                 "misc7/proposed_financing_instruments/debt/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C90",
+                    "coordinate": "C88",
                     "mode": "single",
                     "path": "misc7/proposed_financing_instruments/debt/value",
-                    "row": 90
+                    "row": 88
                 },
                 "misc7/proposed_financing_instruments/equity/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C91",
+                    "coordinate": "C89",
                     "mode": "single",
                     "path": "misc7/proposed_financing_instruments/equity/value",
-                    "row": 91
+                    "row": 89
                 },
                 "misc7/proposed_financing_instruments/grant/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C93",
+                    "coordinate": "C91",
                     "mode": "single",
                     "path": "misc7/proposed_financing_instruments/grant/value",
-                    "row": 93
+                    "row": 91
                 },
                 "misc7/proposed_financing_instruments/guarantee/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C92",
+                    "coordinate": "C90",
                     "mode": "single",
                     "path": "misc7/proposed_financing_instruments/guarantee/value",
-                    "row": 92
+                    "row": 90
                 },
                 "misc7/proposed_financing_instruments/other/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C94",
+                    "coordinate": "C92",
                     "mode": "single",
                     "path": "misc7/proposed_financing_instruments/other/value",
-                    "row": 94
-                },
-                "misc7/proposed_financing_instruments/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D95",
-                    "mode": "single",
-                    "path": "misc7/proposed_financing_instruments/status",
-                    "row": 95
+                    "row": 92
                 },
                 "misc7/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C96",
+                    "coordinate": "C94",
                     "mode": "single",
                     "path": "misc7/source_ids",
-                    "row": 96
+                    "row": 94
                 },
                 "name/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C5",
+                    "coordinate": "C3",
                     "mode": "single",
                     "path": "name/value",
-                    "row": 5
-                },
-                "notes/status": {
-                    "column": 3,
-                    "column_letter": "C",
-                    "coordinate": "C136",
-                    "mode": "single",
-                    "path": "notes/status",
-                    "row": 136
+                    "row": 3
                 },
                 "notes/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C135",
+                    "coordinate": "C133",
                     "mode": "single",
                     "path": "notes/value",
-                    "row": 135
-                },
-                "overall_project_finance/maximum_potential_outcome_payment_v2/amount/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D101",
-                    "mode": "single",
-                    "path": "overall_project_finance/maximum_potential_outcome_payment_v2/amount/status",
-                    "row": 101
+                    "row": 133
                 },
                 "overall_project_finance/maximum_potential_outcome_payment_v2/amount/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C101",
+                    "coordinate": "C99",
                     "mode": "single",
                     "path": "overall_project_finance/maximum_potential_outcome_payment_v2/amount/value",
-                    "row": 101
-                },
-                "overall_project_finance/maximum_potential_outcome_payment_v2/currency/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D100",
-                    "mode": "single",
-                    "path": "overall_project_finance/maximum_potential_outcome_payment_v2/currency/status",
-                    "row": 100
+                    "row": 99
                 },
                 "overall_project_finance/maximum_potential_outcome_payment_v2/currency/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C100",
+                    "coordinate": "C98",
                     "mode": "single",
                     "path": "overall_project_finance/maximum_potential_outcome_payment_v2/currency/value",
-                    "row": 100
+                    "row": 98
                 },
                 "overall_project_finance/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C103",
+                    "coordinate": "C101",
                     "mode": "single",
                     "path": "overall_project_finance/notes",
-                    "row": 103
+                    "row": 101
                 },
                 "overall_project_finance/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C102",
+                    "coordinate": "C100",
                     "mode": "single",
                     "path": "overall_project_finance/source_ids",
-                    "row": 102
-                },
-                "part_larger_program/details/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D37",
-                    "mode": "single",
-                    "path": "part_larger_program/details/status",
-                    "row": 37
+                    "row": 100
                 },
                 "part_larger_program/details/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C37",
+                    "coordinate": "C35",
                     "mode": "single",
                     "path": "part_larger_program/details/value",
-                    "row": 37
-                },
-                "part_larger_program/main/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D36",
-                    "mode": "single",
-                    "path": "part_larger_program/main/status",
-                    "row": 36
+                    "row": 35
                 },
                 "part_larger_program/main/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C36",
+                    "coordinate": "C34",
                     "mode": "single",
                     "path": "part_larger_program/main/value",
-                    "row": 36
+                    "row": 34
                 },
                 "part_larger_program/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C39",
+                    "coordinate": "C37",
                     "mode": "single",
                     "path": "part_larger_program/notes",
-                    "row": 39
+                    "row": 37
                 },
                 "part_larger_program/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C38",
+                    "coordinate": "C36",
                     "mode": "single",
                     "path": "part_larger_program/source_ids",
-                    "row": 38
-                },
-                "purpose_and_classifications/intervention/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D107",
-                    "mode": "single",
-                    "path": "purpose_and_classifications/intervention/status",
-                    "row": 107
+                    "row": 36
                 },
                 "purpose_and_classifications/intervention/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C107",
+                    "coordinate": "C105",
                     "mode": "single",
                     "path": "purpose_and_classifications/intervention/value",
-                    "row": 107
+                    "row": 105
                 },
                 "purpose_and_classifications/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C125",
+                    "coordinate": "C123",
                     "mode": "single",
                     "path": "purpose_and_classifications/notes",
-                    "row": 125
+                    "row": 123
                 },
                 "purpose_and_classifications/policy_sector/agriculture/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C113",
+                    "coordinate": "C111",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/agriculture/value",
-                    "row": 113
+                    "row": 111
                 },
                 "purpose_and_classifications/policy_sector/criminal_justice/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C111",
+                    "coordinate": "C109",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/criminal_justice/value",
-                    "row": 111
+                    "row": 109
                 },
                 "purpose_and_classifications/policy_sector/education/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C109",
+                    "coordinate": "C107",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/education/value",
-                    "row": 109
+                    "row": 107
                 },
                 "purpose_and_classifications/policy_sector/employment_and_private_sector_development/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C108",
+                    "coordinate": "C106",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/employment_and_private_sector_development/value",
-                    "row": 108
+                    "row": 106
                 },
                 "purpose_and_classifications/policy_sector/energy/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C116",
+                    "coordinate": "C114",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/energy/value",
-                    "row": 116
+                    "row": 114
                 },
                 "purpose_and_classifications/policy_sector/environment_and_climate_change/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C114",
+                    "coordinate": "C112",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/environment_and_climate_change/value",
-                    "row": 114
+                    "row": 112
                 },
                 "purpose_and_classifications/policy_sector/health/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C112",
+                    "coordinate": "C110",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/health/value",
-                    "row": 112
+                    "row": 110
                 },
                 "purpose_and_classifications/policy_sector/humanitarian/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C117",
+                    "coordinate": "C115",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/humanitarian/value",
-                    "row": 117
+                    "row": 115
                 },
                 "purpose_and_classifications/policy_sector/other/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C118",
+                    "coordinate": "C116",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/other/value",
-                    "row": 118
+                    "row": 116
                 },
                 "purpose_and_classifications/policy_sector/social_protection/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C110",
+                    "coordinate": "C108",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/social_protection/value",
-                    "row": 110
-                },
-                "purpose_and_classifications/policy_sector/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D119",
-                    "mode": "single",
-                    "path": "purpose_and_classifications/policy_sector/status",
-                    "row": 119
+                    "row": 108
                 },
                 "purpose_and_classifications/policy_sector/water_sanitation_hygiene/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C115",
+                    "coordinate": "C113",
                     "mode": "single",
                     "path": "purpose_and_classifications/policy_sector/water_sanitation_hygiene/value",
-                    "row": 115
-                },
-                "purpose_and_classifications/primary_sdg_goal/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D120",
-                    "mode": "single",
-                    "path": "purpose_and_classifications/primary_sdg_goal/status",
-                    "row": 120
+                    "row": 113
                 },
                 "purpose_and_classifications/primary_sdg_goal/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C120",
+                    "coordinate": "C118",
                     "mode": "single",
                     "path": "purpose_and_classifications/primary_sdg_goal/value",
-                    "row": 120
-                },
-                "purpose_and_classifications/primary_sdg_target/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D122",
-                    "mode": "single",
-                    "path": "purpose_and_classifications/primary_sdg_target/status",
-                    "row": 122
+                    "row": 118
                 },
                 "purpose_and_classifications/primary_sdg_target/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C122",
+                    "coordinate": "C120",
                     "mode": "single",
                     "path": "purpose_and_classifications/primary_sdg_target/value",
-                    "row": 122
-                },
-                "purpose_and_classifications/secondary_sdg_goals/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D121",
-                    "mode": "single",
-                    "path": "purpose_and_classifications/secondary_sdg_goals/status",
-                    "row": 121
+                    "row": 120
                 },
                 "purpose_and_classifications/secondary_sdg_goals/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C121",
+                    "coordinate": "C119",
                     "mode": "single",
                     "path": "purpose_and_classifications/secondary_sdg_goals/value",
-                    "row": 121
-                },
-                "purpose_and_classifications/secondary_sdg_targets/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D123",
-                    "mode": "single",
-                    "path": "purpose_and_classifications/secondary_sdg_targets/status",
-                    "row": 123
+                    "row": 119
                 },
                 "purpose_and_classifications/secondary_sdg_targets/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C123",
+                    "coordinate": "C121",
                     "mode": "single",
                     "path": "purpose_and_classifications/secondary_sdg_targets/value",
-                    "row": 123
-                },
-                "purpose_and_classifications/social_challenge/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D106",
-                    "mode": "single",
-                    "path": "purpose_and_classifications/social_challenge/status",
-                    "row": 106
+                    "row": 121
                 },
                 "purpose_and_classifications/social_challenge/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C106",
+                    "coordinate": "C104",
                     "mode": "single",
                     "path": "purpose_and_classifications/social_challenge/value",
-                    "row": 106
+                    "row": 104
                 },
                 "purpose_and_classifications/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C124",
+                    "coordinate": "C122",
                     "mode": "single",
                     "path": "purpose_and_classifications/source_ids",
-                    "row": 124
+                    "row": 122
                 },
                 "service_and_beneficiaries/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C133",
+                    "coordinate": "C131",
                     "mode": "single",
                     "path": "service_and_beneficiaries/notes",
-                    "row": 133
+                    "row": 131
                 },
                 "service_and_beneficiaries/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C132",
+                    "coordinate": "C130",
                     "mode": "single",
                     "path": "service_and_beneficiaries/source_ids",
-                    "row": 132
-                },
-                "service_and_beneficiaries/target_population/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D128",
-                    "mode": "single",
-                    "path": "service_and_beneficiaries/target_population/status",
-                    "row": 128
+                    "row": 130
                 },
                 "service_and_beneficiaries/target_population/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C128",
+                    "coordinate": "C126",
                     "mode": "single",
                     "path": "service_and_beneficiaries/target_population/value",
-                    "row": 128
-                },
-                "service_and_beneficiaries/targeted_number_service_users_or_beneficiaries_total/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D129",
-                    "mode": "single",
-                    "path": "service_and_beneficiaries/targeted_number_service_users_or_beneficiaries_total/status",
-                    "row": 129
+                    "row": 126
                 },
                 "service_and_beneficiaries/targeted_number_service_users_or_beneficiaries_total/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C129",
+                    "coordinate": "C127",
                     "mode": "single",
                     "path": "service_and_beneficiaries/targeted_number_service_users_or_beneficiaries_total/value",
-                    "row": 129
-                },
-                "service_and_beneficiaries/unit_description_of_service_user_or_beneficiaries/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D131",
-                    "mode": "single",
-                    "path": "service_and_beneficiaries/unit_description_of_service_user_or_beneficiaries/status",
-                    "row": 131
+                    "row": 127
                 },
                 "service_and_beneficiaries/unit_description_of_service_user_or_beneficiaries/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C131",
+                    "coordinate": "C129",
                     "mode": "single",
                     "path": "service_and_beneficiaries/unit_description_of_service_user_or_beneficiaries/value",
-                    "row": 131
-                },
-                "service_and_beneficiaries/unit_type_targeted_service_users_or_beneficiaries/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D130",
-                    "mode": "single",
-                    "path": "service_and_beneficiaries/unit_type_targeted_service_users_or_beneficiaries/status",
-                    "row": 130
+                    "row": 129
                 },
                 "service_and_beneficiaries/unit_type_targeted_service_users_or_beneficiaries/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C130",
+                    "coordinate": "C128",
                     "mode": "single",
                     "path": "service_and_beneficiaries/unit_type_targeted_service_users_or_beneficiaries/value",
-                    "row": 130
+                    "row": 128
                 },
                 "stage_development/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C21",
+                    "coordinate": "C19",
                     "mode": "single",
                     "path": "stage_development/notes",
-                    "row": 21
+                    "row": 19
                 },
                 "stage_development/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C20",
+                    "coordinate": "C18",
                     "mode": "single",
                     "path": "stage_development/source_ids",
-                    "row": 20
-                },
-                "stage_development/stage/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D19",
-                    "mode": "single",
-                    "path": "stage_development/stage/status",
-                    "row": 19
+                    "row": 18
                 },
                 "stage_development/stage/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C19",
+                    "coordinate": "C17",
                     "mode": "single",
                     "path": "stage_development/stage/value",
-                    "row": 19
+                    "row": 17
                 },
                 "state_development/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C16",
+                    "coordinate": "C14",
                     "mode": "single",
                     "path": "state_development/notes",
-                    "row": 16
-                },
-                "state_development/reason_abandoned/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D14",
-                    "mode": "single",
-                    "path": "state_development/reason_abandoned/status",
                     "row": 14
                 },
                 "state_development/reason_abandoned/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C14",
+                    "coordinate": "C12",
                     "mode": "single",
                     "path": "state_development/reason_abandoned/value",
-                    "row": 14
+                    "row": 12
                 },
                 "state_development/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C15",
+                    "coordinate": "C13",
                     "mode": "single",
                     "path": "state_development/source_ids",
-                    "row": 15
-                },
-                "state_development/state/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D13",
-                    "mode": "single",
-                    "path": "state_development/state/status",
                     "row": 13
                 },
                 "state_development/state/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C13",
+                    "coordinate": "C11",
                     "mode": "single",
                     "path": "state_development/state/value",
-                    "row": 13
-                },
-                "status": {
-                    "column": 3,
-                    "column_letter": "C",
-                    "coordinate": "C2",
-                    "mode": "single",
-                    "path": "status",
-                    "row": 2
-                },
-                "technical_assistance_grant_development/details/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D85",
-                    "mode": "single",
-                    "path": "technical_assistance_grant_development/details/status",
-                    "row": 85
+                    "row": 11
                 },
                 "technical_assistance_grant_development/details/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C85",
+                    "coordinate": "C83",
                     "mode": "single",
                     "path": "technical_assistance_grant_development/details/value",
-                    "row": 85
-                },
-                "technical_assistance_grant_development/main/status": {
-                    "column": 4,
-                    "column_letter": "D",
-                    "coordinate": "D84",
-                    "mode": "single",
-                    "path": "technical_assistance_grant_development/main/status",
-                    "row": 84
+                    "row": 83
                 },
                 "technical_assistance_grant_development/main/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C84",
+                    "coordinate": "C82",
                     "mode": "single",
                     "path": "technical_assistance_grant_development/main/value",
-                    "row": 84
+                    "row": 82
                 },
                 "technical_assistance_grant_development/notes": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C87",
+                    "coordinate": "C85",
                     "mode": "single",
                     "path": "technical_assistance_grant_development/notes",
-                    "row": 87
+                    "row": 85
                 },
                 "technical_assistance_grant_development/source_ids": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C86",
+                    "coordinate": "C84",
                     "mode": "single",
                     "path": "technical_assistance_grant_development/source_ids",
-                    "row": 86
+                    "row": 84
                 }
             }
         },
@@ -1239,15 +941,6 @@
                         "column_letter": "E",
                         "coordinate": "E4",
                         "item_path": "notes",
-                        "list_path": "intermediary_services",
-                        "mode": "down",
-                        "row": 4
-                    },
-                    {
-                        "column": 6,
-                        "column_letter": "F",
-                        "coordinate": "F4",
-                        "item_path": "status",
                         "list_path": "intermediary_services",
                         "mode": "down",
                         "row": 4
@@ -1423,15 +1116,6 @@
                         "column_letter": "Q",
                         "coordinate": "Q5",
                         "item_path": "notes",
-                        "list_path": "investments",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 18,
-                        "column_letter": "R",
-                        "coordinate": "R5",
-                        "item_path": "status",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1708,15 +1392,6 @@
                         "list_path": "outcome_metrics",
                         "mode": "down",
                         "row": 4
-                    },
-                    {
-                        "column": 18,
-                        "column_letter": "R",
-                        "coordinate": "R4",
-                        "item_path": "status",
-                        "list_path": "outcome_metrics",
-                        "mode": "down",
-                        "row": 4
                     }
                 ]
             },
@@ -1842,15 +1517,6 @@
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
-                    },
-                    {
-                        "column": 14,
-                        "column_letter": "N",
-                        "coordinate": "N4",
-                        "item_path": "status",
-                        "list_path": "outcome_payment_commitments",
-                        "mode": "down",
-                        "row": 4
                     }
                 ]
             },
@@ -1883,15 +1549,6 @@
                         "column_letter": "C",
                         "coordinate": "C5",
                         "item_path": "notes",
-                        "list_path": "projects",
-                        "mode": "down",
-                        "row": 5
-                    },
-                    {
-                        "column": 4,
-                        "column_letter": "D",
-                        "coordinate": "D5",
-                        "item_path": "status",
                         "list_path": "projects",
                         "mode": "down",
                         "row": 5
@@ -1972,15 +1629,6 @@
                         "column_letter": "H",
                         "coordinate": "H4",
                         "item_path": "notes",
-                        "list_path": "service_provisions",
-                        "mode": "down",
-                        "row": 4
-                    },
-                    {
-                        "column": 9,
-                        "column_letter": "I",
-                        "coordinate": "I4",
-                        "item_path": "status",
                         "list_path": "service_provisions",
                         "mode": "down",
                         "row": 4
@@ -2079,15 +1727,6 @@
                         "column_letter": "J",
                         "coordinate": "J4",
                         "item_path": "notes",
-                        "list_path": "sources",
-                        "mode": "down",
-                        "row": 4
-                    },
-                    {
-                        "column": 11,
-                        "column_letter": "K",
-                        "coordinate": "K4",
-                        "item_path": "status",
                         "list_path": "sources",
                         "mode": "down",
                         "row": 4

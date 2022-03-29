@@ -476,7 +476,7 @@ class FundDownloadForm(ModelDownloadForm):
 class PipelineDownloadForm(ModelDownloadForm):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
-    _spreadsheet_file_name = "pipeline_v001.xlsx"  # TODO should be a public file
+    _spreadsheet_file_name = "pipeline_public_v001.xlsx"
     _convert_function = convert_pipeline_data_to_spreadsheetforms_data
 
 
