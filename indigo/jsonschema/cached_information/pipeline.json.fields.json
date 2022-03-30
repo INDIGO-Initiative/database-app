@@ -496,6 +496,26 @@
         "title": "Service and beneficiaries - Unit description of targeted service user or beneficiaries - (Status)"
     },
     {
+        "key": "/service_and_beneficiaries/country_classification/low_income/value",
+        "title": "Service and beneficiaries - Country Classification of Service and beneficiaries - Low-income - (Value)"
+    },
+    {
+        "key": "/service_and_beneficiaries/country_classification/lower_middle_income/value",
+        "title": "Service and beneficiaries - Country Classification of Service and beneficiaries - Lower-middle-income - (Value)"
+    },
+    {
+        "key": "/service_and_beneficiaries/country_classification/upper_middle_income/value",
+        "title": "Service and beneficiaries - Country Classification of Service and beneficiaries - Upper-middle-income - (Value)"
+    },
+    {
+        "key": "/service_and_beneficiaries/country_classification/high_income/value",
+        "title": "Service and beneficiaries - Country Classification of Service and beneficiaries - High-income - (Value)"
+    },
+    {
+        "key": "/service_and_beneficiaries/country_classification/status",
+        "title": "Service and beneficiaries - Country Classification of Service and beneficiaries - (Status)"
+    },
+    {
         "key": "/service_and_beneficiaries/source_ids",
         "title": "Service and beneficiaries - (Source ID's)"
     },

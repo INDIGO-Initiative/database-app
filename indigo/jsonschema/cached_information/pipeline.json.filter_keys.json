@@ -32,5 +32,6 @@
     "/service_and_beneficiaries/targeted_number_service_users_or_beneficiaries_total",
     "/service_and_beneficiaries/unit_type_targeted_service_users_or_beneficiaries",
     "/service_and_beneficiaries/unit_description_of_service_user_or_beneficiaries",
+    "/service_and_beneficiaries/country_classification",
     "/notes"
 ]
