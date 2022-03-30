@@ -87,7 +87,11 @@ class Command(BaseCommand):
                                 "value": row[16],
                                 "status": "PUBLIC",
                             },
-                            "source_ids": ("source1" if row[14] or row[16] else ""),
+                            "country_classification": {
+                                "high_income": {"value": "Yes"},
+                                "status": "PUBLIC",
+                            },
+                            "source_ids": "source1",
                         },
                         "misc2": {
                             "rationale_outcomes_based_financing": {
