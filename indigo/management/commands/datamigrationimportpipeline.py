@@ -27,126 +27,145 @@ class Command(BaseCommand):
             next(csvreader)
             next(csvreader)
             for row in csvreader:
-                if row[0].strip() or row[3].strip():
+                # "-" is used as a placeholder for no value, and it's never a valid value in itself
+                row = [i.strip("-").strip() for i in row]
+                if row[0] or row[3]:
                     pipeline_data = {
                         "status": "PRIVATE",
-                        "name": {"value": row[3].strip()},
+                        "name": {"value": row[3]},
                         "state_development": {
-                            "state": {"value": "Current", "status": "PUBLIC"}
+                            "state": {"value": "Current", "status": "PUBLIC"},
+                            "source_ids": "source1",
                         },
                         "contact": {
-                            "name": {"value": row[0].strip(), "status": "PRIVATE"},
-                            "email": {"value": row[2].strip(), "status": "PRIVATE"},
+                            "name": {"value": row[0], "status": "PRIVATE"},
+                            "email": {"value": row[2], "status": "PRIVATE"},
                         },
                         "dates": {
                             "expected_launch_date": {
-                                "value": row[10].strip(),
+                                "value": row[10],
                                 "status": "PUBLIC",
                             },
                             "expected_development_time": {
-                                "value": row[11].strip(),
+                                "value": row[11],
                                 "status": "PUBLIC",
                             },
                             "design_process_began": {
-                                "value": row[12].strip(),
+                                "value": row[12],
                                 "status": "PUBLIC",
                             },
-                            "expected_length": {
-                                "value": row[31].strip(),
-                                "status": "PUBLIC",
-                            },
+                            "expected_length": {"value": row[31], "status": "PUBLIC",},
+                            "source_ids": (
+                                "source1"
+                                if row[10] or row[11] or row[12] or row[31]
+                                else ""
+                            ),
                         },
                         "purpose_and_classifications": {
                             "secondary_sdg_goals": {
-                                "value": row[8]
-                                .strip()
-                                .replace("Goal", "")
-                                .replace("/", ","),
+                                "value": row[8].replace("Goal", "").replace("/", ","),
                                 "status": "PUBLIC",
                             },
-                            "social_challenge": {
-                                "value": row[13].strip(),
-                                "status": "PUBLIC",
-                            },
-                            "intervention": {
-                                "value": row[15].strip(),
-                                "status": "PUBLIC",
-                            },
+                            "social_challenge": {"value": row[13], "status": "PUBLIC",},
+                            "intervention": {"value": row[15], "status": "PUBLIC",},
                             "policy_sector": {
-                                "other": {"value": row[7].strip()},
+                                "other": {"value": row[7]},
                                 "status": "PUBLIC",
                             },
+                            "source_ids": (
+                                "source1"
+                                if row[8] or row[13] or row[15] or row[17]
+                                else ""
+                            ),
                         },
                         "service_and_beneficiaries": {
                             "target_population": {
-                                "value": row[14].strip(),
+                                "value": row[14],
                                 "status": "PUBLIC",
                             },
                             "targeted_number_service_users_or_beneficiaries_total": {
-                                "value": row[16].strip(),
+                                "value": row[16],
                                 "status": "PUBLIC",
                             },
+                            "country_classification": {
+                                "high_income": {"value": "Yes"},
+                                "status": "PUBLIC",
+                            },
+                            "source_ids": "source1",
                         },
                         "misc2": {
                             "rationale_outcomes_based_financing": {
-                                "value": row[19].strip(),
+                                "value": row[19],
                                 "status": "PUBLIC",
-                            }
+                            },
+                            "source_ids": ("source1" if row[19] else ""),
                         },
                         "misc3": {
                             "key_challenges_launch": {
-                                "value": row[20].strip(),
+                                "value": row[20],
                                 "status": "PUBLIC",
-                            }
+                            },
+                            "source_ids": ("source1" if row[20] else ""),
                         },
                         "overall_project_finance": {
                             "maximum_potential_outcome_payment_v2": {
                                 "amount": {
-                                    "value": row[28].strip().replace("€", ""),
+                                    "value": row[28].replace("€", ""),
                                     "status": "PUBLIC",
                                 },
-                                "currency": {
-                                    "value": row[29].strip(),
-                                    "status": "PUBLIC",
-                                },
-                            }
+                                "currency": {"value": row[29], "status": "PUBLIC",},
+                            },
+                            "source_ids": ("source1" if row[28] or row[29] else ""),
                         },
                         "misc1": {
                             "type_instrument_project": {
-                                "other": {"value": row[4].strip()},
+                                "other": {"value": row[4]},
                                 "status": "PUBLIC",
-                            }
+                            },
+                            "source_ids": ("source1" if row[4] else ""),
                         },
                         "misc4": {
                             "role_domestic_government": {
-                                "other": {"value": row[27].strip()},
+                                "other": {"value": row[27]},
                                 "status": "PUBLIC",
-                            }
+                            },
+                            "source_ids": ("source1" if row[27] else ""),
                         },
                         "misc5": {
                             "service_providers_identified_selected": {
-                                "other": {"value": row[35].strip()},
+                                "other": {"value": row[35]},
                                 "status": "PUBLIC",
-                            }
+                            },
+                            "source_ids": ("source1" if row[35] else ""),
                         },
                         "misc6": {
                             "feasibility_study": {
-                                "value": row[33].strip(),
+                                "value": row[33],
                                 "status": "PUBLIC",
-                            }
+                            },
+                            "source_ids": ("source1" if row[33] else ""),
                         },
                         "misc7": {
                             "proposed_financing_instruments": {
-                                "other": {"value": row[32].strip()},
+                                "other": {"value": row[32]},
                                 "status": "PUBLIC",
-                            }
+                            },
+                            "source_ids": ("source1" if row[32] else ""),
                         },
                         "technical_assistance_grant_development": {
-                            "main": {"value": row[34].strip(), "status": "PUBLIC"}
+                            "main": {"value": row[34], "status": "PUBLIC"},
+                            "source_ids": ("source1" if row[34] else ""),
                         },
-                        "notes": {"value": row[36].strip(), "status": "PUBLIC"},
+                        "notes": {"value": row[36], "status": "PUBLIC"},
                         "delivery_locations": [],
-                        "sources": [],
+                        "sources": [
+                            {
+                                "id": "source1",
+                                "name": {
+                                    "value": "Data shared by key stakeholders of the project through March 2022 GO Lab questionnaire"
+                                },
+                            }
+                        ],
                         "service_provisions": [],
                         "outcome_payment_commitments": [],
                         "investments": [],
@@ -155,97 +174,117 @@ class Command(BaseCommand):
                         "documents": [],
                     }
 
-                    if row[1].strip():
+                    if row[1]:
                         pipeline_data["intermediary_services"].append(
-                            {"notes": row[1].strip(), "status": "PUBLIC"}
+                            {
+                                "notes": row[1],
+                                "status": "PUBLIC",
+                                "source_ids": "source1",
+                            }
                         )
 
-                    if row[5].strip():
-                        part_larger_program_bits = row[5].strip().split("-")
+                    if row[5]:
+                        part_larger_program_bits = row[5].split("-")
                         part_larger_program_bits.append(
                             ""
                         )  # make sure not crash if index 1 not already exist
                         pipeline_data["part_larger_program"] = {
                             "main": {
-                                "value": part_larger_program_bits[0].strip(),
+                                "value": part_larger_program_bits[0],
                                 "status": "PUBLIC",
                             },
                             "details": {
-                                "value": part_larger_program_bits[1].strip(),
+                                "value": part_larger_program_bits[1],
                                 "status": "PUBLIC",
                             },
+                            "source_ids": "source1",
                         }
 
-                    if row[6].strip():
+                    if row[6]:
                         pipeline_data["delivery_locations"].append(
                             {
-                                "location_name": {"value": row[6].strip()},
+                                "location_name": {"value": row[6]},
                                 # Could try to map to location_country here?
                                 "status": "PUBLIC",
+                                "source_ids": "source1",
                             }
                         )
 
-                    if row[9].strip():
-                        stage_dev_bits = row[9].strip().split("-")
+                    if row[9]:
+                        stage_dev_bits = row[9].split("-")
                         stage_dev_bits.append(
                             ""
                         )  # make sure not crash if index 1 not already exist
                         pipeline_data["stage_development"] = {
-                            "stage": {
-                                "value": stage_dev_bits[0].strip(),
-                                "status": "PUBLIC",
-                            },
-                            "notes": stage_dev_bits[1].strip(),
+                            "stage": {"value": stage_dev_bits[0], "status": "PUBLIC",},
+                            "notes": stage_dev_bits[1],
+                            "source_ids": "source1",
                         }
 
-                    if row[17].strip() or row[18].strip():
+                    if row[17] or row[18]:
                         pipeline_data["outcome_metrics"].append(
                             {
-                                "definition": {"value": row[17].strip()},
-                                "outcome_validation_method": {"value": row[18].strip()},
+                                "definition": {"value": row[17]},
+                                "outcome_validation_method": {"value": row[18]},
                                 "status": "PUBLIC",
+                                "source_ids": "source1",
                             }
                         )
 
-                    if row[21].strip():
+                    if row[21]:
                         pipeline_data["outcome_payment_commitments"].append(
-                            {"notes": row[21].strip(), "status": "PUBLIC"}
+                            {
+                                "notes": row[21],
+                                "status": "PUBLIC",
+                                "source_ids": "source1",
+                            }
                         )
 
-                    if row[22].strip():
+                    if row[22]:
                         pipeline_data["investments"].append(
-                            {"notes": row[22].strip(), "status": "PUBLIC"}
+                            {
+                                "notes": row[22],
+                                "status": "PUBLIC",
+                                "source_ids": "source1",
+                            }
                         )
 
-                    if row[23].strip():
+                    if row[23]:
                         pipeline_data["service_provisions"].append(
-                            {"notes": row[23].strip(), "status": "PUBLIC"}
-                        )
-
-                    if row[24].strip():
-                        pipeline_data["intermediary_services"].append(
                             {
-                                "organisation_role_category": {"value": "Other"},
-                                "notes": "Evaluator - " + row[24].strip(),
+                                "notes": row[23],
                                 "status": "PUBLIC",
+                                "source_ids": "source1",
                             }
                         )
 
-                    if row[25].strip():
+                    if row[24]:
                         pipeline_data["intermediary_services"].append(
                             {
                                 "organisation_role_category": {"value": "Other"},
-                                "notes": "Advisor - " + row[25].strip(),
+                                "notes": "Evaluator - " + row[24],
                                 "status": "PUBLIC",
+                                "source_ids": "source1",
                             }
                         )
 
-                    if row[26].strip():
+                    if row[25]:
                         pipeline_data["intermediary_services"].append(
                             {
                                 "organisation_role_category": {"value": "Other"},
-                                "notes": "Other - " + row[26].strip(),
+                                "notes": "Advisor - " + row[25],
                                 "status": "PUBLIC",
+                                "source_ids": "source1",
+                            }
+                        )
+
+                    if row[26]:
+                        pipeline_data["intermediary_services"].append(
+                            {
+                                "organisation_role_category": {"value": "Other"},
+                                "notes": "Other - " + row[26],
+                                "status": "PUBLIC",
+                                "source_ids": "source1",
                             }
                         )
 

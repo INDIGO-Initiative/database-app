@@ -299,12 +299,12 @@
                         },
                         "value": {
                             "enum": [
-                                "Q1 \u2013 2022",
-                                "Q2 \u2013 2022",
-                                "Q3 \u2013 2022",
-                                "Q4 \u2013 2022",
+                                "Q1 - 2022",
+                                "Q2 - 2022",
+                                "Q3 - 2022",
+                                "Q4 - 2022",
                                 "Q1 - 2023",
-                                "Q2 \u2013 2023",
+                                "Q2 - 2023",
                                 "Don\u2019t Know"
                             ],
                             "title": "(Value)",
@@ -2412,6 +2412,79 @@
         },
         "service_and_beneficiaries": {
             "properties": {
+                "country_classification": {
+                    "description": "Use classifications from World Bank https://datahelpdesk.worldbank.org/knowledgebase/articles/906519 . Use classifications  at the moment of inputting the data.",
+                    "properties": {
+                        "high_income": {
+                            "properties": {
+                                "value": {
+                                    "enum": [
+                                        "Yes",
+                                        "No"
+                                    ],
+                                    "title": "(Value)",
+                                    "type": "string"
+                                }
+                            },
+                            "title": "High-income",
+                            "type": "object"
+                        },
+                        "low_income": {
+                            "properties": {
+                                "value": {
+                                    "enum": [
+                                        "Yes",
+                                        "No"
+                                    ],
+                                    "title": "(Value)",
+                                    "type": "string"
+                                }
+                            },
+                            "title": "Low-income",
+                            "type": "object"
+                        },
+                        "lower_middle_income": {
+                            "properties": {
+                                "value": {
+                                    "enum": [
+                                        "Yes",
+                                        "No"
+                                    ],
+                                    "title": "(Value)",
+                                    "type": "string"
+                                }
+                            },
+                            "title": "Lower-middle-income",
+                            "type": "object"
+                        },
+                        "status": {
+                            "enum": [
+                                "PUBLIC",
+                                "SANDBOX",
+                                "PRIVATE",
+                                "DISPUTED"
+                            ],
+                            "title": "(Status)",
+                            "type": "string"
+                        },
+                        "upper_middle_income": {
+                            "properties": {
+                                "value": {
+                                    "enum": [
+                                        "Yes",
+                                        "No"
+                                    ],
+                                    "title": "(Value)",
+                                    "type": "string"
+                                }
+                            },
+                            "title": "Upper-middle-income",
+                            "type": "object"
+                        }
+                    },
+                    "title": "Country Classification of Service and beneficiaries",
+                    "type": "object"
+                },
                 "notes": {
                     "title": "(Notes)",
                     "type": "string"
@@ -2742,7 +2815,7 @@
                         },
                         "value": {
                             "enum": [
-                                "Scoping (e.g. pre-feasibility study to support market mapping and issue identification)  ",
+                                "Scoping (e.g. pre-feasibility study to support market mapping and issue identification)",
                                 "Early stage (e.g. beginning a feasibility study)",
                                 "Late stage (e.g. final deal construction and placement)",
                                 "Final negotiations"

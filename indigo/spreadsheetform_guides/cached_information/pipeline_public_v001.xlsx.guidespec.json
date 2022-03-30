@@ -538,10 +538,10 @@
                 "notes/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C133",
+                    "coordinate": "C137",
                     "mode": "single",
                     "path": "notes/value",
-                    "row": 133
+                    "row": 137
                 },
                 "overall_project_finance/maximum_potential_outcome_payment_v2/amount/value": {
                     "column": 3,
@@ -759,21 +759,53 @@
                     "path": "purpose_and_classifications/source_ids",
                     "row": 122
                 },
-                "service_and_beneficiaries/notes": {
+                "service_and_beneficiaries/country_classification/high_income/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C131",
+                    "coordinate": "C133",
                     "mode": "single",
-                    "path": "service_and_beneficiaries/notes",
-                    "row": 131
+                    "path": "service_and_beneficiaries/country_classification/high_income/value",
+                    "row": 133
                 },
-                "service_and_beneficiaries/source_ids": {
+                "service_and_beneficiaries/country_classification/low_income/value": {
                     "column": 3,
                     "column_letter": "C",
                     "coordinate": "C130",
                     "mode": "single",
-                    "path": "service_and_beneficiaries/source_ids",
+                    "path": "service_and_beneficiaries/country_classification/low_income/value",
                     "row": 130
+                },
+                "service_and_beneficiaries/country_classification/lower_middle_income/value": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C131",
+                    "mode": "single",
+                    "path": "service_and_beneficiaries/country_classification/lower_middle_income/value",
+                    "row": 131
+                },
+                "service_and_beneficiaries/country_classification/upper_middle_income/value": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C132",
+                    "mode": "single",
+                    "path": "service_and_beneficiaries/country_classification/upper_middle_income/value",
+                    "row": 132
+                },
+                "service_and_beneficiaries/notes": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C135",
+                    "mode": "single",
+                    "path": "service_and_beneficiaries/notes",
+                    "row": 135
+                },
+                "service_and_beneficiaries/source_ids": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C134",
+                    "mode": "single",
+                    "path": "service_and_beneficiaries/source_ids",
+                    "row": 134
                 },
                 "service_and_beneficiaries/target_population/value": {
                     "column": 3,

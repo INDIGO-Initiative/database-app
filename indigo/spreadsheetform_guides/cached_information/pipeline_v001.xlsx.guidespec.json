@@ -660,18 +660,18 @@
                 "notes/status": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C136",
+                    "coordinate": "C141",
                     "mode": "single",
                     "path": "notes/status",
-                    "row": 136
+                    "row": 141
                 },
                 "notes/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C135",
+                    "coordinate": "C140",
                     "mode": "single",
                     "path": "notes/value",
-                    "row": 135
+                    "row": 140
                 },
                 "overall_project_finance/maximum_potential_outcome_payment_v2/amount/status": {
                     "column": 4,
@@ -977,21 +977,61 @@
                     "path": "purpose_and_classifications/source_ids",
                     "row": 124
                 },
-                "service_and_beneficiaries/notes": {
+                "service_and_beneficiaries/country_classification/high_income/value": {
                     "column": 3,
                     "column_letter": "C",
-                    "coordinate": "C133",
+                    "coordinate": "C135",
                     "mode": "single",
-                    "path": "service_and_beneficiaries/notes",
-                    "row": 133
+                    "path": "service_and_beneficiaries/country_classification/high_income/value",
+                    "row": 135
                 },
-                "service_and_beneficiaries/source_ids": {
+                "service_and_beneficiaries/country_classification/low_income/value": {
                     "column": 3,
                     "column_letter": "C",
                     "coordinate": "C132",
                     "mode": "single",
-                    "path": "service_and_beneficiaries/source_ids",
+                    "path": "service_and_beneficiaries/country_classification/low_income/value",
                     "row": 132
+                },
+                "service_and_beneficiaries/country_classification/lower_middle_income/value": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C133",
+                    "mode": "single",
+                    "path": "service_and_beneficiaries/country_classification/lower_middle_income/value",
+                    "row": 133
+                },
+                "service_and_beneficiaries/country_classification/status": {
+                    "column": 4,
+                    "column_letter": "D",
+                    "coordinate": "D136",
+                    "mode": "single",
+                    "path": "service_and_beneficiaries/country_classification/status",
+                    "row": 136
+                },
+                "service_and_beneficiaries/country_classification/upper_middle_income/value": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C134",
+                    "mode": "single",
+                    "path": "service_and_beneficiaries/country_classification/upper_middle_income/value",
+                    "row": 134
+                },
+                "service_and_beneficiaries/notes": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C138",
+                    "mode": "single",
+                    "path": "service_and_beneficiaries/notes",
+                    "row": 138
+                },
+                "service_and_beneficiaries/source_ids": {
+                    "column": 3,
+                    "column_letter": "C",
+                    "coordinate": "C137",
+                    "mode": "single",
+                    "path": "service_and_beneficiaries/source_ids",
+                    "row": 137
                 },
                 "service_and_beneficiaries/target_population/status": {
                     "column": 4,

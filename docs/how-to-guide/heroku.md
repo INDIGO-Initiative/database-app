@@ -55,6 +55,7 @@ Run one after the other:
     python manage.py updatedata
     python manage.py updateprojectfiles
     python manage.py updatefundfiles
+    python manage.py updatepipelinefiles
     python manage.py updateorganisationfiles
 
 Then watch the worker logs and wait till all tasks are done. Then run:
