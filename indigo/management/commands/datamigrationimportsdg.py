@@ -100,8 +100,8 @@ class Command(BaseCommand):
 
     def _process_project(self, project, data):
 
-        source_id = "sourcehackandlearn2021-08"
-        source_name = "Hack and Learn - August 2021"
+        source_id = "sourcehackandlearn2022-03"
+        source_name = "Hack and Learn - March 2022"
 
         print("Project " + project.public_id)
         changes_project = False
@@ -166,6 +166,8 @@ class Command(BaseCommand):
                 ]
                 notes = data["definitions"][outcome_metric_definition]["notes"]
             else:
+                # This may happen because this outcome row is private -
+                # in which case it won't have been included in the spreadsheet of public data you are now trying to import
                 print("**** INFO **** ID or definition not found")
             if (
                 primary_sdg_goal
@@ -240,7 +242,7 @@ class Command(BaseCommand):
                         outcome_metric["source_ids"] += ", " + source_id
                     else:
                         outcome_metric["source_ids"] = source_id
-                    if notes:
+                    if notes and notes not in outcome_metric["notes"]:
                         print(" .... .... and adding note: " + notes)
                         if outcome_metric.get("notes"):
                             outcome_metric["notes"] += "\n\n" + notes
