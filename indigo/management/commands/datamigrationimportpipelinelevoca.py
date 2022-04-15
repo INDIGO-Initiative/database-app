@@ -281,7 +281,7 @@ class Command(BaseCommand):
                     if row[94] or row[95] or row[100]:
                         pipeline_data["outcome_metrics"].append(
                             {
-                                "definition": {"value": row[95]},
+                                "definition": {"value": row[94]},
                                 "outcome_validation_method": {"value": row[95]},
                                 "notes": row[100],
                                 "status": "PUBLIC",
