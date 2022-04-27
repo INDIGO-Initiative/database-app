@@ -945,7 +945,7 @@
                         "column": 2,
                         "column_letter": "B",
                         "coordinate": "B4",
-                        "item_path": "organisation_role_category/value",
+                        "item_path": "organisation_names/organisation_id/value",
                         "list_path": "intermediary_services",
                         "mode": "down",
                         "row": 4
@@ -954,7 +954,7 @@
                         "column": 3,
                         "column_letter": "C",
                         "coordinate": "C4",
-                        "item_path": "other_role_description/value",
+                        "item_path": "organisation_role_category/value",
                         "list_path": "intermediary_services",
                         "mode": "down",
                         "row": 4
@@ -963,7 +963,7 @@
                         "column": 4,
                         "column_letter": "D",
                         "coordinate": "D4",
-                        "item_path": "source_ids",
+                        "item_path": "other_role_description/value",
                         "list_path": "intermediary_services",
                         "mode": "down",
                         "row": 4
@@ -972,6 +972,15 @@
                         "column": 5,
                         "column_letter": "E",
                         "coordinate": "E4",
+                        "item_path": "source_ids",
+                        "list_path": "intermediary_services",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 6,
+                        "column_letter": "F",
+                        "coordinate": "F4",
                         "item_path": "notes",
                         "list_path": "intermediary_services",
                         "mode": "down",
@@ -1021,7 +1030,7 @@
                         "column": 3,
                         "column_letter": "C",
                         "coordinate": "C5",
-                        "item_path": "organisation_role_category/value",
+                        "item_path": "organisation_names/organisation_id/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1030,7 +1039,7 @@
                         "column": 4,
                         "column_letter": "D",
                         "coordinate": "D5",
-                        "item_path": "investment_commitment/currency/value",
+                        "item_path": "organisation_role_category/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1039,7 +1048,7 @@
                         "column": 5,
                         "column_letter": "E",
                         "coordinate": "E5",
-                        "item_path": "investment_commitment/amount/min/value",
+                        "item_path": "investment_commitment/currency/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1048,7 +1057,7 @@
                         "column": 6,
                         "column_letter": "F",
                         "coordinate": "F5",
-                        "item_path": "investment_commitment/amount/exact/value",
+                        "item_path": "investment_commitment/amount/min/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1057,7 +1066,7 @@
                         "column": 7,
                         "column_letter": "G",
                         "coordinate": "G5",
-                        "item_path": "investment_commitment/amount/max/value",
+                        "item_path": "investment_commitment/amount/exact/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1066,7 +1075,7 @@
                         "column": 8,
                         "column_letter": "H",
                         "coordinate": "H5",
-                        "item_path": "investment_commitment/amount_usd/min/value",
+                        "item_path": "investment_commitment/amount/max/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1075,7 +1084,7 @@
                         "column": 9,
                         "column_letter": "I",
                         "coordinate": "I5",
-                        "item_path": "investment_commitment/amount_usd/exact/value",
+                        "item_path": "investment_commitment/amount_usd/min/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1084,7 +1093,7 @@
                         "column": 10,
                         "column_letter": "J",
                         "coordinate": "J5",
-                        "item_path": "investment_commitment/amount_usd/max/value",
+                        "item_path": "investment_commitment/amount_usd/exact/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1093,7 +1102,7 @@
                         "column": 11,
                         "column_letter": "K",
                         "coordinate": "K5",
-                        "item_path": "maximum_potential_loss/value",
+                        "item_path": "investment_commitment/amount_usd/max/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1102,7 +1111,7 @@
                         "column": 12,
                         "column_letter": "L",
                         "coordinate": "L5",
-                        "item_path": "maximum_potential_return_type/value",
+                        "item_path": "maximum_potential_loss/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1111,7 +1120,7 @@
                         "column": 13,
                         "column_letter": "M",
                         "coordinate": "M5",
-                        "item_path": "maximum_potential_return/value",
+                        "item_path": "maximum_potential_return_type/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1120,7 +1129,7 @@
                         "column": 14,
                         "column_letter": "N",
                         "coordinate": "N5",
-                        "item_path": "investor_repayment/value",
+                        "item_path": "maximum_potential_return/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1129,7 +1138,7 @@
                         "column": 15,
                         "column_letter": "O",
                         "coordinate": "O5",
-                        "item_path": "investment_type/value",
+                        "item_path": "investor_repayment/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1138,7 +1147,7 @@
                         "column": 16,
                         "column_letter": "P",
                         "coordinate": "P5",
-                        "item_path": "source_ids",
+                        "item_path": "investment_type/value",
                         "list_path": "investments",
                         "mode": "down",
                         "row": 5
@@ -1147,6 +1156,15 @@
                         "column": 17,
                         "column_letter": "Q",
                         "coordinate": "Q5",
+                        "item_path": "source_ids",
+                        "list_path": "investments",
+                        "mode": "down",
+                        "row": 5
+                    },
+                    {
+                        "column": 18,
+                        "column_letter": "R",
+                        "coordinate": "R5",
                         "item_path": "notes",
                         "list_path": "investments",
                         "mode": "down",
@@ -1446,7 +1464,7 @@
                         "column": 2,
                         "column_letter": "B",
                         "coordinate": "B4",
-                        "item_path": "organisation_role_category/value",
+                        "item_path": "organisation_names/organisation_id/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1455,7 +1473,7 @@
                         "column": 3,
                         "column_letter": "C",
                         "coordinate": "C4",
-                        "item_path": "maximum_potential_outcome_payment/currency/value",
+                        "item_path": "organisation_role_category/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1464,7 +1482,7 @@
                         "column": 4,
                         "column_letter": "D",
                         "coordinate": "D4",
-                        "item_path": "maximum_potential_outcome_payment/amount/value",
+                        "item_path": "maximum_potential_outcome_payment/currency/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1473,7 +1491,7 @@
                         "column": 5,
                         "column_letter": "E",
                         "coordinate": "E4",
-                        "item_path": "maximum_potential_outcome_payment/amount_usd/value",
+                        "item_path": "maximum_potential_outcome_payment/amount/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1482,7 +1500,7 @@
                         "column": 6,
                         "column_letter": "F",
                         "coordinate": "F4",
-                        "item_path": "result_type/value",
+                        "item_path": "maximum_potential_outcome_payment/amount_usd/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1491,7 +1509,7 @@
                         "column": 7,
                         "column_letter": "G",
                         "coordinate": "G4",
-                        "item_path": "period/start_date/value",
+                        "item_path": "result_type/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1500,7 +1518,7 @@
                         "column": 8,
                         "column_letter": "H",
                         "coordinate": "H4",
-                        "item_path": "period/end_date/value",
+                        "item_path": "period/start_date/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1509,7 +1527,7 @@
                         "column": 9,
                         "column_letter": "I",
                         "coordinate": "I4",
-                        "item_path": "total_outcome_payments/currency/value",
+                        "item_path": "period/end_date/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1518,7 +1536,7 @@
                         "column": 10,
                         "column_letter": "J",
                         "coordinate": "J4",
-                        "item_path": "total_outcome_payments/amount/value",
+                        "item_path": "total_outcome_payments/currency/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1527,7 +1545,7 @@
                         "column": 11,
                         "column_letter": "K",
                         "coordinate": "K4",
-                        "item_path": "total_outcome_payments/amount_usd/value",
+                        "item_path": "total_outcome_payments/amount/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1536,7 +1554,7 @@
                         "column": 12,
                         "column_letter": "L",
                         "coordinate": "L4",
-                        "item_path": "source_ids",
+                        "item_path": "total_outcome_payments/amount_usd/value",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
                         "row": 4
@@ -1545,6 +1563,15 @@
                         "column": 13,
                         "column_letter": "M",
                         "coordinate": "M4",
+                        "item_path": "source_ids",
+                        "list_path": "outcome_payment_commitments",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 14,
+                        "column_letter": "N",
+                        "coordinate": "N4",
                         "item_path": "notes",
                         "list_path": "outcome_payment_commitments",
                         "mode": "down",
@@ -1615,7 +1642,7 @@
                         "column": 3,
                         "column_letter": "C",
                         "coordinate": "C4",
-                        "item_path": "organisation_role_category/value",
+                        "item_path": "organisation_names/organisation_id/value",
                         "list_path": "service_provisions",
                         "mode": "down",
                         "row": 4
@@ -1624,7 +1651,7 @@
                         "column": 4,
                         "column_letter": "D",
                         "coordinate": "D4",
-                        "item_path": "intervention/value",
+                        "item_path": "organisation_role_category/value",
                         "list_path": "service_provisions",
                         "mode": "down",
                         "row": 4
@@ -1633,7 +1660,7 @@
                         "column": 5,
                         "column_letter": "E",
                         "coordinate": "E4",
-                        "item_path": "planned_service/start_date/value",
+                        "item_path": "intervention/value",
                         "list_path": "service_provisions",
                         "mode": "down",
                         "row": 4
@@ -1642,7 +1669,7 @@
                         "column": 6,
                         "column_letter": "F",
                         "coordinate": "F4",
-                        "item_path": "planned_service/end_date/value",
+                        "item_path": "planned_service/start_date/value",
                         "list_path": "service_provisions",
                         "mode": "down",
                         "row": 4
@@ -1651,7 +1678,7 @@
                         "column": 7,
                         "column_letter": "G",
                         "coordinate": "G4",
-                        "item_path": "source_ids",
+                        "item_path": "planned_service/end_date/value",
                         "list_path": "service_provisions",
                         "mode": "down",
                         "row": 4
@@ -1660,6 +1687,15 @@
                         "column": 8,
                         "column_letter": "H",
                         "coordinate": "H4",
+                        "item_path": "source_ids",
+                        "list_path": "service_provisions",
+                        "mode": "down",
+                        "row": 4
+                    },
+                    {
+                        "column": 9,
+                        "column_letter": "I",
+                        "coordinate": "I4",
                         "item_path": "notes",
                         "list_path": "service_provisions",
                         "mode": "down",
