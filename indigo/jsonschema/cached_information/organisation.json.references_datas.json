@@ -1,0 +1,16 @@
+[
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/source_ids",
+        "list_key": "/org-ids/secondary",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/source_ids",
+        "list_key": "/controlled_by",
+        "multiple_seperator": ","
+    }
+]

@@ -149,3 +149,54 @@ class JsonSchemaProcessor:
             )
 
         return out
+
+    def get_references_to_data(self):
+        return self._get_references_to_data_worker(
+            json_schema=self._json_schema_compiled, start_pointer=""
+        )
+
+    def _get_references_to_data_worker(self, json_schema, start_pointer):
+        out = []
+        our_json_schema = jsonpointer.resolve_pointer(json_schema, start_pointer)
+        if our_json_schema.get("type") == "object":
+            for key in our_json_schema.get("properties").keys():
+                out.extend(
+                    self._get_references_to_data_worker(
+                        json_schema=json_schema,
+                        start_pointer=start_pointer + "/properties/" + key,
+                    )
+                )
+        if our_json_schema.get("type") == "array":
+            out.extend(
+                self._get_references_to_data_worker(
+                    json_schema=json_schema, start_pointer=start_pointer + "/items",
+                )
+            )
+
+        if our_json_schema.get("references-data-key"):
+            if "/items" in start_pointer:
+                key_bits = start_pointer.replace("/properties/", "/").split("/items", 2)
+                out.append(
+                    {
+                        "list_key": key_bits[0],
+                        "item_key": key_bits[1],
+                        "data_key": our_json_schema.get("references-data-key"),
+                        "data_list": our_json_schema.get("references-data-list"),
+                        "multiple_seperator": our_json_schema.get(
+                            "references-datas-seperator"
+                        ),
+                    }
+                )
+            else:
+                out.append(
+                    {
+                        "item_key": start_pointer.replace("/properties/", "/"),
+                        "data_key": our_json_schema.get("references-data-key"),
+                        "data_list": our_json_schema.get("references-data-list"),
+                        "multiple_seperator": our_json_schema.get(
+                            "references-datas-seperator"
+                        ),
+                    }
+                )
+
+        return out

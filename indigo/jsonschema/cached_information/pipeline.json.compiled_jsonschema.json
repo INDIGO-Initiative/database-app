@@ -168,6 +168,13 @@
             "title": "(In Sandboxes)",
             "type": "string"
         },
+        "source_ids": {
+            "references-data-key": "/id",
+            "references-data-list": "/sources",
+            "references-datas-seperator": ",",
+            "title": "(Source IDs)",
+            "type": "string"
+        },
         "status": {
             "enum": [
                 "PUBLIC",
@@ -338,6 +345,9 @@
                     "type": "string"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -706,6 +716,9 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -811,6 +824,9 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -1037,6 +1053,9 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -1057,6 +1076,9 @@
                     "type": "string"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 },
@@ -1201,6 +1223,9 @@
                     "type": "object"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1234,6 +1259,9 @@
                     "type": "string"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1330,6 +1358,9 @@
                     "type": "object"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1412,6 +1443,9 @@
                     "type": "object"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1450,6 +1484,9 @@
                     "type": "string"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1545,6 +1582,9 @@
                     "type": "object"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1699,6 +1739,9 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -1896,6 +1939,9 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -2011,6 +2057,9 @@
                     "type": "string"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -2070,6 +2119,9 @@
                 },
                 "source_ids": {
                     "description": "-",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -2096,6 +2148,9 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -2403,6 +2458,9 @@
                     "type": "object"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -2490,6 +2548,9 @@
                     "type": "string"
                 },
                 "source_ids": {
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 },
@@ -2664,6 +2725,9 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -2798,6 +2862,9 @@
                 },
                 "source_ids": {
                     "description": "-",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 },
@@ -2860,6 +2927,9 @@
                 },
                 "source_ids": {
                     "description": "-",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 },
@@ -2953,6 +3023,9 @@
                 },
                 "source_ids": {
                     "description": "-",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
