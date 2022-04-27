@@ -7,11 +7,7 @@ import jsonschema
 from django.conf import settings
 from django.db import connection
 
-from indigo import (
-    TYPE_PROJECT_SOURCE_LIST,
-    TYPE_PROJECT_SOURCES_REFERENCES,
-    TYPE_PROJECT_SOURCES_REFERENCES_LIST,
-)
+from indigo import TYPE_PROJECT_SOURCE_LIST
 from indigo.models import Fund, Organisation
 from indigo.processdata import (
     find_unique_fund_ids_referenced_in_project_data,
@@ -94,7 +90,10 @@ class DataQualityReportForProject:
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = _check_project_data_for_source_errors(self.project_data)
+        ) = _check_project_data_for_source_errors(
+            self.project_data,
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["references_datas"],
+        )
 
         for source_data in source_ids_used_that_are_not_in_sources_table:
             errors.append(
@@ -136,28 +135,38 @@ class DataQualityReportForProject:
         return out
 
 
-def _check_project_data_for_source_errors(input_json):
+def _check_project_data_for_source_errors(input_json, references_datas):
     source_table_entries_that_are_not_used = []
     source_ids_referenced_that_are_not_in_sources_table = []
     source_ids_referenced = []
     source_ids_found = []
 
     # ----------------- Find all Source ID's referenced in data
-    for key in TYPE_PROJECT_SOURCES_REFERENCES:
+    references_datas_not_in_list = [
+        i["item_key"]
+        for i in references_datas
+        if i.get("data_list") == "/sources" and not i.get("list_key")
+    ]
+    for key in references_datas_not_in_list:
         field_value = jsonpointer.resolve_pointer(input_json, key, default="")
         if isinstance(field_value, str):
             for source_id in [s.strip() for s in field_value.strip().split(",")]:
                 if source_id:
                     source_ids_referenced.append({"source_id": source_id})
 
-    for config in TYPE_PROJECT_SOURCES_REFERENCES_LIST:
+    references_datas_in_list = [
+        i
+        for i in references_datas
+        if i.get("data_list") == "/sources" and i.get("list_key")
+    ]
+    for config in references_datas_in_list:
         data_list = jsonpointer.resolve_pointer(
             input_json, config["list_key"], default=None
         )
         if isinstance(data_list, list) and data_list:
             for item in data_list:
                 field_value = jsonpointer.resolve_pointer(
-                    item, config["item_source_ids_key"], default=""
+                    item, config["item_key"], default=""
                 )
                 if field_value:
                     for source_id in [

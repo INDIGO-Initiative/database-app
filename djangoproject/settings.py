@@ -169,6 +169,18 @@ def load_json_schema_references_models(filename):
         return json.load(fp)
 
 
+def load_json_schema_references_datas(filename):
+    fn = os.path.join(
+        BASE_DIR,
+        "indigo",
+        "jsonschema",
+        "cached_information",
+        filename + ".references_datas.json",
+    )
+    with open(fn) as fp:
+        return json.load(fp)
+
+
 JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
         "json_schema": load_json_schema("project.json"),
@@ -198,6 +210,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             "project_data_quality_report_public.xlsx",
         ),
         "references_models": load_json_schema_references_models("project.json"),
+        "references_datas": load_json_schema_references_datas("project.json"),
     },
     "organisation": {
         "json_schema": load_json_schema("organisation.json"),
