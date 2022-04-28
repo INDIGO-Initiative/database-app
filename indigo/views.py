@@ -368,6 +368,8 @@ class ModelListDownload(View, ABC):
                 config.get("type", "") != "list"
                 # We don't want Organisation contact details
                 and config.get("key").find("/contact") == -1
+                # All data is public anyway, so status fields are pointless
+                and config.get("key").find("/status") == -1
             ):
                 labels.append(config.get("title"))
                 keys.append(config.get("key"))
