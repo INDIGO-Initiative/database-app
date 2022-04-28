@@ -1,5 +1,6 @@
 import json
 import os
+from abc import ABC
 from functools import lru_cache
 
 import jsonpointer
@@ -28,7 +29,12 @@ def get_project_priority_information():
         return json.load(fp)
 
 
-def get_priority_for_key(key):
+def get_priority_for_pipeline_key(key):
+    # We aren't using priorities for pipelines yet, so they are just all 3
+    return 3
+
+
+def get_priority_for_project_key(key):
     if not key.startswith("/"):
         key = "/" + key
     for info in get_project_priority_information():
@@ -37,48 +43,47 @@ def get_priority_for_key(key):
     return 3
 
 
-class DataQualityReportForProject:
+class DataQualityReportForModel(ABC):
     def __init__(self, project_data):
         self.project_data = project_data
         self.errors = []
         self._process()
 
-    def _process(self):
+    def _process_json_schema(self, json_schema, value_not_set_priority_function):
 
         # Get errors; convert to our objects
-        errors = []
-        v = jsonschema.Draft7Validator(
-            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["json_schema"]
-        )
+        v = jsonschema.Draft7Validator(json_schema)
         for error in v.iter_errors(self.project_data):
             if (
                 error.message.find("' is not one of [") != -1
                 and error.validator == "enum"
             ):
-                errors.append(ValueNotInEnumListDataError(error))
+                self.errors.append(ValueNotInEnumListDataError(error))
 
             elif (
                 error.message == "None is not of type 'string'"
                 and error.validator == "type"
                 and error.validator_value == "string"
             ):
-                errors.append(ValueNotSetDataError(error))
+                self.errors.append(
+                    ValueNotSetDataError(error, value_not_set_priority_function)
+                )
 
             elif (
                 error.message.find("' does not match '") != -1
                 and error.validator == "pattern"
             ):
-                errors.append(ValueNotCorrectPatternError(error))
+                self.errors.append(ValueNotCorrectPatternError(error))
 
             elif (
                 error.message.endswith(" is not of type 'number'")
                 and error.validator == "type"
                 and error.instance
             ):
-                errors.append(ValueNotANumberDataError(error))
+                self.errors.append(ValueNotANumberDataError(error))
 
             elif error.validator == "minItems":
-                errors.append(ArrayHasTooFewItemsError(error))
+                self.errors.append(ArrayHasTooFewItemsError(error))
 
             else:
                 pass
@@ -86,35 +91,6 @@ class DataQualityReportForProject:
                 # print(error.message)
                 # print(error.validator)
                 # TODO should log and work on more errors here
-
-        (
-            source_ids_used_that_are_not_in_sources_table,
-            source_table_entries_that_are_not_used,
-        ) = _check_project_data_for_source_errors(
-            self.project_data,
-            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["references_datas"],
-        )
-
-        for source_data in source_ids_used_that_are_not_in_sources_table:
-            errors.append(
-                SourceIdUsedThatIsNotInSourcesTable(source_data.get("source_id"))
-            )
-        for source_data in source_table_entries_that_are_not_used:
-            errors.append(SourceIdNotUsed(source_data.get("source_id")))
-
-        organisation_ids_that_do_not_exist = _filter_organisation_ids_that_do_not_exist_in_database(
-            find_unique_organisation_ids_referenced_in_project_data(self.project_data)
-        )
-        for id in organisation_ids_that_do_not_exist:
-            errors.append(OrganisationIdDoesNotExist(id))
-
-        fund_ids_that_do_not_exist = _filter_fund_ids_that_do_not_exist_in_database(
-            find_unique_fund_ids_referenced_in_project_data(self.project_data)
-        )
-        for id in fund_ids_that_do_not_exist:
-            errors.append(FundIdDoesNotExist(id))
-
-        self.errors = errors
 
     def get_errors(self):
         return self.errors
@@ -133,6 +109,70 @@ class DataQualityReportForProject:
         for error in self.errors:
             out[error.get_priority()] += 1
         return out
+
+
+class DataQualityReportForProject(DataQualityReportForModel):
+    def _process(self):
+
+        self._process_json_schema(
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["json_schema"],
+            get_priority_for_project_key,
+        )
+
+        (
+            source_ids_used_that_are_not_in_sources_table,
+            source_table_entries_that_are_not_used,
+        ) = _check_project_data_for_source_errors(
+            self.project_data,
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["references_datas"],
+        )
+
+        for source_data in source_ids_used_that_are_not_in_sources_table:
+            self.errors.append(
+                SourceIdUsedThatIsNotInSourcesTable(source_data.get("source_id"))
+            )
+        for source_data in source_table_entries_that_are_not_used:
+            self.errors.append(SourceIdNotUsed(source_data.get("source_id")))
+
+        organisation_ids_that_do_not_exist = _filter_organisation_ids_that_do_not_exist_in_database(
+            find_unique_organisation_ids_referenced_in_project_data(self.project_data)
+        )
+        for id in organisation_ids_that_do_not_exist:
+            self.errors.append(OrganisationIdDoesNotExist(id))
+
+        fund_ids_that_do_not_exist = _filter_fund_ids_that_do_not_exist_in_database(
+            find_unique_fund_ids_referenced_in_project_data(self.project_data)
+        )
+        for id in fund_ids_that_do_not_exist:
+            self.errors.append(FundIdDoesNotExist(id))
+
+
+class DataQualityReportForPipeline(DataQualityReportForModel):
+    def _process(self):
+
+        self._process_json_schema(
+            settings.JSONDATAFERRET_TYPE_INFORMATION["pipeline"]["json_schema"],
+            get_priority_for_pipeline_key,
+        )
+
+        (
+            source_ids_used_that_are_not_in_sources_table,
+            source_table_entries_that_are_not_used,
+        ) = _check_project_data_for_source_errors(
+            self.project_data,
+            settings.JSONDATAFERRET_TYPE_INFORMATION["pipeline"]["references_datas"],
+        )
+
+        for source_data in source_ids_used_that_are_not_in_sources_table:
+            self.errors.append(
+                SourceIdUsedThatIsNotInSourcesTable(source_data.get("source_id"))
+            )
+        for source_data in source_table_entries_that_are_not_used:
+            self.errors.append(SourceIdNotUsed(source_data.get("source_id")))
+
+        # TODO Check Organisation ID's
+
+        # TODO Check Project ID's
 
 
 def _check_project_data_for_source_errors(input_json, references_datas):
@@ -364,9 +404,9 @@ class ValueNotInEnumListDataError(_DataError):
 
 
 class ValueNotSetDataError(_DataError):
-    def __init__(self, error):
+    def __init__(self, error, value_not_set_priority_function):
         self._path = "/".join([str(i) for i in error.path])
-        self._priority = get_priority_for_key(self._path)
+        self._priority = value_not_set_priority_function(self._path)
 
     def get_type(self):
         return "value_not_set"

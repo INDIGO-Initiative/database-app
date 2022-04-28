@@ -1,0 +1,29 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Data Quality Report of Pipeline {{ record.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_pipeline_list' %}">Pipelines</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_pipeline_index' public_id=record.public_id  %}">Pipeline {{ record.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">History</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Data Quality Report</h2>
+
+    {% for priority, errors in errors_by_priority_level.items %}
+
+        <h3>Priority {{ priority }}</h3>
+
+        {% include 'indigo/admin/project/common_data_quality_report_show_data.html' with errors=errors %}
+
+    {% endfor %}
+
+
+{% endblock %}

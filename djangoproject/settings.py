@@ -261,6 +261,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         "fields": load_json_schema_fields("pipeline.json"),
         "filter_keys": load_json_schema_filter_keys("pipeline.json"),
         "references_models": load_json_schema_references_models("pipeline.json"),
+        "references_datas": load_json_schema_references_datas("pipeline.json"),
     },
 }
 

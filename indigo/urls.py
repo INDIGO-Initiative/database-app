@@ -205,7 +205,7 @@ urlpatterns = [
     ),
     path(
         "admin/project/<public_id>/data_quality_report",
-        views.admin_project_data_quality_report,
+        views.AdminProjectDataQualityReport.as_view(),
         name="indigo_admin_project_data_quality_report",
     ),
     path(
@@ -411,6 +411,11 @@ urlpatterns = [
         "admin/pipeline/<public_id>/history",
         views.AdminPipelineHistory.as_view(),
         name="indigo_admin_pipeline_history",
+    ),
+    path(
+        "admin/pipeline/<public_id>/data_quality_report",
+        views.AdminPipelineDataQualityReport.as_view(),
+        name="indigo_admin_pipeline_data_quality_report",
     ),
     path(
         "admin/new_pipeline",

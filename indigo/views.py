@@ -32,6 +32,7 @@ from indigo import (
 )
 from indigo.dataqualityreport import (
     DataQualityReportForAllProjects,
+    DataQualityReportForPipeline,
     DataQualityReportForProject,
 )
 from indigo.tasks import task_process_imported_project_file
@@ -1078,27 +1079,6 @@ def admin_project_history(request, public_id):
 
 
 @permission_required("indigo.admin")
-def admin_project_data_quality_report(request, public_id):
-    try:
-        project = Project.objects.get(public_id=public_id)
-    except Project.DoesNotExist:
-        raise Http404("Project does not exist")
-
-    dqr = DataQualityReportForProject(project.record.cached_data)
-
-    return render(
-        request,
-        "indigo/admin/project/data_quality_report.html",
-        {
-            "project": project,
-            "record": project.record,
-            "data_quality_report": dqr,
-            "errors_by_priority_level": dqr.get_errors_in_priority_levels(),
-        },
-    )
-
-
-@permission_required("indigo.admin")
 def admin_all_projects_data_quality_report(request):
     data_quality_report = DataQualityReportForAllProjects()
     return render(
@@ -2053,6 +2033,46 @@ class AdminAssessmentResourceHistory(AdminModelHistory):
 class AdminPipelineHistory(AdminModelHistory):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+
+
+class AdminModelDataQualityReport(PermissionRequiredMixin, View, ABC):
+    permission_required = "indigo.admin"
+
+    def get(self, request, public_id):
+        try:
+            type = Type.objects.get(public_id=self.__class__._type_public_id)
+            record = Record.objects.get(public_id=public_id)
+        except Type.DoesNotExist:
+            raise Http404("Type does not exist")
+        except Record.DoesNotExist:
+            raise Http404("Record does not exist")
+
+        dqr = self.__class__._data_quality_report(record.cached_data)
+
+        return render(
+            request,
+            "indigo/admin/"
+            + self.__class__._model.__name__.lower()
+            + "/data_quality_report.html",
+            {
+                "type": type,
+                "record": record,
+                "errors_by_priority_level": dqr.get_errors_in_priority_levels(),
+                "data_quality_report": dqr,
+            },
+        )
+
+
+class AdminProjectDataQualityReport(AdminModelDataQualityReport):
+    _model = Project
+    _type_public_id = TYPE_PROJECT_PUBLIC_ID
+    _data_quality_report = DataQualityReportForProject
+
+
+class AdminPipelineDataQualityReport(AdminModelDataQualityReport):
+    _model = Pipeline
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+    _data_quality_report = DataQualityReportForPipeline
 
 
 ########################### Admin - sandboxes
