@@ -77,16 +77,6 @@ TYPE_PROJECT_FUND_LIST = {
     # TODO add organisations to above mapping in some way, but it's more complex as we have to convert list <-> comma seperated string
 }
 
-TYPE_PROJECT_SOURCES_REFERENCES = [
-    "/stage_development/source_ids",
-    "/dates/source_ids",
-    "/overall_project_finance/source_ids",
-    "/investment_details/source_ids",
-    "/purpose_and_classifications/source_ids",
-    "/service_and_beneficiaries/source_ids",
-    "/changes_to_project_due_to_covid19/source_ids",
-]
-
 TYPE_PROJECT_MAP_VALUES_STAGE_DEVELOPMENT = {
     "Completed ": "Complete",
     "Implementation ": "Implementation",
@@ -104,29 +94,6 @@ TYPE_PROJECT_MAP_VALUES_PURPOSE_AND_CLASSIFICATIONS_POLICY_SECTOR = {
     "Children development": "Child and family welfare",
     "Child & family welfare": "Child and family welfare",
 }
-
-TYPE_PROJECT_SOURCES_REFERENCES_LIST = [
-    {"list_key": "/outcome_funds", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/delivery_locations", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/service_provisions", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/outcome_payment_commitments", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/investments", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/intermediary_services", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/outcome_metrics", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/results", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/open_contracting_datas", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/360giving_datas", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/outcome_pricings", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/transactions", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/grants", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/technical_assistances", "item_source_ids_key": "/source_ids",},
-    {
-        "list_key": "/technical_assistance_details",
-        "item_source_ids_key": "/source_ids",
-    },
-    {"list_key": "/outcome_payments", "item_source_ids_key": "/source_ids",},
-    {"list_key": "/scenarios", "item_source_ids_key": "/source_ids",},
-]
 
 TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST = [
     "/contact",

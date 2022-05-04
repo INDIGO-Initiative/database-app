@@ -1,0 +1,141 @@
+[
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/state_development/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/stage_development/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/misc1/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/part_larger_program/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/dates/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/misc2/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/misc3/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/misc4/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/misc5/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/misc6/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/misc7/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/technical_assistance_grant_development/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/overall_project_finance/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/purpose_and_classifications/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/service_and_beneficiaries/source_ids",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/source_ids",
+        "list_key": "/delivery_locations",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/source_ids",
+        "list_key": "/service_provisions",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/source_ids",
+        "list_key": "/outcome_payment_commitments",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/source_ids",
+        "list_key": "/investments",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/source_ids",
+        "list_key": "/intermediary_services",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/source_ids",
+        "list_key": "/outcome_metrics",
+        "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/sources",
+        "item_key": "/source_ids",
+        "list_key": "/projects",
+        "multiple_seperator": ","
+    }
+]

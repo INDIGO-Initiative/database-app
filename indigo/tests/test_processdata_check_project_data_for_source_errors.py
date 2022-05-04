@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.test import TestCase  # noqa
 
 import indigo.processdata
@@ -11,7 +12,10 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(
+            input,
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["references_datas"],
+        )
 
         assert 0 == len(source_ids_used_that_are_not_in_sources_table)
         assert 0 == len(source_table_entries_that_are_not_used)
@@ -27,7 +31,10 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(
+            input,
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["references_datas"],
+        )
 
         assert 0 == len(source_ids_used_that_are_not_in_sources_table)
         assert 0 == len(source_table_entries_that_are_not_used)
@@ -42,7 +49,10 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(
+            input,
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["references_datas"],
+        )
 
         assert 1 == len(source_ids_used_that_are_not_in_sources_table)
         assert {"source_id": "BOOK1"} == source_ids_used_that_are_not_in_sources_table[
@@ -60,7 +70,10 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(
+            input,
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["references_datas"],
+        )
 
         assert 1 == len(source_ids_used_that_are_not_in_sources_table)
         assert {"source_id": "BOOK1"} == source_ids_used_that_are_not_in_sources_table[
@@ -78,7 +91,10 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(
+            input,
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["references_datas"],
+        )
 
         assert 0 == len(source_ids_used_that_are_not_in_sources_table)
         assert 1 == len(source_table_entries_that_are_not_used)
@@ -95,7 +111,10 @@ class ProcessCheckProjectDataForSourceErrorsData(TestCase):
         (
             source_ids_used_that_are_not_in_sources_table,
             source_table_entries_that_are_not_used,
-        ) = indigo.dataqualityreport._check_project_data_for_source_errors(input)
+        ) = indigo.dataqualityreport._check_project_data_for_source_errors(
+            input,
+            settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["references_datas"],
+        )
 
         assert 1 == len(source_ids_used_that_are_not_in_sources_table)
         assert {"source_id": "BOOK1"} == source_ids_used_that_are_not_in_sources_table[

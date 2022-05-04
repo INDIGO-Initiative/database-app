@@ -364,6 +364,31 @@ def update_pipeline(record):
             public_only=True,
         )
 
+        # Some data cleaning - values from import scripts had '(eg ...)' included too.
+        if (
+            "stage_development" in pipeline.data_public
+            and "stage" in pipeline.data_public["stage_development"]
+        ):
+            stage_development = (
+                pipeline.data_public["stage_development"]["stage"]
+                .get("value", "")
+                .strip()
+            )
+            if stage_development.startswith("Scoping"):
+                pipeline.data_public["stage_development"]["stage"]["value"] = "Scoping"
+            elif stage_development.startswith("Early stage"):
+                pipeline.data_public["stage_development"]["stage"][
+                    "value"
+                ] = "Early stage"
+            elif stage_development.startswith("Late stage"):
+                pipeline.data_public["stage_development"]["stage"][
+                    "value"
+                ] = "Late stage"
+            elif stage_development.startswith("Final negotiations"):
+                pipeline.data_public["stage_development"]["stage"][
+                    "value"
+                ] = "Final negotiations"
+
     else:
         pipeline.data_public = {}
     # Private Data

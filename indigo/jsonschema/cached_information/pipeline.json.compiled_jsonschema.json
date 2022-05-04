@@ -168,6 +168,13 @@
             "title": "(In Sandboxes)",
             "type": "string"
         },
+        "source_ids": {
+            "references-data-key": "/id",
+            "references-data-list": "/sources",
+            "references-datas-seperator": ",",
+            "title": "(Source IDs)",
+            "type": "string"
+        },
         "status": {
             "enum": [
                 "PUBLIC",
@@ -241,6 +248,7 @@
         "dates": {
             "properties": {
                 "design_process_began": {
+                    "description": "Start date of project design process",
                     "properties": {
                         "status": {
                             "enum": [
@@ -315,6 +323,7 @@
                     "type": "object"
                 },
                 "expected_length": {
+                    "description": "Expected duration of the project",
                     "properties": {
                         "status": {
                             "enum": [
@@ -334,10 +343,15 @@
                     "type": "object"
                 },
                 "notes": {
+                    "description": "Notes on dates",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "source_ids": {
+                    "description": "Source of information for dates",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -692,6 +706,7 @@
                         "type": "object"
                     },
                     "notes": {
+                        "description": "Notes on delivery locations",
                         "title": "Notes",
                         "type": "string"
                     },
@@ -706,6 +721,10 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "description": "Source of information for delivery locations",
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -723,6 +742,7 @@
             "items": {
                 "properties": {
                     "notes": {
+                        "description": "Notes on documents.",
                         "title": "Notes",
                         "type": "string"
                     },
@@ -762,6 +782,7 @@
             "items": {
                 "properties": {
                     "notes": {
+                        "description": "Notes on intermediary organisations",
                         "title": "Notes",
                         "type": "string"
                     },
@@ -811,6 +832,10 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "description": "Source of information for intermediary organisations",
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -837,7 +862,7 @@
                             "amount": {
                                 "properties": {
                                     "exact": {
-                                        "description": "Exact amount of committed investment from each investor.",
+                                        "description": "Amount of committed investment from each investor.",
                                         "properties": {
                                             "value": {
                                                 "title": "(Value)",
@@ -999,6 +1024,7 @@
                         "type": "object"
                     },
                     "notes": {
+                        "description": "Notes on investments",
                         "title": "Notes",
                         "type": "string"
                     },
@@ -1037,6 +1063,10 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "description": "Source of information for investments",
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -1053,10 +1083,15 @@
         "misc1": {
             "properties": {
                 "notes": {
+                    "description": "Notes on type of instrument",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "source_ids": {
+                    "description": "Source of information for type of instrument",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 },
@@ -1177,11 +1212,12 @@
         "misc2": {
             "properties": {
                 "notes": {
+                    "description": "Notes on rationale for using outcome based model",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "rationale_outcomes_based_financing": {
-                    "description": "What is the rationale for using outcomes-based financing?",
+                    "description": "Rationale for using outcomes-based financing",
                     "properties": {
                         "status": {
                             "enum": [
@@ -1201,6 +1237,10 @@
                     "type": "object"
                 },
                 "source_ids": {
+                    "description": "Source of information for rationale for using outcome based model",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1210,7 +1250,7 @@
         "misc3": {
             "properties": {
                 "key_challenges_launch": {
-                    "description": "Key challenges to getting the project launched?",
+                    "description": " A list of key challenges to getting the project launched",
                     "properties": {
                         "status": {
                             "enum": [
@@ -1230,10 +1270,15 @@
                     "type": "object"
                 },
                 "notes": {
+                    "description": "Notes on key challenges to getting the project launched",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "source_ids": {
+                    "description": "Source of information for key challenges to getting the project launched",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1243,6 +1288,7 @@
         "misc4": {
             "properties": {
                 "notes": {
+                    "description": "Notes on the role of domestic government",
                     "title": "(Notes)",
                     "type": "string"
                 },
@@ -1330,6 +1376,10 @@
                     "type": "object"
                 },
                 "source_ids": {
+                    "description": "Source of information for the role of domestic government",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1339,6 +1389,7 @@
         "misc5": {
             "properties": {
                 "notes": {
+                    "description": "Notes on service providers",
                     "title": "(Notes)",
                     "type": "string"
                 },
@@ -1412,6 +1463,10 @@
                     "type": "object"
                 },
                 "source_ids": {
+                    "description": "Source of information for service providers",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1446,10 +1501,15 @@
                     "type": "object"
                 },
                 "notes": {
+                    "description": "Notes on availability of a feasibility study",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "source_ids": {
+                    "description": "Source of information for availability of a feasibility study",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1459,6 +1519,7 @@
         "misc7": {
             "properties": {
                 "notes": {
+                    "description": "Notes on proposed financing instrument",
                     "title": "(Notes)",
                     "type": "string"
                 },
@@ -1545,6 +1606,10 @@
                     "type": "object"
                 },
                 "source_ids": {
+                    "description": "Source of information for proposed financing instrument",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -1591,7 +1656,7 @@
                         "type": "object"
                     },
                     "definition": {
-                        "description": "An outcome target or metric is the specific value attached to the measure of outcomes for the purposes of determining whether satisfactory performance has been achieved. In an impact bond, these targets will usually determine whether a payment is made to the provider or investor. \n\nThis variable provides a detailed description of the metric(s) used to determine payments from the outcome payers. It should provide a clear definition of the conditions under which an outcome is agreed to have been 'achieved' or 'not achieved'.",
+                        "description": "The outcome is what changes for an individual as the result of a service or intervention. Example of outcomes include \u2018access to a formal job\u2019, \u2018improve learning at school\u2019, \u2018improve access to health services\u2019, etc.",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -1602,11 +1667,12 @@
                         "type": "object"
                     },
                     "id": {
-                        "description": "A within-project original, flexible identifiers to be referenced in another sheet. This can be set by any analyst. The outcome is what changes for an individual as the result of a service or intervention.",
+                        "description": "A within-project original, flexible identifiers to be referenced in another sheet. This can be set by the GO Lab analyst.",
                         "title": "Id",
                         "type": "string"
                     },
                     "notes": {
+                        "description": "Notes on outcome metrics.",
                         "title": "Notes",
                         "type": "string"
                     },
@@ -1622,7 +1688,7 @@
                         "type": "object"
                     },
                     "outcome_metric_target": {
-                        "description": "Targeted levels of outcome metrics to be achieved (e.g. the proportion of people supported who are expected to achieve a given outcome)",
+                        "description": "Targeted levels of outcome metrics to be achieved (e.g. the proportion of people supported who are expected to achieve a given outcome).",
                         "properties": {
                             "value": {
                                 "title": "(Value)",
@@ -1699,6 +1765,10 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "description": "Source of information for outcome metrics.",
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -1813,6 +1883,7 @@
                         "type": "object"
                     },
                     "notes": {
+                        "description": "Notes on outcome payment commitments",
                         "title": "Notes",
                         "type": "string"
                     },
@@ -1896,6 +1967,10 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "description": "Source of information for outcome payment commitments",
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -2007,10 +2082,15 @@
                     "type": "object"
                 },
                 "notes": {
+                    "description": "Notes on maximum potential outcome payments",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "source_ids": {
+                    "description": "Source of information for maximum potential outcome payments",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -2064,12 +2144,15 @@
                     "type": "object"
                 },
                 "notes": {
-                    "description": "-",
+                    "description": "Notes on larger outcomes-based programmes related to this project",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "source_ids": {
-                    "description": "-",
+                    "description": "Source of information for larger outcomes-based programmes related to this project",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -2081,6 +2164,7 @@
             "items": {
                 "properties": {
                     "notes": {
+                        "description": "Notes on INDIGO ID of this project once it has launched and it is part of the Impact Bond Dataset.",
                         "title": "Notes",
                         "type": "string"
                     },
@@ -2096,6 +2180,10 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "description": "Source of information for INDIGO ID of this project once it has launched and it is part of the Impact Bond Dataset.",
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -2132,6 +2220,7 @@
                     "type": "object"
                 },
                 "notes": {
+                    "description": "Notes on policy sector and SDG classification",
                     "title": "(Notes)",
                     "type": "string"
                 },
@@ -2403,6 +2492,10 @@
                     "type": "object"
                 },
                 "source_ids": {
+                    "description": "Source of information for policy sector and SDG classification",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
@@ -2486,10 +2579,15 @@
                     "type": "object"
                 },
                 "notes": {
+                    "description": "Notes on service users and beneficiaries",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "source_ids": {
+                    "description": "Source of information for service users and beneficiaries",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 },
@@ -2579,14 +2677,14 @@
                     "type": "object"
                 }
             },
-            "title": "Service and beneficiaries",
+            "title": "Service users and beneficiaries",
             "type": "object"
         },
         "service_provisions": {
             "items": {
                 "properties": {
                     "id": {
-                        "description": "A within-project original, flexible identifiers to be referenced in another sheet. This can be set by the analyst.",
+                        "description": "A within-project original, flexible identifiers to be referenced in another sheet. This can be set by the GO Lab analyst.",
                         "title": "Id",
                         "type": "string"
                     },
@@ -2602,6 +2700,7 @@
                         "type": "object"
                     },
                     "notes": {
+                        "description": "Notes on service provision",
                         "title": "Notes",
                         "type": "string"
                     },
@@ -2664,6 +2763,10 @@
                         "type": "object"
                     },
                     "source_ids": {
+                        "description": "Source of information for service provision",
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
                         "title": "Sources",
                         "type": "string"
                     },
@@ -2730,6 +2833,7 @@
                         "type": "object"
                     },
                     "notes": {
+                        "description": "Notes on sources",
                         "title": "Notes",
                         "type": "string"
                     },
@@ -2792,12 +2896,15 @@
             "description": "Stage of development of the project at the moment of data collection.",
             "properties": {
                 "notes": {
-                    "description": "-",
+                    "description": "Notes on stage of development",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "source_ids": {
-                    "description": "-",
+                    "description": "Source of information for stage of development",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 },
@@ -2815,9 +2922,9 @@
                         },
                         "value": {
                             "enum": [
-                                "Scoping (e.g. pre-feasibility study to support market mapping and issue identification)",
-                                "Early stage (e.g. beginning a feasibility study)",
-                                "Late stage (e.g. final deal construction and placement)",
+                                "Scoping",
+                                "Early stage",
+                                "Late stage",
                                 "Final negotiations"
                             ],
                             "title": "(Value)",
@@ -2831,15 +2938,15 @@
             "type": "object"
         },
         "state_development": {
-            "description": "State of development of the project.",
+            "description": "Latest known development state of the project.",
             "properties": {
                 "notes": {
-                    "description": "-",
+                    "description": "Notes on state of development",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "reason_abandoned": {
-                    "description": "-",
+                    "description": "A list of stakeholders motivations to abandon the project and/or obstacles that the stakeholders could not solve.",
                     "properties": {
                         "status": {
                             "enum": [
@@ -2859,7 +2966,10 @@
                     "type": "object"
                 },
                 "source_ids": {
-                    "description": "-",
+                    "description": "Source of information for state of development",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 },
@@ -2947,12 +3057,15 @@
                     "type": "object"
                 },
                 "notes": {
-                    "description": "-",
+                    "description": "Notes on technical assistance grants",
                     "title": "(Notes)",
                     "type": "string"
                 },
                 "source_ids": {
-                    "description": "-",
+                    "description": "Source of information for technical assistance grants",
+                    "references-data-key": "/id",
+                    "references-data-list": "/sources",
+                    "references-datas-seperator": ",",
                     "title": "(Source ID's)",
                     "type": "string"
                 }
