@@ -251,6 +251,17 @@
                         "description": "Type of source of information.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Contract",
+                                    "Report",
+                                    "Award Notice",
+                                    "Website",
+                                    "News piece",
+                                    "Press release",
+                                    "Email correspondence",
+                                    "Evaluation report"
+                                ],
+                                "title": "(Value)",
                                 "type": "string"
                             }
                         },
