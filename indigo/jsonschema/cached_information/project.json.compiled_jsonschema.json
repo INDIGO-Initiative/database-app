@@ -3707,6 +3707,16 @@
                         "description": "Type of source of information.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Contract",
+                                    "Report",
+                                    "Award Notice",
+                                    "Website",
+                                    "News piece",
+                                    "Press release",
+                                    "Email correspondence",
+                                    "Evaluation report"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -3752,8 +3762,6 @@
                 "value": {
                     "description": "Codelist options are: Contracted (A project falls under the category of \u2018contracted\u2019 when key stakeholders have signed a contract but service provision has not started yet), Implementation (A project falls under the category of \u2018implementation\u2019 when service provision has started.), Service delivery complete (A project falls under the category of \u2018complete service delivery\u2019 when service provision has finished) or Complete (A project falls under the category of \u2018complete\u2019 when service provision has finished, and all outcome payments have been made)",
                     "enum": [
-                        "Early-stage design",
-                        "Late-stage design",
                         "Contracted",
                         "Implementation",
                         "Service delivery complete",

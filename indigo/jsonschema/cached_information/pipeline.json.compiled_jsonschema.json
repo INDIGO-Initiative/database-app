@@ -2867,6 +2867,16 @@
                         "description": "Type of source of information.",
                         "properties": {
                             "value": {
+                                "enum": [
+                                    "Contract",
+                                    "Report",
+                                    "Award Notice",
+                                    "Website",
+                                    "News piece",
+                                    "Press release",
+                                    "Email correspondence",
+                                    "Evaluation report"
+                                ],
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -2893,7 +2903,7 @@
             "type": "array"
         },
         "stage_development": {
-            "description": "Stage of development of the project at the moment of data collection.",
+            "description": "Stage of development of the project at the moment of data collection. Codelist options are: Scoping (e.g. pre-feasibility study to support market mapping and issue identification), Early stage (e.g. beginning a feasibility study), Late stage (e.g. final deal construction and placement) or Final negotiations",
             "properties": {
                 "notes": {
                     "description": "Notes on stage of development",
