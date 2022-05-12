@@ -263,8 +263,8 @@ urlpatterns = [
         name="indigo_admin_organisation_index",
     ),
     path(
-        "admin/project/<public_id>/change_status",
-        views.admin_organisation_change_status,
+        "admin/organisation/<public_id>/change_status",
+        views.AdminOrganisationChangeStatus.as_view(),
         name="indigo_admin_organisation_change_status",
     ),
     path(
@@ -401,6 +401,11 @@ urlpatterns = [
         "admin/pipeline/<public_id>/import_form",
         views.AdminPipelineImportForm.as_view(),
         name="indigo_admin_pipeline_import_form",
+    ),
+    path(
+        "admin/pipeline/<public_id>/change_status",
+        views.AdminPipelineChangeStatus.as_view(),
+        name="indigo_admin_pipeline_change_status",
     ),
     path(
         "admin/pipeline/<public_id>/moderate",

@@ -1291,60 +1291,6 @@ def admin_organisation_index(request, public_id):
 
 
 @permission_required("indigo.admin")
-def admin_organisation_change_status(request, public_id):
-    try:
-        type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
-        raise Http404("Record does not exist")
-
-    if request.method == "POST":
-
-        # Create a form instance and populate it with data from the request (binding):
-        form = RecordChangeStatusForm(request.POST)
-
-        # Check if the form is valid:
-        if form.is_valid():
-
-            # Save the event
-            new_event_data = NewEventData(
-                type,
-                record,
-                {"status": form.cleaned_data["status"]},
-                mode=jsondataferret.EVENT_MODE_MERGE,
-            )
-            newEvent(
-                [new_event_data],
-                user=request.user,
-                comment=form.cleaned_data["comment"],
-            )
-
-            # redirect to a new URL:
-            messages.add_message(
-                request, messages.INFO, "Done; remember to moderate it!",
-            )
-            return HttpResponseRedirect(
-                reverse(
-                    "indigo_admin_organisation_index",
-                    kwargs={"public_id": record.public_id},
-                )
-            )
-
-    else:
-
-        form = RecordChangeStatusForm()
-
-    context = {
-        "record": record,
-        "form": form,
-    }
-
-    return render(request, "indigo/admin/organisation/change_status.html", context,)
-
-
-@permission_required("indigo.admin")
 def admin_organisation_projects(request, public_id):
     try:
         organisation = Organisation.objects.get(public_id=public_id)
@@ -1859,6 +1805,94 @@ class AdminPipelineImportForm(AdminModelImportForm):
 
     def _get_edits(self, data, import_json):
         return extract_edits_from_pipeline_spreadsheet(data.record, import_json)
+
+
+class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
+    permission_required = "indigo.admin"
+
+    def get(self, request, public_id):
+        try:
+            data = self.__class__._model.objects.get(public_id=public_id)
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+
+        record = data.record
+
+        form = RecordChangeStatusForm()
+
+        context = {
+            "record": record,
+            "form": form,
+        }
+
+        return render(
+            request,
+            "indigo/admin/"
+            + self.__class__._model.__name__.lower()
+            + "/change_status.html",
+            context,
+        )
+
+    def post(self, request, public_id):
+
+        try:
+            data = self.__class__._model.objects.get(public_id=public_id)
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+
+        record = data.record
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = RecordChangeStatusForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # Save the event
+            new_event_data = NewEventData(
+                type,
+                record,
+                {"status": form.cleaned_data["status"]},
+                mode=jsondataferret.EVENT_MODE_MERGE,
+            )
+            newEvent(
+                [new_event_data],
+                user=request.user,
+                comment=form.cleaned_data["comment"],
+            )
+
+            # redirect to a new URL:
+            messages.add_message(
+                request, messages.INFO, "Done; remember to moderate it!",
+            )
+            return HttpResponseRedirect(
+                reverse(
+                    "indigo_admin_" + self.__class__._model.__name__.lower() + "_index",
+                    kwargs={"public_id": record.public_id},
+                )
+            )
+
+        context = {
+            "record": record,
+            "form": form,
+        }
+
+        return render(
+            request,
+            "indigo/admin/"
+            + self.__class__._model.__name__.lower()
+            + "/change_status.html",
+            context,
+        )
+
+
+class AdminOrganisationChangeStatus(AdminModelChangeStatus):
+    _model = Organisation
+    _type_public_id = TYPE_ORGANISATION_PUBLIC_ID
+
+
+class AdminPipelineChangeStatus(AdminModelChangeStatus):
+    _model = Pipeline
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
 
 
 class AdminModelNew(PermissionRequiredMixin, View, ABC):
