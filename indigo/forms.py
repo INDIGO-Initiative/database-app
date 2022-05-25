@@ -25,14 +25,6 @@ class ProjectImportStage2Form(forms.Form):
     comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
 
 
-class ProjectMakeDisputedForm(forms.Form):
-    comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
-
-
-class ProjectMakePrivateForm(forms.Form):
-    comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
-
-
 class OrganisationNewForm(forms.Form):
     id = forms.SlugField(
         validators=[validate_organisation_id], initial="INDIGO-ORG-0000"
@@ -74,5 +66,11 @@ class ModelImportForm(forms.Form):
 class RecordChangeStatusForm(forms.Form):
     status = forms.ChoiceField(
         choices=[("PUBLIC", "PUBLIC"), ("PRIVATE", "PRIVATE"), ("DISPUTED", "DISPUTED")]
+    )
+    when = forms.ChoiceField(
+        choices=[
+            ("moderate", "Submit for moderation"),
+            ("immediate", "Make change IMMEDIATELY"),
+        ]
     )
     comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
