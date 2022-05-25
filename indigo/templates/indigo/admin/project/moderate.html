@@ -41,35 +41,39 @@
                         </td>
                     </tr>
                 {% endif %}
-                <tr>
-                    <th>Action</th>
-                    <td>
-                        <label>
-                            <input type="radio" name="action_{{ edit.id }}" value="approve">
-                            Approve
-                        </label>
-                        <label>
-                            <input type="radio" name="action_{{ edit.id }}" value="reject">
-                            Reject
-                        </label>
-                        <label>
-                            <input type="radio" name="action_{{ edit.id }}" value="" checked>
-                            No Action
-                        </label>
-                    </td>
-                </tr>
+                {% if perms.indigo.admin %}
+                    <tr>
+                        <th>Action</th>
+                        <td>
+                            <label>
+                                <input type="radio" name="action_{{ edit.id }}" value="approve">
+                                Approve
+                            </label>
+                            <label>
+                                <input type="radio" name="action_{{ edit.id }}" value="reject">
+                                Reject
+                            </label>
+                            <label>
+                                <input type="radio" name="action_{{ edit.id }}" value="" checked>
+                                No Action
+                            </label>
+                        </td>
+                    </tr>
+                {% endif %}
             </table>
 
             {% endfor %}
 
-            <div>
-                <label>
-                    Comment for history
-                    <textarea name="comment"></textarea>
-                </label>
-            </div>
+            {% if perms.indigo.admin %}
+                <div>
+                    <label>
+                        Comment for history
+                        <textarea name="comment"></textarea>
+                    </label>
+                </div>
 
-            <input type="submit" value="Moderate" class="btn btn-primary">
+                <input type="submit" value="Moderate" class="btn btn-primary">
+            {% endif %}
         </form>
 
     {% else %}
