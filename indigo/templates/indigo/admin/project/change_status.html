@@ -1,6 +1,6 @@
 {% extends 'indigo/base-admin.html' %}
 
-{% block head_title %}Make Private Project {{ record.public_id }}{% endblock %}
+{% block head_title %}Change Status of Project {{ record.public_id }}{% endblock %}
 
 {% block breadcrumbs %}
     <nav aria-label="breadcrumb">
@@ -8,26 +8,23 @@
         <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
         <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_list' %}">Projects</a></li>
         <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_index' public_id=record.public_id  %}">Project {{ record.public_id }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Make Private</li>
+        <li class="breadcrumb-item active" aria-current="page">Change Status</li>
       </ol>
     </nav>
 {% endblock %}
 
-
-
 {% block content %}
 
-    <h2>Make Private</h2>
+    <h2>Change Status</h2>
 
-    <p>This will make the WHOLE project private</p>
+    <p>This will change the status of the WHOLE pipeline.</p>
 
-      <form action="" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <table>
-          {{ form.as_table }}
+            {{ form.as_table }}
         </table>
-        <input type="submit" value="Change to Private" class="btn btn-primary">
-      </form>
-
+        <input type="submit" value="Change Status" class="btn btn-primary">
+    </form>
 
 {% endblock %}

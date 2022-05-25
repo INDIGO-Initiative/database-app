@@ -12,6 +12,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage
 from django.db.models.functions import Now
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
@@ -46,8 +47,6 @@ from .forms import (
     PipelineNewForm,
     ProjectImportForm,
     ProjectImportStage2Form,
-    ProjectMakeDisputedForm,
-    ProjectMakePrivateForm,
     ProjectNewForm,
     RecordChangeStatusForm,
 )
@@ -869,108 +868,6 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
     }
 
     return render(request, "indigo/admin/project/import_form_stage_2.html", context)
-
-
-@permission_admin_or_data_steward_required()
-def admin_project_make_private(request, public_id):
-    try:
-        type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
-        raise Http404("Record does not exist")
-
-    if request.method == "POST":
-
-        # Create a form instance and populate it with data from the request (binding):
-        form = ProjectMakePrivateForm(request.POST)
-
-        # Check if the form is valid:
-        if form.is_valid():
-
-            # Save the event
-            new_event_data = NewEventData(
-                type,
-                record,
-                {"status": "PRIVATE"},
-                mode=jsondataferret.EVENT_MODE_MERGE,
-            )
-            newEvent(
-                [new_event_data],
-                user=request.user,
-                comment=form.cleaned_data["comment"],
-            )
-
-            # redirect to a new URL:
-            return HttpResponseRedirect(
-                reverse(
-                    "indigo_admin_project_index",
-                    kwargs={"public_id": record.public_id},
-                )
-            )
-
-    else:
-
-        form = ProjectMakePrivateForm()
-
-    context = {
-        "record": record,
-        "form": form,
-    }
-
-    return render(request, "indigo/admin/project/make_private.html", context,)
-
-
-@permission_admin_or_data_steward_required()
-def admin_project_make_disputed(request, public_id):
-    try:
-        type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
-        raise Http404("Record does not exist")
-
-    if request.method == "POST":
-
-        # Create a form instance and populate it with data from the request (binding):
-        form = ProjectMakeDisputedForm(request.POST)
-
-        # Check if the form is valid:
-        if form.is_valid():
-
-            # Save the event
-            new_event_data = NewEventData(
-                type,
-                record,
-                {"status": "DISPUTED"},
-                mode=jsondataferret.EVENT_MODE_MERGE,
-            )
-            newEvent(
-                [new_event_data],
-                user=request.user,
-                comment=form.cleaned_data["comment"],
-            )
-
-            # redirect to a new URL:
-            return HttpResponseRedirect(
-                reverse(
-                    "indigo_admin_project_index",
-                    kwargs={"public_id": record.public_id},
-                )
-            )
-
-    else:
-
-        form = ProjectMakeDisputedForm()
-
-    context = {
-        "record": record,
-        "form": form,
-    }
-
-    return render(request, "indigo/admin/project/make_disputed.html", context,)
 
 
 @permission_admin_or_data_steward_required()
@@ -1861,14 +1758,27 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
         # Create a form instance and populate it with data from the request (binding):
         form = RecordChangeStatusForm(request.POST)
 
+        # For some users, not all combinations of actions are valid.
+        if not request.user.has_perm("indigo.admin"):
+            if form.data["status"] == "PUBLIC" and form.data["when"] == "immediate":
+                form.add_error(
+                    None,
+                    ValidationError(
+                        "With this access level, you can not make something public without submitting if for moderation."
+                    ),
+                )
+
         # Check if the form is valid:
         if form.is_valid():
+            approved = form.cleaned_data["when"] == "immediate"
+
             # Save the event
             new_event_data = NewEventData(
                 type,
                 record,
                 {"status": form.cleaned_data["status"]},
                 mode=jsondataferret.EVENT_MODE_MERGE,
+                approved=approved,
             )
             newEvent(
                 [new_event_data],
@@ -1878,11 +1788,13 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
 
             # redirect to a new URL:
             messages.add_message(
-                request, messages.INFO, "Done; remember to moderate it!",
+                request,
+                messages.INFO,
+                "Change made!" if approved else "Change sent for moderation.",
             )
             return HttpResponseRedirect(
                 reverse(
-                    "indigo_admin_" + self.__class__._model.__name__.lower() + "_index",
+                    self.__class__._redirect_view,
                     kwargs={"public_id": record.public_id},
                 )
             )
@@ -1905,14 +1817,34 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
         return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
+class AdminProjectChangeStatus(AdminModelChangeStatus):
+    _model = Project
+    _type_public_id = TYPE_PROJECT_PUBLIC_ID
+    _redirect_view = "indigo_admin_project_index"
+
+
 class AdminOrganisationChangeStatus(AdminModelChangeStatus):
     _model = Organisation
     _type_public_id = TYPE_ORGANISATION_PUBLIC_ID
+    _redirect_view = "indigo_admin_organisation_index"
+
+
+class AdminFundChangeStatus(AdminModelChangeStatus):
+    _model = Fund
+    _type_public_id = TYPE_FUND_PUBLIC_ID
+    _redirect_view = "indigo_admin_fund_index"
 
 
 class AdminPipelineChangeStatus(AdminModelChangeStatus):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+    _redirect_view = "indigo_admin_pipeline_index"
+
+
+class AdminAssessmentResourceChangeStatus(AdminModelChangeStatus):
+    _model = AssessmentResource
+    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+    _redirect_view = "indigo_admin_assessment_resource_index"
 
 
 class AdminModelNew(PermissionRequiredMixin, View, ABC):
