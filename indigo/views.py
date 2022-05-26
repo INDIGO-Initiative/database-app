@@ -1,7 +1,7 @@
 import csv
 import os
-import re
 import random
+import re
 import tempfile
 from abc import ABC
 
@@ -985,10 +985,14 @@ def admin_projects_new(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # Save the event
-            last_record = Record.objects.filter(type=type).order_by('-public_id').first()
+            last_record = (
+                Record.objects.filter(type=type).order_by("-public_id").first()
+            )
             if last_record:
                 print(last_record.public_id)
-                m = re.search("^INDIGO-POJ-([0-9][0-9][0-9][0-9])$", last_record.public_id)
+                m = re.search(
+                    "^INDIGO-POJ-([0-9][0-9][0-9][0-9])$", last_record.public_id
+                )
                 assert m
                 id_number = int(m.group(1)) + 1
             else:
@@ -996,14 +1000,9 @@ def admin_projects_new(request):
 
             id = f"INDIGO-POJ-{id_number:04d}"
             data = NewEventData(
-                type,
-                id,
-                {"name": {"value": form.cleaned_data["name"]}},
-                approved=True,
+                type, id, {"name": {"value": form.cleaned_data["name"]}}, approved=True,
             )
-            newEvent(
-                [data], user=request.user, comment=form.cleaned_data["comment"]
-            )
+            newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
 
             # redirect to a new URL:
             return HttpResponseRedirect(
