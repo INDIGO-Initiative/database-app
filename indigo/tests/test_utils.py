@@ -34,19 +34,6 @@ class GetOrganisationSpreadsheetVersion(TestCase):
         )
 
 
-class ValidateProjectId(TestCase):
-    def test_validate_project_id_1(self):
-        indigo.utils.validate_project_id("INDIGO-POJ-0001")
-
-    def test_validate_project_id_2(self):
-        with self.assertRaises(ValidationError):
-            indigo.utils.validate_project_id("INDIGO_POJ_0001")
-
-    def test_validate_project_id_3(self):
-        with self.assertRaises(ValidationError):
-            indigo.utils.validate_project_id("INDIGO-POJ-001")
-
-
 class ValidateFundId(TestCase):
     def test_validate_fund_id_1(self):
         indigo.utils.validate_fund_id("INDIGO-FUND-0001")

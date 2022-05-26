@@ -5,14 +5,12 @@ from indigo.utils import (
     validate_fund_id,
     validate_organisation_id,
     validate_pipeline_id,
-    validate_project_id,
 )
 
 COMMENT_LABEL = "Comment for history"
 
 
 class ProjectNewForm(forms.Form):
-    id = forms.SlugField(validators=[validate_project_id], initial="INDIGO-POJ-0000")
     name = forms.CharField()
     comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
 

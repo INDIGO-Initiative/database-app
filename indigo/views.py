@@ -1,5 +1,6 @@
 import csv
 import os
+import re
 import random
 import tempfile
 from abc import ABC
@@ -13,6 +14,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.files.storage import default_storage
+from django.db import transaction
 from django.db.models.functions import Now
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -965,6 +967,7 @@ def admin_project_make_disputed(request, public_id):
     return render(request, "indigo/admin/project/make_disputed.html", context,)
 
 
+@transaction.atomic
 @permission_required("indigo.admin")
 def admin_projects_new(request):
     try:
@@ -982,25 +985,30 @@ def admin_projects_new(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # Save the event
-            id = form.cleaned_data["id"]
-            existing_record = Record.objects.filter(type=type, public_id=id)
-            if existing_record:
-                form.add_error("id", "This ID already exists")
+            last_record = Record.objects.filter(type=type).order_by('-public_id').first()
+            if last_record:
+                print(last_record.public_id)
+                m = re.search("^INDIGO-POJ-([0-9][0-9][0-9][0-9])$", last_record.public_id)
+                assert m
+                id_number = int(m.group(1)) + 1
             else:
-                data = NewEventData(
-                    type,
-                    id,
-                    {"name": {"value": form.cleaned_data["name"]}},
-                    approved=True,
-                )
-                newEvent(
-                    [data], user=request.user, comment=form.cleaned_data["comment"]
-                )
+                id_number = 1
 
-                # redirect to a new URL:
-                return HttpResponseRedirect(
-                    reverse("indigo_admin_project_index", kwargs={"public_id": id},)
-                )
+            id = f"INDIGO-POJ-{id_number:04d}"
+            data = NewEventData(
+                type,
+                id,
+                {"name": {"value": form.cleaned_data["name"]}},
+                approved=True,
+            )
+            newEvent(
+                [data], user=request.user, comment=form.cleaned_data["comment"]
+            )
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(
+                reverse("indigo_admin_project_index", kwargs={"public_id": id},)
+            )
 
     # If this is a GET (or any other method) create the default form.
     else:

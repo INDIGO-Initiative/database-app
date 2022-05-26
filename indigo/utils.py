@@ -21,12 +21,6 @@ def _get_spreadsheet_version(filename):
     return None
 
 
-def validate_project_id(value):
-    m = re.search("^INDIGO-POJ-[0-9][0-9][0-9][0-9]$", value)
-    if not m:
-        raise ValidationError("Project IDs should be of the format INDIGO-POJ-0000")
-
-
 def validate_fund_id(value):
     m = re.search("^INDIGO-FUND-[0-9][0-9][0-9][0-9]$", value)
     if not m:
