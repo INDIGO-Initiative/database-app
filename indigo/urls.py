@@ -447,4 +447,8 @@ urlpatterns = [
         views.admin_event_index,
         name="indigo_admin_event_index",
     ),
+    ########################### Admin - Moderate
+    path(
+        "admin/to_moderate", views.admin_to_moderate, name="indigo_admin_to_moderate",
+    ),
 ]

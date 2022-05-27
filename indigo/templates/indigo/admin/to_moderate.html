@@ -1,0 +1,127 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Projects{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item active" aria-current="page">To Moderate</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    <h3>Projects</h3>
+
+    {% if projects %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Project Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for project in projects %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}">{{ project.public_id }}</a></td>
+                    <td>{{ project.cached_data.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}" class="btn btn-primary">View</a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No projects need moderation.</p>
+    {% endif %}
+
+    <h3>Organisations</h3>
+
+    {% if organisations %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Organisation Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for organisation in organisations %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id %}">{{ organisation.public_id }}</a></td>
+                    <td>{{ organisation.cached_data.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id %}" class="btn btn-primary">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No organisations need moderation.</p>
+    {% endif %}
+
+    <h3>Funds</h3>
+
+    {% if funds %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Fund Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for fund in funds %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_fund_index' public_id=fund.public_id %}">{{ fund.public_id }}</a></td>
+                    <td>{{ fund.cached_data.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_fund_index' public_id=fund.public_id %}" class="btn btn-primary">View</a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No funds need moderation.</p>
+    {% endif %}
+
+    <h3>Pipelines</h3>
+
+
+    {% if pipelines %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Pipeline Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for pipeline in pipelines %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_pipeline_index' public_id=pipeline.public_id %}">{{ pipeline.public_id }}</a></td>
+                    <td>{{ pipeline.cached_data.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_pipeline_index' public_id=pipeline.public_id %}" class="btn btn-primary">View</a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No pipelines need moderation.</p>
+    {% endif %}
+
+    <h3>Assessment Resources</h3>
+
+    {% if assessment_resources %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for assessment_resource in assessment_resources %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_assessment_resource_index' public_id=assessment_resource.public_id %}">{{ assessment_resource.public_id }}</a></td>
+                    <td>{{ assessment_resource.cached_data.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_assessment_resource_index' public_id=assessment_resource.public_id %}" class="btn btn-primary">View</a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No assessment resources need moderation.</p>
+    {% endif %}
+
+
+{% endblock %}
