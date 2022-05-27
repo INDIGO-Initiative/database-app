@@ -2116,3 +2116,35 @@ def admin_event_index(request, event_id):
             "edits_created_and_approved": edits_created_and_approved,
         },
     )
+
+
+########################### Admin - Moderate
+
+
+@permission_admin_or_data_steward_required()
+def admin_to_moderate(request):
+    try:
+        type_project = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
+        type_organisation = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
+        type_fund = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
+        type_pipeline = Type.objects.get(public_id=TYPE_PIPELINE_PUBLIC_ID)
+        type_assessment_resource = Type.objects.get(
+            public_id=TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+        )
+    except Type.DoesNotExist:
+        raise Http404("Type does not exist")
+    return render(
+        request,
+        "indigo/admin/to_moderate.html",
+        {
+            "projects": Record.objects.filter_needs_moderation_by_type(type_project),
+            "organisations": Record.objects.filter_needs_moderation_by_type(
+                type_organisation
+            ),
+            "funds": Record.objects.filter_needs_moderation_by_type(type_fund),
+            "pipelines": Record.objects.filter_needs_moderation_by_type(type_pipeline),
+            "assessment_resources": Record.objects.filter_needs_moderation_by_type(
+                type_assessment_resource
+            ),
+        },
+    )
