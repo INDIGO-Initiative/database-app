@@ -10,7 +10,7 @@ import jsonpointer
 import spreadsheetforms.api
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.files.storage import default_storage
 from django.db.models.functions import Now
@@ -631,7 +631,15 @@ class API1PipelineIndex(API1ModelIndex):
 ########################### Admin
 
 
-@permission_required("indigo.admin")
+def _permission_admin_or_data_steward_required_test(user):
+    return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+
+def permission_admin_or_data_steward_required():
+    return user_passes_test(_permission_admin_or_data_steward_required_test)
+
+
+@permission_admin_or_data_steward_required()
 def admin_index(request):
     return render(request, "indigo/admin/index.html")
 
@@ -639,7 +647,7 @@ def admin_index(request):
 ########################### Admin - Projects
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_project_download_blank_form(request):
     type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PROJECT_PUBLIC_ID, {})
     if not type_data.get("spreadsheet_form_guide"):
@@ -661,7 +669,7 @@ def admin_project_download_blank_form(request):
     return response
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_projects_list(request):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -671,7 +679,7 @@ def admin_projects_list(request):
     return render(request, "indigo/admin/projects.html", {"projects": projects},)
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_project_index(request, public_id):
     try:
         project = Project.objects.get(public_id=public_id)
@@ -687,7 +695,7 @@ def admin_project_index(request, public_id):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_project_download_form(request, public_id):
     type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PROJECT_PUBLIC_ID, {})
     try:
@@ -710,7 +718,7 @@ def admin_project_download_form(request, public_id):
     return response
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_project_import_form(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -766,7 +774,7 @@ def admin_project_import_form(request, public_id):
     return render(request, "indigo/admin/project/import_form.html", context)
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_project_import_form_stage_2(request, public_id, import_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -863,7 +871,7 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
     return render(request, "indigo/admin/project/import_form_stage_2.html", context)
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_project_make_private(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -914,7 +922,7 @@ def admin_project_make_private(request, public_id):
     return render(request, "indigo/admin/project/make_private.html", context,)
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_project_make_disputed(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -965,7 +973,7 @@ def admin_project_make_disputed(request, public_id):
     return render(request, "indigo/admin/project/make_disputed.html", context,)
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_projects_new(request):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -1013,7 +1021,7 @@ def admin_projects_new(request):
     return render(request, "indigo/admin/project/new.html", context)
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_project_moderate(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -1025,7 +1033,7 @@ def admin_project_moderate(request, public_id):
 
     edits = Edit.objects.filter(record=record, approval_event=None, refusal_event=None)
 
-    if request.method == "POST":
+    if request.method == "POST" and request.user.has_perm("indigo.admin"):
 
         # TODO check CSFR
 
@@ -1061,7 +1069,7 @@ def admin_project_moderate(request, public_id):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_project_history(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -1080,7 +1088,7 @@ def admin_project_history(request, public_id):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_all_projects_data_quality_report(request):
     data_quality_report = DataQualityReportForAllProjects()
     return render(
@@ -1093,7 +1101,7 @@ def admin_all_projects_data_quality_report(request):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_all_projects_data_quality_report_field_single(request):
 
     data_quality_report = DataQualityReportForAllProjects()
@@ -1118,7 +1126,7 @@ def admin_all_projects_data_quality_report_field_single(request):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_all_projects_data_quality_report_field_list(request):
 
     data_quality_report = DataQualityReportForAllProjects()
@@ -1143,7 +1151,7 @@ def admin_all_projects_data_quality_report_field_list(request):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_all_projects_data_quality_list_projects_by_priority_highest(
     request, priority
 ):
@@ -1180,7 +1188,7 @@ def admin_all_projects_data_quality_list_projects_by_priority_highest(
 ########################### Admin - Organisations
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisation_download_blank_form(request):
     type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
         TYPE_ORGANISATION_PUBLIC_ID, {}
@@ -1204,12 +1212,12 @@ def admin_organisation_download_blank_form(request):
     return response
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisations_list(request):
     return render(request, "indigo/admin/organisations.html", {},)
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisations_goto(request):
     goto = request.POST.get("goto").strip()
     try:
@@ -1225,7 +1233,7 @@ def admin_organisations_goto(request):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisations_search(request):
     search_term = request.GET.get("search", "").strip()
     organisations = Organisation.objects
@@ -1241,7 +1249,7 @@ def admin_organisations_search(request):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisation_download_all_csv(request):
     try:
         type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
@@ -1274,7 +1282,7 @@ def admin_organisation_download_all_csv(request):
     return response
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisation_index(request, public_id):
     try:
         organisation = Organisation.objects.get(public_id=public_id)
@@ -1290,7 +1298,7 @@ def admin_organisation_index(request, public_id):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisation_projects(request, public_id):
     try:
         organisation = Organisation.objects.get(public_id=public_id)
@@ -1306,7 +1314,7 @@ def admin_organisation_projects(request, public_id):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisation_download_form(request, public_id):
     try:
         organisation = Organisation.objects.get(public_id=public_id)
@@ -1335,7 +1343,7 @@ def admin_organisation_download_form(request, public_id):
     return response
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisation_import_form(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
@@ -1411,7 +1419,7 @@ def admin_organisation_import_form(request, public_id):
     return render(request, "indigo/admin/organisation/import_form.html", context)
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisations_new(request):
     try:
         type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
@@ -1461,7 +1469,7 @@ def admin_organisations_new(request):
     return render(request, "indigo/admin/organisation/new.html", context)
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisation_moderate(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
@@ -1473,7 +1481,7 @@ def admin_organisation_moderate(request, public_id):
 
     edits = Edit.objects.filter(record=record, approval_event=None, refusal_event=None)
 
-    if request.method == "POST":
+    if request.method == "POST" and request.user.has_perm("indigo.admin"):
 
         # TODO check CSFR
 
@@ -1509,7 +1517,7 @@ def admin_organisation_moderate(request, public_id):
     )
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_organisation_history(request, public_id):
     try:
         type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
@@ -1532,8 +1540,6 @@ def admin_organisation_history(request, public_id):
 
 
 class AdminModelDownloadBlankForm(PermissionRequiredMixin, View, ABC):
-    permission_required = "indigo.admin"
-
     def get(self, request):
         type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
             self.__class__._type_public_id, {}
@@ -1558,6 +1564,10 @@ class AdminModelDownloadBlankForm(PermissionRequiredMixin, View, ABC):
 
         return response
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
 
 class AdminFundDownloadBlankForm(AdminModelDownloadBlankForm):
     _model = Fund
@@ -1575,8 +1585,6 @@ class AdminPipelineDownloadBlankForm(AdminModelDownloadBlankForm):
 
 
 class AdminModelList(PermissionRequiredMixin, View, ABC):
-    permission_required = "indigo.admin"
-
     def get(self, request):
         try:
             type = Type.objects.get(public_id=self.__class__._type_public_id)
@@ -1588,6 +1596,10 @@ class AdminModelList(PermissionRequiredMixin, View, ABC):
             "indigo/admin/" + self.__class__._model.__name__.lower() + "s.html",
             {"datas": datas},
         )
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminFundList(AdminModelList):
@@ -1606,8 +1618,6 @@ class AdminPipelineList(AdminModelList):
 
 
 class AdminModelIndex(PermissionRequiredMixin, View, ABC):
-    permission_required = "indigo.admin"
-
     def get(self, request, public_id):
         try:
             data = self.__class__._model.objects.get(public_id=public_id)
@@ -1622,6 +1632,10 @@ class AdminModelIndex(PermissionRequiredMixin, View, ABC):
             {"data": data, "field_data": field_data},
         )
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
 
 class AdminFundIndex(AdminModelIndex):
     _model = Fund
@@ -1635,7 +1649,7 @@ class AdminPipelineIndex(AdminModelIndex):
     _model = Pipeline
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_fund_projects(request, public_id):
     try:
         fund = Fund.objects.get(public_id=public_id)
@@ -1649,8 +1663,6 @@ def admin_fund_projects(request, public_id):
 
 
 class AdminModelDownloadForm(PermissionRequiredMixin, View, ABC):
-    permission_required = "indigo.admin"
-
     def get(self, request, public_id):
         try:
             data = self.__class__._model.objects.get(public_id=public_id)
@@ -1680,6 +1692,10 @@ class AdminModelDownloadForm(PermissionRequiredMixin, View, ABC):
             )
 
         return response
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminFundDownloadForm(AdminModelDownloadForm):
@@ -1712,8 +1728,6 @@ class AdminPipelineDownloadForm(AdminModelDownloadForm):
 
 
 class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
-    permission_required = "indigo.admin"
-
     def get(self, request, public_id):
         try:
             data = self.__class__._model.objects.get(public_id=public_id)
@@ -1774,6 +1788,10 @@ class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
                 {"data": data, "form": form,},
             )
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
 
 class AdminFundImportForm(AdminModelImportForm):
     _model = Fund
@@ -1808,8 +1826,6 @@ class AdminPipelineImportForm(AdminModelImportForm):
 
 
 class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
-    permission_required = "indigo.admin"
-
     def get(self, request, public_id):
         try:
             data = self.__class__._model.objects.get(public_id=public_id)
@@ -1884,6 +1900,10 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
             context,
         )
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
 
 class AdminOrganisationChangeStatus(AdminModelChangeStatus):
     _model = Organisation
@@ -1896,8 +1916,6 @@ class AdminPipelineChangeStatus(AdminModelChangeStatus):
 
 
 class AdminModelNew(PermissionRequiredMixin, View, ABC):
-    permission_required = "indigo.admin"
-
     def get(self, request):
         form = self.__class__._form_class()
         return render(
@@ -1941,6 +1959,10 @@ class AdminModelNew(PermissionRequiredMixin, View, ABC):
             {"form": form,},
         )
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
 
 class AdminFundNew(AdminModelNew):
     _model = Fund
@@ -1964,8 +1986,6 @@ class AdminPipelineNew(AdminModelNew):
 
 
 class AdminModelModerate(PermissionRequiredMixin, View, ABC):
-    permission_required = "indigo.admin"
-
     def get(self, request, public_id):
         return self.post(request, public_id)
 
@@ -1981,7 +2001,7 @@ class AdminModelModerate(PermissionRequiredMixin, View, ABC):
             record=record, approval_event=None, refusal_event=None
         )
 
-        if request.method == "POST":
+        if request.method == "POST" and request.user.has_perm("indigo.admin"):
 
             # TODO check CSFR
 
@@ -2020,6 +2040,10 @@ class AdminModelModerate(PermissionRequiredMixin, View, ABC):
             {"type": type, "record": record, "edits": edits},
         )
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
 
 class AdminFundModerate(AdminModelModerate):
     _model = Fund
@@ -2037,8 +2061,6 @@ class AdminPipelineModerate(AdminModelModerate):
 
 
 class AdminModelHistory(PermissionRequiredMixin, View, ABC):
-    permission_required = "indigo.admin"
-
     def get(self, request, public_id):
         try:
             type = Type.objects.get(public_id=self.__class__._type_public_id)
@@ -2054,6 +2076,10 @@ class AdminModelHistory(PermissionRequiredMixin, View, ABC):
             "indigo/admin/" + self.__class__._model.__name__.lower() + "/history.html",
             {"type": type, "record": record, "events": events},
         )
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminFundHistory(AdminModelHistory):
@@ -2072,8 +2098,6 @@ class AdminPipelineHistory(AdminModelHistory):
 
 
 class AdminModelDataQualityReport(PermissionRequiredMixin, View, ABC):
-    permission_required = "indigo.admin"
-
     def get(self, request, public_id):
         try:
             type = Type.objects.get(public_id=self.__class__._type_public_id)
@@ -2098,6 +2122,10 @@ class AdminModelDataQualityReport(PermissionRequiredMixin, View, ABC):
             },
         )
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
 
 class AdminProjectDataQualityReport(AdminModelDataQualityReport):
     _model = Project
@@ -2114,13 +2142,13 @@ class AdminPipelineDataQualityReport(AdminModelDataQualityReport):
 ########################### Admin - sandboxes
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_sandbox_list(request):
     sandboxes = Sandbox.objects.all()
     return render(request, "indigo/admin/sandboxes.html", {"sandboxes": sandboxes},)
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_sandbox_index(request, public_id):
     try:
         sandbox = Sandbox.objects.get(public_id=public_id)
@@ -2132,7 +2160,7 @@ def admin_sandbox_index(request, public_id):
 ########################### Admin - Event
 
 
-@permission_required("indigo.admin")
+@permission_admin_or_data_steward_required()
 def admin_event_index(request, event_id):
     try:
         event = Event.objects.get(public_id=event_id)

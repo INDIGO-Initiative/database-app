@@ -41,6 +41,7 @@
                         </td>
                     </tr>
                 {% endif %}
+                {% if perms.indigo.admin %}
                 <tr>
                     <th>Action</th>
                     <td>
@@ -58,18 +59,21 @@
                         </label>
                     </td>
                 </tr>
+                {% endif %}
             </table>
 
             {% endfor %}
 
-            <div>
-                <label>
-                    Comment for history
-                    <textarea name="comment"></textarea>
-                </label>
-            </div>
+            {% if perms.indigo.admin %}
+                <div>
+                    <label>
+                        Comment for history
+                        <textarea name="comment"></textarea>
+                    </label>
+                </div>
 
-            <input type="submit" value="Moderate" class="btn btn-primary">
+                <input type="submit" value="Moderate" class="btn btn-primary">
+            {% endif %}
         </form>
 
     {% else %}

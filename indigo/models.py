@@ -15,7 +15,13 @@ from indigo import (
 class Indigo(models.Model):
     class Meta:
         managed = False
-        permissions = (("admin", "Admin - All admin tasks on Indigo data"),)
+        permissions = (
+            ("admin", "Admin - All admin tasks on Indigo data"),
+            (
+                "data_steward",
+                "Data Steward - View all Indigo data, submit edits for moderation, can make private/disputed",
+            ),
+        )
 
 
 class BaseModel(models.Model):
