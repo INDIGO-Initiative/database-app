@@ -2189,3 +2189,13 @@ def admin_event_index(request, event_id):
             "edits_created_and_approved": edits_created_and_approved,
         },
     )
+
+
+########################### Admin - History
+
+
+@permission_admin_or_data_steward_required()
+def admin_history(request):
+    events = Event.objects.all()
+
+    return render(request, "indigo/admin/history.html", {"events": events},)
