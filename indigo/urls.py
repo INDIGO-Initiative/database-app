@@ -442,4 +442,6 @@ urlpatterns = [
         views.admin_event_index,
         name="indigo_admin_event_index",
     ),
+    ########################### Admin - History
+    path("admin/history", views.admin_history, name="indigo_admin_history",),
 ]
