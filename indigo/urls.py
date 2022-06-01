@@ -169,16 +169,6 @@ urlpatterns = [
         name="indigo_admin_project_index",
     ),
     path(
-        "admin/project/<public_id>/make_private",
-        views.admin_project_make_private,
-        name="indigo_admin_project_make_private",
-    ),
-    path(
-        "admin/project/<public_id>/make_disputed",
-        views.admin_project_make_disputed,
-        name="indigo_admin_project_make_disputed",
-    ),
-    path(
         "admin/project/<public_id>/download_form",
         views.admin_project_download_form,
         name="indigo_admin_project_download_form",
@@ -192,6 +182,11 @@ urlpatterns = [
         "admin/project/<public_id>/import_form/<import_id>",
         views.admin_project_import_form_stage_2,
         name="indigo_admin_project_import_form_stage_2",
+    ),
+    path(
+        "admin/project/<public_id>/change_status",
+        views.AdminProjectChangeStatus.as_view(),
+        name="indigo_admin_project_change_status",
     ),
     path(
         "admin/project/<public_id>/moderate",
@@ -325,6 +320,11 @@ urlpatterns = [
         name="indigo_admin_fund_import_form",
     ),
     path(
+        "admin/fund/<public_id>/change_status",
+        views.AdminFundChangeStatus.as_view(),
+        name="indigo_admin_fund_change_status",
+    ),
+    path(
         "admin/fund/<public_id>/moderate",
         views.AdminFundModerate.as_view(),
         name="indigo_admin_fund_moderate",
@@ -360,6 +360,11 @@ urlpatterns = [
         "admin/assessment_resource/<public_id>/import_form",
         views.AdminAssessmentResourceImportForm.as_view(),
         name="indigo_admin_assessment_resource_import_form",
+    ),
+    path(
+        "admin/assessment_resource/<public_id>/change_status",
+        views.AdminAssessmentResourceChangeStatus.as_view(),
+        name="indigo_admin_assessment_resource_change_status",
     ),
     path(
         "admin/assessment_resource/<public_id>/moderate",
@@ -441,5 +446,9 @@ urlpatterns = [
         "admin/event/<event_id>",
         views.admin_event_index,
         name="indigo_admin_event_index",
+    ),
+    ########################### Admin - Moderate
+    path(
+        "admin/to_moderate", views.admin_to_moderate, name="indigo_admin_to_moderate",
     ),
 ]

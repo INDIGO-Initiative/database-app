@@ -25,6 +25,7 @@
     {% endfor %}
 </table>
 
+<P><a href="{% url 'indigo_admin_assessment_resource_change_status' public_id=data.public_id %}" class="btn btn-primary">Change Status</a></P>
 <P><a href="{% url 'indigo_admin_assessment_resource_download_form' public_id=data.public_id %}" class="btn btn-primary">Download Form</a></P>
 <P><a href="{% url 'indigo_admin_assessment_resource_import_form' public_id=data.public_id %}" class="btn btn-primary">Upload/Import Form</a></P>
 <P><a href="{% url 'indigo_admin_assessment_resource_moderate' public_id=data.public_id %}" class="btn btn-primary">Moderate</a></P>
