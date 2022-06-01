@@ -1,7 +1,9 @@
 import re
 
 import openpyxl
-from django.core.exceptions import ValidationError
+from jsondataferret.models import Record
+
+from indigo import ID_PREFIX_BY_TYPE
 
 
 def get_project_spreadsheet_version(filename):
@@ -21,33 +23,16 @@ def _get_spreadsheet_version(filename):
     return None
 
 
-def validate_project_id(value):
-    m = re.search("^INDIGO-POJ-[0-9][0-9][0-9][0-9]$", value)
-    if not m:
-        raise ValidationError("Project IDs should be of the format INDIGO-POJ-0000")
+def get_next_record_id(type):
+    prefix = ID_PREFIX_BY_TYPE[type.public_id]
+    last_record = Record.objects.filter(type=type).order_by("-public_id").first()
+    if last_record:
+        m = re.search(f"^{prefix}([0-9][0-9][0-9][0-9])$", last_record.public_id)
+        assert (
+            m
+        ), f'The record ID "{last_record.public_id}" doesn\'t match the expected template.'
+        id_number = int(m.group(1)) + 1
+    else:
+        id_number = 1
 
-
-def validate_fund_id(value):
-    m = re.search("^INDIGO-FUND-[0-9][0-9][0-9][0-9]$", value)
-    if not m:
-        raise ValidationError("Fund IDs should be of the format INDIGO-FUND-0000")
-
-
-def validate_assessment_resource_id(value):
-    m = re.search("^INDIGO-ARES-[0-9][0-9][0-9][0-9]$", value)
-    if not m:
-        raise ValidationError("Fund IDs should be of the format INDIGO-FUND-0000")
-
-
-def validate_organisation_id(value):
-    m = re.search("^INDIGO-ORG-[0-9][0-9][0-9][0-9]$", value)
-    if not m:
-        raise ValidationError(
-            "Organisation IDs should be of the format INDIGO-ORG-0000"
-        )
-
-
-def validate_pipeline_id(value):
-    m = re.search("^INDIGO-PL-[0-9][0-9][0-9][0-9]$", value)
-    if not m:
-        raise ValidationError("Pipeline IDs should be of the format INDIGO-FUND-0000")
+    return f"{prefix}{id_number:04d}"

@@ -14,10 +14,12 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage
+from django.db import transaction
 from django.db.models.functions import Now
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import View
 from jsondataferret.models import Edit, Event, Record, Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
@@ -871,6 +873,7 @@ def admin_project_import_form_stage_2(request, public_id, import_id):
 
 
 @permission_admin_or_data_steward_required()
+@transaction.atomic
 def admin_projects_new(request):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -887,25 +890,16 @@ def admin_projects_new(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # Save the event
-            id = form.cleaned_data["id"]
-            existing_record = Record.objects.filter(type=type, public_id=id)
-            if existing_record:
-                form.add_error("id", "This ID already exists")
-            else:
-                data = NewEventData(
-                    type,
-                    id,
-                    {"name": {"value": form.cleaned_data["name"]}},
-                    approved=True,
-                )
-                newEvent(
-                    [data], user=request.user, comment=form.cleaned_data["comment"]
-                )
+            id = indigo.utils.get_next_record_id(type)
+            data = NewEventData(
+                type, id, {"name": {"value": form.cleaned_data["name"]}}, approved=True,
+            )
+            newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
 
-                # redirect to a new URL:
-                return HttpResponseRedirect(
-                    reverse("indigo_admin_project_index", kwargs={"public_id": id},)
-                )
+            # redirect to a new URL:
+            return HttpResponseRedirect(
+                reverse("indigo_admin_project_index", kwargs={"public_id": id},)
+            )
 
     # If this is a GET (or any other method) create the default form.
     else:
@@ -1317,6 +1311,7 @@ def admin_organisation_import_form(request, public_id):
 
 
 @permission_admin_or_data_steward_required()
+@transaction.atomic
 def admin_organisations_new(request):
     try:
         type = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
@@ -1333,27 +1328,16 @@ def admin_organisations_new(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # Save the event
-            id = form.cleaned_data["id"]
-            existing_record = Record.objects.filter(type=type, public_id=id)
-            if existing_record:
-                form.add_error("id", "This ID already exists")
-            else:
-                data = NewEventData(
-                    type,
-                    id,
-                    {"name": {"value": form.cleaned_data["name"]}},
-                    approved=True,
-                )
-                newEvent(
-                    [data], user=request.user, comment=form.cleaned_data["comment"]
-                )
+            id = indigo.utils.get_next_record_id(type)
+            data = NewEventData(
+                type, id, {"name": {"value": form.cleaned_data["name"]}}, approved=True,
+            )
+            newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
 
-                # redirect to a new URL:
-                return HttpResponseRedirect(
-                    reverse(
-                        "indigo_admin_organisation_index", kwargs={"public_id": id},
-                    )
-                )
+            # redirect to a new URL:
+            return HttpResponseRedirect(
+                reverse("indigo_admin_organisation_index", kwargs={"public_id": id},)
+            )
 
     # If this is a GET (or any other method) create the default form.
     else:
@@ -1856,6 +1840,7 @@ class AdminModelNew(PermissionRequiredMixin, View, ABC):
             {"form": form,},
         )
 
+    @method_decorator(transaction.atomic)
     def post(self, request):
         try:
             type = Type.objects.get(public_id=self.__class__._type_public_id)
@@ -1865,25 +1850,16 @@ class AdminModelNew(PermissionRequiredMixin, View, ABC):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # Save the event
-            id = form.cleaned_data["id"]
-            existing_record = Record.objects.filter(type=type, public_id=id)
-            if existing_record:
-                form.add_error("id", "This ID already exists")
-            else:
-                data = NewEventData(
-                    type,
-                    id,
-                    {"name": {"value": form.cleaned_data["name"]}},
-                    approved=True,
-                )
-                newEvent(
-                    [data], user=request.user, comment=form.cleaned_data["comment"]
-                )
+            id = indigo.utils.get_next_record_id(type)
+            data = NewEventData(
+                type, id, {"name": {"value": form.cleaned_data["name"]}}, approved=True,
+            )
+            newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
 
-                # redirect to a new URL:
-                return HttpResponseRedirect(
-                    reverse(self.__class__._redirect_view, kwargs={"public_id": id},)
-                )
+            # redirect to a new URL:
+            return HttpResponseRedirect(
+                reverse(self.__class__._redirect_view, kwargs={"public_id": id},)
+            )
 
         return render(
             request,

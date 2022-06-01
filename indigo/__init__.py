@@ -4,6 +4,14 @@ TYPE_FUND_PUBLIC_ID = "fund"
 TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID = "assessment_resource"
 TYPE_PIPELINE_PUBLIC_ID = "pipeline"
 
+ID_PREFIX_BY_TYPE = {
+    "project": "INDIGO-POJ-",
+    "organisation": "INDIGO-ORG-",
+    "fund": "INDIGO-FUND-",
+    "assessment_resource": "INDIGO-ARES-",
+    "pipeline": "INDIGO-PL-",
+}
+
 JSONDATAFERRET_HOOKS = "indigo.jsondataferret"
 
 TYPE_PROJECT_ALWAYS_FILTER_KEYS_LIST = [
