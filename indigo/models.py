@@ -1,6 +1,5 @@
 import jsonpointer
 from django.conf import settings
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 from jsondataferret.models import Record
 
@@ -28,9 +27,9 @@ class BaseModel(models.Model):
     public_id = models.CharField(max_length=200, unique=True)
     exists = models.BooleanField(default=False)
     status_public = models.BooleanField(default=False)
-    data_public = JSONField(default=dict)
-    data_private = JSONField(default=dict)
-    data_sandboxes = JSONField(default=dict)
+    data_public = models.JSONField(default=dict)
+    data_private = models.JSONField(default=dict)
+    data_sandboxes = models.JSONField(default=dict)
     # record is nullable for historical data - it should be NOT NULL really
     record = models.ForeignKey(Record, on_delete=models.PROTECT, null=True, blank=True)
     full_text_search_private = models.TextField(default="")
@@ -71,7 +70,7 @@ class Project(BaseModel):
     social_investment_prototype = models.BooleanField(
         default=False, null=False, blank=True
     )
-    data_quality_report_counts_by_priority = JSONField(default=dict)
+    data_quality_report_counts_by_priority = models.JSONField(default=dict)
 
 
 class Fund(BaseModel):
@@ -91,7 +90,7 @@ class ProjectImport(models.Model):
     file_data = models.BinaryField(null=True, blank=True)
     file_not_valid = models.BooleanField(null=True, blank=True)
     exception = models.BooleanField(null=True, blank=True)
-    data = JSONField(null=True, blank=True)
+    data = models.JSONField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     imported = models.DateTimeField(null=True, blank=True)
     project = models.ForeignKey(
