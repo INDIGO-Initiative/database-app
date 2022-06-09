@@ -1,0 +1,56 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}History{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item active" aria-current="page">History</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    <form method="get">
+        {{ filter.form.as_p }}
+        <input type="submit" value="Filter"  class="btn btn-primary" />
+        <a href="{% url 'jsondataferret_event_list' %}" class="btn btn-secondary">(reset filters)</a>
+    </form>
+
+    {% if page_obj.paginator.count > 0 %}
+        <table class="table">
+            <tr>
+                <th>At</th>
+                <th>By</th>
+                <th>Records</th>
+                <th>Comment</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for event in page_obj %}
+                <tr>
+                    <td>{{ event.created }}</td>
+                    <td>{{ event.user }}</td>
+                    <td>
+                        {% with records_summary=event.get_records_summary %}
+                            {% for record in records_summary.records %}
+                                <div><a href="{% url 'jsondataferret_record_index' type_id=record.type_public_id record_id=record.public_id %}">{{ record.type_title }}: {{ record.public_id }}</a></div>
+                            {% endfor %}
+                            {% if records_summary.more %}<div>...</div>{% endif %}
+                        {% endwith %}
+                    </td>
+                    <td>{{ event.comment|linebreaks }}</td>
+                    <td><a href="{% url 'jsondataferret_event_index' event_id=event.public_id %}" class="btn btn-primary">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include "jsondataferret/common/pagination.html" %}
+    {% else %}
+        <p>No events are available.</p>
+    {% endif %}
+
+
+
+{% endblock %}
