@@ -24,8 +24,15 @@
             {% for edit in edits %}
 
             <table>
-                {% for field_data in edit.field_datas %}
-                    <tr><th>Field: {{ field_data.title }}</th><td>{{ field_data.value }}</td></tr>
+                 {% for field_data in edit.get_data_fields_include_differences_from_latest_data %}
+                    <tr>
+                        <th>Field: {{ field_data.title }}</th>
+                        <td>
+                            {% if field_data.different_from_latest_value %}<strong>{% endif %}
+                            {{ field_data.value }}
+                            {% if field_data.different_from_latest_value %} (Changed)</strong>{% endif %}
+                        </td>
+                    </tr>
                 {% endfor %}
                 <tr>
                     <th>Made</th>

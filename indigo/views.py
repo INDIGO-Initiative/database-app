@@ -1936,12 +1936,6 @@ class AdminModelModerate(PermissionRequiredMixin, View, ABC):
                     )
                 )
 
-        for edit in edits:
-            # TODO This will not take account of data_key on an edit If we start using that we will need to check this
-            edit.field_datas = jsondataferret.utils.get_field_list_from_json(
-                self.__class__._model.type_id, edit.data
-            )
-
         return render(
             request,
             "indigo/admin/" + self.__class__._model.__name__.lower() + "/moderate.html",
