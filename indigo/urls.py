@@ -156,6 +156,7 @@ urlpatterns = [
     ),
     ########################### Admin
     path("admin/", views.admin_index, name="indigo_admin_index"),
+    path("admin/history", views.admin_history, name="indigo_admin_history",),
     ########################### Admin - Project
     path(
         "admin/project_download_blank_form",

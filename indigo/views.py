@@ -2,6 +2,7 @@ import csv
 import os
 import random
 import tempfile
+import urllib.parse
 from abc import ABC
 
 import jsondataferret
@@ -14,6 +15,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.db.models.functions import Now
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
@@ -21,6 +23,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
+from jsondataferret.filters import EventFilter
 from jsondataferret.models import Edit, Event, Record, Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 
@@ -643,6 +646,29 @@ def permission_admin_or_data_steward_required():
 @permission_admin_or_data_steward_required()
 def admin_index(request):
     return render(request, "indigo/admin/index.html")
+
+
+@permission_admin_or_data_steward_required()
+def admin_history(request):
+    filter = EventFilter(request.GET, queryset=Event.objects.all().order_by("created"))
+    paginator = Paginator(filter.qs, 100)
+    page_number = request.GET.get("page")
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+    pagination_get_params = urllib.parse.urlencode(filter.get_get_params_for_paging())
+    return render(
+        request,
+        "indigo/admin/history.html",
+        {
+            "page_obj": page_obj,
+            "filter": filter,
+            "pagination_get_params": pagination_get_params,
+        },
+    )
 
 
 ########################### Admin - Projects
