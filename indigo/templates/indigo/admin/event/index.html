@@ -1,10 +1,13 @@
 {% extends 'indigo/base-admin.html' %}
 
+{% block head_title %}Event{% endblock %}
+
 
 {% block breadcrumbs %}
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_history' %}">History</a></li>
         <li class="breadcrumb-item active" aria-current="page">Event</li>
       </ol>
     </nav>
@@ -24,37 +27,125 @@
             <th>By</th>
             <td>{{ event.user }}</td>
         </tr>
-         <tr>
+        <tr>
             <th>Comment</th>
-            <td>{{ event.comment |linebreaks}}</td>
+            <td>{{ event.comment|linebreaks }}</td>
         </tr>
      </table>
 
-    {% if edits_created_and_approved %}
+    {% if records_with_changes %}
+        <h3>Records changed by approved edits</h3>
 
-        <h3>Edits Created and Approved at same time</h3>
+        {% for record_with_changes in records_with_changes %}
 
-        {% for edit in edits_created_and_approved %}
-            <table class="table">
-                <tr>
-                    <th>Mode</th>
-                    <td>{{ edit.mode }}</td>
-                </tr>
-                <tr>
-                    <th>Key</th>
-                    <td>{{ edit.data_key }}</td>
-                </tr>
-                <tr>
-                    <th>Data</th>
-                    <td>{{ edit.get_data_html|safe }}</td>
-                </tr>
-                <tr>
-                    <th>Record</th>
-                    <td>
-                        {{ edit.record.type.title }} /  {{ edit.record.public_id }}
-                    </td>
-                </tr>
-            </table>
+            <div class="card card-body">
+
+                <h4>
+                    {{ record_with_changes.record.type.title }} /  {{ record_with_changes.record.public_id }}
+                </h4>
+
+                {% if record_with_changes.cached_record_history %}
+
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item active">
+                            <a class="nav-link active" href="#record-{{ record_with_changes.record.id }}-fields-after-change" data-toggle="tab">Fields After change</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#record-{{ record_with_changes.record.id }}-data-diff" data-toggle="tab">Data Diff</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#record-{{ record_with_changes.record.id }}-data-before-change" data-toggle="tab">Data Before change</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#record-{{ record_with_changes.record.id }}-data-after-change" data-toggle="tab">Data After change</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#record-{{ record_with_changes.record.id }}-edits" data-toggle="tab">Approved Edits</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content ">
+                        <div class="tab-pane fade show active" id="record-{{ record_with_changes.record.id }}-fields-after-change">
+                            <p>(Warning: This is calculated using the latest schema, which may be different to the schema used at the time)</p>
+                            <table class="table">
+                                {% for field_data in record_with_changes.cached_record_history.get_data_fields_include_differences_from_previous_data %}
+                                    <tr>
+                                        <th>{{ field_data.title }}</th>
+                                        <td>
+                                            {% if field_data.different_from_previous_value %}<strong>{% endif %}
+                                            {{ field_data.value }}
+                                            {% if field_data.different_from_previous_value %} (Changed)</strong>{% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        <div class="tab-pane fade show" id="record-{{ record_with_changes.record.id }}-data-diff">
+                            {% if record_with_changes.last_cached_record_history %}
+                                {{ record_with_changes.cached_record_history.get_data_diff_previous_cached_record_history_html|safe }}
+                            {% else %}
+                                {{ record_with_changes.cached_record_history.get_data_html|safe }}
+                            {% endif %}
+                        </div>
+                        <div class="tab-pane fade show" id="record-{{ record_with_changes.record.id }}-data-before-change">
+                            {% if record_with_changes.last_cached_record_history %}
+                                {{ record_with_changes.last_cached_record_history.get_data_html|safe }}
+                                <a href="{% url 'indigo_admin_event_index' event_id=record_with_changes.last_cached_record_history.event.public_id %}" class="btn btn-primary">View event that made this change</a>
+                            {% else %}
+                                No previous data found.
+                            {% endif %}
+                        </div>
+                        <div class="tab-pane fade show" id="record-{{ record_with_changes.record.id }}-data-after-change">
+                            <p>{{ record_with_changes.cached_record_history.get_data_html|safe }}</p>
+                        </div>
+
+                        <div class="tab-pane fade show" id="record-{{ record_with_changes.record.id }}-edits">
+                            {% for edit in edits_approved %}
+                                {% if edit.record == record_with_changes.record %}
+
+                                    <table class="table">
+                                        {% if edit.creation_event == event %}
+                                                <tr>
+                                                    <th>Creation</th>
+                                                    <td>
+                                                        Created at the same time it was approved.
+                                                    </td>
+                                                </tr>
+                                        {% else %}
+                                                <tr>
+                                                    <th>Creation</th>
+                                                    <td>
+                                                        Created {{ edit.creation_event.created }} / {{ edit.creation_event.user }}
+                                                        <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary">View</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Comment</th>
+                                                    <td>{{ edit.creation_event.comment|linebreaks }}</td>
+                                                </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <td>
+                                                <a href="{% url 'indigo_admin_edit_index' edit_id=edit.public_id %}" class="btn btn-primary">View edit details</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                {% else %}
+
+                    <p>Detailed information could not be found</p>
+
+                {% endif %}
+
+             </div>
+
         {% endfor %}
 
     {% endif %}
@@ -64,90 +155,41 @@
         <h3>Edits Created</h3>
 
         {% for edit in edits_only_created %}
-            <table class="table">
-                <tr>
-                    <th>Mode</th>
-                    <td>{{ edit.mode }}</td>
-                </tr>
-                <tr>
-                    <th>Key</th>
-                    <td>{{ edit.data_key }}</td>
-                </tr>
-                <tr>
-                    <th>Data</th>
-                    <td>{{ edit.get_data_html|safe }}</td>
-                </tr>
-                <tr>
-                    <th>Record</th>
-                    <td>
-                        {{ edit.record.type.title }} /  {{ edit.record.public_id }}
-                    </td>
-                </tr>
 
-                {% if edit.approval_event %}
-                    <tr>
-                        <th>State</th>
-                        <td>
-                            Approved {{ edit.approval_event.created }} / {{ edit.approval_event.user }}
-                            <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary">View</a>
-                        </td>
-                    </tr>
-                {% elif edit.refusal_event %}
-                    <tr>
-                        <th>State</th>
-                        <td>
-                            Refused {{ edit.refusal_event.created }} / {{ edit.refusal_event.user }}
-                            <a href="{% url 'indigo_admin_event_index' event_id=edit.refusal_event.public_id %}" class="btn btn-primary">View</a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <th>State</th>
-                        <td>
-                            Not Moderated yet
-                        </td>
-                    </tr>
-                {% endif %}
+            <div class="card card-body">
+                <h4>Edit</h4>
 
-            </table>
+                <table class="table">
+                    {% include 'indigo/admin/edit/index_table_contents.html' %}
+                    {% if edit.approval_event %}
+                        <tr>
+                            <th>State</th>
+                            <td>
+                                Approved {{ edit.approval_event.created }} / {{ edit.approval_event.user }}
+                                <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                    {% elif edit.refusal_event %}
+                        <tr>
+                            <th>State</th>
+                            <td>
+                                Refused {{ edit.refusal_event.created }} / {{ edit.refusal_event.user }}
+                                <a href="{% url 'indigo_admin_event_index' event_id=edit.refusal_event.public_id %}" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <th>State</th>
+                            <td>
+                                Not Moderated yet
+                            </td>
+                        </tr>
+                    {% endif %}
+
+                </table>
+            </div>
         {% endfor %}
 
-    {% endif %}
-
-
-    {% if edits_only_approved %}
-
-         <h3>Edits Approved</h3>
-
-         {% for edit in edits_only_approved %}
-            <table class="table">
-                <tr>
-                    <th>Mode</th>
-                    <td>{{ edit.mode }}</td>
-                </tr>
-                <tr>
-                    <th>Key</th>
-                    <td>{{ edit.data_key }}</td>
-                </tr>
-                <tr>
-                    <th>Data</th>
-                    <td>{{ edit.get_data_html|safe }}</td>
-                </tr>
-                <tr>
-                    <th>Record</th>
-                    <td>
-                        {{ edit.record.type.title }} /  {{ edit.record.public_id }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Edit created</th>
-                    <td>
-                        {{ edit.creation_event.created }} / {{ edit.creation_event.user }}
-                        <a href="{% url 'indigo_admin_event_index' event_id=edit.creation_event.public_id %}" class="btn btn-primary">View</a>
-                    </td>
-                </tr>
-            </table>
-        {% endfor %}
 
     {% endif %}
 
@@ -156,33 +198,21 @@
          <h3>Edits Refused</h3>
 
          {% for edit in edits_refused %}
-            <table class="table">
-                <tr>
-                    <th>Mode</th>
-                    <td>{{ edit.mode }}</td>
-                </tr>
-                <tr>
-                    <th>Key</th>
-                    <td>{{ edit.data_key }}</td>
-                </tr>
-                <tr>
-                    <th>Data</th>
-                    <td>{{ edit.get_data_html|safe }}</td>
-                </tr>
-                <tr>
-                    <th>Record</th>
-                    <td>
-                        {{ edit.record.type.title }} /  {{ edit.record.public_id }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Edit created by</th>
-                    <td>
-                        {{ edit.creation_event.created }} / {{ edit.creation_event.user }}
-                        <a href="{% url 'indigo_admin_event_index' event_id=edit.creation_event.public_id %}" class="btn btn-primary">View</a>
-                    </td>
-                </tr>
-            </table>
+
+            <div class="card card-body">
+                <h4>Edit</h4>
+
+                <table class="table">
+                    {% include 'indigo/admin/edit/index_table_contents.html' %}
+                    <tr>
+                        <th>Edit created by</th>
+                        <td>
+                            {{ edit.creation_event.created }} / {{ edit.creation_event.user }}
+                            <a href="{% url 'indigo_admin_event_index' event_id=edit.creation_event.public_id %}" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         {% endfor %}
 
     {% endif %}

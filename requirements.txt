@@ -53,8 +53,10 @@ jmespath==0.10.0
     #   botocore
 json-merge-patch==0.2
     # via jsondataferret
-jsondataferret==0.4.0
+jsondataferret==0.5.1
     # via -r requirements.in
+jsondiff==2.0.0
+    # via jsondataferret
 jsonmerge==1.8.0
     # via jsondataferret
 jsonpointer==2.0
