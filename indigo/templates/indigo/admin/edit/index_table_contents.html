@@ -1,0 +1,66 @@
+<tr>
+    <th>Mode</th>
+    <td>{{ edit.mode }}</td>
+</tr>
+<tr>
+    <th>Key</th>
+    <td>{{ edit.data_key }}</td>
+</tr>
+<tr>
+    <th>Data</th>
+    <td>
+         <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link active" href="#edit-{{ edit.id }}-fields-after-change" data-toggle="tab">Fields After change</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#edit-{{ edit.id }}-data" data-toggle="tab">Edit has Data</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#edit-{{ edit.id }}-data-diff" data-toggle="tab">Data Diff</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#edit-{{ edit.id }}-data-before-change" data-toggle="tab">Data Before change</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#edit-{{ edit.id }}-data-after-change" data-toggle="tab">Data After change</a>
+            </li>
+        </ul>
+        <div class="tab-content ">
+            <div class="tab-pane fade show active" id="edit-{{ edit.id }}-fields-after-change">
+                <p>(Warning: This is calculated using the latest schema, which may be different to the schema used at the time)</p>
+                <table class="table">
+                    {% for field_data in edit.get_data_fields_include_differences_from_previous_data %}
+                        <tr>
+                            <th>{{ field_data.title }}</th>
+                            <td>
+                                {% if field_data.different_from_previous_value %}<strong>{% endif %}
+                                {{ field_data.value }}
+                                {% if field_data.different_from_previous_value %} (Changed)</strong>{% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="tab-pane fade show" id="edit-{{ edit.id }}-data">
+                {{ edit.get_data_html|safe }}
+            </div>
+            <div class="tab-pane fade show" id="edit-{{ edit.id }}-data-diff">
+                {{ edit.get_data_diff_previous_cached_record_history_html|safe }}
+            </div>
+            <div class="tab-pane fade show" id="edit-{{ edit.id }}-data-before-change">
+                {{ edit.get_previous_cached_record_history.get_data_html|safe }}
+            </div>
+            <div class="tab-pane fade show" id="edit-{{ edit.id }}-data-after-change">
+                {{ edit.get_new_data_when_edit_applied_to_previous_cached_record_history_html|safe }}
+            </div>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <th>Record</th>
+    <td>
+        {{ edit.record.type.title }} /  {{ edit.record.public_id }}
+    </td>
+</tr>

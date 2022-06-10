@@ -1,0 +1,60 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Edit{% endblock %}
+
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_history' %}">History</a></li>
+        <li class="breadcrumb-item" aria-current="page">...</li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    <h3>Edit</h3>
+
+    <table class="table">
+        {% include 'indigo/admin/edit/index_table_contents.html' %}
+        <tr>
+            <th>Creation</th>
+            <td>
+                Created {{ edit.creation_event.created }} / {{ edit.creation_event.user }}
+                <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary">View</a>
+            </td>
+        </tr>
+        {% if edit.approval_event %}
+            <tr>
+                <th>State</th>
+                <td>
+                    {% if edit.approval_event == edit.creation_event %}
+                        Approved at the same time it was created
+                    {% else %}
+                        Approved
+                        {{ edit.approval_event.created }} / {{ edit.approval_event.user }}
+                        <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary">View</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% elif edit.refusal_event %}
+            <tr>
+                <th>State</th>
+                <td>
+                    Refused {{ edit.refusal_event.created }} / {{ edit.refusal_event.user }}
+                    <a href="{% url 'indigo_admin_event_index' event_id=edit.refusal_event.public_id %}" class="btn btn-primary">View</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <th>State</th>
+                <td>
+                    Not Moderated yet
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+{% endblock %}

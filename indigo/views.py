@@ -24,7 +24,7 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from jsondataferret.filters import EventFilter
-from jsondataferret.models import Edit, Event, Record, Type
+from jsondataferret.models import CachedRecordHistory, Edit, Event, Record, Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 
 import indigo.processdata
@@ -2097,13 +2097,25 @@ def admin_event_index(request, event_id):
     edits_created = event.edits_created.all()
     edits_approved = event.edits_approved.all()
     edits_refused = event.edits_refused.all()
-    edits_created_and_approved = list(set(edits_created).intersection(edits_approved))
-    edits_only_created = [
-        edit for edit in edits_created if edit not in edits_created_and_approved
-    ]
-    edits_only_approved = [
-        edit for edit in edits_approved if edit not in edits_created_and_approved
-    ]
+    edits_only_created = [edit for edit in edits_created if edit not in edits_approved]
+    if edits_approved:
+        records_with_changes = [
+            {"record": r} for r in event.get_records(approved_edits_only=True)
+        ]
+        for record_with_changes in records_with_changes:
+            try:
+                record_with_changes[
+                    "cached_record_history"
+                ] = CachedRecordHistory.objects.get(
+                    record=record_with_changes["record"], event=event
+                )
+                record_with_changes["last_cached_record_history"] = record_with_changes[
+                    "cached_record_history"
+                ].get_previous_cached_record_history()
+            except CachedRecordHistory.DoesNotExist:
+                pass
+    else:
+        records_with_changes = []
     return render(
         request,
         "indigo/admin/event/index.html",
@@ -2113,10 +2125,18 @@ def admin_event_index(request, event_id):
             "edits_approved": edits_approved,
             "edits_refused": edits_refused,
             "edits_only_created": edits_only_created,
-            "edits_only_approved": edits_only_approved,
-            "edits_created_and_approved": edits_created_and_approved,
+            "records_with_changes": records_with_changes,
         },
     )
+
+
+@permission_admin_or_data_steward_required()
+def admin_edit_index(request, edit_id):
+    try:
+        edit = Edit.objects.get(public_id=edit_id)
+    except Edit.DoesNotExist:
+        raise Http404("Edit does not exist")
+    return render(request, "indigo/admin/edit/index.html", {"edit": edit,},)
 
 
 ########################### Admin - Moderate

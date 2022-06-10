@@ -448,6 +448,10 @@ urlpatterns = [
         views.admin_event_index,
         name="indigo_admin_event_index",
     ),
+    ########################### Admin - Edit
+    path(
+        "admin/edit/<edit_id>", views.admin_edit_index, name="indigo_admin_edit_index",
+    ),
     ########################### Admin - Moderate
     path(
         "admin/to_moderate", views.admin_to_moderate, name="indigo_admin_to_moderate",
