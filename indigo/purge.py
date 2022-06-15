@@ -21,3 +21,13 @@ def purge_project(project):
     project.delete()
 
     purge_record(project.record)
+
+
+def purge_organisation(organisation):
+
+    for data in ProjectIncludesOrganisation.objects.filter(organisation=organisation):
+        data.delete()
+
+    organisation.delete()
+
+    purge_record(organisation.record)
