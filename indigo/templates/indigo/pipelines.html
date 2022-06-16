@@ -24,5 +24,7 @@
     {% endif %}
 
     <p><a href="{% url 'indigo_pipeline_list_download' %}" class="btn btn-primary">Download List</a></p>
+    <p><a href="{% url 'indigo_pipeline_public_data_file_per_record_in_zip' %}" class="btn btn-primary">Download data (Zip File of Spreadsheets, one per record)</a></p>
+    <p><a href="{% url 'indigo_pipeline_public_data_file_per_data_type_csv_in_zip' %}" class="btn btn-primary">Download data (Zip File of CSVs, one per data type)</a></p>
 
 {% endblock %}
