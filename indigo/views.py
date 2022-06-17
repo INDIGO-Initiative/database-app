@@ -323,6 +323,29 @@ def organisation_download_form(request, public_id):
     return response
 
 
+########################### Public - All
+
+
+def pipeline_public_data_file_per_record_in_zip(request):
+    if default_storage.exists("public/pipeline_data_as_spreadsheets.zip"):
+        wrapper = default_storage.open("public/pipeline_data_as_spreadsheets.zip")
+        response = HttpResponse(wrapper, content_type="application/zip")
+        response[
+            "Content-Disposition"
+        ] = "attachment; filename=pipeline_data_as_spreadsheets.zip"
+        return response
+
+
+def pipeline_public_data_file_per_data_type_csv_in_zip(request):
+    if default_storage.exists("public/pipeline_data_per_data_type_csv.zip"):
+        wrapper = default_storage.open("public/pipeline_data_per_data_type_csv.zip")
+        response = HttpResponse(wrapper, content_type="application/zip")
+        response[
+            "Content-Disposition"
+        ] = "attachment; filename=pipeline_data_per_data_type_csv.zip"
+        return response
+
+
 ########################### Public - For Multiple Models
 # To try and reduce repeated code in very similar views, we move views to the classes below as we work on them.
 

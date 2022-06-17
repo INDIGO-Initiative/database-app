@@ -11,7 +11,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
 from indigo.dataqualityreport import DataQualityReportForAllProjects
-from indigo.models import Fund, Organisation, Project
+from indigo.models import Fund, Organisation, Pipeline, Project
 
 from .spreadsheetforms import (
     convert_fund_data_to_spreadsheetforms_data,
@@ -130,6 +130,7 @@ def update_public_archive_files():
 
 def _update_public_archive_files_file_per_data_type_csv_in_zip():
 
+    # ---------------------------------------- All data (which actually excludes pipeline)
     # Create Zip File
     file = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
     out_file_zip = file.name
@@ -139,6 +140,7 @@ def _update_public_archive_files_file_per_data_type_csv_in_zip():
         # Projects
         _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
             "projects",
+            "Project",
             settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"],
             Project.objects.filter(exists=True, status_public=True).order_by(
                 "public_id"
@@ -149,6 +151,7 @@ def _update_public_archive_files_file_per_data_type_csv_in_zip():
         # Organisations
         _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
             "organisations",
+            "Organisation",
             settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"]["fields"],
             Organisation.objects.filter(exists=True, status_public=True).order_by(
                 "public_id"
@@ -159,13 +162,11 @@ def _update_public_archive_files_file_per_data_type_csv_in_zip():
         # Funds
         _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
             "funds",
+            "Fund",
             settings.JSONDATAFERRET_TYPE_INFORMATION["fund"]["fields"],
             Fund.objects.filter(exists=True, status_public=True).order_by("public_id"),
             zipfile,
         )
-
-        # Pipeline
-        # TODO when ready to launch
 
     # Move to Django Storage
     default_storage_name = "public/all_data_per_data_type_csv.zip"
@@ -176,9 +177,36 @@ def _update_public_archive_files_file_per_data_type_csv_in_zip():
     # Delete Temp file
     os.remove(out_file_zip)
 
+    # ---------------------------------------- Pipeline data
+
+    file = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
+    out_file_zip = file.name
+    file.close()
+    with ZipFile(out_file_zip, "w") as zipfile:
+
+        # Pipeline
+        _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
+            "pipelines",
+            "Pipeline",
+            settings.JSONDATAFERRET_TYPE_INFORMATION["pipeline"]["fields"],
+            Pipeline.objects.filter(exists=True, status_public=True).order_by(
+                "public_id"
+            ),
+            zipfile,
+        )
+
+    # Move to Django Storage
+    default_storage_name = "public/pipeline_data_per_data_type_csv.zip"
+    default_storage.delete(default_storage_name)
+    with open(out_file_zip, "rb") as fp:
+        default_storage.save(default_storage_name, ContentFile(fp.read()))
+
+    # Delete Temp file
+    os.remove(out_file_zip)
+
 
 def _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
-    type_id, type_information_fields, records, zipfile
+    output_file_prepend, type_name, type_information_fields, records, zipfile
 ):
 
     # Make list of files to make, and the labels and keys that will be used for each one
@@ -193,7 +221,7 @@ def _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
         elif config.get("type", "") == "list":
             file_to_make = {
                 "list_key": config["key"],
-                "labels": ["Project ID"],
+                "labels": [type_name + " ID"],
                 "keys": [],
             }
             for field in config["fields"]:
@@ -214,7 +242,7 @@ def _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
                 row.append(jsonpointer.resolve_pointer(record.data_public, key, ""))
             # record done
             writer.writerow(row)
-        zipfile.writestr(type_id + ".csv", csv_output.getvalue())
+        zipfile.writestr(output_file_prepend + ".csv", csv_output.getvalue())
 
     # Create each sub file and add to ZIP
     for file_to_make_id, file_to_make_config in files_to_make.items():
@@ -235,12 +263,14 @@ def _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
                         # record done
                         writer.writerow(row)
             zipfile.writestr(
-                type_id + "_" + file_to_make_id + ".csv", csv_output.getvalue()
+                output_file_prepend + "_" + file_to_make_id + ".csv",
+                csv_output.getvalue(),
             )
 
 
 def _update_public_archive_files_file_per_record_in_zip():
 
+    # ---------------------------------------- All data (which actually excludes pipeline)
     # Create Temp Files
     file = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
     filename = file.name
@@ -272,14 +302,37 @@ def _update_public_archive_files_file_per_record_in_zip():
                 "project/" + project.public_id + ".xlsx",
             )
 
-        # Pipeline
-        # TODO when ready to launch
-
     # Move to Django Storage
     default_storage.delete("public/all_data_as_spreadsheets.zip")
     with open(filename, "rb") as fp:
         default_storage.save(
             "public/all_data_as_spreadsheets.zip", ContentFile(fp.read()),
+        )
+
+    # Delete Temp file
+    os.remove(filename)
+
+    # ---------------------------------------- Pipeline data
+    # Create Temp Files
+    file = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
+    filename = file.name
+    file.close()
+
+    # Contents
+    with ZipFile(filename, "w") as zipfile_all:
+
+        for pipeline in Pipeline.objects.filter(exists=True, status_public=True):
+            _put_file_in_zip_file(
+                [zipfile_all],
+                "public/pipeline/" + pipeline.public_id + ".xlsx",
+                "pipeline/" + pipeline.public_id + ".xlsx",
+            )
+
+    # Move to Django Storage
+    default_storage.delete("public/pipeline_data_as_spreadsheets.zip")
+    with open(filename, "rb") as fp:
+        default_storage.save(
+            "public/pipeline_data_as_spreadsheets.zip", ContentFile(fp.read()),
         )
 
     # Delete Temp file

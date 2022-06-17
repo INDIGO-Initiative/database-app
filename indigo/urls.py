@@ -96,6 +96,16 @@ urlpatterns = [
         views.PipelineDownloadForm.as_view(),
         name="indigo_pipeline_download_form",
     ),
+    path(
+        "pipeline_public_data_file_per_record.zip",
+        views.pipeline_public_data_file_per_record_in_zip,
+        name="indigo_pipeline_public_data_file_per_record_in_zip",
+    ),
+    path(
+        "pipeline_public_data_file_per_data_type_csv.zip",
+        views.pipeline_public_data_file_per_data_type_csv_in_zip,
+        name="indigo_pipeline_public_data_file_per_data_type_csv_in_zip",
+    ),
     ########################### Public - All
     path(
         "all_public_data_file_per_record.zip",
