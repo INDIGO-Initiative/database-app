@@ -85,7 +85,7 @@ class Pipeline(BaseModel):
     type_id = TYPE_PIPELINE_PUBLIC_ID
 
 
-class ProjectImport(models.Model):
+class BaseModelImport(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     file_data = models.BinaryField(null=True, blank=True)
     file_not_valid = models.BooleanField(null=True, blank=True)
@@ -93,8 +93,20 @@ class ProjectImport(models.Model):
     data = models.JSONField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     imported = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class ProjectImport(BaseModelImport):
     project = models.ForeignKey(
         Project, on_delete=models.PROTECT, related_name="imports",
+    )
+
+
+class PipelineImport(BaseModelImport):
+    pipeline = models.ForeignKey(
+        Pipeline, on_delete=models.PROTECT, related_name="imports",
     )
 
 

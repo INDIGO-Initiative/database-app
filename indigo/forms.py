@@ -8,11 +8,11 @@ class ProjectNewForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
 
 
-class ProjectImportForm(forms.Form):
+class ModelImportStage1Of2Form(forms.Form):
     file = forms.FileField()
 
 
-class ProjectImportStage2Form(forms.Form):
+class ModelImportStage2Of2Form(forms.Form):
     comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
 
 

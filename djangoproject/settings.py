@@ -258,6 +258,9 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             BASE_DIR, "indigo", "spreadsheetform_guides", "pipeline_v001.xlsx",
         ),
         "spreadsheet_form_guide_spec": load_guide_form_spec("pipeline_v001.xlsx"),
+        "spreadsheet_form_guide_spec_versions": {
+            1: load_guide_form_spec("pipeline_v001.xlsx"),
+        },
         "fields": load_json_schema_fields("pipeline.json"),
         "filter_keys": load_json_schema_filter_keys("pipeline.json"),
         "references_models": load_json_schema_references_models("pipeline.json"),

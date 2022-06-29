@@ -10,6 +10,10 @@ def get_project_spreadsheet_version(filename):
     return _get_spreadsheet_version(filename)
 
 
+def get_pipeline_spreadsheet_version(filename):
+    return _get_spreadsheet_version(filename)
+
+
 def get_organisation_spreadsheet_version(filename):
     return _get_spreadsheet_version(filename)
 
