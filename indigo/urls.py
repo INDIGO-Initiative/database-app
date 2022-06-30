@@ -186,12 +186,12 @@ urlpatterns = [
     ),
     path(
         "admin/project/<public_id>/import_form",
-        views.admin_project_import_form,
+        views.AdminProjectImportFormStage1Of2.as_view(),
         name="indigo_admin_project_import_form",
     ),
     path(
         "admin/project/<public_id>/import_form/<import_id>",
-        views.admin_project_import_form_stage_2,
+        views.AdminProjectImportFormStage2Of2.as_view(),
         name="indigo_admin_project_import_form_stage_2",
     ),
     path(
@@ -415,8 +415,13 @@ urlpatterns = [
     ),
     path(
         "admin/pipeline/<public_id>/import_form",
-        views.AdminPipelineImportForm.as_view(),
+        views.AdminPipelineImportFormStage1Of2.as_view(),
         name="indigo_admin_pipeline_import_form",
+    ),
+    path(
+        "admin/pipeline/<public_id>/import_form/<import_id>",
+        views.AdminPipelineImportFormStage2Of2.as_view(),
+        name="indigo_admin_pipeline_import_form_stage_2",
     ),
     path(
         "admin/pipeline/<public_id>/change_status",

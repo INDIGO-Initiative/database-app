@@ -2,6 +2,8 @@
 
 {% block head_title %}Import Pipeline {{ record.public_id }}{% endblock %}
 
+{% block head %}<meta http-equiv="refresh" content="5;url={% url 'indigo_admin_pipeline_import_form_stage_2' public_id=record.public_id import_id=import.id %}" />{% endblock %}
+
 {% block breadcrumbs %}
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
@@ -15,12 +17,7 @@
 
 
 {% block content %}
-  <form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-    </table>
-    <input type="submit" value="Import" class="btn btn-primary">
-  </form>
+
+    <div>We are processing your file, please wait ...</div>
 
 {% endblock %}
