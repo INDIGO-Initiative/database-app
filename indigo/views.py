@@ -114,7 +114,7 @@ def projects_list_download_social_investment_prototype(request):
 
 def _projects_list_download_worker(projects):
 
-    response = HttpResponse(content_type="text/csv")
+    response = HttpResponse(content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="projects.csv"'
 
     labels = ["ID"]
@@ -384,7 +384,7 @@ class ModelListDownload(View, ABC):
             exists=True, status_public=True
         ).order_by("public_id")
 
-        response = HttpResponse(content_type="text/csv")
+        response = HttpResponse(content_type="text/csv; charset=utf-8")
         response["Content-Disposition"] = (
             'attachment; filename="' + self.__class__._model.type_id + 's.csv"'
         )
@@ -1048,7 +1048,7 @@ def admin_organisation_download_all_csv(request):
         raise Http404("Type does not exist")
     organisations = Record.objects.filter(type=type).order_by("public_id")
 
-    response = HttpResponse(content_type="text/csv")
+    response = HttpResponse(content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="organisations-admin.csv"'
 
     labels = ["ID"]
