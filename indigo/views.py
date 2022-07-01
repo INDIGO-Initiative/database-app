@@ -114,7 +114,7 @@ def projects_list_download_social_investment_prototype(request):
 
 def _projects_list_download_worker(projects):
 
-    response = HttpResponse(content_type="text/csv")
+    response = HttpResponse(content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="projects.csv"'
 
     labels = ["ID"]
@@ -384,7 +384,7 @@ class ModelListDownload(View, ABC):
             exists=True, status_public=True
         ).order_by("public_id")
 
-        response = HttpResponse(content_type="text/csv")
+        response = HttpResponse(content_type="text/csv; charset=utf-8")
         response["Content-Disposition"] = (
             'attachment; filename="' + self.__class__._model.type_id + 's.csv"'
         )
@@ -405,6 +405,8 @@ class ModelListDownload(View, ABC):
                 labels.append(config.get("title"))
                 keys.append(config.get("key"))
 
+        labels.extend(self._get_extra_headers())
+
         writer = csv.writer(response)
         writer.writerow(labels)
         for data in datas:
@@ -414,9 +416,16 @@ class ModelListDownload(View, ABC):
                     row.append(jsonpointer.resolve_pointer(data.data_public, key))
                 except jsonpointer.JsonPointerException:
                     row.append("")
+            row.extend(self._get_extra_data(data))
             writer.writerow(row)
 
         return response
+
+    def _get_extra_headers(self):
+        return []
+
+    def _get_extra_data(self, data):
+        return []
 
 
 class FundListDownload(ModelListDownload):
@@ -429,6 +438,50 @@ class OrganisationListDownload(ModelListDownload):
 
 class PipelineListDownload(ModelListDownload):
     _model = Pipeline
+
+    def _get_extra_headers(self):
+        return ["Delivery Locations - Name", "Delivery Locations - Country"]
+
+    def _get_extra_data(self, data):
+        delivery_locations_list = jsonpointer.resolve_pointer(
+            data.data_public, "/delivery_locations", []
+        )
+        if isinstance(delivery_locations_list, list):
+            delivery_location_names = [
+                jsonpointer.resolve_pointer(d, "/location_name/value", "")
+                for d in delivery_locations_list
+            ]
+            delivery_location_country_codes = [
+                jsonpointer.resolve_pointer(d, "/location_country/value", "")
+                for d in delivery_locations_list
+            ]
+            # List/set removes duplicates
+            return [
+                ", ".join(
+                    list(
+                        set(
+                            [
+                                i
+                                for i in delivery_location_names
+                                if isinstance(i, str) and i
+                            ]
+                        )
+                    )
+                ),
+                ", ".join(
+                    list(
+                        set(
+                            [
+                                i
+                                for i in delivery_location_country_codes
+                                if isinstance(i, str) and i
+                            ]
+                        )
+                    )
+                ),
+            ]
+        else:
+            return []
 
 
 class ModelIndex(View, ABC):
@@ -1048,7 +1101,7 @@ def admin_organisation_download_all_csv(request):
         raise Http404("Type does not exist")
     organisations = Record.objects.filter(type=type).order_by("public_id")
 
-    response = HttpResponse(content_type="text/csv")
+    response = HttpResponse(content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="organisations-admin.csv"'
 
     labels = ["ID"]
