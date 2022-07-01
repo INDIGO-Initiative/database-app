@@ -405,6 +405,8 @@ class ModelListDownload(View, ABC):
                 labels.append(config.get("title"))
                 keys.append(config.get("key"))
 
+        labels.extend(self._get_extra_headers())
+
         writer = csv.writer(response)
         writer.writerow(labels)
         for data in datas:
@@ -414,9 +416,16 @@ class ModelListDownload(View, ABC):
                     row.append(jsonpointer.resolve_pointer(data.data_public, key))
                 except jsonpointer.JsonPointerException:
                     row.append("")
+            row.extend(self._get_extra_data(data))
             writer.writerow(row)
 
         return response
+
+    def _get_extra_headers(self):
+        return []
+
+    def _get_extra_data(self, data):
+        return []
 
 
 class FundListDownload(ModelListDownload):
@@ -429,6 +438,50 @@ class OrganisationListDownload(ModelListDownload):
 
 class PipelineListDownload(ModelListDownload):
     _model = Pipeline
+
+    def _get_extra_headers(self):
+        return ["Delivery Locations - Name", "Delivery Locations - Country"]
+
+    def _get_extra_data(self, data):
+        delivery_locations_list = jsonpointer.resolve_pointer(
+            data.data_public, "/delivery_locations", []
+        )
+        if isinstance(delivery_locations_list, list):
+            delivery_location_names = [
+                jsonpointer.resolve_pointer(d, "/location_name/value", "")
+                for d in delivery_locations_list
+            ]
+            delivery_location_country_codes = [
+                jsonpointer.resolve_pointer(d, "/location_country/value", "")
+                for d in delivery_locations_list
+            ]
+            # List/set removes duplicates
+            return [
+                ", ".join(
+                    list(
+                        set(
+                            [
+                                i
+                                for i in delivery_location_names
+                                if isinstance(i, str) and i
+                            ]
+                        )
+                    )
+                ),
+                ", ".join(
+                    list(
+                        set(
+                            [
+                                i
+                                for i in delivery_location_country_codes
+                                if isinstance(i, str) and i
+                            ]
+                        )
+                    )
+                ),
+            ]
+        else:
+            return []
 
 
 class ModelIndex(View, ABC):
