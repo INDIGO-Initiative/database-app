@@ -13,7 +13,9 @@ class UpdateDataFilterValues(TestCase):
 
         out = filter_values(input, keys_with_own_status_subfield=["/name"])
 
-        assert {"name": {"value": "Project With Ferrets", "status": None},} == out
+        assert {
+            "name": {"value": "Project With Ferrets", "status": None},
+        } == out
 
     def test_key_not_public(self):
 
@@ -67,21 +69,35 @@ class UpdateDataFilterValues(TestCase):
             input, keys_with_own_status_subfield=["/name"], sandbox=sandbox
         )
 
-        assert {"name": None,} == out
+        assert {
+            "name": None,
+        } == out
 
     def test_list_item_public(self):
 
-        input = {"alt_names": [{"value": "Project With Ferrets", "status": "PUBLIC"},]}
+        input = {
+            "alt_names": [
+                {"value": "Project With Ferrets", "status": "PUBLIC"},
+            ]
+        }
 
         out = filter_values(
             input, lists_with_items_with_own_status_subfield=["/alt_names"]
         )
 
-        assert {"alt_names": [{"value": "Project With Ferrets"},]} == out
+        assert {
+            "alt_names": [
+                {"value": "Project With Ferrets"},
+            ]
+        } == out
 
     def test_list_item_not_public(self):
 
-        input = {"alt_names": [{"value": "Project With Ferrets", "status": ""},]}
+        input = {
+            "alt_names": [
+                {"value": "Project With Ferrets", "status": ""},
+            ]
+        }
 
         out = filter_values(
             input, lists_with_items_with_own_status_subfield=["/alt_names"]
@@ -110,7 +126,11 @@ class UpdateDataFilterValues(TestCase):
             sandbox=sandbox,
         )
 
-        assert {"alt_names": [{"value": "Project With Ferrets"},]} == out
+        assert {
+            "alt_names": [
+                {"value": "Project With Ferrets"},
+            ]
+        } == out
 
     def test_list_item_public_in_wrong_sandbox(self):
 
@@ -165,7 +185,9 @@ class UpdateDataFilterValues(TestCase):
 
         assert {
             "alt_names": [
-                {"value": "Project With Ferrets",},
+                {
+                    "value": "Project With Ferrets",
+                },
                 {"value": "Linda's Ferret Sanctuary"},
             ]
         } == out

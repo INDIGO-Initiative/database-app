@@ -134,8 +134,12 @@ class DataQualityReportForProject(DataQualityReportForModel):
         for source_data in source_table_entries_that_are_not_used:
             self.errors.append(SourceIdNotUsed(source_data.get("source_id")))
 
-        organisation_ids_that_do_not_exist = _filter_organisation_ids_that_do_not_exist_in_database(
-            find_unique_organisation_ids_referenced_in_project_data(self.project_data)
+        organisation_ids_that_do_not_exist = (
+            _filter_organisation_ids_that_do_not_exist_in_database(
+                find_unique_organisation_ids_referenced_in_project_data(
+                    self.project_data
+                )
+            )
         )
         for id in organisation_ids_that_do_not_exist:
             self.errors.append(OrganisationIdDoesNotExist(id))

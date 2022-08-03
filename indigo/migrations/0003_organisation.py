@@ -35,6 +35,8 @@ class Migration(migrations.Migration):
                     django.contrib.postgres.fields.jsonb.JSONField(default=dict),
                 ),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
     ]

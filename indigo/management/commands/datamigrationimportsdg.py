@@ -95,7 +95,9 @@ class Command(BaseCommand):
         if writes:
             print("Saving")
             newEvent(
-                writes, user=None, comment=options["import_comment"],
+                writes,
+                user=None,
+                comment=options["import_comment"],
             )
 
     def _process_project(self, project, data):

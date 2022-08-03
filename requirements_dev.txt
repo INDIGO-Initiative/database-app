@@ -8,8 +8,6 @@ amqp==2.6.1
     # via
     #   -r requirements.txt
     #   kombu
-appdirs==1.4.4
-    # via black
 asgiref==3.5.0
     # via
     #   -r requirements.txt
@@ -17,13 +15,12 @@ asgiref==3.5.0
 attrs==20.3.0
     # via
     #   -r requirements.txt
-    #   black
     #   jsonschema
 billiard==3.6.3.0
     # via
     #   -r requirements.txt
     #   celery
-black==19.10b0
+black==22.6.0
     # via -r requirements_dev.in
 boto3==1.16.61
     # via
@@ -42,7 +39,7 @@ certifi==2020.12.5
     # via
     #   -r requirements.txt
     #   sentry-sdk
-click==7.1.2
+click==8.1.3
     # via
     #   black
     #   pip-tools
@@ -118,18 +115,22 @@ kombu==4.6.11
     #   celery
 mccabe==0.6.1
     # via flake8
+mypy-extensions==0.4.3
+    # via black
 openpyxl==3.0.6
     # via
     #   -r requirements.txt
     #   spreadsheetforms
 packaging==21.3
     # via build
-pathspec==0.8.1
+pathspec==0.9.0
     # via black
 pep517==0.12.0
     # via build
 pip-tools==6.7.0
     # via -r requirements_dev.in
+platformdirs==2.5.2
+    # via black
 psycopg2==2.8.6
     # via
     #   -r requirements.txt
@@ -158,8 +159,6 @@ pytz==2020.5
     #   -r requirements.txt
     #   celery
     #   django
-regex==2020.11.13
-    # via black
 s3transfer==0.3.4
     # via
     #   -r requirements.txt
@@ -179,13 +178,12 @@ sqlparse==0.4.2
     # via
     #   -r requirements.txt
     #   django
-toml==0.10.2
-    # via black
 tomli==2.0.1
     # via
+    #   black
     #   build
     #   pep517
-typed-ast==1.4.2
+typing-extensions==4.3.0
     # via black
 urllib3==1.26.8
     # via

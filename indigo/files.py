@@ -306,7 +306,8 @@ def _update_public_archive_files_file_per_record_in_zip():
     default_storage.delete("public/all_data_as_spreadsheets.zip")
     with open(filename, "rb") as fp:
         default_storage.save(
-            "public/all_data_as_spreadsheets.zip", ContentFile(fp.read()),
+            "public/all_data_as_spreadsheets.zip",
+            ContentFile(fp.read()),
         )
 
     # Delete Temp file
@@ -332,7 +333,8 @@ def _update_public_archive_files_file_per_record_in_zip():
     default_storage.delete("public/pipeline_data_as_spreadsheets.zip")
     with open(filename, "rb") as fp:
         default_storage.save(
-            "public/pipeline_data_as_spreadsheets.zip", ContentFile(fp.read()),
+            "public/pipeline_data_as_spreadsheets.zip",
+            ContentFile(fp.read()),
         )
 
     # Delete Temp file

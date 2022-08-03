@@ -41,6 +41,8 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"unique_together": {("project", "organisation")},},
+            options={
+                "unique_together": {("project", "organisation")},
+            },
         ),
     ]

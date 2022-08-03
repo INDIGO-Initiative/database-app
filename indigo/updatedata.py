@@ -117,7 +117,9 @@ def update_project(
             lists_with_items_with_own_status_subfield=TYPE_PROJECT_FILTER_LISTS_LIST,
         )
         project.data_public = indigo.processdata.add_other_records_to_project(
-            record.public_id, public_filter_values_data, public_only=True,
+            record.public_id,
+            public_filter_values_data,
+            public_only=True,
         )
         # Sandbox Data
         project.data_sandboxes = {}
@@ -137,7 +139,9 @@ def update_project(
                 project.data_sandboxes[
                     sandbox.public_id
                 ] = indigo.processdata.add_other_records_to_project(
-                    record.public_id, sandbox_filter_values_data, public_only=True,
+                    record.public_id,
+                    sandbox_filter_values_data,
+                    public_only=True,
                 )
     else:
         project.data_public = {}
@@ -428,8 +432,10 @@ def update_assessment_resource(record):
         # set_values_if_agnostic_on_assessment_resource_data is also called in extract_edits_from_assessment_resource_spreadsheet
         # So why do we need it here?
         # There is old imported data that may not have these values set correctly, and we call it here to correct them
-        assessment_resource.data_public = indigo.processdata.set_values_if_agnostic_on_assessment_resource_data(
-            record.cached_data
+        assessment_resource.data_public = (
+            indigo.processdata.set_values_if_agnostic_on_assessment_resource_data(
+                record.cached_data
+            )
         )
     else:
         assessment_resource.data_public = {}

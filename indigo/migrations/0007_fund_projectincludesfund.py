@@ -46,7 +46,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
         migrations.CreateModel(
             name="ProjectIncludesFund",
@@ -78,6 +80,8 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"unique_together": {("project", "fund")},},
+            options={
+                "unique_together": {("project", "fund")},
+            },
         ),
     ]

@@ -25,7 +25,10 @@ class UpdateDataUpdateProjectForSandboxData(TestCase):
         jsondataferret.pythonapi.newevent.newEvent(
             [
                 jsondataferret.pythonapi.newevent.NewEventData(
-                    self.type_project, self.project_record, project_data, approved=True,
+                    self.type_project,
+                    self.project_record,
+                    project_data,
+                    approved=True,
                 )
             ]
         )

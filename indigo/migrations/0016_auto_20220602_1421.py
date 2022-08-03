@@ -31,7 +31,9 @@ class Migration(migrations.Migration):
             field=models.JSONField(default=dict),
         ),
         migrations.AlterField(
-            model_name="fund", name="data_public", field=models.JSONField(default=dict),
+            model_name="fund",
+            name="data_public",
+            field=models.JSONField(default=dict),
         ),
         migrations.AlterField(
             model_name="fund",
