@@ -14,7 +14,7 @@ Go to `http://localhost:8000`
 
 ## Run Worker
 
-    celery -A indigo worker -l info
+    celery -A indigo worker --without-heartbeat --without-gossip --without-mingle -l info
 
 ## Set up app for first time
 

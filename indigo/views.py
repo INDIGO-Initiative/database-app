@@ -95,7 +95,11 @@ def projects_list(request):
     projects = Project.objects.filter(exists=True, status_public=True).order_by(
         "public_id"
     )
-    return render(request, "indigo/projects.html", {"projects": projects},)
+    return render(
+        request,
+        "indigo/projects.html",
+        {"projects": projects},
+    )
 
 
 def projects_list_download(request):
@@ -253,7 +257,9 @@ def organisations_list(request):
         exists=True, status_public=True
     ).order_by("public_id")
     return render(
-        request, "indigo/organisations.html", {"organisations": organisations},
+        request,
+        "indigo/organisations.html",
+        {"organisations": organisations},
     )
 
 
@@ -612,7 +618,12 @@ def api1_project_index(request, public_id):
     if not project.status_public or not project.exists:
         raise Http404("Project does not exist")
 
-    data = {"project": {"id": project.public_id, "data": project.data_public,}}
+    data = {
+        "project": {
+            "id": project.public_id,
+            "data": project.data_public,
+        }
+    }
     if (
         settings.API_SANDBOX_DATA_PASSWORD
         and request.GET.get("sandbox_data_password", "")
@@ -783,7 +794,11 @@ def admin_projects_list(request):
     except Type.DoesNotExist:
         raise Http404("Type does not exist")
     projects = Record.objects.filter(type=type).order_by("public_id")
-    return render(request, "indigo/admin/projects.html", {"projects": projects},)
+    return render(
+        request,
+        "indigo/admin/projects.html",
+        {"projects": projects},
+    )
 
 
 @permission_admin_or_data_steward_required()
@@ -845,13 +860,19 @@ def admin_projects_new(request):
             # Save the event
             id = indigo.utils.get_next_record_id(type)
             data = NewEventData(
-                type, id, {"name": {"value": form.cleaned_data["name"]}}, approved=True,
+                type,
+                id,
+                {"name": {"value": form.cleaned_data["name"]}},
+                approved=True,
             )
             newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
 
             # redirect to a new URL:
             return HttpResponseRedirect(
-                reverse("indigo_admin_project_index", kwargs={"public_id": id},)
+                reverse(
+                    "indigo_admin_project_index",
+                    kwargs={"public_id": id},
+                )
             )
 
     # If this is a GET (or any other method) create the default form.
@@ -897,7 +918,10 @@ def admin_project_moderate(request, public_id):
             )
 
         return HttpResponseRedirect(
-            reverse("indigo_admin_project_index", kwargs={"public_id": public_id},)
+            reverse(
+                "indigo_admin_project_index",
+                kwargs={"public_id": public_id},
+            )
         )
 
     for edit in edits:
@@ -966,7 +990,9 @@ def admin_all_projects_data_quality_report_field_single(request):
     data.update(data_quality_report.get_single_field_statistics_for_field(field))
 
     return render(
-        request, "indigo/admin/projects_data_quality_report_single_field.html", data,
+        request,
+        "indigo/admin/projects_data_quality_report_single_field.html",
+        data,
     )
 
 
@@ -991,7 +1017,9 @@ def admin_all_projects_data_quality_report_field_list(request):
     data.update(data_quality_report.get_list_field_statistics_for_field(field))
 
     return render(
-        request, "indigo/admin/projects_data_quality_report_list_field.html", data,
+        request,
+        "indigo/admin/projects_data_quality_report_list_field.html",
+        data,
     )
 
 
@@ -1058,7 +1086,11 @@ def admin_organisation_download_blank_form(request):
 
 @permission_admin_or_data_steward_required()
 def admin_organisations_list(request):
-    return render(request, "indigo/admin/organisations.html", {},)
+    return render(
+        request,
+        "indigo/admin/organisations.html",
+        {},
+    )
 
 
 @permission_admin_or_data_steward_required()
@@ -1166,7 +1198,10 @@ def admin_organisation_download_form(request, public_id):
         raise Http404("Organisation does not exist")
 
     guide_file = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v004.xlsx",
+        settings.BASE_DIR,
+        "indigo",
+        "spreadsheetform_guides",
+        "organisation_v004.xlsx",
     )
 
     out_file = os.path.join(
@@ -1283,13 +1318,19 @@ def admin_organisations_new(request):
             # Save the event
             id = indigo.utils.get_next_record_id(type)
             data = NewEventData(
-                type, id, {"name": {"value": form.cleaned_data["name"]}}, approved=True,
+                type,
+                id,
+                {"name": {"value": form.cleaned_data["name"]}},
+                approved=True,
             )
             newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
 
             # redirect to a new URL:
             return HttpResponseRedirect(
-                reverse("indigo_admin_organisation_index", kwargs={"public_id": id},)
+                reverse(
+                    "indigo_admin_organisation_index",
+                    kwargs={"public_id": id},
+                )
             )
 
     # If this is a GET (or any other method) create the default form.
@@ -1335,7 +1376,10 @@ def admin_organisation_moderate(request, public_id):
             )
 
         return HttpResponseRedirect(
-            reverse("indigo_admin_organisation_index", kwargs={"public_id": public_id},)
+            reverse(
+                "indigo_admin_organisation_index",
+                kwargs={"public_id": public_id},
+            )
         )
 
     for edit in edits:
@@ -1492,7 +1536,10 @@ def admin_fund_projects(request, public_id):
     return render(
         request,
         "indigo/admin/fund/projects.html",
-        {"fund": fund, "project_links": fund.included_by_projects.all(),},
+        {
+            "fund": fund,
+            "project_links": fund.included_by_projects.all(),
+        },
     )
 
 
@@ -1577,7 +1624,10 @@ class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
             "indigo/admin/"
             + self.__class__._model.__name__.lower()
             + "/import_form.html",
-            {"data": data, "form": form,},
+            {
+                "data": data,
+                "form": form,
+            },
         )
 
     def post(self, request, public_id):
@@ -1614,7 +1664,8 @@ class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
             )
             return HttpResponseRedirect(
                 reverse(
-                    self.__class__._redirect_view, kwargs={"public_id": data.public_id},
+                    self.__class__._redirect_view,
+                    kwargs={"public_id": data.public_id},
                 )
             )
         else:
@@ -1623,7 +1674,10 @@ class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
                 "indigo/admin/"
                 + self.__class__._model.__name__.lower()
                 + "/import_form.html",
-                {"data": data, "form": form,},
+                {
+                    "data": data,
+                    "form": form,
+                },
             )
 
     def has_permission(self):
@@ -1885,7 +1939,10 @@ class AdminModelImportFormStage2Of2(PermissionRequiredMixin, View, ABC):
                 "The data has been imported; remember to moderate it!",
             )
             return HttpResponseRedirect(
-                reverse(self._redirect_view, kwargs={"public_id": record.public_id},)
+                reverse(
+                    self._redirect_view,
+                    kwargs={"public_id": record.public_id},
+                )
             )
 
         else:
@@ -2072,7 +2129,9 @@ class AdminModelNew(PermissionRequiredMixin, View, ABC):
         return render(
             request,
             "indigo/admin/" + self.__class__._model.__name__.lower() + "/new.html",
-            {"form": form,},
+            {
+                "form": form,
+            },
         )
 
     @method_decorator(transaction.atomic)
@@ -2087,19 +2146,27 @@ class AdminModelNew(PermissionRequiredMixin, View, ABC):
             # Save the event
             id = indigo.utils.get_next_record_id(type)
             data = NewEventData(
-                type, id, {"name": {"value": form.cleaned_data["name"]}}, approved=True,
+                type,
+                id,
+                {"name": {"value": form.cleaned_data["name"]}},
+                approved=True,
             )
             newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
 
             # redirect to a new URL:
             return HttpResponseRedirect(
-                reverse(self.__class__._redirect_view, kwargs={"public_id": id},)
+                reverse(
+                    self.__class__._redirect_view,
+                    kwargs={"public_id": id},
+                )
             )
 
         return render(
             request,
             "indigo/admin/" + self.__class__._model.__name__.lower() + "/new.html",
-            {"form": form,},
+            {
+                "form": form,
+            },
         )
 
     def has_permission(self):
@@ -2282,7 +2349,11 @@ class AdminPipelineDataQualityReport(AdminModelDataQualityReport):
 @permission_admin_or_data_steward_required()
 def admin_sandbox_list(request):
     sandboxes = Sandbox.objects.all()
-    return render(request, "indigo/admin/sandboxes.html", {"sandboxes": sandboxes},)
+    return render(
+        request,
+        "indigo/admin/sandboxes.html",
+        {"sandboxes": sandboxes},
+    )
 
 
 @permission_admin_or_data_steward_required()
@@ -2291,7 +2362,11 @@ def admin_sandbox_index(request, public_id):
         sandbox = Sandbox.objects.get(public_id=public_id)
     except Sandbox.DoesNotExist:
         raise Http404("Sandbox does not exist")
-    return render(request, "indigo/admin/sandbox/index.html", {"sandbox": sandbox},)
+    return render(
+        request,
+        "indigo/admin/sandbox/index.html",
+        {"sandbox": sandbox},
+    )
 
 
 ########################### Admin - Event
@@ -2345,7 +2420,13 @@ def admin_edit_index(request, edit_id):
         edit = Edit.objects.get(public_id=edit_id)
     except Edit.DoesNotExist:
         raise Http404("Edit does not exist")
-    return render(request, "indigo/admin/edit/index.html", {"edit": edit,},)
+    return render(
+        request,
+        "indigo/admin/edit/index.html",
+        {
+            "edit": edit,
+        },
+    )
 
 
 ########################### Admin - Moderate

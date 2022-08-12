@@ -46,7 +46,9 @@ class JsonSchemaProcessor:
                     "key": start_pointer.replace("/properties/", "/"),
                     "title": self._join_title(title, our_json_schema.get("title", "")),
                     "fields": self._get_fields_worker(
-                        json_schema=new_json_schema, start_pointer="", title="",
+                        json_schema=new_json_schema,
+                        start_pointer="",
+                        title="",
                     ),
                 }
             )
@@ -67,7 +69,8 @@ class JsonSchemaProcessor:
         return self._get_filter_keys_worker(start_pointer="")
 
     def _get_filter_keys_worker(
-        self, start_pointer,
+        self,
+        start_pointer,
     ):
         out = []
         our_json_schema = jsonpointer.resolve_pointer(
@@ -131,7 +134,8 @@ class JsonSchemaProcessor:
         if our_json_schema.get("type") == "array":
             out.extend(
                 self._get_references_to_model_worker(
-                    json_schema=json_schema, start_pointer=start_pointer + "/items",
+                    json_schema=json_schema,
+                    start_pointer=start_pointer + "/items",
                 )
             )
 
@@ -169,7 +173,8 @@ class JsonSchemaProcessor:
         if our_json_schema.get("type") == "array":
             out.extend(
                 self._get_references_to_data_worker(
-                    json_schema=json_schema, start_pointer=start_pointer + "/items",
+                    json_schema=json_schema,
+                    start_pointer=start_pointer + "/items",
                 )
             )
 

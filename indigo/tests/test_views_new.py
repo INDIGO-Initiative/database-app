@@ -62,7 +62,10 @@ class TestViewsNew(TestCase):
             with self.subTest(params=type_):
                 resp = self.client.post(
                     f"/app/admin/new_{type_.public_id}",
-                    {"name": "A name", "comment": "A comment",},
+                    {
+                        "name": "A name",
+                        "comment": "A comment",
+                    },
                 )
                 self.assertEquals(
                     resp.url,
@@ -70,7 +73,10 @@ class TestViewsNew(TestCase):
                 )
                 resp = self.client.post(
                     f"/app/admin/new_{type_.public_id}",
-                    {"name": "Another name", "comment": "Another comment",},
+                    {
+                        "name": "Another name",
+                        "comment": "Another comment",
+                    },
                 )
                 self.assertEquals(
                     resp.url,

@@ -10,7 +10,10 @@ from indigo.jsonschemaprocessor import JsonSchemaProcessor
 
 def cache_spreadsheet_guide_info():
     guide_file_glob = os.path.join(
-        settings.BASE_DIR, "indigo", "spreadsheetform_guides", "*.xlsx",
+        settings.BASE_DIR,
+        "indigo",
+        "spreadsheetform_guides",
+        "*.xlsx",
     )
     for filename in glob.glob(guide_file_glob):
         filename_bits = filename.split("/")
@@ -28,10 +31,18 @@ def cache_spreadsheet_guide_info():
 
 def cache_json_schema_info():
     filenames = glob.glob(
-        os.path.join(settings.BASE_DIR, "data-standard", "schema", "*.json",)
+        os.path.join(
+            settings.BASE_DIR,
+            "data-standard",
+            "schema",
+            "*.json",
+        )
     ) + glob.glob(
         os.path.join(
-            settings.BASE_DIR, "data-standard-impact-wayfinder", "schema", "*.json",
+            settings.BASE_DIR,
+            "data-standard-impact-wayfinder",
+            "schema",
+            "*.json",
         )
     )
     for filename in filenames:
@@ -39,7 +50,10 @@ def cache_json_schema_info():
         data = JsonSchemaProcessor(
             filename,
             codelist_base_directory=os.path.join(
-                settings.BASE_DIR, "data-standard", "schema", "codelists",
+                settings.BASE_DIR,
+                "data-standard",
+                "schema",
+                "codelists",
             ),
         )
         # Compiled JSONSchema

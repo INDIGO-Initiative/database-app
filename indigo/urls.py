@@ -6,7 +6,11 @@ urlpatterns = [
     ########################### Home Page
     path("", views.index, name="indigo_index"),
     ########################### Public - Project
-    path("project", views.projects_list, name="indigo_project_list",),
+    path(
+        "project",
+        views.projects_list,
+        name="indigo_project_list",
+    ),
     path(
         "project_download",
         views.projects_list_download,
@@ -27,14 +31,22 @@ urlpatterns = [
         views.project_download_data_quality_report,
         name="indigo_project_download_data_quality_report",
     ),
-    path("project/<public_id>", views.project_index, name="indigo_project_index",),
+    path(
+        "project/<public_id>",
+        views.project_index,
+        name="indigo_project_index",
+    ),
     path(
         "project/<public_id>/download_form",
         views.project_download_form,
         name="indigo_project_download_form",
     ),
     ########################### Public - Organisation
-    path("organisation", views.organisations_list, name="indigo_organisation_list",),
+    path(
+        "organisation",
+        views.organisations_list,
+        name="indigo_organisation_list",
+    ),
     path(
         "organisation_download",
         views.OrganisationListDownload.as_view(),
@@ -56,13 +68,21 @@ urlpatterns = [
         name="indigo_organisation_download_form",
     ),
     ########################### Public - Fund
-    path("fund", views.FundList.as_view(), name="indigo_fund_list",),
+    path(
+        "fund",
+        views.FundList.as_view(),
+        name="indigo_fund_list",
+    ),
     path(
         "fund_download",
         views.FundListDownload.as_view(),
         name="indigo_fund_list_download",
     ),
-    path("fund/<public_id>", views.FundIndex.as_view(), name="indigo_fund_index",),
+    path(
+        "fund/<public_id>",
+        views.FundIndex.as_view(),
+        name="indigo_fund_index",
+    ),
     path(
         "fund/<public_id>/download_form",
         views.FundDownloadForm.as_view(),
@@ -80,7 +100,11 @@ urlpatterns = [
         name="indigo_assessment_resource_index",
     ),
     ########################### Public - Pipeline
-    path("pipeline", views.PipelineList.as_view(), name="indigo_pipeline_list",),
+    path(
+        "pipeline",
+        views.PipelineList.as_view(),
+        name="indigo_pipeline_list",
+    ),
     path(
         "pipeline_download",
         views.PipelineListDownload.as_view(),
@@ -118,7 +142,11 @@ urlpatterns = [
         name="indigo_all_public_data_file_per_data_type_csv_in_zip",
     ),
     ########################### Public - Project - API
-    path("api1/project", views.api1_projects_list, name="indigo_api1_project_list",),
+    path(
+        "api1/project",
+        views.api1_projects_list,
+        name="indigo_api1_project_list",
+    ),
     path(
         "api1/project/<public_id>",
         views.api1_project_index,
@@ -136,7 +164,11 @@ urlpatterns = [
         name="indigo_api1_organisation_index",
     ),
     ########################### Public - Fund - API
-    path("api1/fund", views.API1FundList.as_view(), name="indigo_api1_fund_list",),
+    path(
+        "api1/fund",
+        views.API1FundList.as_view(),
+        name="indigo_api1_fund_list",
+    ),
     path(
         "api1/fund/<public_id>",
         views.API1FundIndex.as_view(),
@@ -166,14 +198,22 @@ urlpatterns = [
     ),
     ########################### Admin
     path("admin/", views.admin_index, name="indigo_admin_index"),
-    path("admin/history", views.admin_history, name="indigo_admin_history",),
+    path(
+        "admin/history",
+        views.admin_history,
+        name="indigo_admin_history",
+    ),
     ########################### Admin - Project
     path(
         "admin/project_download_blank_form",
         views.admin_project_download_blank_form,
         name="indigo_admin_project_download_blank_form",
     ),
-    path("admin/project", views.admin_projects_list, name="indigo_admin_project_list",),
+    path(
+        "admin/project",
+        views.admin_projects_list,
+        name="indigo_admin_project_list",
+    ),
     path(
         "admin/project/<public_id>",
         views.admin_project_index,
@@ -215,7 +255,9 @@ urlpatterns = [
         name="indigo_admin_project_data_quality_report",
     ),
     path(
-        "admin/new_project", views.admin_projects_new, name="indigo_admin_project_new",
+        "admin/new_project",
+        views.admin_projects_new,
+        name="indigo_admin_project_new",
     ),
     path(
         "admin/project_data_quality_report",
@@ -309,7 +351,11 @@ urlpatterns = [
         views.AdminFundDownloadBlankForm.as_view(),
         name="indigo_admin_fund_download_blank_form",
     ),
-    path("admin/fund", views.AdminFundList.as_view(), name="indigo_admin_fund_list",),
+    path(
+        "admin/fund",
+        views.AdminFundList.as_view(),
+        name="indigo_admin_fund_list",
+    ),
     path(
         "admin/fund/<public_id>",
         views.AdminFundIndex.as_view(),
@@ -345,7 +391,11 @@ urlpatterns = [
         views.AdminFundHistory.as_view(),
         name="indigo_admin_fund_history",
     ),
-    path("admin/new_fund", views.AdminFundNew.as_view(), name="indigo_admin_fund_new",),
+    path(
+        "admin/new_fund",
+        views.AdminFundNew.as_view(),
+        name="indigo_admin_fund_new",
+    ),
     ########################### Admin - AssessmentResource
     path(
         "admin/assessment_resource_download_blank_form",
@@ -450,7 +500,9 @@ urlpatterns = [
     ),
     ########################### Admin - Sandboxes
     path(
-        "admin/sandboxes", views.admin_sandbox_list, name="indigo_admin_sandbox_list",
+        "admin/sandboxes",
+        views.admin_sandbox_list,
+        name="indigo_admin_sandbox_list",
     ),
     path(
         "admin/sandbox/<public_id>",
@@ -465,10 +517,14 @@ urlpatterns = [
     ),
     ########################### Admin - Edit
     path(
-        "admin/edit/<edit_id>", views.admin_edit_index, name="indigo_admin_edit_index",
+        "admin/edit/<edit_id>",
+        views.admin_edit_index,
+        name="indigo_admin_edit_index",
     ),
     ########################### Admin - Moderate
     path(
-        "admin/to_moderate", views.admin_to_moderate, name="indigo_admin_to_moderate",
+        "admin/to_moderate",
+        views.admin_to_moderate,
+        name="indigo_admin_to_moderate",
     ),
 ]

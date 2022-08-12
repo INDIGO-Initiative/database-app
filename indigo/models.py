@@ -36,25 +36,41 @@ class BaseModel(models.Model):
 
     def has_data_public_field(self, field):
         try:
-            return bool(jsonpointer.resolve_pointer(self.data_public, field,))
+            return bool(
+                jsonpointer.resolve_pointer(
+                    self.data_public,
+                    field,
+                )
+            )
         except jsonpointer.JsonPointerException:
             return False
 
     def get_data_public_field(self, field):
         try:
-            return jsonpointer.resolve_pointer(self.data_public, field,)
+            return jsonpointer.resolve_pointer(
+                self.data_public,
+                field,
+            )
         except jsonpointer.JsonPointerException:
             return ""
 
     def has_data_private_field(self, field):
         try:
-            return bool(jsonpointer.resolve_pointer(self.data_private, field,))
+            return bool(
+                jsonpointer.resolve_pointer(
+                    self.data_private,
+                    field,
+                )
+            )
         except jsonpointer.JsonPointerException:
             return False
 
     def get_data_private_field(self, field):
         try:
-            return jsonpointer.resolve_pointer(self.data_private, field,)
+            return jsonpointer.resolve_pointer(
+                self.data_private,
+                field,
+            )
         except jsonpointer.JsonPointerException:
             return ""
 
@@ -100,22 +116,30 @@ class BaseModelImport(models.Model):
 
 class ProjectImport(BaseModelImport):
     project = models.ForeignKey(
-        Project, on_delete=models.PROTECT, related_name="imports",
+        Project,
+        on_delete=models.PROTECT,
+        related_name="imports",
     )
 
 
 class PipelineImport(BaseModelImport):
     pipeline = models.ForeignKey(
-        Pipeline, on_delete=models.PROTECT, related_name="imports",
+        Pipeline,
+        on_delete=models.PROTECT,
+        related_name="imports",
     )
 
 
 class ProjectIncludesOrganisation(models.Model):
     project = models.ForeignKey(
-        Project, on_delete=models.PROTECT, related_name="includes_organisations",
+        Project,
+        on_delete=models.PROTECT,
+        related_name="includes_organisations",
     )
     organisation = models.ForeignKey(
-        Organisation, on_delete=models.PROTECT, related_name="included_by_projects",
+        Organisation,
+        on_delete=models.PROTECT,
+        related_name="included_by_projects",
     )
     in_current_data = models.BooleanField(default=False)
 
@@ -128,10 +152,14 @@ class ProjectIncludesOrganisation(models.Model):
 
 class ProjectIncludesFund(models.Model):
     project = models.ForeignKey(
-        Project, on_delete=models.PROTECT, related_name="includes_funds",
+        Project,
+        on_delete=models.PROTECT,
+        related_name="includes_funds",
     )
     fund = models.ForeignKey(
-        Fund, on_delete=models.PROTECT, related_name="included_by_projects",
+        Fund,
+        on_delete=models.PROTECT,
+        related_name="included_by_projects",
     )
     in_current_data = models.BooleanField(default=False)
 

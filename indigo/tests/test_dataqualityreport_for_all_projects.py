@@ -18,7 +18,10 @@ class GetSingleFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
             jsondataferret.pythonapi.newevent.newEvent(
                 [
                     jsondataferret.pythonapi.newevent.NewEventData(
-                        type_project, project_record, project_data, approved=True,
+                        type_project,
+                        project_record,
+                        project_data,
+                        approved=True,
                     )
                 ]
             )
@@ -175,7 +178,10 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
             jsondataferret.pythonapi.newevent.newEvent(
                 [
                     jsondataferret.pythonapi.newevent.NewEventData(
-                        type_project, project_record, project_data, approved=True,
+                        type_project,
+                        project_record,
+                        project_data,
+                        approved=True,
                     )
                 ]
             )
@@ -185,7 +191,10 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
             "PROJ1": {
                 "status": "PUBLIC",
                 "delivery_locations": [
-                    {"location_name": {"value": "A City"}, "status": "PUBLIC",}
+                    {
+                        "location_name": {"value": "A City"},
+                        "status": "PUBLIC",
+                    }
                 ],
             }
         }
@@ -210,7 +219,10 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
             "PROJ1": {
                 "status": "PRIVATE",
                 "delivery_locations": [
-                    {"location_name": {"value": "A City"}, "status": "PUBLIC",}
+                    {
+                        "location_name": {"value": "A City"},
+                        "status": "PUBLIC",
+                    }
                 ],
             }
         }
@@ -249,7 +261,11 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
         assert data["count_public_projects_without_any_public_values"] == 1
 
     def test_public_project_with_no_key_for_data(self):
-        inputs = {"PROJ1": {"status": "PUBLIC",}}
+        inputs = {
+            "PROJ1": {
+                "status": "PUBLIC",
+            }
+        }
 
         self.create_records(inputs)
 
@@ -272,7 +288,10 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
             "PROJ1": {
                 "status": "PUBLIC",
                 "delivery_locations": [
-                    {"location_name": {"value": "A City"}, "status": "PRIVATE",}
+                    {
+                        "location_name": {"value": "A City"},
+                        "status": "PRIVATE",
+                    }
                 ],
             }
         }
@@ -298,8 +317,14 @@ class GetListFieldStatisticsAcrossAllProjectsForFieldTest(TestCase):
             "PROJ1": {
                 "status": "PUBLIC",
                 "delivery_locations": [
-                    {"location_name": {"value": "A Secret City"}, "status": "PRIVATE",},
-                    {"location_name": {"value": "A City"}, "status": "PUBLIC",},
+                    {
+                        "location_name": {"value": "A Secret City"},
+                        "status": "PRIVATE",
+                    },
+                    {
+                        "location_name": {"value": "A City"},
+                        "status": "PUBLIC",
+                    },
                 ],
             }
         }

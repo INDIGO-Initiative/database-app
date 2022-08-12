@@ -8,8 +8,10 @@ class ProcessFindUniqueOrganisationIdsReferencedInProjectData(TestCase):
 
         input = {"name": {"value": "Project With Ferrets"}}
 
-        out = indigo.processdata.find_unique_organisation_ids_referenced_in_project_data(
-            input
+        out = (
+            indigo.processdata.find_unique_organisation_ids_referenced_in_project_data(
+                input
+            )
         )
 
         assert 0 == len(out)
@@ -26,8 +28,10 @@ class ProcessFindUniqueOrganisationIdsReferencedInProjectData(TestCase):
             ]
         }
 
-        out = indigo.processdata.find_unique_organisation_ids_referenced_in_project_data(
-            input
+        out = (
+            indigo.processdata.find_unique_organisation_ids_referenced_in_project_data(
+                input
+            )
         )
 
         assert 1 == len(out)
@@ -50,8 +54,10 @@ class ProcessFindUniqueOrganisationIdsReferencedInProjectData(TestCase):
             ]
         }
 
-        out = indigo.processdata.find_unique_organisation_ids_referenced_in_project_data(
-            input
+        out = (
+            indigo.processdata.find_unique_organisation_ids_referenced_in_project_data(
+                input
+            )
         )
 
         assert 1 == len(out)

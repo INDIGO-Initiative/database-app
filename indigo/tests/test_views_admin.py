@@ -22,7 +22,10 @@ class AdminModerateTests(TestCase):
         jsondataferret.pythonapi.newevent.newEvent(
             [
                 jsondataferret.pythonapi.newevent.NewEventData(
-                    type_pipeline, project_record, {}, approved=False,
+                    type_pipeline,
+                    project_record,
+                    {},
+                    approved=False,
                 )
             ]
         )
@@ -70,7 +73,10 @@ class AdminModerateTests(TestCase):
         jsondataferret.pythonapi.newevent.newEvent(
             [
                 jsondataferret.pythonapi.newevent.NewEventData(
-                    type_pipeline, project_record, {}, approved=False,
+                    type_pipeline,
+                    project_record,
+                    {},
+                    approved=False,
                 )
             ]
         )
@@ -115,7 +121,10 @@ class AdminChangeStatusTests(TestCase):
         jsondataferret.pythonapi.newevent.newEvent(
             [
                 jsondataferret.pythonapi.newevent.NewEventData(
-                    type_pipeline, project_record, {}, approved=True,
+                    type_pipeline,
+                    project_record,
+                    {},
+                    approved=True,
                 )
             ]
         )
@@ -174,7 +183,10 @@ class AdminChangeStatusTests(TestCase):
         jsondataferret.pythonapi.newevent.newEvent(
             [
                 jsondataferret.pythonapi.newevent.NewEventData(
-                    type_pipeline, project_record, {}, approved=True,
+                    type_pipeline,
+                    project_record,
+                    {},
+                    approved=True,
                 )
             ]
         )
@@ -231,7 +243,10 @@ class AdminChangeStatusTests(TestCase):
         jsondataferret.pythonapi.newevent.newEvent(
             [
                 jsondataferret.pythonapi.newevent.NewEventData(
-                    type_pipeline, project_record, {}, approved=True,
+                    type_pipeline,
+                    project_record,
+                    {},
+                    approved=True,
                 )
             ]
         )

@@ -49,7 +49,9 @@ def extract_edits_from_project_spreadsheet(record, import_json):
 
     # Remove Org data from the data we save
     jsonpointer.set_pointer(
-        import_json, TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST["list_key"], None,
+        import_json,
+        TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST["list_key"],
+        None,
     )
 
     # Remove Fund data
@@ -61,7 +63,9 @@ def extract_edits_from_project_spreadsheet(record, import_json):
             # Maybe try and extract fund edits here later?
             # Remove Fund data from the data we save
             jsonpointer.set_pointer(
-                data_item, TYPE_PROJECT_FUND_LIST["item_key_with_fund_details"], None,
+                data_item,
+                TYPE_PROJECT_FUND_LIST["item_key_with_fund_details"],
+                None,
             )
 
     # Cases where commas are in values can not be used in data validity options

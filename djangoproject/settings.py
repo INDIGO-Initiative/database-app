@@ -68,9 +68,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 
@@ -185,10 +191,16 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
         "json_schema": load_json_schema("project.json"),
         "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "project_v014.xlsx",
+            BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            "project_v014.xlsx",
         ),
         "spreadsheet_public_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "project_public_v016.xlsx",
+            BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            "project_public_v016.xlsx",
         ),
         "spreadsheet_form_guide_spec": load_guide_form_spec("project_v014.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
@@ -215,7 +227,10 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     "organisation": {
         "json_schema": load_json_schema("organisation.json"),
         "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "organisation_v004.xlsx",
+            BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            "organisation_v004.xlsx",
         ),
         "spreadsheet_form_guide_spec": load_guide_form_spec("organisation_v004.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
@@ -228,7 +243,10 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     "fund": {
         "json_schema": load_json_schema("fund.json"),
         "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "fund_v003.xlsx",
+            BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            "fund_v003.xlsx",
         ),
         "spreadsheet_form_guide_spec": load_guide_form_spec("fund_v003.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
@@ -255,7 +273,10 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     "pipeline": {
         "json_schema": load_json_schema("pipeline.json"),
         "spreadsheet_form_guide": os.path.join(
-            BASE_DIR, "indigo", "spreadsheetform_guides", "pipeline_v001.xlsx",
+            BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            "pipeline_v001.xlsx",
         ),
         "spreadsheet_form_guide_spec": load_guide_form_spec("pipeline_v001.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
@@ -280,7 +301,8 @@ if SENTRY_DSN:
     from sentry_sdk.integrations.django import DjangoIntegration
 
     sentry_sdk.init(
-        dsn=SENTRY_DSN, integrations=[DjangoIntegration()],
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
     )
 
 if "ON_HEROKU" in os.environ:
