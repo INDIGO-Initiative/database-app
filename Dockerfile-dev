@@ -1,0 +1,11 @@
+FROM python:3.9.14-bullseye
+
+RUN mkdir -p /app
+COPY . /app
+WORKDIR /app
+
+RUN pip install -r requirements_dev.txt
+
+EXPOSE 8000
+
+CMD gunicorn --bind 0.0.0.0:8000 djangoproject.wsgi:application
