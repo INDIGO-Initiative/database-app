@@ -1,0 +1,63 @@
+version: "3.5"
+
+services:
+
+  indigo-database-app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    ports:
+      - "8000:8000"
+    environment:
+      JSONDATAFERRET_DEBUG: "True"
+      JSONDATAFERRET_DATABASE_NAME: app
+      JSONDATAFERRET_DATABASE_USER: postgres
+      JSONDATAFERRET_DATABASE_PASSWORD: 1234
+      JSONDATAFERRET_DATABASE_HOST: postgres
+      CLOUDAMQP_URL: amqp://user:1234@rabbitmq/app
+      APP_TITLE: INDIGO DEV
+    volumes:
+      - ".:/app"
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  indigo-database-worker-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    environment:
+      JSONDATAFERRET_DEBUG: "True"
+      JSONDATAFERRET_DATABASE_NAME: app
+      JSONDATAFERRET_DATABASE_USER: postgres
+      JSONDATAFERRET_DATABASE_PASSWORD: 1234
+      JSONDATAFERRET_DATABASE_HOST: postgres
+      CLOUDAMQP_URL: amqp://user:1234@rabbitmq/app
+    volumes:
+      - ".:/app"
+    depends_on:
+      - postgres
+      - rabbitmq
+    command: "celery -A indigo worker --without-heartbeat --without-gossip --without-mingle -l info"
+
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: postgres
+      POSTGRES_DB: app
+    volumes:
+      - ".:/app"
+
+  rabbitmq:
+    image: rabbitmq:3.9
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: 1234
+      RABBITMQ_DEFAULT_VHOST: app
+
+
+networks:
+  default:
+    name: indigo-database-app-dev
