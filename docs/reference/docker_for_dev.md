@@ -8,6 +8,8 @@ To run:
 docker-compose -f docker-compose.dev.yml up
 ```
 
+The app will be at http://localhost:8000/app/
+
 ## Set up app for first time
 
 If you have a database to import, you can do that instead (see below) and skip this.
@@ -58,6 +60,12 @@ Put the file in the project directory so it is accessible to docker then run:
 docker-compose -f docker-compose.dev.yml run postgres  su -c 'PGPASSWORD=1234 pg_restore -d app -U postgres -h postgres   /app/import-20XX-YY-ZZ.sql'
 ```
 
+## Lint
+
+```
+docker-compose -f docker-compose.dev.yml run indigo-database-app-dev black djangoproject/ indigo/ manage.py
+docker-compose -f docker-compose.dev.yml run indigo-database-app-dev flake8 djangoproject/ indigo/ manage.py
+```
 
 ## Running tests
 
