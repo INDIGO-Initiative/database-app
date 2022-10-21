@@ -194,7 +194,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             BASE_DIR,
             "indigo",
             "spreadsheetform_guides",
-            "project_v014.xlsx",
+            "project_v015.xlsx",
         ),
         "spreadsheet_public_form_guide": os.path.join(
             BASE_DIR,
@@ -202,7 +202,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             "spreadsheetform_guides",
             "project_public_v016.xlsx",
         ),
-        "spreadsheet_form_guide_spec": load_guide_form_spec("project_v014.xlsx"),
+        "spreadsheet_form_guide_spec": load_guide_form_spec("project_v015.xlsx"),
         "spreadsheet_form_guide_spec_versions": {
             7: load_guide_form_spec("project_v007.xlsx"),
             8: load_guide_form_spec("project_v008.xlsx"),
@@ -212,6 +212,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             12: load_guide_form_spec("project_v012.xlsx"),
             13: load_guide_form_spec("project_v013.xlsx"),
             14: load_guide_form_spec("project_v014.xlsx"),
+            15: load_guide_form_spec("project_v015.xlsx"),
         },
         "fields": load_json_schema_fields("project.json"),
         "filter_keys": load_json_schema_filter_keys("project.json"),
