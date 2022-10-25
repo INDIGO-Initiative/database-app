@@ -1204,6 +1204,10 @@
             {
                 "key": "/status",
                 "title": "Status"
+            },
+            {
+                "key": "/sandboxes",
+                "title": "(In Sandboxes)"
             }
         ],
         "key": "/results",

@@ -3133,6 +3133,10 @@
                         "title": "Result type",
                         "type": "object"
                     },
+                    "sandboxes": {
+                        "title": "(In Sandboxes)",
+                        "type": "string"
+                    },
                     "source_ids": {
                         "description": "Source of information about results.",
                         "references-data-key": "/id",

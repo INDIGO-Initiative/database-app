@@ -16,6 +16,7 @@ services:
       JSONDATAFERRET_DATABASE_HOST: postgres
       CLOUDAMQP_URL: amqp://user:1234@rabbitmq/app
       APP_TITLE: INDIGO DEV
+      API_SANDBOX_DATA_PASSWORD: 1234
     volumes:
       - ".:/app"
     depends_on:
