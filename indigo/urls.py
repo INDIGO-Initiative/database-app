@@ -221,8 +221,13 @@ urlpatterns = [
     ),
     path(
         "admin/project/<public_id>/download_form",
-        views.admin_project_download_form,
+        views.AdminProjectDownloadForm.as_view(),
         name="indigo_admin_project_download_form",
+    ),
+    path(
+        "admin/project/<public_id>/download_simple_form",
+        views.AdminProjectDownloadSimpleForm.as_view(),
+        name="indigo_admin_project_download_simple_form",
     ),
     path(
         "admin/project/<public_id>/import_form",
