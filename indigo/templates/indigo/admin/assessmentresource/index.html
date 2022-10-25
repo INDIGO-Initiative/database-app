@@ -26,7 +26,11 @@
 </table>
 
 <P><a href="{% url 'indigo_admin_assessment_resource_change_status' public_id=data.public_id %}" class="btn btn-primary">Change Status</a></P>
-<P><a href="{% url 'indigo_admin_assessment_resource_download_form' public_id=data.public_id %}" class="btn btn-primary">Download Form</a></P>
+<P>
+    <a href="{% url 'indigo_admin_assessment_resource_download_form' public_id=data.public_id %}" class="btn btn-primary">Download Form</a>
+    <!-- TECHNICALLY THIS IS TRUE BUT CURRENTLY IT ONLY HAS ONE SHEET SO IT DOES NOT MAKE ANY SENSE:
+    You can delete any sheet/tab from this form (except the introduction one) and it will still work fine! -->
+</p>
 <P><a href="{% url 'indigo_admin_assessment_resource_import_form' public_id=data.public_id %}" class="btn btn-primary">Upload/Import Form</a></P>
 <P><a href="{% url 'indigo_admin_assessment_resource_moderate' public_id=data.public_id %}" class="btn btn-primary">Moderate</a></P>
 <P><a href="{% url 'indigo_admin_assessment_resource_history' public_id=data.public_id %}" class="btn btn-primary">History</a></P>

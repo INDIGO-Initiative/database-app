@@ -107,7 +107,7 @@ json-merge-patch==0.2
     # via
     #   -r requirements.txt
     #   jsondataferret
-jsondataferret==0.6.0
+jsondataferret==0.7.0
     # via -r requirements.txt
 jsonmerge==1.8.0
     # via
@@ -196,7 +196,7 @@ six==1.16.0
     #   -r requirements.txt
     #   click-repl
     #   python-dateutil
-spreadsheetforms==0.4.1
+spreadsheetforms==0.5.0
     # via
     #   -r requirements.txt
     #   jsondataferret
