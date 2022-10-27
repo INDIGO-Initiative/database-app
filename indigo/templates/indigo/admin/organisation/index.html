@@ -27,7 +27,10 @@
 
 <P><a href="{% url 'indigo_admin_organisation_change_status' public_id=organisation.public_id %}" class="btn btn-primary">Change Status</a></P>
 <P><a href="{% url 'indigo_admin_organisation_projects' public_id=organisation.public_id %}" class="btn btn-primary">Projects Using This</a></P>
-<P><a href="{% url 'indigo_admin_organisation_download_form' public_id=organisation.public_id %}" class="btn btn-primary">Download Form</a></P>
+<P>
+    <a href="{% url 'indigo_admin_organisation_download_form' public_id=organisation.public_id %}" class="btn btn-primary">Download Form</a>
+    You can delete any sheet/tab from this form (except the introduction one) and it will still work fine!
+</p>
 <P><a href="{% url 'indigo_admin_organisation_import_form' public_id=organisation.public_id %}" class="btn btn-primary">Upload/Import Form</a></P>
 <P><a href="{% url 'indigo_admin_organisation_moderate' public_id=organisation.public_id %}" class="btn btn-primary">Moderate</a></P>
 <P><a href="{% url 'indigo_admin_organisation_history' public_id=organisation.public_id %}" class="btn btn-primary">History</a></P>

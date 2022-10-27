@@ -63,6 +63,7 @@ def _task_process_imported_model_file(
             date_format=getattr(
                 settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
             ),
+            missing_worksheet_action=spreadsheetforms.api.GetDataFromFormMissingWorksheetAction.SET_NO_DATA,
         )
 
         # delete temp file

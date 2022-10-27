@@ -1260,6 +1260,7 @@ def admin_organisation_import_form(request, public_id):
                 date_format=getattr(
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
                 ),
+                missing_worksheet_action=spreadsheetforms.api.GetDataFromFormMissingWorksheetAction.SET_NO_DATA,
             )
 
             # process the data in form.cleaned_data as required
@@ -1646,6 +1647,7 @@ class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
                 date_format=getattr(
                     settings, "JSONDATAFERRET_SPREADSHEET_FORM_DATE_FORMAT", None
                 ),
+                missing_worksheet_action=spreadsheetforms.api.GetDataFromFormMissingWorksheetAction.SET_NO_DATA,
             )
 
             # process the data in form.cleaned_data as required
@@ -1891,7 +1893,19 @@ class AdminModelImportFormStage2Of2(PermissionRequiredMixin, View, ABC):
         if view:
             return view
 
-        data_quality_report = self._dqr_class(import_data.data)
+        # Because a spreadsheet with deleted tabs may have been uploaded,
+        # import_data.data isn't the complete data for this record.
+        # So merge import data on top of current data and use that to make a data quality report.
+        new_event_datas = [
+            d
+            for d in self._get_edits(record, import_data.data)
+            if d.record.type.public_id == self._type_public_id
+        ]
+        data_quality_report = self._dqr_class(
+            new_event_datas[
+                0
+            ].get_new_data_when_event_applied_to_latest_record_cached_data()
+        )
         level_zero_errors = data_quality_report.get_errors_for_priority_level(0)
 
         form = ModelImportStage2Of2Form()
