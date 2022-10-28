@@ -190,19 +190,29 @@ def load_json_schema_references_datas(filename):
 JSONDATAFERRET_TYPE_INFORMATION = {
     "project": {
         "json_schema": load_json_schema("project.json"),
-        "spreadsheet_form_guide": os.path.join(
-            BASE_DIR,
-            "indigo",
-            "spreadsheetform_guides",
-            "project_v015.xlsx",
-        ),
+        # Public spreadsheet
         "spreadsheet_public_form_guide": os.path.join(
             BASE_DIR,
             "indigo",
             "spreadsheetform_guides",
             "project_public_v016.xlsx",
         ),
+        # Admin Spreadsheet
+        "spreadsheet_form_guide": os.path.join(
+            BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            "project_v015.xlsx",
+        ),
         "spreadsheet_form_guide_spec": load_guide_form_spec("project_v015.xlsx"),
+        # Simple Admin spreadsheet
+        "simple_spreadsheet_form_guide": os.path.join(
+            BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            "simple_project_v001.xlsx",
+        ),
+        # All versions, used for importing
         "spreadsheet_form_guide_spec_versions": {
             7: load_guide_form_spec("project_v007.xlsx"),
             8: load_guide_form_spec("project_v008.xlsx"),
@@ -213,7 +223,9 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             13: load_guide_form_spec("project_v013.xlsx"),
             14: load_guide_form_spec("project_v014.xlsx"),
             15: load_guide_form_spec("project_v015.xlsx"),
+            "S1": load_guide_form_spec("simple_project_v001.xlsx"),
         },
+        # Misc
         "fields": load_json_schema_fields("project.json"),
         "filter_keys": load_json_schema_filter_keys("project.json"),
         "spreadsheet_data_quality_report_public_guide": os.path.join(

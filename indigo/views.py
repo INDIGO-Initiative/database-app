@@ -766,28 +766,6 @@ def admin_history(request):
 
 
 @permission_admin_or_data_steward_required()
-def admin_project_download_blank_form(request):
-    type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PROJECT_PUBLIC_ID, {})
-    if not type_data.get("spreadsheet_form_guide"):
-        raise Http404("Feature not available")
-
-    out_file = os.path.join(
-        tempfile.gettempdir(),
-        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
-    )
-
-    spreadsheetforms.api.make_empty_form(
-        type_data.get("spreadsheet_form_guide"), out_file
-    )
-
-    with open(out_file, "rb") as fh:
-        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-        response["Content-Disposition"] = "inline; filename=project.xlsx"
-
-    return response
-
-
-@permission_admin_or_data_steward_required()
 def admin_projects_list(request):
     try:
         type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
@@ -815,29 +793,6 @@ def admin_project_index(request, public_id):
         "indigo/admin/project/index.html",
         {"project": project, "field_data": field_data},
     )
-
-
-@permission_admin_or_data_steward_required()
-def admin_project_download_form(request, public_id):
-    type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PROJECT_PUBLIC_ID, {})
-    try:
-        project = Project.objects.get(public_id=public_id)
-    except Project.DoesNotExist:
-        raise Http404("Project does not exist")
-
-    data = convert_project_data_to_spreadsheetforms_data(project, public_only=False)
-    out_file = os.path.join(
-        tempfile.gettempdir(),
-        "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
-    )
-    spreadsheetforms.api.put_data_in_form(
-        type_data.get("spreadsheet_form_guide"), data, out_file
-    )
-
-    with open(out_file, "rb") as fh:
-        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-        response["Content-Disposition"] = "inline; filename=project.xlsx"
-    return response
 
 
 @permission_admin_or_data_steward_required()
@@ -1420,20 +1375,12 @@ def admin_organisation_history(request, public_id):
 
 class AdminModelDownloadBlankForm(PermissionRequiredMixin, View, ABC):
     def get(self, request):
-        type_data = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
-            self.__class__._type_public_id, {}
-        )
-        if not type_data.get("spreadsheet_form_guide"):
-            raise Http404("Feature not available")
-
         out_file = os.path.join(
             tempfile.gettempdir(),
             "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
         )
 
-        spreadsheetforms.api.make_empty_form(
-            type_data.get("spreadsheet_form_guide"), out_file
-        )
+        spreadsheetforms.api.make_empty_form(self._guide_file_name, out_file)
 
         with open(out_file, "rb") as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -1448,19 +1395,44 @@ class AdminModelDownloadBlankForm(PermissionRequiredMixin, View, ABC):
         return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
+class AdminProjectDownloadBlankForm(AdminModelDownloadBlankForm):
+    _model = Project
+    _type_public_id = TYPE_PROJECT_PUBLIC_ID
+    _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_PROJECT_PUBLIC_ID
+    ).get("spreadsheet_form_guide")
+
+
+class AdminProjectDownloadBlankSimpleForm(AdminModelDownloadBlankForm):
+    _model = Project
+    _type_public_id = TYPE_PROJECT_PUBLIC_ID
+    _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_PROJECT_PUBLIC_ID
+    ).get("simple_spreadsheet_form_guide")
+
+
 class AdminFundDownloadBlankForm(AdminModelDownloadBlankForm):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
+    _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_FUND_PUBLIC_ID
+    ).get("spreadsheet_form_guide")
 
 
 class AdminAssessmentResourceDownloadBlankForm(AdminModelDownloadBlankForm):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+    _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+    ).get("spreadsheet_form_guide")
 
 
 class AdminPipelineDownloadBlankForm(AdminModelDownloadBlankForm):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+    _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_PIPELINE_PUBLIC_ID
+    ).get("spreadsheet_form_guide")
 
 
 class AdminModelList(PermissionRequiredMixin, View, ABC):
@@ -1551,13 +1523,6 @@ class AdminModelDownloadForm(PermissionRequiredMixin, View, ABC):
         except self._model.DoesNotExist:
             raise Http404("Data does not exist")
 
-        guide_file = os.path.join(
-            settings.BASE_DIR,
-            "indigo",
-            "spreadsheetform_guides",
-            self.__class__._guide_file_name,
-        )
-
         out_file = os.path.join(
             tempfile.gettempdir(),
             "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
@@ -1565,7 +1530,9 @@ class AdminModelDownloadForm(PermissionRequiredMixin, View, ABC):
 
         data_for_form = self._get_data_for_form(data)
 
-        spreadsheetforms.api.put_data_in_form(guide_file, data_for_form, out_file)
+        spreadsheetforms.api.put_data_in_form(
+            self.__class__._guide_file_name, data_for_form, out_file
+        )
 
         with open(out_file, "rb") as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -1580,10 +1547,34 @@ class AdminModelDownloadForm(PermissionRequiredMixin, View, ABC):
         return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
+class AdminProjectDownloadForm(AdminModelDownloadForm):
+    _model = Project
+    _type_public_id = TYPE_PROJECT_PUBLIC_ID
+    _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_PROJECT_PUBLIC_ID
+    ).get("spreadsheet_form_guide")
+
+    def _get_data_for_form(self, data):
+        return convert_project_data_to_spreadsheetforms_data(data, public_only=False)
+
+
+class AdminProjectDownloadSimpleForm(AdminModelDownloadForm):
+    _model = Project
+    _type_public_id = TYPE_PROJECT_PUBLIC_ID
+    _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_PROJECT_PUBLIC_ID
+    ).get("simple_spreadsheet_form_guide")
+
+    def _get_data_for_form(self, data):
+        return convert_project_data_to_spreadsheetforms_data(data, public_only=False)
+
+
 class AdminFundDownloadForm(AdminModelDownloadForm):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
-    _guide_file_name = "fund_v003.xlsx"
+    _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_FUND_PUBLIC_ID
+    ).get("spreadsheet_form_guide")
 
     def _get_data_for_form(self, data):
         return convert_fund_data_to_spreadsheetforms_data(data, public_only=False)
@@ -1592,7 +1583,9 @@ class AdminFundDownloadForm(AdminModelDownloadForm):
 class AdminAssessmentResourceDownloadForm(AdminModelDownloadForm):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
-    _guide_file_name = "assessment_resource_v001.xlsx"
+    _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+    ).get("spreadsheet_form_guide")
 
     def _get_data_for_form(self, data):
         return convert_assessment_resource_data_to_spreadsheetforms_data(
@@ -1603,7 +1596,9 @@ class AdminAssessmentResourceDownloadForm(AdminModelDownloadForm):
 class AdminPipelineDownloadForm(AdminModelDownloadForm):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
-    _guide_file_name = "pipeline_v001.xlsx"
+    _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+        TYPE_PIPELINE_PUBLIC_ID
+    ).get("spreadsheet_form_guide")
 
     def _get_data_for_form(self, data):
         return convert_pipeline_data_to_spreadsheetforms_data(data, public_only=False)

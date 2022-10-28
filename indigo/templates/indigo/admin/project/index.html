@@ -31,6 +31,10 @@
     <a href="{% url 'indigo_admin_project_download_form' public_id=project.public_id %}" class="btn btn-primary">Download Form</a>
     You can delete any sheet/tab from this form (except the introduction one) and it will still work fine!
 </p>
+<P>
+    <a href="{% url 'indigo_admin_project_download_simple_form' public_id=project.public_id %}" class="btn btn-primary">Download Simple Form</a>
+    Only for use on new projects!
+</P>
 <P><a href="{% url 'indigo_admin_project_import_form' public_id=project.public_id %}" class="btn btn-primary">Upload/Import Form</a></P>
 <P><a href="{% url 'indigo_admin_project_moderate' public_id=project.public_id %}" class="btn btn-primary">Moderate</a></P>
 <P><a href="{% url 'indigo_admin_project_history' public_id=project.public_id %}" class="btn btn-primary">History</a></P>
