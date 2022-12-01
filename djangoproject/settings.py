@@ -195,14 +195,14 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             BASE_DIR,
             "indigo",
             "spreadsheetform_guides",
-            "project_public_v016.xlsx",
+            "project_public_v017.xlsx",
         ),
         # Admin Spreadsheet
         "spreadsheet_form_guide": os.path.join(
             BASE_DIR,
             "indigo",
             "spreadsheetform_guides",
-            "project_v015.xlsx",
+            "project_v016.xlsx",
         ),
         "spreadsheet_form_guide_spec": load_guide_form_spec("project_v015.xlsx"),
         # Simple Admin spreadsheet
@@ -223,6 +223,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             13: load_guide_form_spec("project_v013.xlsx"),
             14: load_guide_form_spec("project_v014.xlsx"),
             15: load_guide_form_spec("project_v015.xlsx"),
+            16: load_guide_form_spec("project_v016.xlsx"),
             "S1": load_guide_form_spec("simple_project_v001.xlsx"),
         },
         # Misc
@@ -239,19 +240,31 @@ JSONDATAFERRET_TYPE_INFORMATION = {
     },
     "organisation": {
         "json_schema": load_json_schema("organisation.json"),
+        # Public spreadsheet
+        "spreadsheet_public_form_guide": os.path.join(
+            BASE_DIR,
+            "indigo",
+            "spreadsheetform_guides",
+            "organisation_public_v004.xlsx",
+        ),
+        # Admin Spreadsheet
         "spreadsheet_form_guide": os.path.join(
             BASE_DIR,
             "indigo",
             "spreadsheetform_guides",
-            "organisation_v004.xlsx",
+            "organisation_v005.xlsx",
         ),
         "spreadsheet_form_guide_spec": load_guide_form_spec("organisation_v004.xlsx"),
+        # All versions, used for importing
         "spreadsheet_form_guide_spec_versions": {
             2: load_guide_form_spec("organisation_v002.xlsx"),
             3: load_guide_form_spec("organisation_v003.xlsx"),
             4: load_guide_form_spec("organisation_v004.xlsx"),
+            5: load_guide_form_spec("organisation_v005.xlsx"),
         },
+        # Misc
         "fields": load_json_schema_fields("organisation.json"),
+        "filter_keys": load_json_schema_filter_keys("organisation.json"),
     },
     "fund": {
         "json_schema": load_json_schema("fund.json"),

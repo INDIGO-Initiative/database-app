@@ -256,6 +256,9 @@ def update_organisation(record, update_projects=False):
         organisation.data_public = filter_values(
             record.cached_data,
             keys_always_remove=TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST,
+            keys_with_own_status_subfield=settings.JSONDATAFERRET_TYPE_INFORMATION.get(
+                "organisation"
+            ).get("filter_keys"),
         )
     else:
         organisation.data_public = {}

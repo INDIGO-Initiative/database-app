@@ -84,6 +84,22 @@
         "title": "Dates - Actual end date of service provision - (Status)"
     },
     {
+        "key": "/dates/anticipated_duration_of_service_provision/value",
+        "title": "Dates - Anticipated duration of service provision - (Value)"
+    },
+    {
+        "key": "/dates/anticipated_duration_of_service_provision/status",
+        "title": "Dates - Anticipated duration of service provision - (Status)"
+    },
+    {
+        "key": "/dates/actual_duration_of_service_provision/value",
+        "title": "Dates - Actual duration of service provision - (Value)"
+    },
+    {
+        "key": "/dates/actual_duration_of_service_provision/status",
+        "title": "Dates - Actual duration of service provision - (Status)"
+    },
+    {
         "key": "/dates/source_ids",
         "title": "Dates - (Source ID's)"
     },

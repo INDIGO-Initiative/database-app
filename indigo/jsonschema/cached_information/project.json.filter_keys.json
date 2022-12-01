@@ -7,6 +7,8 @@
     "/dates/start_date_of_service_provision",
     "/dates/anticipated_end_date_of_service_provision",
     "/dates/actual_end_date_of_service_provision",
+    "/dates/anticipated_duration_of_service_provision",
+    "/dates/actual_duration_of_service_provision",
     "/jurisdiction/jurisdiction",
     "/overall_project_finance/total_investment_commitment/currency",
     "/overall_project_finance/total_investment_commitment/amount/min",

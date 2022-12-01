@@ -1,1 +1,8 @@
-[]
+[
+    "/contact/name",
+    "/contact/job_title",
+    "/contact/profile",
+    "/contact/email",
+    "/contact/twitter",
+    "/contact/linkedin"
+]
