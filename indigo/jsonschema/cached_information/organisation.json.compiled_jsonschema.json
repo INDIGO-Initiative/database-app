@@ -10,6 +10,24 @@
             },
             "type": "object"
         },
+        "object_with_value_string_and_status": {
+            "properties": {
+                "status": {
+                    "enum": [
+                        "PUBLIC",
+                        "PRIVATE",
+                        "DISPUTED"
+                    ],
+                    "title": "(Status)",
+                    "type": "string"
+                },
+                "value": {
+                    "title": "(Value)",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "source_ids": {
             "references-data-key": "/id",
             "references-data-list": "/sources",
@@ -35,20 +53,120 @@
                 "email": {
                     "description": "Email of the person to contact from that party/organisation.",
                     "properties": {
+                        "status": {
+                            "enum": [
+                                "PUBLIC",
+                                "PRIVATE",
+                                "DISPUTED"
+                            ],
+                            "title": "(Status)",
+                            "type": "string"
+                        },
                         "value": {
+                            "title": "(Value)",
                             "type": "string"
                         }
                     },
                     "title": "Email",
                     "type": "object"
                 },
+                "job_title": {
+                    "description": "Job title of the person to contact from that party/organisation.",
+                    "properties": {
+                        "status": {
+                            "enum": [
+                                "PUBLIC",
+                                "PRIVATE",
+                                "DISPUTED"
+                            ],
+                            "title": "(Status)",
+                            "type": "string"
+                        },
+                        "value": {
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Job title",
+                    "type": "object"
+                },
+                "linkedin": {
+                    "description": "LinkedIn profile URL of the person to contact from that party/organisation.",
+                    "properties": {
+                        "status": {
+                            "enum": [
+                                "PUBLIC",
+                                "PRIVATE",
+                                "DISPUTED"
+                            ],
+                            "title": "(Status)",
+                            "type": "string"
+                        },
+                        "value": {
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "LinkedIn",
+                    "type": "object"
+                },
                 "name": {
                     "properties": {
+                        "status": {
+                            "enum": [
+                                "PUBLIC",
+                                "PRIVATE",
+                                "DISPUTED"
+                            ],
+                            "title": "(Status)",
+                            "type": "string"
+                        },
                         "value": {
+                            "title": "(Value)",
                             "type": "string"
                         }
                     },
                     "title": "Name",
+                    "type": "object"
+                },
+                "profile": {
+                    "description": "Profile of the person to contact from that party/organisation.",
+                    "properties": {
+                        "status": {
+                            "enum": [
+                                "PUBLIC",
+                                "PRIVATE",
+                                "DISPUTED"
+                            ],
+                            "title": "(Status)",
+                            "type": "string"
+                        },
+                        "value": {
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Profile",
+                    "type": "object"
+                },
+                "twitter": {
+                    "description": "Twitter profile URL of the person to contact from that party/organisation.",
+                    "properties": {
+                        "status": {
+                            "enum": [
+                                "PUBLIC",
+                                "PRIVATE",
+                                "DISPUTED"
+                            ],
+                            "title": "(Status)",
+                            "type": "string"
+                        },
+                        "value": {
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Twitter",
                     "type": "object"
                 }
             },

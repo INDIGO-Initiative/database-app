@@ -73,12 +73,9 @@ def update_public_files_for_organisation(organisation):
             convert_organisation_data_to_spreadsheetforms_data(
                 organisation, public_only=True
             ),
-            os.path.join(
-                settings.BASE_DIR,
-                "indigo",
-                "spreadsheetform_guides",
-                "organisation_public_v003.xlsx",
-            ),
+            settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"][
+                "spreadsheet_public_form_guide"
+            ],
         )
     else:
         _remove_public_files_for_model(organisation, "organisation")

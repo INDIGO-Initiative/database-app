@@ -262,6 +262,26 @@
                     "title": "Actual completion date",
                     "type": "object"
                 },
+                "actual_duration_of_service_provision": {
+                    "description": "This is the actual length of the service delivery in months. This can be different from the anticipated duration. We only expect to get a value for this variable once the project is complete. If the start and end date fields are filled in, it is possible to calculate this duration automatically and thus the duration may not be filled in.",
+                    "properties": {
+                        "status": {
+                            "enum": [
+                                "PUBLIC",
+                                "PRIVATE",
+                                "DISPUTED"
+                            ],
+                            "title": "(Status)",
+                            "type": "string"
+                        },
+                        "value": {
+                            "title": "(Value)",
+                            "type": "number"
+                        }
+                    },
+                    "title": "Actual duration of service provision",
+                    "type": "object"
+                },
                 "actual_end_date_of_service_provision": {
                     "description": "Actual date when service provision ended/will end.",
                     "properties": {
@@ -304,6 +324,26 @@
                         }
                     },
                     "title": "Anticipated completion date",
+                    "type": "object"
+                },
+                "anticipated_duration_of_service_provision": {
+                    "description": "This is the anticipated length of the service delivery in months, from the start date to the end date of the delivery (not the end of outcome payments). If the start and end date fields are filled in, it is possible to calculate this duration automatically and thus the duration may not be filled in.",
+                    "properties": {
+                        "status": {
+                            "enum": [
+                                "PUBLIC",
+                                "PRIVATE",
+                                "DISPUTED"
+                            ],
+                            "title": "(Status)",
+                            "type": "string"
+                        },
+                        "value": {
+                            "title": "(Value)",
+                            "type": "number"
+                        }
+                    },
+                    "title": "Anticipated duration of service provision",
                     "type": "object"
                 },
                 "anticipated_end_date_of_service_provision": {

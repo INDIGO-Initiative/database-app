@@ -268,13 +268,12 @@ def organisation_download_blank_form(request):
         tempfile.gettempdir(),
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
     )
-    guide_file = os.path.join(
-        settings.BASE_DIR,
-        "indigo",
-        "spreadsheetform_guides",
-        "organisation_public_v003.xlsx",
+    spreadsheetforms.api.make_empty_form(
+        settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"][
+            "spreadsheet_public_form_guide"
+        ],
+        out_file,
     )
-    spreadsheetforms.api.make_empty_form(guide_file, out_file)
 
     with open(out_file, "rb") as fh:
         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -313,17 +312,17 @@ def organisation_download_form(request, public_id):
     data = convert_organisation_data_to_spreadsheetforms_data(
         organisation, public_only=True
     )
-    guide_file = os.path.join(
-        settings.BASE_DIR,
-        "indigo",
-        "spreadsheetform_guides",
-        "organisation_public_v003.xlsx",
-    )
     out_file = os.path.join(
         tempfile.gettempdir(),
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
     )
-    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
+    spreadsheetforms.api.put_data_in_form(
+        settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"][
+            "spreadsheet_public_form_guide"
+        ],
+        data,
+        out_file,
+    )
 
     with open(out_file, "rb") as fh:
         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -1152,13 +1151,6 @@ def admin_organisation_download_form(request, public_id):
     except Organisation.DoesNotExist:
         raise Http404("Organisation does not exist")
 
-    guide_file = os.path.join(
-        settings.BASE_DIR,
-        "indigo",
-        "spreadsheetform_guides",
-        "organisation_v004.xlsx",
-    )
-
     out_file = os.path.join(
         tempfile.gettempdir(),
         "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
@@ -1168,7 +1160,13 @@ def admin_organisation_download_form(request, public_id):
         organisation, public_only=False
     )
 
-    spreadsheetforms.api.put_data_in_form(guide_file, data, out_file)
+    spreadsheetforms.api.put_data_in_form(
+        settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"][
+            "spreadsheet_form_guide"
+        ],
+        data,
+        out_file,
+    )
 
     with open(out_file, "rb") as fh:
         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")

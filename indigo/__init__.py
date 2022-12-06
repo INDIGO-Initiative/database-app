@@ -104,7 +104,6 @@ TYPE_PROJECT_MAP_VALUES_PURPOSE_AND_CLASSIFICATIONS_POLICY_SECTOR = {
 }
 
 TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST = [
-    "/contact",
     "/status",
     # The following are old fields that were removed. To make sure old data is not included in API data, remove them.
     "/org-ids/company",

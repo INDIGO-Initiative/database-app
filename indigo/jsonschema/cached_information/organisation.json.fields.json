@@ -56,11 +56,51 @@
     },
     {
         "key": "/contact/name/value",
-        "title": "Contact - Name"
+        "title": "Contact - Name - (Value)"
+    },
+    {
+        "key": "/contact/name/status",
+        "title": "Contact - Name - (Status)"
+    },
+    {
+        "key": "/contact/job_title/value",
+        "title": "Contact - Job title - (Value)"
+    },
+    {
+        "key": "/contact/job_title/status",
+        "title": "Contact - Job title - (Status)"
+    },
+    {
+        "key": "/contact/profile/value",
+        "title": "Contact - Profile - (Value)"
+    },
+    {
+        "key": "/contact/profile/status",
+        "title": "Contact - Profile - (Status)"
     },
     {
         "key": "/contact/email/value",
-        "title": "Contact - Email"
+        "title": "Contact - Email - (Value)"
+    },
+    {
+        "key": "/contact/email/status",
+        "title": "Contact - Email - (Status)"
+    },
+    {
+        "key": "/contact/twitter/value",
+        "title": "Contact - Twitter - (Value)"
+    },
+    {
+        "key": "/contact/twitter/status",
+        "title": "Contact - Twitter - (Status)"
+    },
+    {
+        "key": "/contact/linkedin/value",
+        "title": "Contact - LinkedIn - (Value)"
+    },
+    {
+        "key": "/contact/linkedin/status",
+        "title": "Contact - LinkedIn - (Status)"
     },
     {
         "key": "/website/value",
