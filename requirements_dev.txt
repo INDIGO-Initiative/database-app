@@ -35,7 +35,7 @@ build==0.8.0
     # via pip-tools
 celery==5.2.7
     # via -r requirements.txt
-certifi==2022.6.15
+certifi==2022.12.7
     # via
     #   -r requirements.txt
     #   sentry-sdk

@@ -20,7 +20,7 @@ botocore==1.27.44
     #   s3transfer
 celery==5.2.7
     # via -r requirements.in
-certifi==2022.6.15
+certifi==2022.12.7
     # via sentry-sdk
 click==8.1.3
     # via
