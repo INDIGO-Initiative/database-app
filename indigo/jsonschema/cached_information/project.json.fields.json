@@ -1412,5 +1412,131 @@
         "key": "/scenarios",
         "title": "Scenarios",
         "type": "list"
+    },
+    {
+        "fields": [
+            {
+                "key": "/date/value",
+                "title": "Date - (Value)"
+            },
+            {
+                "key": "/phase/value",
+                "title": "Phase of Impact Bond - (Value)"
+            },
+            {
+                "key": "/classification/value",
+                "title": "Cost Classification - (Value)"
+            },
+            {
+                "key": "/payment/currency/value",
+                "title": "Payment - Currency - (Value)"
+            },
+            {
+                "key": "/payment/planned/value",
+                "title": "Payment - Planned - (Value)"
+            },
+            {
+                "key": "/payment/planned_usd/value",
+                "title": "Payment - Planned USD - (Value)"
+            },
+            {
+                "key": "/payment/actual/value",
+                "title": "Payment - Actual - (Value)"
+            },
+            {
+                "key": "/payment/actual_usd/value",
+                "title": "Payment - Actual USD - (Value)"
+            },
+            {
+                "key": "/incurred_by/value",
+                "title": "Cost incurred by - (Value)"
+            },
+            {
+                "key": "/type/value",
+                "title": "Type - (Value)"
+            },
+            {
+                "key": "/days/value",
+                "title": "Number of days - (Value)"
+            },
+            {
+                "key": "/status",
+                "title": "(Status)"
+            },
+            {
+                "key": "/source_ids",
+                "title": "Sources"
+            },
+            {
+                "key": "/notes",
+                "title": "Notes"
+            }
+        ],
+        "key": "/provider_side_cost",
+        "title": "Provider side cost",
+        "type": "list"
+    },
+    {
+        "fields": [
+            {
+                "key": "/date/value",
+                "title": "Date - (Value)"
+            },
+            {
+                "key": "/phase/value",
+                "title": "Phase of Impact Bond - (Value)"
+            },
+            {
+                "key": "/classification/value",
+                "title": "Cost Classification - (Value)"
+            },
+            {
+                "key": "/payment/currency/value",
+                "title": "Payment - Currency - (Value)"
+            },
+            {
+                "key": "/payment/planned/value",
+                "title": "Payment - Planned - (Value)"
+            },
+            {
+                "key": "/payment/planned_usd/value",
+                "title": "Payment - Planned USD - (Value)"
+            },
+            {
+                "key": "/payment/actual/value",
+                "title": "Payment - Actual - (Value)"
+            },
+            {
+                "key": "/payment/actual_usd/value",
+                "title": "Payment - Actual USD - (Value)"
+            },
+            {
+                "key": "/incurred_by/value",
+                "title": "Cost incurred by - (Value)"
+            },
+            {
+                "key": "/type/value",
+                "title": "Type - (Value)"
+            },
+            {
+                "key": "/days/value",
+                "title": "Number of days - (Value)"
+            },
+            {
+                "key": "/status",
+                "title": "(Status)"
+            },
+            {
+                "key": "/source_ids",
+                "title": "Sources"
+            },
+            {
+                "key": "/notes",
+                "title": "Notes"
+            }
+        ],
+        "key": "/outcome_payer_cost",
+        "title": "Outcome Payer Cost",
+        "type": "list"
     }
 ]

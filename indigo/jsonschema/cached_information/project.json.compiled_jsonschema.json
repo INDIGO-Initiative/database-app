@@ -1931,6 +1931,198 @@
             "title": "Outcome Metrics",
             "type": "array"
         },
+        "outcome_payer_cost": {
+            "items": {
+                "properties": {
+                    "classification": {
+                        "properties": {
+                            "value": {
+                                "codelist": "project_outcome_payer_cost_classification.csv",
+                                "description": "Costs are classified as purchased or spent, in kind, staff costs and other type of costs.",
+                                "enum": [
+                                    "Development work",
+                                    "Business case development",
+                                    "Feasibility study",
+                                    "Early phase legal costs",
+                                    "Market engagement costs",
+                                    "Legal advice on contract design",
+                                    "Financial advice on contract design",
+                                    "Procurement costs",
+                                    "Outcome payments ",
+                                    "Validation and administration of outcome achievement and related payments costs ",
+                                    "Auditing and validation of service quality",
+                                    "Evaluation, learning and dissemination",
+                                    "Management cost of an outcomes fund",
+                                    "Other costs"
+                                ],
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Cost Classification",
+                        "type": "object"
+                    },
+                    "date": {
+                        "description": "Transaction date",
+                        "properties": {
+                            "value": {
+                                "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                                "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Date",
+                        "type": "object"
+                    },
+                    "days": {
+                        "description": "This variable should only be completed when there are in-kind costs or staff costs that cannot be expressed in monetary values.",
+                        "properties": {
+                            "value": {
+                                "title": "(Value)",
+                                "type": "number"
+                            }
+                        },
+                        "title": "Number of days",
+                        "type": "object"
+                    },
+                    "incurred_by": {
+                        "description": "INDIGO ID of the organisation incurring that cost.",
+                        "properties": {
+                            "value": {
+                                "references-model": "organisation",
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Cost incurred by",
+                        "type": "object"
+                    },
+                    "notes": {
+                        "description": "Notes on costs.",
+                        "title": "Notes",
+                        "type": "string"
+                    },
+                    "payment": {
+                        "properties": {
+                            "actual": {
+                                "description": "This variable captures actual costs that have been incurred by the outcome payer.",
+                                "properties": {
+                                    "value": {
+                                        "title": "(Value)",
+                                        "type": "number"
+                                    }
+                                },
+                                "title": "Actual",
+                                "type": "object"
+                            },
+                            "actual_usd": {
+                                "description": "This variable captures actual costs in USD that have been incurred by the outcome payer.",
+                                "properties": {
+                                    "value": {
+                                        "title": "(Value)",
+                                        "type": "number"
+                                    }
+                                },
+                                "title": "Actual USD",
+                                "type": "object"
+                            },
+                            "currency": {
+                                "description": "Currency",
+                                "properties": {
+                                    "value": {
+                                        "title": "(Value)",
+                                        "type": "string"
+                                    }
+                                },
+                                "title": "Currency",
+                                "type": "object"
+                            },
+                            "planned": {
+                                "description": "This variable captures planned or expected costs for projects that are starting to deliver a service, or are in the middle of service delivery.",
+                                "properties": {
+                                    "value": {
+                                        "title": "(Value)",
+                                        "type": "number"
+                                    }
+                                },
+                                "title": "Planned",
+                                "type": "object"
+                            },
+                            "planned_usd": {
+                                "description": "This variable captures planned or expected costs in USD for projects that are starting to deliver a service, or are in the middle of service delivery.",
+                                "properties": {
+                                    "value": {
+                                        "title": "(Value)",
+                                        "type": "number"
+                                    }
+                                },
+                                "title": "Planned USD",
+                                "type": "object"
+                            }
+                        },
+                        "title": "Payment",
+                        "type": "object"
+                    },
+                    "phase": {
+                        "properties": {
+                            "value": {
+                                "codelist": "project_outcome_payer_cost_phase.csv",
+                                "description": "",
+                                "enum": [
+                                    "Development and design",
+                                    "Contract set up and negotiation",
+                                    "Operational and management"
+                                ],
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Phase of Impact Bond",
+                        "type": "object"
+                    },
+                    "source_ids": {
+                        "description": "Sources of information about costs.",
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
+                        "title": "Sources",
+                        "type": "string"
+                    },
+                    "status": {
+                        "enum": [
+                            "PUBLIC",
+                            "SANDBOX",
+                            "PRIVATE",
+                            "DISPUTED"
+                        ],
+                        "title": "(Status)",
+                        "type": "string"
+                    },
+                    "type": {
+                        "properties": {
+                            "value": {
+                                "codelist": "project_outcome_payer_cost_type.csv",
+                                "description": "",
+                                "enum": [
+                                    "Purchased or spent",
+                                    "In-kind",
+                                    "Staff cost",
+                                    "Other"
+                                ],
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Type",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "title": "Outcome Payer Cost",
+            "type": "array"
+        },
         "outcome_payment_commitments": {
             "items": {
                 "properties": {
@@ -2862,6 +3054,201 @@
             },
             "title": "Overall project finance",
             "type": "object"
+        },
+        "provider_side_cost": {
+            "items": {
+                "properties": {
+                    "classification": {
+                        "properties": {
+                            "value": {
+                                "codelist": "project_provider_side_cost_classification.csv",
+                                "description": "Costs are classified as purchased or spent, in kind, staff costs and other type of costs.",
+                                "enum": [
+                                    "Development or scoping work  ",
+                                    "Business case development",
+                                    "Feasibility study",
+                                    "Early phase legal costs",
+                                    "Stakeholder search and engagement costs",
+                                    "Legal advice on contract design",
+                                    "Financial advice on contract design",
+                                    "Procurement costs",
+                                    "SPV set up and operational costs",
+                                    "Monitoring costs (includes outcome reporting cost and management staff cost)",
+                                    "Evaluation costs",
+                                    "Governance costs (board meetings, etc.)",
+                                    "Enforcement costs (renegotiations, adaptation)",
+                                    "Cost of working capital (Investor return - interest and surplus)",
+                                    "Service delivery costs",
+                                    "Delivery innovations",
+                                    "Other costs"
+                                ],
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Cost Classification",
+                        "type": "object"
+                    },
+                    "date": {
+                        "description": "Date of transaction",
+                        "properties": {
+                            "value": {
+                                "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                                "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Date",
+                        "type": "object"
+                    },
+                    "days": {
+                        "description": "This variable should only be completed when there are in-kind costs or staff costs that cannot be expressed in monetary values.",
+                        "properties": {
+                            "value": {
+                                "title": "(Value)",
+                                "type": "number"
+                            }
+                        },
+                        "title": "Number of days",
+                        "type": "object"
+                    },
+                    "incurred_by": {
+                        "description": "INDIGO ID of organisation incurring that cost",
+                        "properties": {
+                            "value": {
+                                "references-model": "organisation",
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Cost incurred by",
+                        "type": "object"
+                    },
+                    "notes": {
+                        "description": "Notes on costs.",
+                        "title": "Notes",
+                        "type": "string"
+                    },
+                    "payment": {
+                        "properties": {
+                            "actual": {
+                                "description": "This variable captures actual costs that have been incurred by the provider side.",
+                                "properties": {
+                                    "value": {
+                                        "title": "(Value)",
+                                        "type": "number"
+                                    }
+                                },
+                                "title": "Actual",
+                                "type": "object"
+                            },
+                            "actual_usd": {
+                                "description": "This variable captures actual costs in USD that have been incurred by the provider side.",
+                                "properties": {
+                                    "value": {
+                                        "title": "(Value)",
+                                        "type": "number"
+                                    }
+                                },
+                                "title": "Actual USD",
+                                "type": "object"
+                            },
+                            "currency": {
+                                "description": "Currency in which transaction was made or will be made",
+                                "properties": {
+                                    "value": {
+                                        "title": "(Value)",
+                                        "type": "string"
+                                    }
+                                },
+                                "title": "Currency",
+                                "type": "object"
+                            },
+                            "planned": {
+                                "description": "This variable captures planned or expected costs for projects that are starting to deliver a service, or are in the middle of service delivery.",
+                                "properties": {
+                                    "value": {
+                                        "title": "(Value)",
+                                        "type": "number"
+                                    }
+                                },
+                                "title": "Planned",
+                                "type": "object"
+                            },
+                            "planned_usd": {
+                                "description": "This variable captures planned or expected costs in USD for projects that are starting to deliver a service, or are in the middle of service delivery.",
+                                "properties": {
+                                    "value": {
+                                        "title": "(Value)",
+                                        "type": "number"
+                                    }
+                                },
+                                "title": "Planned USD",
+                                "type": "object"
+                            }
+                        },
+                        "title": "Payment",
+                        "type": "object"
+                    },
+                    "phase": {
+                        "properties": {
+                            "value": {
+                                "codelist": "project_provider_side_cost_phase.csv",
+                                "description": "",
+                                "enum": [
+                                    "Development and design",
+                                    "Contract set up and negotiation",
+                                    "Operational and management"
+                                ],
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Phase of Impact Bond",
+                        "type": "object"
+                    },
+                    "source_ids": {
+                        "description": "Sources of information about costs.",
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
+                        "title": "Sources",
+                        "type": "string"
+                    },
+                    "status": {
+                        "enum": [
+                            "PUBLIC",
+                            "SANDBOX",
+                            "PRIVATE",
+                            "DISPUTED"
+                        ],
+                        "title": "(Status)",
+                        "type": "string"
+                    },
+                    "type": {
+                        "properties": {
+                            "value": {
+                                "codelist": "project_provider_side_cost_type.csv",
+                                "description": "",
+                                "enum": [
+                                    "Purchased or spent",
+                                    "In-kind",
+                                    "Staff cost",
+                                    "Other"
+                                ],
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Type",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "title": "Provider side cost",
+            "type": "array"
         },
         "purpose_and_classifications": {
             "priority": 1,

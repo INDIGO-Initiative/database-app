@@ -195,14 +195,14 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             BASE_DIR,
             "indigo",
             "spreadsheetform_guides",
-            "project_public_v017.xlsx",
+            "project_public_v018.xlsx",
         ),
         # Admin Spreadsheet
         "spreadsheet_form_guide": os.path.join(
             BASE_DIR,
             "indigo",
             "spreadsheetform_guides",
-            "project_v016.xlsx",
+            "project_v017.xlsx",
         ),
         "spreadsheet_form_guide_spec": load_guide_form_spec("project_v015.xlsx"),
         # Simple Admin spreadsheet
@@ -224,6 +224,7 @@ JSONDATAFERRET_TYPE_INFORMATION = {
             14: load_guide_form_spec("project_v014.xlsx"),
             15: load_guide_form_spec("project_v015.xlsx"),
             16: load_guide_form_spec("project_v016.xlsx"),
+            17: load_guide_form_spec("project_v017.xlsx"),
             "S1": load_guide_form_spec("simple_project_v001.xlsx"),
         },
         # Misc
