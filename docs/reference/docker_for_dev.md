@@ -67,6 +67,14 @@ docker-compose -f docker-compose.dev.yml run indigo-database-app-dev black djang
 docker-compose -f docker-compose.dev.yml run indigo-database-app-dev flake8 djangoproject/ indigo/ manage.py
 ```
 
+## Restarting app server and worker without also restarting database and message queue server
+
+If you change code, you may need to restart the app or worker. This will do so quickly:
+
+```
+docker-compose -f docker-compose.dev.yml  restart indigo-database-app-dev && docker-compose -f docker-compose.dev.yml  restart indigo-database-worker-dev
+```
+
 ## Running tests
 
 To run the tests with docker-compose locally:
@@ -103,9 +111,20 @@ docker-compose -f docker-compose.dev.yml up # (to restart)
 
 ## Python Packages Upgrade
 
+This will upgrade all packages:
+
 ```
 docker-compose -f docker-compose.dev.yml run indigo-database-app-dev pip-compile --upgrade
 docker-compose -f docker-compose.dev.yml run indigo-database-app-dev pip-compile --upgrade requirements_dev.in
 docker-compose -f docker-compose.dev.yml down # (if running)
 docker-compose -f docker-compose.dev.yml build --no-cache
 ```
+
+If you temporarily want to use an unreleased version of a library, edit `requirements.in` to something like:
+
+```
+git+https://github.com/OpenDataServices/json-data-ferret.git@2022-10-26#egg=jsondataferret
+```
+
+then run the above. Don't put `-e` at the start - that doesn't work for some reason.
+
