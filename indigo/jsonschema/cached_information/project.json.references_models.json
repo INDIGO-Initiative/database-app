@@ -64,5 +64,17 @@
         "list_key": "/outcome_payments",
         "model": "organisation",
         "multiple-seperator": null
+    },
+    {
+        "item_key": "/incurred_by/value",
+        "list_key": "/provider_side_cost",
+        "model": "organisation",
+        "multiple-seperator": null
+    },
+    {
+        "item_key": "/incurred_by/value",
+        "list_key": "/outcome_payer_cost",
+        "model": "organisation",
+        "multiple-seperator": null
     }
 ]
