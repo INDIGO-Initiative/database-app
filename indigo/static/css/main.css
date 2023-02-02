@@ -1,0 +1,31 @@
+.form h3 {
+    margin-top: 20px;
+    font-size: 1.2rem;
+}
+
+.form label[for=id_comment] {
+    margin-top: 20px;
+
+    font-size: 1.2rem;
+    font-weight: 500;
+
+    margin-bottom: .5rem;
+    line-height: 1.2;
+}
+
+.form div[data-schematype="object"] {
+    margin-bottom: 20px;
+}
+
+.form .btn-group > .btn {
+    border-radius: 4px;
+    margin: 0 2px;
+}
+
+.form .btn-group > .btn-group:not(:first-child),
+.form .btn-group > .btn:not(:first-child),
+.form .btn-group > .btn-group:not(:last-child) > .btn,
+.form .btn-group > .btn:not(:last-child):not(.dropdown-toggle) {
+    border-radius: 4px;
+    margin: 0 2px;
+}

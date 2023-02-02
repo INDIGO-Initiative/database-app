@@ -1,0 +1,26 @@
+{% extends 'indigo/base-admin.html' %}
+{% load indigo_tags %}
+
+{% block head_title %}Joining Up Initiative {{ data.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "indigo/admin/joiningupinitiative/includes/breadcrumbs.html" with active=data.public_id %}
+{% endblock %}
+
+{% block content %}
+<h2 class="my-5">Details for Joining Up initiative: {{ data.public_id }} {{ data.data_private.name.value }}</h2>
+
+<table class="table border-bottom">
+    <tr><th>ID</th><td>{{ data.public_id }}</td></tr>
+    {% for field in field_data %}
+        <tr><th>{{ field.title|simplify_field_title }}</th><td>{{ field.value }}</td></tr>
+    {% endfor %}
+</table>
+
+<p>
+    <a href="{% url 'indigo_admin_joining_up_initiative_edit' public_id=data.public_id %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'indigo_admin_joining_up_initiative_change_status' public_id=data.public_id %}" class="btn btn-primary">Change Status</a>
+    <a href="{% url 'indigo_admin_joining_up_initiative_moderate' public_id=data.public_id %}" class="btn btn-primary">Moderate</a>
+    <a href="{% url 'indigo_admin_joining_up_initiative_history' public_id=data.public_id %}" class="btn btn-secondary">History</a>
+</p>
+{% endblock %}

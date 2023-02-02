@@ -3,6 +3,7 @@ TYPE_ORGANISATION_PUBLIC_ID = "organisation"
 TYPE_FUND_PUBLIC_ID = "fund"
 TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID = "assessment_resource"
 TYPE_PIPELINE_PUBLIC_ID = "pipeline"
+TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID = "joining_up_initiative"
 
 ID_PREFIX_BY_TYPE = {
     "project": "INDIGO-POJ-",
@@ -10,6 +11,7 @@ ID_PREFIX_BY_TYPE = {
     "fund": "INDIGO-FUND-",
     "assessment_resource": "INDIGO-ARES-",
     "pipeline": "INDIGO-PL-",
+    "joining_up_initiative": "INDIGO-JUI-",
 }
 
 JSONDATAFERRET_HOOKS = "indigo.jsondataferret"
@@ -134,4 +136,12 @@ TYPE_PIPELINE_FILTER_LISTS_LIST = [
     "/outcome_metrics",
     "/documents",
     "/sources",
+]
+
+TYPE_JOINING_UP_INITIATIVE_ALWAYS_FILTER_KEYS_LIST = [
+    "/status",
+]
+
+TYPE_JOINING_UP_INITIATIVE_FILTER_LISTS_LIST = [
+    "/documents",
 ]

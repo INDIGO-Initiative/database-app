@@ -1,0 +1,15 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+
+        {% if active !=  "Joining Up Initiatives" %}
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_joining_up_initiative_list' %}">Joining Up Initiatives</a></li>
+        {% endif %}
+
+        {% if public_id %}
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=public_id %}">{{ public_id }}</a></li>
+        {% endif %}
+
+        <li class="breadcrumb-item active" aria-current="page">{{ active }}</li>
+    </ol>
+</nav>

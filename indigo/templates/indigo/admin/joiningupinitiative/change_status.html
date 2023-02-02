@@ -1,0 +1,21 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Change Status {{ record.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "indigo/admin/joiningupinitiative/includes/breadcrumbs.html" with public_id=record.public_id active="Change Status" %}
+{% endblock %}
+
+{% block content %}
+    <h2 class="my-5">Change status of Joining Up initiative: {{ record.public_id }}</h2>
+
+    <p>This will change the status of the WHOLE Joining Up initiative.</p>
+
+    <form action="" method="post" enctype="multipart/form-data" class="my-5">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Change Status" class="btn btn-primary">
+    </form>
+{% endblock %}

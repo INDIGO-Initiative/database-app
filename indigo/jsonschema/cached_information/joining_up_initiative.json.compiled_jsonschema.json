@@ -1,0 +1,192 @@
+{
+    "$id": "https://example.com/joining_up_initiative.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "object_with_value_date": {
+            "properties": {
+                "value": {
+                    "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                    "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                    "title": "Enter a date:",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "object_with_value_string": {
+            "properties": {
+                "value": {
+                    "minLength": 1,
+                    "title": "Enter a value:",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "properties": {
+        "allocation_process": {
+            "description": "",
+            "properties": {
+                "value": {
+                    "description": "",
+                    "enum": [
+                        "Competitive",
+                        "Missing/NA",
+                        "Negotiated",
+                        "Needs-based",
+                        "Universal"
+                    ],
+                    "title": "Select a value:",
+                    "type": "string"
+                }
+            },
+            "propertyOrder": 50,
+            "title": "Allocation process",
+            "type": "object"
+        },
+        "dates": {
+            "properties": {
+                "start_date": {
+                    "description": "Date when initiative started/will start.",
+                    "properties": {
+                        "value": {
+                            "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                            "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                            "title": "Enter a date:",
+                            "type": "string"
+                        }
+                    },
+                    "title": "Start date of initiative",
+                    "type": "object"
+                }
+            },
+            "propertyOrder": 20,
+            "title": "Dates",
+            "type": "object"
+        },
+        "departments": {
+            "items": {
+                "properties": {
+                    "title": {
+                        "description": "Name of the department.",
+                        "properties": {
+                            "value": {
+                                "minLength": 1,
+                                "title": "Enter a value:",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Name",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "propertyOrder": 60,
+            "title": "Departments",
+            "type": "array"
+        },
+        "documents": {
+            "items": {
+                "properties": {
+                    "notes": {
+                        "description": "Notes on supporting documents.",
+                        "title": "Notes",
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "Title of related document or case study.",
+                        "properties": {
+                            "value": {
+                                "minLength": 1,
+                                "title": "Enter a value:",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Title",
+                        "type": "object"
+                    },
+                    "url": {
+                        "description": "URL of related document or case study.",
+                        "properties": {
+                            "value": {
+                                "minLength": 1,
+                                "title": "Enter a value:",
+                                "type": "string"
+                            }
+                        },
+                        "title": "URL",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "propertyOrder": 70,
+            "title": "Documents",
+            "type": "array"
+        },
+        "governance_model": {
+            "description": "",
+            "properties": {
+                "value": {
+                    "description": "",
+                    "enum": [
+                        "Community Leadership",
+                        "Constrained Discretion",
+                        "Top down"
+                    ],
+                    "title": "Select a value:",
+                    "type": "string"
+                }
+            },
+            "propertyOrder": 40,
+            "title": "Governance model",
+            "type": "object"
+        },
+        "lever": {
+            "description": "",
+            "properties": {
+                "value": {
+                    "description": "",
+                    "enum": [
+                        "Administration",
+                        "Funding and fiscal powers",
+                        "Law and regulation"
+                    ],
+                    "title": "Select a value:",
+                    "type": "string"
+                }
+            },
+            "propertyOrder": 30,
+            "title": "Lever",
+            "type": "object"
+        },
+        "name": {
+            "description": "Name of the initiative",
+            "properties": {
+                "value": {
+                    "minLength": 1,
+                    "title": "Enter a value:",
+                    "type": "string"
+                }
+            },
+            "propertyOrder": 10,
+            "title": "Name",
+            "type": "object"
+        },
+        "status": {
+            "enum": [
+                "PUBLIC",
+                "PRIVATE",
+                "DISPUTED"
+            ],
+            "propertyOrder": 1,
+            "title": "Status",
+            "type": "string"
+        }
+    },
+    "required": [],
+    "title": "Joining Up Initiative",
+    "type": "object"
+}

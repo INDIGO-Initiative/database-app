@@ -30,21 +30,33 @@ def cache_spreadsheet_guide_info():
 
 
 def cache_json_schema_info():
-    filenames = glob.glob(
-        os.path.join(
-            settings.BASE_DIR,
-            "data-standard",
-            "schema",
-            "*.json",
+    filenames = (
+        glob.glob(
+            os.path.join(
+                settings.BASE_DIR,
+                "data-standard",
+                "schema",
+                "*.json",
+            )
         )
-    ) + glob.glob(
-        os.path.join(
-            settings.BASE_DIR,
-            "data-standard-impact-wayfinder",
-            "schema",
-            "*.json",
+        + glob.glob(
+            os.path.join(
+                settings.BASE_DIR,
+                "data-standard-impact-wayfinder",
+                "schema",
+                "*.json",
+            )
+        )
+        + glob.glob(
+            os.path.join(
+                settings.BASE_DIR,
+                "data-standard-joining-up",
+                "schema",
+                "*.json",
+            )
         )
     )
+
     for filename in filenames:
         filename_bits = filename.split("/")
         data = JsonSchemaProcessor(

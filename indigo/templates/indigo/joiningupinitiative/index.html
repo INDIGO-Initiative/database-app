@@ -1,0 +1,15 @@
+{% extends 'indigo/base.html' %}
+{% load indigo_tags %}
+
+{% block head_title %}Joining Up Initiative {{ data.public_id }}{% endblock %}
+
+{% block content %}
+<h2 class="my-5">Joining Up Initiative - {{ data.data_public.name.value }} ({{ data.public_id }})</h2>
+
+<table class="table border-bottom">
+    <tr><th>ID</th><td>{{ data.public_id }}</td></tr>
+    {% for field in field_data %}
+        <tr><th>{{ field.title|simplify_field_title }}</th><td>{{ field.value }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -32,6 +32,7 @@ import indigo.utils
 from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
+    TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PIPELINE_PUBLIC_ID,
     TYPE_PROJECT_PUBLIC_ID,
@@ -49,6 +50,8 @@ from indigo.tasks import (
 from .forms import (
     AssessmentResourceNewForm,
     FundNewForm,
+    JoiningUpInitiativeEditForm,
+    JoiningUpInitiativeNewForm,
     ModelImportForm,
     ModelImportStage1Of2Form,
     ModelImportStage2Of2Form,
@@ -61,6 +64,7 @@ from .forms import (
 from .models import (
     AssessmentResource,
     Fund,
+    JoiningUpInitiative,
     Organisation,
     Pipeline,
     PipelineImport,
@@ -76,6 +80,7 @@ from .spreadsheetforms import (
     convert_project_data_to_spreadsheetforms_data,
     extract_edits_from_assessment_resource_spreadsheet,
     extract_edits_from_fund_spreadsheet,
+    extract_edits_from_joining_up_initiative_form,
     extract_edits_from_organisation_spreadsheet,
     extract_edits_from_pipeline_spreadsheet,
     extract_edits_from_project_spreadsheet,
@@ -383,6 +388,10 @@ class PipelineList(ModelList):
     _model = Pipeline
 
 
+class JoiningUpInitiativeList(ModelList):
+    _model = JoiningUpInitiative
+
+
 class ModelListDownload(View, ABC):
     def get(self, request):
         datas = self.__class__._model.objects.filter(
@@ -522,6 +531,11 @@ class AssessmentResourceIndex(ModelIndex):
 class PipelineIndex(ModelIndex):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+
+
+class JoiningUpInitiativeIndex(ModelIndex):
+    _model = JoiningUpInitiative
+    _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
 
 
 class ModelDownloadForm(View, ABC):
@@ -691,6 +705,10 @@ class API1PipelineList(API1ModelList):
     _model = Pipeline
 
 
+class API1JoiningUpInitiativeList(API1ModelList):
+    _model = JoiningUpInitiative
+
+
 class API1ModelIndex(View, ABC):
     def get(self, request, public_id):
         try:
@@ -720,6 +738,10 @@ class API1AssessmentResourceIndex(API1ModelIndex):
 
 class API1PipelineIndex(API1ModelIndex):
     _model = Pipeline
+
+
+class API1JoiningUpInitiativeIndex(API1ModelIndex):
+    _model = JoiningUpInitiative
 
 
 ########################### Admin
@@ -1466,6 +1488,11 @@ class AdminPipelineList(AdminModelList):
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
 
 
+class AdminJoiningUpInitiativeList(AdminModelList):
+    _model = JoiningUpInitiative
+    _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
+
+
 class AdminModelIndex(PermissionRequiredMixin, View, ABC):
     def get(self, request, public_id):
         try:
@@ -1496,6 +1523,10 @@ class AdminAssessmentResourceIndex(AdminModelIndex):
 
 class AdminPipelineIndex(AdminModelIndex):
     _model = Pipeline
+
+
+class AdminJoiningUpInitiativeIndex(AdminModelIndex):
+    _model = JoiningUpInitiative
 
 
 @permission_admin_or_data_steward_required()
@@ -2130,6 +2161,12 @@ class AdminAssessmentResourceChangeStatus(AdminModelChangeStatus):
     _redirect_view = "indigo_admin_assessment_resource_index"
 
 
+class AdminJoiningUpInitiativeChangeStatus(AdminModelChangeStatus):
+    _model = JoiningUpInitiative
+    _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
+    _redirect_view = "indigo_admin_joining_up_initiative_index"
+
+
 class AdminModelNew(PermissionRequiredMixin, View, ABC):
     def get(self, request):
         form = self.__class__._form_class()
@@ -2202,6 +2239,139 @@ class AdminPipelineNew(AdminModelNew):
     _redirect_view = "indigo_admin_pipeline_index"
 
 
+class AdminModelJSONFormNew(PermissionRequiredMixin, View, ABC):
+    def get_template(self):
+        return f"indigo/admin/{self.__class__._model.__name__.lower()}/new.html"
+
+    def get(self, request):
+        return render(
+            request, self.get_template(), {"form": self.__class__._form_class()}
+        )
+
+    @method_decorator(transaction.atomic)
+    def post(self, request):
+        try:
+            type = Type.objects.get(public_id=self.__class__._type_public_id)
+        except Type.DoesNotExist:
+            raise Http404("Type does not exist")
+        form = self.__class__._form_class(request.POST)
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # Save the event
+            id = indigo.utils.get_next_record_id(type)
+
+            data = NewEventData(
+                type,
+                id,
+                form.cleaned_data["data"],
+            )
+            newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
+
+            # redirect to page with message
+            messages.add_message(
+                request,
+                messages.INFO,
+                "New record submitted. The data will not be available until it's been moderated.",
+            )
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(
+                reverse(
+                    self.__class__._redirect_view,
+                    kwargs={"public_id": id},
+                )
+            )
+
+        return render(request, self.get_template(), {"form": form})
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+
+class AdminJoiningUpInitiativeNew(AdminModelJSONFormNew):
+    _model = JoiningUpInitiative
+    _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
+    _form_class = JoiningUpInitiativeNewForm
+    _redirect_view = "indigo_admin_joining_up_initiative_index"
+
+
+class AdminModelEdit(PermissionRequiredMixin, View, ABC):
+    def get_template(self):
+        return f"indigo/admin/{self.__class__._model.__name__.lower()}/edit.html"
+
+    def get(self, request, public_id):
+        Model = self.__class__._model
+        Form = self.__class__._form_class
+        try:
+            instance = Model.objects.get(public_id=public_id)
+        except Model.DoesNotExist:
+            raise Http404(f"{Model.__name__} does not exist")
+
+        form = Form(initial={"data": instance.data_private})
+        return render(
+            request, self.get_template(), {"form": form, "instance": instance}
+        )
+
+    @method_decorator(transaction.atomic)
+    def post(self, request, public_id):
+        Model = self.__class__._model
+        Form = self.__class__._form_class
+        try:
+            type = Type.objects.get(public_id=self.__class__._type_public_id)
+            record = Record.objects.get(type=type, public_id=public_id)
+            instance = Model.objects.get(public_id=public_id)
+        except Type.DoesNotExist:
+            raise Http404("Type does not exist")
+        except Record.DoesNotExist:
+            raise Http404("Record does not exist")
+        except Model.DoesNotExist:
+            raise Http404(f"{Model.__name__} does not exist")
+
+        form = Form(request.POST, request.FILES)
+
+        if form.is_valid():
+            data = form.cleaned_data["data"]
+
+            new_event_datas = extract_edits_from_joining_up_initiative_form(
+                record, data
+            )
+
+            newEvent(
+                new_event_datas, user=request.user, comment=form.cleaned_data["comment"]
+            )
+
+            # redirect to page with message
+            messages.add_message(
+                request,
+                messages.INFO,
+                "Updates submitted. The changes will not be available until the updates have been moderated.",
+            )
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(
+                reverse(
+                    self.__class__._redirect_view,
+                    kwargs={"public_id": public_id},
+                )
+            )
+
+        return render(
+            request, self.get_template(), {"form": form, "instance": instance}
+        )
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+
+class AdminJoiningUpInitiativeEdit(AdminModelEdit):
+    _model = JoiningUpInitiative
+    _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
+    _form_class = JoiningUpInitiativeEditForm
+    _redirect_view = "indigo_admin_joining_up_initiative_index"
+
+
 class AdminModelModerate(PermissionRequiredMixin, View, ABC):
     def get(self, request, public_id):
         return self.post(request, public_id)
@@ -2271,6 +2441,11 @@ class AdminPipelineModerate(AdminModelModerate):
     _redirect_view = "indigo_admin_pipeline_index"
 
 
+class AdminJoiningUpInitiativeModerate(AdminModelModerate):
+    _model = JoiningUpInitiative
+    _redirect_view = "indigo_admin_joining_up_initiative_index"
+
+
 class AdminModelHistory(PermissionRequiredMixin, View, ABC):
     def get(self, request, public_id):
         try:
@@ -2306,6 +2481,11 @@ class AdminAssessmentResourceHistory(AdminModelHistory):
 class AdminPipelineHistory(AdminModelHistory):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+
+
+class AdminJoiningUpInitiativeHistory(AdminModelHistory):
+    _model = JoiningUpInitiative
+    _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
 
 
 class AdminModelDataQualityReport(PermissionRequiredMixin, View, ABC):
@@ -2449,6 +2629,9 @@ def admin_to_moderate(request):
         type_assessment_resource = Type.objects.get(
             public_id=TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
         )
+        type_joining_up_initiative = Type.objects.get(
+            public_id=TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
+        )
     except Type.DoesNotExist:
         raise Http404("Type does not exist")
     return render(
@@ -2463,6 +2646,9 @@ def admin_to_moderate(request):
             "pipelines": Record.objects.filter_needs_moderation_by_type(type_pipeline),
             "assessment_resources": Record.objects.filter_needs_moderation_by_type(
                 type_assessment_resource
+            ),
+            "joining_up_initiatives": Record.objects.filter_needs_moderation_by_type(
+                type_joining_up_initiative
             ),
         },
     )
