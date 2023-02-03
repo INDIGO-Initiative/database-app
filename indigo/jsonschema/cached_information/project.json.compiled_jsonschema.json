@@ -900,7 +900,7 @@
                             "value": {
                                 "enum": [
                                     "Impact bond design",
-                                    "Financial and commercial modeling",
+                                    "Financial and commercial modelling",
                                     "Impact bond investment structure",
                                     "Capital raise",
                                     "Loan arranger",
@@ -1953,6 +1953,7 @@
                                     "Auditing and validation of service quality",
                                     "Evaluation, learning and dissemination",
                                     "Management cost of an outcomes fund",
+                                    "Enforcement costs (renegotiations, adaptation)",
                                     "Other costs"
                                 ],
                                 "title": "(Value)",

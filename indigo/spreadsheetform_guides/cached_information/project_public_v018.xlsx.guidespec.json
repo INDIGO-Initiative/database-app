@@ -1929,6 +1929,11 @@
             "right_configs": {},
             "single_configs": {}
         },
+        "OutcomePayerCostClasOptions": {
+            "down_configs": {},
+            "right_configs": {},
+            "single_configs": {}
+        },
         "Outcomes Funds": {
             "down_configs": {
                 "outcome_funds": [
@@ -2256,6 +2261,11 @@
                     }
                 ]
             },
+            "right_configs": {},
+            "single_configs": {}
+        },
+        "ProviderSideCostClasOptions": {
+            "down_configs": {},
             "right_configs": {},
             "single_configs": {}
         },
