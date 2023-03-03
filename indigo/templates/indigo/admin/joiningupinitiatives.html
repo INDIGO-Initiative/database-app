@@ -20,23 +20,14 @@
             {% for item in datas %}
                 <tr>
                     <td>
-                        {% if item.joiningupinitiative_set.exists %}
-                            <a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=item.public_id %}">{{ item.public_id }}</a>
-                        {% else %}
-                            {{ item.public_id }}
-                        {% endif %}
+                        <a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=item.public_id %}">{{ item.public_id }}</a>
                     </td>
                     <td>
                         {{ item.cached_data.name.value }}
                     </td>
                     <td>
-                        {% if item.joiningupinitiative_set.exists %}
-                            <a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=item.public_id %}" class="btn btn-secondary">View</a>
-                            <a href="{% url 'indigo_admin_joining_up_initiative_edit' public_id=item.public_id %}" class="btn btn-primary">Edit</a>
-                        {% else %}
-                            Removed
-                        {% endif %}
-
+                        <a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=item.public_id %}" class="btn btn-secondary">View</a>
+                        <a href="{% url 'indigo_admin_joining_up_initiative_edit' public_id=item.public_id %}" class="btn btn-primary">Edit</a>
                     </td>
                 </tr>
             {% endfor %}
