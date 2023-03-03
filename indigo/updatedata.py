@@ -11,7 +11,6 @@ from indigo import (
     TYPE_FUND_FILTER_LISTS_LIST,
     TYPE_FUND_PUBLIC_ID,
     TYPE_JOINING_UP_INITIATIVE_ALWAYS_FILTER_KEYS_LIST,
-    TYPE_JOINING_UP_INITIATIVE_FILTER_LISTS_LIST,
     TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
     TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST,
     TYPE_ORGANISATION_PUBLIC_ID,
@@ -493,7 +492,6 @@ def update_joining_up_initiative(record):
         joining_up_initiative.data_public = filter_values(
             record.cached_data,
             keys_always_remove=TYPE_JOINING_UP_INITIATIVE_ALWAYS_FILTER_KEYS_LIST,
-            lists_with_items_with_own_status_subfield=TYPE_JOINING_UP_INITIATIVE_FILTER_LISTS_LIST,
         )
     else:
         joining_up_initiative.data_public = {}
