@@ -1,0 +1,82 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Moderate {{ record.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "indigo/admin/joiningupinitiative/includes/breadcrumbs.html" with public_id=record.public_id active="Moderate" %}
+{% endblock %}
+
+{% block content %}
+    <h2 class="my-5">Moderate Joining Up initiative: {{ record.public_id }}</h2>
+
+    {% if edits %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for edit in edits %}
+
+            <table>
+                 {% for field_data in edit.get_data_fields_include_differences_from_latest_data %}
+                    <tr>
+                        <th>Field: {{ field_data.title }}</th>
+                        <td>
+                            {% if field_data.different_from_latest_value %}<strong>{% endif %}
+                            {{ field_data.value }}
+                            {% if field_data.different_from_latest_value %} (Changed)</strong>{% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th>Made</th>
+                    <td>
+                        {{ edit.creation_event.created }}{% if edit.creation_event.user %} by {{ edit.creation_event.user }}{% endif %}
+                    </td>
+                </tr>
+                {% if edit.creation_event.comment %}
+                    <tr>
+                        <th>Comment</th>
+                        <td>
+                            {{ edit.creation_event.comment|linebreaks }}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if perms.indigo.admin %}
+                    <tr>
+                        <th>Action</th>
+                        <td>
+                            <label>
+                                <input type="radio" name="action_{{ edit.id }}" value="approve">
+                                Approve
+                            </label>
+                            <label>
+                                <input type="radio" name="action_{{ edit.id }}" value="reject">
+                                Reject
+                            </label>
+                            <label>
+                                <input type="radio" name="action_{{ edit.id }}" value="" checked>
+                                No Action
+                            </label>
+                        </td>
+                    </tr>
+                {% endif %}
+            </table>
+
+            {% endfor %}
+
+            {% if perms.indigo.admin %}
+                <div>
+                    <label>
+                        Comment for history
+                        <textarea name="comment"></textarea>
+                    </label>
+                </div>
+
+                <input type="submit" value="Moderate" class="btn btn-primary">
+            {% endif %}
+        </form>
+
+    {% else %}
+        <p>There is nothing to moderate, well done!</p>
+    {% endif %}
+
+
+{% endblock %}

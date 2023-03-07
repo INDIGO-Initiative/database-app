@@ -7,6 +7,7 @@ from indigo.tasks import (
 from . import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
+    TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PIPELINE_PUBLIC_ID,
     TYPE_PROJECT_PUBLIC_ID,
@@ -14,6 +15,7 @@ from . import (
 from .updatedata import (
     update_assessment_resource,
     update_fund,
+    update_joining_up_initiative,
     update_organisation,
     update_pipeline,
     update_project,
@@ -36,3 +38,5 @@ def on_update_callback(record):
         update_assessment_resource(record)
     elif record.type.public_id == TYPE_PIPELINE_PUBLIC_ID:
         update_pipeline(record)
+    elif record.type.public_id == TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID:
+        update_joining_up_initiative(record)

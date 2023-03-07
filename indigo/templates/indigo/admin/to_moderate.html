@@ -123,5 +123,26 @@
         <p>No assessment resources need moderation.</p>
     {% endif %}
 
+    <h3>Joining Up Initiative</h3>
+
+    {% if joining_up_initiatives %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for joining_up_initiative in joining_up_initiatives %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=joining_up_initiative.public_id %}">{{ joining_up_initiative.public_id }}</a></td>
+                    <td>{{ joining_up_initiative.cached_data.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=joining_up_initiative.public_id %}" class="btn btn-primary">View</a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No Joining Up Initiative need moderation.</p>
+    {% endif %}
 
 {% endblock %}

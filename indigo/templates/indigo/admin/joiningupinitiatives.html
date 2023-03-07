@@ -1,0 +1,41 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Joining Up Initiatives{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "indigo/admin/joiningupinitiative/includes/breadcrumbs.html" with active="Joining Up Initiatives" %}
+{% endblock %}
+
+{% block content %}
+    <h2 class="mt-5">Joining Up Initiatives</h2>
+    <p class="text-right"><a href="{% url 'indigo_admin_joining_up_initiative_new' %}" class="btn btn-primary">Add Joining Up Initiative <i class="far fa-plus" aria-hidden="true"></i></a></p>
+
+    {% if datas %}
+        <table class="table border-bottom">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for item in datas %}
+                <tr>
+                    <td>
+                        <a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=item.public_id %}">{{ item.public_id }}</a>
+                    </td>
+                    <td>
+                        {{ item.cached_data.name.value }}
+                    </td>
+                    <td>
+                        <a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=item.public_id %}" class="btn btn-secondary">View</a>
+                        <a href="{% url 'indigo_admin_joining_up_initiative_edit' public_id=item.public_id %}" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No Joining Up Initiatives are available.</p>
+    {% endif %}
+
+    <p><a href="{% url 'indigo_admin_joining_up_initiative_new' %}" class="btn btn-primary">Add Joining Up Initiative <i class="far fa-plus" aria-hidden="true"></i></a></p>
+
+{% endblock %}

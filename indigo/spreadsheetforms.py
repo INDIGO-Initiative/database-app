@@ -6,6 +6,7 @@ import jsonpointer
 from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
+    TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PIPELINE_PUBLIC_ID,
     TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST,
@@ -232,6 +233,17 @@ def extract_edits_from_pipeline_spreadsheet(record, import_json):
     return [
         jsondataferret.pythonapi.newevent.NewEventData(
             TYPE_PIPELINE_PUBLIC_ID,
+            record,
+            import_json,
+            mode=jsondataferret.EVENT_MODE_MERGE,
+        )
+    ]
+
+
+def extract_edits_from_joining_up_initiative_form(record, import_json):
+    return [
+        jsondataferret.pythonapi.newevent.NewEventData(
+            TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
             record,
             import_json,
             mode=jsondataferret.EVENT_MODE_MERGE,

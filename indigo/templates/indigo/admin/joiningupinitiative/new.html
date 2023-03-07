@@ -1,0 +1,18 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}New Joining Up Initiative{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "indigo/admin/joiningupinitiative/includes/breadcrumbs.html" with active="New" %}
+{% endblock %}
+
+{% block content %}
+    <h2 class="my-5">Add new Joining Up initiative</h2>
+
+    <form action="" method="post" class="form mb-5">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form }}
+        <input type="submit" value="Save" class="btn btn-primary">
+    </form>
+{% endblock %}

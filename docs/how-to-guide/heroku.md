@@ -18,15 +18,15 @@ Add the Config Var `API_SANDBOX_DATA_PASSWORD` and set it's value to something r
 
 Add the Config Var `SENTRY_DSN` and set it's value to whatever Sentry tells you.
 
-If it's a test server, you can also add the the Config Var `APP_TITLE` and set a test title like `INDIGO Test Server`. 
+If it's a test server, you can also add the the Config Var `APP_TITLE` and set a test title like `INDIGO Test Server`.
 This will help users tell the difference between test and live servers. Don't set this var on the live server.
 
-S3 storage is required for Heroku. See [the S3 page](s3.md) for details of setting up the bucket 
+S3 storage is required for Heroku. See [the S3 page](s3.md) for details of setting up the bucket
 and environmental variables to set.
 
 If you have a database to import, please do so at this stage (ie before deploying).
 
-Deploy by the normal Heroku method of pushing via git. You must use this method and not the API, Web UI, etc, because this app uses Git Submodules and [they only work via a git push](https://devcenter.heroku.com/articles/git-submodules). 
+Deploy by the normal Heroku method of pushing via git. You must use this method and not the API, Web UI, etc, because this app uses Git Submodules and [they only work via a git push](https://devcenter.heroku.com/articles/git-submodules).
 
 Set up the Cron / Scheduler, using the notes below.
 
@@ -41,12 +41,13 @@ In the Django admin console, go to the `Jsondataferret` section, `Types` option.
 * public id: fund, title: Fund
 * public id: assessment_resource, title: Assessment Resource
 * public id: pipeline, title: Pipeline
+* public id: joining_up_initiative, title: Joining Up Initiative
 
 The app is now ready to use!
 
 ## Deploying
 
-Deploy by the normal Heroku method of pushing via git. You must use this method and not the API, Web UI, etc, because this app uses Git Submodules and [they only work via a git push](https://devcenter.heroku.com/articles/git-submodules). 
+Deploy by the normal Heroku method of pushing via git. You must use this method and not the API, Web UI, etc, because this app uses Git Submodules and [they only work via a git push](https://devcenter.heroku.com/articles/git-submodules).
 
 If the public spreadsheets or rules about which data is available to the public have changed, you will need to update Caches.
 

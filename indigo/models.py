@@ -6,6 +6,7 @@ from jsondataferret.models import Record
 from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
+    TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PIPELINE_PUBLIC_ID,
 )
@@ -99,6 +100,10 @@ class AssessmentResource(BaseModel):
 
 class Pipeline(BaseModel):
     type_id = TYPE_PIPELINE_PUBLIC_ID
+
+
+class JoiningUpInitiative(BaseModel):
+    type_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
 
 
 class BaseModelImport(models.Model):

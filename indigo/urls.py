@@ -130,6 +130,17 @@ urlpatterns = [
         views.pipeline_public_data_file_per_data_type_csv_in_zip,
         name="indigo_pipeline_public_data_file_per_data_type_csv_in_zip",
     ),
+    ########################### Public - JoiningUpInitiative
+    path(
+        "joining_up_initiative",
+        views.JoiningUpInitiativeList.as_view(),
+        name="indigo_joining_up_initiative_list",
+    ),
+    path(
+        "joining_up_initiative/<public_id>",
+        views.JoiningUpInitiativeIndex.as_view(),
+        name="indigo_joining_up_initiative_index",
+    ),
     ########################### Public - All
     path(
         "all_public_data_file_per_record.zip",
@@ -195,6 +206,17 @@ urlpatterns = [
         "api1/pipeline/<public_id>",
         views.API1PipelineIndex.as_view(),
         name="indigo_api1_pipeline_index",
+    ),
+    ########################### Public - Joining Up Initiative - API
+    path(
+        "api1/joining_up_initiative",
+        views.API1JoiningUpInitiativeList.as_view(),
+        name="indigo_api1_joining_up_initiative_list",
+    ),
+    path(
+        "api1/joining_up_initiative/<public_id>",
+        views.API1JoiningUpInitiativeIndex.as_view(),
+        name="indigo_api1_joining_up_initiative_index",
     ),
     ########################### Admin
     path("admin/", views.admin_index, name="indigo_admin_index"),
@@ -507,6 +529,42 @@ urlpatterns = [
         "admin/new_pipeline",
         views.AdminPipelineNew.as_view(),
         name="indigo_admin_pipeline_new",
+    ),
+    ########################### Admin - Joining up initiative
+    path(
+        "admin/joining_up_initiative",
+        views.AdminJoiningUpInitiativeList.as_view(),
+        name="indigo_admin_joining_up_initiative_list",
+    ),
+    path(
+        "admin/joining_up_initiative/<public_id>",
+        views.AdminJoiningUpInitiativeIndex.as_view(),
+        name="indigo_admin_joining_up_initiative_index",
+    ),
+    path(
+        "admin/joining_up_initiative/<public_id>/change_status",
+        views.AdminJoiningUpInitiativeChangeStatus.as_view(),
+        name="indigo_admin_joining_up_initiative_change_status",
+    ),
+    path(
+        "admin/joining_up_initiative/<public_id>/moderate",
+        views.AdminJoiningUpInitiativeModerate.as_view(),
+        name="indigo_admin_joining_up_initiative_moderate",
+    ),
+    path(
+        "admin/joining_up_initiative/<public_id>/history",
+        views.AdminJoiningUpInitiativeHistory.as_view(),
+        name="indigo_admin_joining_up_initiative_history",
+    ),
+    path(
+        "admin/new_joining_up_initiative",
+        views.AdminJoiningUpInitiativeNew.as_view(),
+        name="indigo_admin_joining_up_initiative_new",
+    ),
+    path(
+        "admin/edit_joining_up_initiative/<public_id>",
+        views.AdminJoiningUpInitiativeEdit.as_view(),
+        name="indigo_admin_joining_up_initiative_edit",
     ),
     ########################### Admin - Sandboxes
     path(

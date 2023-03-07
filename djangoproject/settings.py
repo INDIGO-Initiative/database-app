@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "jsondataferret.apps.JsondataferretConfig",
     "indigo.apps.IndigoConfig",
+    "django_jsonforms",
 ]
 
 MIDDLEWARE = [
@@ -313,6 +314,10 @@ JSONDATAFERRET_TYPE_INFORMATION = {
         "filter_keys": load_json_schema_filter_keys("pipeline.json"),
         "references_models": load_json_schema_references_models("pipeline.json"),
         "references_datas": load_json_schema_references_datas("pipeline.json"),
+    },
+    "joining_up_initiative": {
+        "json_schema": load_json_schema("joining_up_initiative.json"),
+        "fields": load_json_schema_fields("joining_up_initiative.json"),
     },
 }
 

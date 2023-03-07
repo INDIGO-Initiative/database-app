@@ -1,0 +1,33 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}History for {{ record.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "indigo/admin/joiningupinitiative/includes/breadcrumbs.html" with public_id=record.public_id active="History" %}
+{% endblock %}
+
+{% block content %}
+    <h2 class="my-5">History for Joining Up initiative: {{ record.public_id }}</h2>
+
+    {% if events %}
+        <table class="table">
+            <tr>
+                <th>At</th>
+                <th>By</th>
+                <th>Comment</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.created }}</td>
+                    <td>{{ event.user }}</td>
+                    <td>{{ event.comment|linebreaks }}</td>
+                    <td><a href="{% url 'indigo_admin_event_index' event_id=event.public_id %}" class="btn btn-secondary">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No events are available.</p>
+    {% endif %}
+
+{% endblock %}

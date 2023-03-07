@@ -10,6 +10,8 @@ from indigo import (
     TYPE_FUND_ALWAYS_FILTER_KEYS_LIST,
     TYPE_FUND_FILTER_LISTS_LIST,
     TYPE_FUND_PUBLIC_ID,
+    TYPE_JOINING_UP_INITIATIVE_ALWAYS_FILTER_KEYS_LIST,
+    TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
     TYPE_ORGANISATION_ALWAYS_FILTER_KEYS_LIST,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PIPELINE_ALWAYS_FILTER_KEYS_LIST,
@@ -25,6 +27,7 @@ from indigo.dataqualityreport import DataQualityReportForProject
 from indigo.models import (
     AssessmentResource,
     Fund,
+    JoiningUpInitiative,
     Organisation,
     Pipeline,
     Project,
@@ -42,6 +45,17 @@ def update_all_data():
         )
         for assessment_resource in Record.objects.filter(type=type_assessment_resource):
             update_assessment_resource(assessment_resource)
+    except Type.DoesNotExist:
+        pass
+
+    try:
+        type_joining_up_initiative = Type.objects.get(
+            public_id=TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
+        )
+        for joining_up_initiative in Record.objects.filter(
+            type=type_joining_up_initiative
+        ):
+            update_joining_up_initiative(joining_up_initiative)
     except Type.DoesNotExist:
         pass
 
@@ -448,6 +462,46 @@ def update_assessment_resource(record):
     )
     # Finally, Save
     assessment_resource.save()
+
+
+def update_joining_up_initiative(record):
+    try:
+        joining_up_initiative = JoiningUpInitiative.objects.get(
+            public_id=record.public_id
+        )
+    except JoiningUpInitiative.DoesNotExist:
+        joining_up_initiative = JoiningUpInitiative()
+        joining_up_initiative.public_id = record.public_id
+        joining_up_initiative.record = record
+
+    # Exists
+    joining_up_initiative.exists = record.cached_exists
+    # Status
+    record_status = (
+        record.cached_data.get("status", "").strip().lower()
+        if isinstance(record.cached_data.get("status", ""), str)
+        else ""
+    )
+
+    joining_up_initiative.status_public = (
+        record.cached_exists and record_status == "public"
+    )
+
+    # Public data
+    if joining_up_initiative.status_public:
+        joining_up_initiative.data_public = filter_values(
+            record.cached_data,
+            keys_always_remove=TYPE_JOINING_UP_INITIATIVE_ALWAYS_FILTER_KEYS_LIST,
+        )
+    else:
+        joining_up_initiative.data_public = {}
+
+    # Private Data
+    joining_up_initiative.data_private = (
+        record.cached_data if record.cached_exists else {}
+    )
+    # Finally, Save
+    joining_up_initiative.save()
 
 
 def filter_values(

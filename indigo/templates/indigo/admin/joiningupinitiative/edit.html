@@ -1,0 +1,18 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Edit Joining Up Initiatives{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "indigo/admin/joiningupinitiative/includes/breadcrumbs.html" with public_id=instance.public_id active="Edit" %}
+{% endblock %}
+
+{% block content %}
+    <h2 class="my-5">Edit Joining Up initiative: {{ instance.public_id }} {{ instance.data_private.name.value }}</h2>
+
+    <form action="" method="post" class="form mb-5">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form }}
+        <input type="submit" value="Save changes" class="btn btn-primary my-3">
+    </form>
+{% endblock %}
