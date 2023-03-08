@@ -264,7 +264,7 @@
                         "column": 1,
                         "column_letter": "A",
                         "coordinate": "A7",
-                        "item_path": "org-id/value",
+                        "item_path": "organisation_id/value",
                         "list_path": "org-ids/secondary",
                         "mode": "down",
                         "row": 7
