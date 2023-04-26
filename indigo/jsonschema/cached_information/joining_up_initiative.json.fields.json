@@ -5,29 +5,40 @@
     },
     {
         "key": "/name/value",
-        "title": "Joining Up Initiative - Name - Enter a value:"
+        "title": "Joining Up Initiative - Name - (Value)"
     },
     {
         "key": "/dates/start_date/value",
-        "title": "Joining Up Initiative - Dates - Start date of initiative - Enter a date:"
+        "title": "Joining Up Initiative - Dates - Start date of initiative - (Value)"
     },
     {
         "key": "/lever/value",
-        "title": "Joining Up Initiative - Lever - Select a value:"
+        "title": "Joining Up Initiative - Lever - (Value)"
     },
     {
         "key": "/governance_model/value",
-        "title": "Joining Up Initiative - Governance model - Select a value:"
+        "title": "Joining Up Initiative - Governance model - (Value)"
     },
     {
         "key": "/allocation_process/value",
-        "title": "Joining Up Initiative - Allocation process - Select a value:"
+        "title": "Joining Up Initiative - Allocation process - (Value)"
+    },
+    {
+        "fields": [
+            {
+                "key": "/value",
+                "title": "(Value)"
+            }
+        ],
+        "key": "/policy_sector",
+        "title": "Joining Up Initiative - Policy sector",
+        "type": "list"
     },
     {
         "fields": [
             {
                 "key": "/title/value",
-                "title": "Name - Enter a value:"
+                "title": "Name - (Value)"
             }
         ],
         "key": "/departments",
@@ -38,19 +49,30 @@
         "fields": [
             {
                 "key": "/title/value",
-                "title": "Title - Enter a value:"
+                "title": "Title - (Value)"
             },
             {
                 "key": "/url/value",
-                "title": "URL - Enter a value:"
-            },
-            {
-                "key": "/notes",
-                "title": "Notes"
+                "title": "URL - (Value)"
             }
         ],
-        "key": "/documents",
-        "title": "Joining Up Initiative - Documents",
+        "key": "/headline_evaluation",
+        "title": "Joining Up Initiative - Headline evaluation URL",
+        "type": "list"
+    },
+    {
+        "fields": [
+            {
+                "key": "/title/value",
+                "title": "Title - (Value)"
+            },
+            {
+                "key": "/url/value",
+                "title": "URL - (Value)"
+            }
+        ],
+        "key": "/other_evaluation_materials",
+        "title": "Joining Up Initiative - Other evaluation materials",
         "type": "list"
     }
 ]

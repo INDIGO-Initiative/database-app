@@ -2,12 +2,38 @@
     "$id": "https://example.com/joining_up_initiative.schema.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
+        "evaluation_object": {
+            "properties": {
+                "title": {
+                    "properties": {
+                        "value": {
+                            "minLength": 1,
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "url": {
+                    "properties": {
+                        "value": {
+                            "minLength": 1,
+                            "title": "(Value)",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
         "object_with_value_date": {
             "properties": {
                 "value": {
+                    "description": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
                     "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
                     "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
-                    "title": "Enter a date:",
+                    "title": "(Value)",
                     "type": "string"
                 }
             },
@@ -17,7 +43,7 @@
             "properties": {
                 "value": {
                     "minLength": 1,
-                    "title": "Enter a value:",
+                    "title": "(Value)",
                     "type": "string"
                 }
             },
@@ -37,7 +63,7 @@
                         "Needs-based",
                         "Universal"
                     ],
-                    "title": "Select a value:",
+                    "title": "(Value)",
                     "type": "string"
                 }
             },
@@ -51,9 +77,10 @@
                     "description": "Date when initiative started/will start.",
                     "properties": {
                         "value": {
+                            "description": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
                             "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
                             "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
-                            "title": "Enter a date:",
+                            "title": "(Value)",
                             "type": "string"
                         }
                     },
@@ -73,7 +100,7 @@
                         "properties": {
                             "value": {
                                 "minLength": 1,
-                                "title": "Enter a value:",
+                                "title": "(Value)",
                                 "type": "string"
                             }
                         },
@@ -83,47 +110,8 @@
                 },
                 "type": "object"
             },
-            "propertyOrder": 60,
-            "title": "Departments",
-            "type": "array"
-        },
-        "documents": {
-            "items": {
-                "properties": {
-                    "notes": {
-                        "description": "Notes on supporting documents.",
-                        "title": "Notes",
-                        "type": "string"
-                    },
-                    "title": {
-                        "description": "Title of related document or case study.",
-                        "properties": {
-                            "value": {
-                                "minLength": 1,
-                                "title": "Enter a value:",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Title",
-                        "type": "object"
-                    },
-                    "url": {
-                        "description": "URL of related document or case study.",
-                        "properties": {
-                            "value": {
-                                "minLength": 1,
-                                "title": "Enter a value:",
-                                "type": "string"
-                            }
-                        },
-                        "title": "URL",
-                        "type": "object"
-                    }
-                },
-                "type": "object"
-            },
             "propertyOrder": 70,
-            "title": "Documents",
+            "title": "Departments",
             "type": "array"
         },
         "governance_model": {
@@ -136,13 +124,49 @@
                         "Constrained Discretion",
                         "Top down"
                     ],
-                    "title": "Select a value:",
+                    "title": "(Value)",
                     "type": "string"
                 }
             },
             "propertyOrder": 40,
             "title": "Governance model",
             "type": "object"
+        },
+        "headline_evaluation": {
+            "items": {
+                "properties": {
+                    "title": {
+                        "description": "",
+                        "properties": {
+                            "value": {
+                                "minLength": 1,
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Title",
+                        "type": "object"
+                    },
+                    "url": {
+                        "description": "",
+                        "properties": {
+                            "value": {
+                                "minLength": 1,
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "URL",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "maxItems": 1,
+            "minItems": 0,
+            "propertyOrder": 80,
+            "title": "Headline evaluation URL",
+            "type": "array"
         },
         "lever": {
             "description": "",
@@ -154,7 +178,7 @@
                         "Funding and fiscal powers",
                         "Law and regulation"
                     ],
-                    "title": "Select a value:",
+                    "title": "(Value)",
                     "type": "string"
                 }
             },
@@ -167,13 +191,74 @@
             "properties": {
                 "value": {
                     "minLength": 1,
-                    "title": "Enter a value:",
+                    "title": "(Value)",
                     "type": "string"
                 }
             },
             "propertyOrder": 10,
             "title": "Name",
             "type": "object"
+        },
+        "other_evaluation_materials": {
+            "items": {
+                "properties": {
+                    "title": {
+                        "description": "",
+                        "properties": {
+                            "value": {
+                                "minLength": 1,
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Title",
+                        "type": "object"
+                    },
+                    "url": {
+                        "description": "",
+                        "properties": {
+                            "value": {
+                                "minLength": 1,
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "URL",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "propertyOrder": 90,
+            "title": "Other evaluation materials",
+            "type": "array"
+        },
+        "policy_sector": {
+            "description": "",
+            "items": {
+                "properties": {
+                    "value": {
+                        "description": "",
+                        "enum": [
+                            "Employment and training",
+                            "Child and family welfare",
+                            "Health",
+                            "Education",
+                            "Homelessness",
+                            "Criminal justice",
+                            "Agriculture and environment",
+                            "Poverty reduction",
+                            "Cross-cutting"
+                        ],
+                        "title": "(Value)",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "propertyOrder": 60,
+            "title": "Policy sector",
+            "type": "array"
         },
         "status": {
             "enum": [
@@ -186,7 +271,16 @@
             "type": "string"
         }
     },
-    "required": [],
+    "required": [
+        "name",
+        "dates",
+        "lever",
+        "governance_model",
+        "policy_sector",
+        "departments",
+        "headline_evaluation",
+        "other_evaluation_materials"
+    ],
     "title": "Joining Up Initiative",
     "type": "object"
 }
