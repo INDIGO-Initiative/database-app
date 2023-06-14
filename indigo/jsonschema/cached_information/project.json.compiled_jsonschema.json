@@ -2372,6 +2372,85 @@
             "title": "Outcome Payment Commitments",
             "type": "array"
         },
+        "outcome_payment_plans": {
+            "items": {
+                "properties": {
+                    "id": {
+                        "description": "A within-project original, flexible identifier to be referenced in another sheet. This can be set by the GO Lab team.",
+                        "properties": {
+                            "value": {
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Outcome Payment Plan Id",
+                        "type": "object"
+                    },
+                    "notes": {
+                        "description": "Notes on outcome payment plans.",
+                        "title": "Notes",
+                        "type": "string"
+                    },
+                    "period": {
+                        "properties": {
+                            "end_date": {
+                                "description": "End date of plan.",
+                                "properties": {
+                                    "value": {
+                                        "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                                        "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                                        "title": "(Value)",
+                                        "type": "string"
+                                    }
+                                },
+                                "title": "End",
+                                "type": "object"
+                            },
+                            "start_date": {
+                                "description": "Start date of plan.",
+                                "properties": {
+                                    "value": {
+                                        "pattern": "^[0-9][0-9][0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]$|^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
+                                        "patternHint": "Enter a date in format YYYY, YYYY-MM or YYYY-MM-DD",
+                                        "title": "(Value)",
+                                        "type": "string"
+                                    }
+                                },
+                                "title": "Start",
+                                "type": "object"
+                            }
+                        },
+                        "title": "Period",
+                        "type": "object"
+                    },
+                    "sandboxes": {
+                        "title": "(In Sandboxes)",
+                        "type": "string"
+                    },
+                    "source_ids": {
+                        "description": "Source of information about outcome payment plans.",
+                        "references-data-key": "/id",
+                        "references-data-list": "/sources",
+                        "references-datas-seperator": ",",
+                        "title": "Sources",
+                        "type": "string"
+                    },
+                    "status": {
+                        "enum": [
+                            "PUBLIC",
+                            "SANDBOX",
+                            "PRIVATE",
+                            "DISPUTED"
+                        ],
+                        "title": "(Status)",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "title": "Outcome Payment Plans",
+            "type": "array"
+        },
         "outcome_payments": {
             "items": {
                 "properties": {
@@ -2420,14 +2499,29 @@
                         "type": "string"
                     },
                     "outcome_metric_id": {
-                        "description": "A within-project original, flexible identifier to be referenced in another sheet. This can be set by the GO Lab team. This ID should be equal to the ID that was stated in the \u201cResults\u201d and \u201cOutcome metrics\u201d sections. These identifiers could be \u2018outcomemetric1\u2019, \u2018outcomemetric2\u2019, etc.",
+                        "description": "The Outcome Metric this payment belongs to. This should be an Id from the \"Outcome Metrics\" section of the same project.",
                         "properties": {
                             "value": {
+                                "references-data-key": "/id",
+                                "references-data-list": "/outcome_metrics",
                                 "title": "(Value)",
                                 "type": "string"
                             }
                         },
                         "title": "Outcome Metric Id",
+                        "type": "object"
+                    },
+                    "outcome_payment_plan_id": {
+                        "description": "The Outcome Payment Plan this payment belongs to. This should be an Id from the  \"Outcome Payment Plans\" section of the same project. If there is only one plan in this project, this can be left blank.",
+                        "properties": {
+                            "value": {
+                                "references-data-key": "/id",
+                                "references-data-list": "/outcome_payment_plans",
+                                "title": "(Value)",
+                                "type": "string"
+                            }
+                        },
+                        "title": "Outcome Payment Plan Id",
                         "type": "object"
                     },
                     "payer_organisation_id": {
@@ -2577,9 +2671,11 @@
                         "type": "string"
                     },
                     "outcome_metric_id": {
-                        "description": "A within-project original, flexible identifier to be referenced in another sheet. This can be set by the GO Lab analyst. This ID should be equal to the ID that was stated in the \u201cResults\u201d and \u201cOutcome metrics\u201d sections.",
+                        "description": "The Outcome Metric this pricing belongs to. This should be an Id from the \"Outcome Metrics\" section of the same project.",
                         "properties": {
                             "value": {
+                                "references-data-key": "/id",
+                                "references-data-list": "/outcome_metrics",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -3465,9 +3561,11 @@
                         "type": "object"
                     },
                     "outcome_metric_id": {
-                        "description": "A within-project original, flexible identifier to be referenced in another sheet. This can be set by the GO Lab team. This ID should be equal to the ID that was stated in the \u201cResults\u201d and \u201cOutcome metrics\u201d sections. These identifiers could be \u2018outcomemetric1\u2019, \u2018outcomemetric2\u2019, etc.",
+                        "description": "The Outcome Metric this result belongs to. This should be an Id from the \"Outcome Metrics\" section of the same project.",
                         "properties": {
                             "value": {
+                                "references-data-key": "/id",
+                                "references-data-list": "/outcome_metrics",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -3582,131 +3680,6 @@
             },
             "priority": 3,
             "title": "Results",
-            "type": "array"
-        },
-        "scenarios": {
-            "items": {
-                "properties": {
-                    "id": {
-                        "description": "A within-project original, flexible identifier to be referenced in another sheet. This can be set by the GO Lab team. These identifiers could be \u2018scenario1\u2019, \u2018scenario2\u2019, etc.",
-                        "title": "Scenario Id",
-                        "type": "string"
-                    },
-                    "name": {
-                        "description": "Scenario name. These names could be \u2018best-case scenario\u2019, \u2018medium-case scenario\u2019, \u2018worst-case scenario\u2019, etc.",
-                        "properties": {
-                            "value": {
-                                "title": "(Value)",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Name",
-                        "type": "object"
-                    },
-                    "notes": {
-                        "description": "Notes on scenarios.",
-                        "title": "Notes",
-                        "type": "string"
-                    },
-                    "overall_project_finance": {
-                        "properties": {
-                            "maximum_potential_outcome_payment_v2": {
-                                "description": "",
-                                "properties": {
-                                    "amount": {
-                                        "description": "Maximum potential outcome payment according to a particular scenario (e.g.: maximum potential outcome payment in the worst-case scenario).",
-                                        "properties": {
-                                            "status": {
-                                                "enum": [
-                                                    "PUBLIC",
-                                                    "PRIVATE",
-                                                    "DISPUTED"
-                                                ],
-                                                "title": "(Status)",
-                                                "type": "string"
-                                            },
-                                            "value": {
-                                                "title": "(Value)",
-                                                "type": "number"
-                                            }
-                                        },
-                                        "title": "Amount",
-                                        "type": "object"
-                                    },
-                                    "amount_usd": {
-                                        "description": "Maximum potential outcome payment according to a particular scenario in USD (e.g.: maximum potential outcome payment in the worst-case scenario in USD).",
-                                        "properties": {
-                                            "status": {
-                                                "enum": [
-                                                    "PUBLIC",
-                                                    "PRIVATE",
-                                                    "DISPUTED"
-                                                ],
-                                                "title": "(Status)",
-                                                "type": "string"
-                                            },
-                                            "value": {
-                                                "title": "(Value)",
-                                                "type": "number"
-                                            }
-                                        },
-                                        "title": "Amount USD",
-                                        "type": "object"
-                                    },
-                                    "currency": {
-                                        "description": "Currency in which maximum potential outcome payment is reported for this project.",
-                                        "properties": {
-                                            "status": {
-                                                "enum": [
-                                                    "PUBLIC",
-                                                    "PRIVATE",
-                                                    "DISPUTED"
-                                                ],
-                                                "title": "(Status)",
-                                                "type": "string"
-                                            },
-                                            "value": {
-                                                "title": "(Value)",
-                                                "type": "string"
-                                            }
-                                        },
-                                        "title": "Currency",
-                                        "type": "object"
-                                    }
-                                },
-                                "title": "Maximum potential outcome payment",
-                                "type": "object"
-                            }
-                        },
-                        "title": "Overall project finance",
-                        "type": "object"
-                    },
-                    "sandboxes": {
-                        "title": "(In Sandboxes)",
-                        "type": "string"
-                    },
-                    "source_ids": {
-                        "description": "Sources of information about the different scenarios.",
-                        "references-data-key": "/id",
-                        "references-data-list": "/sources",
-                        "references-datas-seperator": ",",
-                        "title": "Sources",
-                        "type": "string"
-                    },
-                    "status": {
-                        "enum": [
-                            "PUBLIC",
-                            "SANDBOX",
-                            "PRIVATE",
-                            "DISPUTED"
-                        ],
-                        "title": "(Status)",
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "title": "Scenarios",
             "type": "array"
         },
         "service_and_beneficiaries": {
@@ -4388,9 +4361,11 @@
                         "type": "string"
                     },
                     "technical_assistance_id": {
-                        "description": "A within-project original, flexible identifier to be referenced in another sheet.",
+                        "description": "The Technical Assistance these details belongs to. This should be an Id from the \"Technical Assistance\" section of the same project.",
                         "properties": {
                             "value": {
+                                "references-data-key": "/id",
+                                "references-data-list": "/technical_assistances",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -4547,20 +4522,12 @@
                         "title": "Date",
                         "type": "object"
                     },
-                    "grant_id": {
-                        "properties": {
-                            "value": {
-                                "title": "(Value)",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Grant Id",
-                        "type": "object"
-                    },
                     "investment_id": {
-                        "description": "A within-project original, flexible identifier to be referenced in another sheet.",
+                        "description": "The Investment this transaction belongs to. This should be an Id from the \"Investments\" section of the same project.",
                         "properties": {
                             "value": {
+                                "references-data-key": "/id",
+                                "references-data-list": "/investments",
                                 "title": "(Value)",
                                 "type": "string"
                             }
@@ -4612,9 +4579,11 @@
                         "type": "string"
                     },
                     "outcome_metric_id": {
-                        "description": "A within-project original, flexible identifier to be referenced in another sheet.",
+                        "description": "The Outcome Metric this transaction belongs to. This should be an Id from the \"Outcome Metrics\" section of the same project.",
                         "properties": {
                             "value": {
+                                "references-data-key": "/id",
+                                "references-data-list": "/outcome_metrics",
                                 "title": "(Value)",
                                 "type": "string"
                             }
