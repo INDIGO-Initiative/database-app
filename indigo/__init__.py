@@ -33,13 +33,12 @@ TYPE_PROJECT_FILTER_LISTS_LIST = [
     "/360giving_datas",
     "/outcome_pricings",
     "/transactions",
-    "/grants",
     "/technical_assistances",
     "/technical_assistance_details",
     "/documents",
     "/sources",
+    "/outcome_payment_plans",
     "/outcome_payments",
-    "/scenarios",
 ]
 
 TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST = {

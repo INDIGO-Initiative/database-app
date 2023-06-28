@@ -92,10 +92,31 @@
     },
     {
         "data_key": "/id",
+        "data_list": "/outcome_metrics",
+        "item_key": "/outcome_metric_id/value",
+        "list_key": "/outcome_pricings",
+        "multiple_seperator": null
+    },
+    {
+        "data_key": "/id",
         "data_list": "/sources",
         "item_key": "/source_ids",
         "list_key": "/outcome_pricings",
         "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/investments",
+        "item_key": "/investment_id/value",
+        "list_key": "/transactions",
+        "multiple_seperator": null
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/outcome_metrics",
+        "item_key": "/outcome_metric_id/value",
+        "list_key": "/transactions",
+        "multiple_seperator": null
     },
     {
         "data_key": "/id",
@@ -110,6 +131,20 @@
         "item_key": "/source_ids",
         "list_key": "/technical_assistances",
         "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/technical_assistances",
+        "item_key": "/technical_assistance_id/value",
+        "list_key": "/technical_assistance_details",
+        "multiple_seperator": null
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/outcome_metrics",
+        "item_key": "/outcome_metric_id/value",
+        "list_key": "/results",
+        "multiple_seperator": null
     },
     {
         "data_key": "/id",
@@ -136,14 +171,28 @@
         "data_key": "/id",
         "data_list": "/sources",
         "item_key": "/source_ids",
-        "list_key": "/outcome_payments",
+        "list_key": "/outcome_payment_plans",
         "multiple_seperator": ","
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/outcome_payment_plans",
+        "item_key": "/outcome_payment_plan_id/value",
+        "list_key": "/outcome_payments",
+        "multiple_seperator": null
+    },
+    {
+        "data_key": "/id",
+        "data_list": "/outcome_metrics",
+        "item_key": "/outcome_metric_id/value",
+        "list_key": "/outcome_payments",
+        "multiple_seperator": null
     },
     {
         "data_key": "/id",
         "data_list": "/sources",
         "item_key": "/source_ids",
-        "list_key": "/scenarios",
+        "list_key": "/outcome_payments",
         "multiple_seperator": ","
     },
     {
