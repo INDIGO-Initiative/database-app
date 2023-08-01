@@ -40,4 +40,7 @@
 <P><a href="{% url 'indigo_admin_project_history' public_id=project.public_id %}" class="btn btn-primary">History</a></P>
 <P><a href="{% url 'indigo_admin_project_data_quality_report' public_id=project.public_id %}" class="btn btn-primary">Data Quality Report</a></P>
 
+{% if perms.indigo.admin %}
+<P><a href="{% url 'indigo_admin_project_admin_users' public_id=project.public_id %}" class="btn btn-primary">Data Steward Users</a></P>
+{% endif %}
 {% endblock %}

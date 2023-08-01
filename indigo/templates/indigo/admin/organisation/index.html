@@ -26,7 +26,9 @@
 </table>
 
 <P><a href="{% url 'indigo_admin_organisation_change_status' public_id=organisation.public_id %}" class="btn btn-primary">Change Status</a></P>
+{% if perms.indigo.admin %}
 <P><a href="{% url 'indigo_admin_organisation_projects' public_id=organisation.public_id %}" class="btn btn-primary">Projects Using This</a></P>
+{% endif %}
 <P>
     <a href="{% url 'indigo_admin_organisation_download_form' public_id=organisation.public_id %}" class="btn btn-primary">Download Form</a>
     You can delete any sheet/tab from this form (except the introduction one) and it will still work fine!

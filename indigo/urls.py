@@ -287,6 +287,11 @@ urlpatterns = [
         name="indigo_admin_project_data_quality_report",
     ),
     path(
+        "admin/project/<public_id>/admin_users",
+        views_admin.admin_project_admin_users,
+        name="indigo_admin_project_admin_users",
+    ),
+    path(
         "admin/new_project",
         views_admin.admin_projects_new,
         name="indigo_admin_project_new",

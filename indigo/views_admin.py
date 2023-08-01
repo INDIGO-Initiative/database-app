@@ -11,9 +11,10 @@ import jsonpointer
 import spreadsheetforms.api
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import permission_required, user_passes_test
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.db.models.functions import Now
@@ -61,6 +62,7 @@ from .forms import (
     RecordChangeStatusForm,
 )
 from .models import (
+    AdminUserHasPermissionsForProject,
     AssessmentResource,
     Fund,
     JoiningUpInitiative,
@@ -94,12 +96,83 @@ def permission_admin_or_data_steward_required():
     return user_passes_test(_permission_admin_or_data_steward_required_test)
 
 
+def user_can_access_project(user, project: Project):
+    # Must be a user
+    if not user:
+        return False
+    # Admin
+    if user.has_perm("indigo.admin"):
+        return True
+    # Data Steward that has access to this project?
+    if user.has_perm("indigo.data_steward"):
+        try:
+            admin_user_permission = AdminUserHasPermissionsForProject.objects.get(
+                project=project, user=user
+            )
+            if admin_user_permission.permission_access:
+                return True
+        except AdminUserHasPermissionsForProject.DoesNotExist:
+            pass
+    # Then No
+    return False
+
+
+def user_can_access_event(user, event: Event):
+    # Must be a user
+    if not user:
+        return False
+    # Admin
+    if user.has_perm("indigo.admin"):
+        return True
+    # Data Steward that has access to a single edit for this event?
+    if user.has_perm("indigo.data_steward"):
+        for edit in event.edits_created.all():
+            if user_can_access_edit(user, edit):
+                return True
+        for edit in event.edits_approved.all():
+            if user_can_access_edit(user, edit):
+                return True
+        for edit in event.edits_refused.all():
+            if user_can_access_edit(user, edit):
+                return True
+    # Then No
+    return False
+
+
+def user_can_access_edit(user, edit: Edit):
+    # Must be a user
+    if not user:
+        return False
+    # Admin
+    if user.has_perm("indigo.admin"):
+        return True
+    # Data Steward that has access to the data the edit is about?
+    if user.has_perm("indigo.data_steward"):
+        if edit.record.type.public_id in [
+            TYPE_FUND_PUBLIC_ID,
+            TYPE_ORGANISATION_PUBLIC_ID,
+        ]:
+            return True
+        elif edit.record.type.public_id == TYPE_PROJECT_PUBLIC_ID:
+            try:
+                admin_user_permission = AdminUserHasPermissionsForProject.objects.get(
+                    project=Project.objects.get(public_id=edit.record.public_id),
+                    user=user,
+                )
+                if admin_user_permission.permission_access:
+                    return True
+            except AdminUserHasPermissionsForProject.DoesNotExist:
+                pass
+    # Then No
+    return False
+
+
 @permission_admin_or_data_steward_required()
 def admin_index(request):
     return render(request, "indigo/admin/index.html")
 
 
-@permission_admin_or_data_steward_required()
+@permission_required("indigo.admin")
 def admin_history(request):
     filter = EventFilter(request.GET, queryset=Event.objects.all().order_by("created"))
     paginator = Paginator(filter.qs, 100)
@@ -127,11 +200,8 @@ def admin_history(request):
 
 @permission_admin_or_data_steward_required()
 def admin_projects_list(request):
-    try:
-        type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    projects = Record.objects.filter(type=type).order_by("public_id")
+    projects = Project.objects.filter_by_admin_user_can_access(request.user)
+
     return render(
         request,
         "indigo/admin/projects.html",
@@ -145,6 +215,8 @@ def admin_project_index(request, public_id):
         project = Project.objects.get(public_id=public_id)
     except Project.DoesNotExist:
         raise Http404("Project does not exist")
+    if not user_can_access_project(request.user, project):
+        raise PermissionDenied("You can not see project")
     field_data = jsondataferret.utils.get_field_list_from_json(
         TYPE_PROJECT_PUBLIC_ID, project.data_private
     )
@@ -182,6 +254,14 @@ def admin_projects_new(request):
             )
             newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
 
+            # If user is a data steward, have to give them access to project right away
+            if request.user.has_perm("indigo.data_steward"):
+                p = AdminUserHasPermissionsForProject()
+                p.user = request.user
+                p.project = Project.objects.get(public_id=id)
+                p.permission_access = True
+                p.save()
+
             # redirect to a new URL:
             return HttpResponseRedirect(
                 reverse(
@@ -204,12 +284,13 @@ def admin_projects_new(request):
 @permission_admin_or_data_steward_required()
 def admin_project_moderate(request, public_id):
     try:
-        type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
+        project = Project.objects.get(public_id=public_id)
+    except Project.DoesNotExist:
         raise Http404("Record does not exist")
+    record = project.record
+    type = record.type
+    if not user_can_access_project(request.user, project):
+        raise PermissionDenied("You can not see project")
 
     edits = Edit.objects.filter(record=record, approval_event=None, refusal_event=None)
 
@@ -255,12 +336,13 @@ def admin_project_moderate(request, public_id):
 @permission_admin_or_data_steward_required()
 def admin_project_history(request, public_id):
     try:
-        type = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
-        record = Record.objects.get(type=type, public_id=public_id)
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
-    except Record.DoesNotExist:
+        project = Project.objects.get(public_id=public_id)
+    except Project.DoesNotExist:
         raise Http404("Record does not exist")
+    record = project.record
+    type = record.type
+    if not user_can_access_project(request.user, project):
+        raise PermissionDenied("You can not see project")
 
     events = Event.objects.filter_by_record(record)
 
@@ -268,6 +350,88 @@ def admin_project_history(request, public_id):
         request,
         "indigo/admin/project/history.html",
         {"type": type, "record": record, "events": events},
+    )
+
+
+@permission_required("indigo.admin")
+def admin_project_admin_users(request, public_id):
+    try:
+        project = Project.objects.get(public_id=public_id)
+    except Project.DoesNotExist:
+        raise Http404("Record does not exist")
+
+    # Get data
+    admin_users_permissions = AdminUserHasPermissionsForProject.objects.filter(
+        project=project
+    )
+    admin_users_with_access = [
+        p.user for p in admin_users_permissions if p.permission_access
+    ]
+    admin_users_to_add = [
+        u
+        for u in User.objects.all()
+        if u.has_perm("indigo.data_steward")
+        and not u.has_perm("indigo.admin")
+        and u not in admin_users_with_access
+    ]
+
+    # Actions
+    if request.POST.get("action") == "add":
+
+        try:
+            user = User.objects.get(id=request.POST.get("user"))
+            try:
+                admin_user_permission = AdminUserHasPermissionsForProject.objects.get(
+                    project=project, user=user
+                )
+                admin_user_permission.permission_access = True
+                admin_user_permission.save()
+            except AdminUserHasPermissionsForProject.DoesNotExist:
+                admin_user_permission = AdminUserHasPermissionsForProject()
+                admin_user_permission.user = user
+                admin_user_permission.project = project
+                admin_user_permission.permission_access = True
+                admin_user_permission.save()
+            return HttpResponseRedirect(
+                reverse(
+                    "indigo_admin_project_admin_users",
+                    kwargs={"public_id": project.public_id},
+                )
+            )
+        except User.DoesNotExist:
+            pass
+
+    elif request.POST.get("action") == "remove":
+        try:
+            user = User.objects.get(id=request.POST.get("user"))
+            try:
+                admin_user_permission = AdminUserHasPermissionsForProject.objects.get(
+                    project=project, user=user
+                )
+                admin_user_permission.permission_access = False
+                admin_user_permission.save()
+            except AdminUserHasPermissionsForProject.DoesNotExist:
+                pass
+            return HttpResponseRedirect(
+                reverse(
+                    "indigo_admin_project_admin_users",
+                    kwargs={"public_id": project.public_id},
+                )
+            )
+        except User.DoesNotExist:
+            pass
+
+    # View page
+    return render(
+        request,
+        "indigo/admin/project/admin_users.html",
+        {
+            "type": project.record.type,
+            "record": project.record,
+            "admin_users_permissions": admin_users_permissions,
+            "admin_users_to_add": admin_users_to_add,
+            "admin_users_with_access": admin_users_with_access,
+        },
     )
 
 
@@ -489,7 +653,7 @@ def admin_organisation_index(request, public_id):
     )
 
 
-@permission_admin_or_data_steward_required()
+@permission_required("indigo.admin")
 def admin_organisation_projects(request, public_id):
     try:
         organisation = Organisation.objects.get(public_id=public_id)
@@ -749,10 +913,6 @@ class AdminModelDownloadBlankForm(PermissionRequiredMixin, View, ABC):
 
         return response
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
 
 class AdminProjectDownloadBlankForm(AdminModelDownloadBlankForm):
     _model = Project
@@ -760,6 +920,10 @@ class AdminProjectDownloadBlankForm(AdminModelDownloadBlankForm):
     _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
         TYPE_PROJECT_PUBLIC_ID
     ).get("spreadsheet_form_guide")
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminProjectDownloadBlankSimpleForm(AdminModelDownloadBlankForm):
@@ -769,6 +933,10 @@ class AdminProjectDownloadBlankSimpleForm(AdminModelDownloadBlankForm):
         TYPE_PROJECT_PUBLIC_ID
     ).get("simple_spreadsheet_form_guide")
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
 
 class AdminFundDownloadBlankForm(AdminModelDownloadBlankForm):
     _model = Fund
@@ -776,6 +944,10 @@ class AdminFundDownloadBlankForm(AdminModelDownloadBlankForm):
     _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
         TYPE_FUND_PUBLIC_ID
     ).get("spreadsheet_form_guide")
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminAssessmentResourceDownloadBlankForm(AdminModelDownloadBlankForm):
@@ -785,6 +957,10 @@ class AdminAssessmentResourceDownloadBlankForm(AdminModelDownloadBlankForm):
         TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
     ).get("spreadsheet_form_guide")
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminPipelineDownloadBlankForm(AdminModelDownloadBlankForm):
     _model = Pipeline
@@ -792,6 +968,10 @@ class AdminPipelineDownloadBlankForm(AdminModelDownloadBlankForm):
     _guide_file_name = settings.JSONDATAFERRET_TYPE_INFORMATION.get(
         TYPE_PIPELINE_PUBLIC_ID
     ).get("spreadsheet_form_guide")
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminModelList(PermissionRequiredMixin, View, ABC):
@@ -807,29 +987,41 @@ class AdminModelList(PermissionRequiredMixin, View, ABC):
             {"datas": datas},
         )
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
 
 class AdminFundList(AdminModelList):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminAssessmentResourceList(AdminModelList):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminPipelineList(AdminModelList):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminJoiningUpInitiativeList(AdminModelList):
     _model = JoiningUpInitiative
     _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminModelIndex(PermissionRequiredMixin, View, ABC):
@@ -847,28 +1039,40 @@ class AdminModelIndex(PermissionRequiredMixin, View, ABC):
             {"data": data, "field_data": field_data},
         )
 
+
+class AdminFundIndex(AdminModelIndex):
+    _model = Fund
+
     def has_permission(self):
         user = self.request.user
         return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
-class AdminFundIndex(AdminModelIndex):
-    _model = Fund
-
-
 class AdminAssessmentResourceIndex(AdminModelIndex):
     _model = AssessmentResource
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminPipelineIndex(AdminModelIndex):
     _model = Pipeline
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminJoiningUpInitiativeIndex(AdminModelIndex):
     _model = JoiningUpInitiative
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
-@permission_admin_or_data_steward_required()
+
+@permission_required("indigo.admin")
 def admin_fund_projects(request, public_id):
     try:
         fund = Fund.objects.get(public_id=public_id)
@@ -891,6 +1095,9 @@ class AdminModelDownloadForm(PermissionRequiredMixin, View, ABC):
         except self._model.DoesNotExist:
             raise Http404("Data does not exist")
 
+        if not self.has_permission_with_data(data):
+            raise PermissionDenied("You can not see data")
+
         out_file = os.path.join(
             tempfile.gettempdir(),
             "indigo" + str(random.randrange(1, 100000000000)) + ".xlsx",
@@ -910,9 +1117,8 @@ class AdminModelDownloadForm(PermissionRequiredMixin, View, ABC):
 
         return response
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+    def has_permission_with_data(self, data):
+        return True
 
 
 class AdminProjectDownloadForm(AdminModelDownloadForm):
@@ -925,6 +1131,13 @@ class AdminProjectDownloadForm(AdminModelDownloadForm):
     def _get_data_for_form(self, data):
         return convert_project_data_to_spreadsheetforms_data(data, public_only=False)
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+    def has_permission_with_data(self, data):
+        return user_can_access_project(self.request.user, data)
+
 
 class AdminProjectDownloadSimpleForm(AdminModelDownloadForm):
     _model = Project
@@ -936,6 +1149,13 @@ class AdminProjectDownloadSimpleForm(AdminModelDownloadForm):
     def _get_data_for_form(self, data):
         return convert_project_data_to_spreadsheetforms_data(data, public_only=False)
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+    def has_permission_with_data(self, data):
+        return user_can_access_project(self.request.user, data)
+
 
 class AdminFundDownloadForm(AdminModelDownloadForm):
     _model = Fund
@@ -946,6 +1166,10 @@ class AdminFundDownloadForm(AdminModelDownloadForm):
 
     def _get_data_for_form(self, data):
         return convert_fund_data_to_spreadsheetforms_data(data, public_only=False)
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminAssessmentResourceDownloadForm(AdminModelDownloadForm):
@@ -960,6 +1184,10 @@ class AdminAssessmentResourceDownloadForm(AdminModelDownloadForm):
             data, public_only=False
         )
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminPipelineDownloadForm(AdminModelDownloadForm):
     _model = Pipeline
@@ -970,6 +1198,10 @@ class AdminPipelineDownloadForm(AdminModelDownloadForm):
 
     def _get_data_for_form(self, data):
         return convert_pipeline_data_to_spreadsheetforms_data(data, public_only=False)
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
@@ -1045,10 +1277,6 @@ class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
                 },
             )
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
 
 class AdminFundImportForm(AdminModelImportForm):
     _model = Fund
@@ -1058,6 +1286,10 @@ class AdminFundImportForm(AdminModelImportForm):
 
     def _get_edits(self, data, import_json):
         return extract_edits_from_fund_spreadsheet(data.record, import_json)
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminAssessmentResourceImportForm(AdminModelImportForm):
@@ -1071,6 +1303,10 @@ class AdminAssessmentResourceImportForm(AdminModelImportForm):
             data.record, import_json
         )
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminModelImportFormStage1Of2(PermissionRequiredMixin, View, ABC):
     """Provides part 1 of a 2 stage import process.
@@ -1079,12 +1315,13 @@ class AdminModelImportFormStage1Of2(PermissionRequiredMixin, View, ABC):
 
     def get(self, request, public_id):
         try:
-            type = Type.objects.get(public_id=self._type_public_id)
-            record = Record.objects.get(type=type, public_id=public_id)
-        except Type.DoesNotExist:
-            raise Http404("Type does not exist")
-        except Record.DoesNotExist:
-            raise Http404("Record does not exist")
+            data = self.__class__._model.objects.get(public_id=public_id)
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+        record = data.record
+
+        if not self.has_permission_with_data(data):
+            raise PermissionDenied("You can not see data")
 
         form = ModelImportStage1Of2Form()
 
@@ -1103,12 +1340,13 @@ class AdminModelImportFormStage1Of2(PermissionRequiredMixin, View, ABC):
 
     def post(self, request, public_id):
         try:
-            type = Type.objects.get(public_id=self._type_public_id)
-            record = Record.objects.get(type=type, public_id=public_id)
-        except Type.DoesNotExist:
-            raise Http404("Type does not exist")
-        except Record.DoesNotExist:
-            raise Http404("Record does not exist")
+            data = self.__class__._model.objects.get(public_id=public_id)
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+        record = data.record
+
+        if not self.has_permission_with_data(data):
+            raise PermissionDenied("You can not see data")
 
         form = ModelImportStage1Of2Form(request.POST, request.FILES)
 
@@ -1151,9 +1389,8 @@ class AdminModelImportFormStage1Of2(PermissionRequiredMixin, View, ABC):
                 context,
             )
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+    def has_permission_with_data(self, data):
+        return True
 
 
 class AdminProjectImportFormStage1Of2(AdminModelImportFormStage1Of2):
@@ -1168,6 +1405,13 @@ class AdminProjectImportFormStage1Of2(AdminModelImportFormStage1Of2):
     def _send_message_to_worker(self, import_data):
         task_process_imported_project_file.delay(import_data.id)
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+    def has_permission_with_data(self, data):
+        return user_can_access_project(self.request.user, data)
+
 
 class AdminPipelineImportFormStage1Of2(AdminModelImportFormStage1Of2):
     _model = Pipeline
@@ -1181,6 +1425,10 @@ class AdminPipelineImportFormStage1Of2(AdminModelImportFormStage1Of2):
     def _send_message_to_worker(self, import_data):
         task_process_imported_pipeline_file.delay(import_data.id)
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminModelImportFormStage2Of2(PermissionRequiredMixin, View, ABC):
     """Provides part 2 of a 2 stage import process.
@@ -1189,13 +1437,17 @@ class AdminModelImportFormStage2Of2(PermissionRequiredMixin, View, ABC):
 
     def _setup(self, request, public_id, import_id):
         try:
-            type = Type.objects.get(public_id=self._type_public_id)
-            record = Record.objects.get(type=type, public_id=public_id)
+            data = self.__class__._model.objects.get(public_id=public_id)
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+        record = data.record
+        type = record.type
+
+        if not self.has_permission_with_data(data):
+            raise PermissionDenied("You can not see data")
+
+        try:
             import_data = self._import_model.objects.get(id=import_id)
-        except Type.DoesNotExist:
-            raise Http404("Type does not exist")
-        except Record.DoesNotExist:
-            raise Http404("Record does not exist")
         except self._import_model.DoesNotExist:
             raise Http404("Import does not exist")
 
@@ -1342,9 +1594,8 @@ class AdminModelImportFormStage2Of2(PermissionRequiredMixin, View, ABC):
                 context,
             )
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+    def has_permission_with_data(self, data):
+        return True
 
 
 class AdminProjectImportFormStage2Of2(AdminModelImportFormStage2Of2):
@@ -1360,6 +1611,13 @@ class AdminProjectImportFormStage2Of2(AdminModelImportFormStage2Of2):
     def _get_edits(self, record, import_json):
         return extract_edits_from_project_spreadsheet(record, import_json)
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+    def has_permission_with_data(self, data):
+        return user_can_access_project(self.request.user, data)
+
 
 class AdminPipelineImportFormStage2Of2(AdminModelImportFormStage2Of2):
     _model = Pipeline
@@ -1374,6 +1632,10 @@ class AdminPipelineImportFormStage2Of2(AdminModelImportFormStage2Of2):
     def _get_edits(self, record, import_json):
         return extract_edits_from_pipeline_spreadsheet(record, import_json)
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
     def get(self, request, public_id):
@@ -1381,6 +1643,9 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
             data = self.__class__._model.objects.get(public_id=public_id)
         except self._model.DoesNotExist:
             raise Http404("Data does not exist")
+
+        if not self.has_permission_with_data(data):
+            raise PermissionDenied("You can not see data")
 
         record = data.record
 
@@ -1465,15 +1730,18 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
             context,
         )
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
 
 class AdminProjectChangeStatus(AdminModelChangeStatus):
     _model = Project
     _type_public_id = TYPE_PROJECT_PUBLIC_ID
     _redirect_view = "indigo_admin_project_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+    def has_permission_with_data(self, data):
+        return user_can_access_project(self.request.user, data)
 
 
 class AdminOrganisationChangeStatus(AdminModelChangeStatus):
@@ -1481,11 +1749,19 @@ class AdminOrganisationChangeStatus(AdminModelChangeStatus):
     _type_public_id = TYPE_ORGANISATION_PUBLIC_ID
     _redirect_view = "indigo_admin_organisation_index"
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
 
 class AdminFundChangeStatus(AdminModelChangeStatus):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
     _redirect_view = "indigo_admin_fund_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminPipelineChangeStatus(AdminModelChangeStatus):
@@ -1493,17 +1769,29 @@ class AdminPipelineChangeStatus(AdminModelChangeStatus):
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
     _redirect_view = "indigo_admin_pipeline_index"
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminAssessmentResourceChangeStatus(AdminModelChangeStatus):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
     _redirect_view = "indigo_admin_assessment_resource_index"
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminJoiningUpInitiativeChangeStatus(AdminModelChangeStatus):
     _model = JoiningUpInitiative
     _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
     _redirect_view = "indigo_admin_joining_up_initiative_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminModelNew(PermissionRequiredMixin, View, ABC):
@@ -1552,16 +1840,16 @@ class AdminModelNew(PermissionRequiredMixin, View, ABC):
             },
         )
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
 
 class AdminFundNew(AdminModelNew):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
     _form_class = FundNewForm
     _redirect_view = "indigo_admin_fund_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminAssessmentResourceNew(AdminModelNew):
@@ -1570,12 +1858,20 @@ class AdminAssessmentResourceNew(AdminModelNew):
     _form_class = AssessmentResourceNewForm
     _redirect_view = "indigo_admin_assessment_resource_index"
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminPipelineNew(AdminModelNew):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
     _form_class = PipelineNewForm
     _redirect_view = "indigo_admin_pipeline_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminModelJSONFormNew(PermissionRequiredMixin, View, ABC):
@@ -1623,16 +1919,16 @@ class AdminModelJSONFormNew(PermissionRequiredMixin, View, ABC):
 
         return render(request, self.get_template(), {"form": form})
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
 
 class AdminJoiningUpInitiativeNew(AdminModelJSONFormNew):
     _model = JoiningUpInitiative
     _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
     _form_class = JoiningUpInitiativeNewForm
     _redirect_view = "indigo_admin_joining_up_initiative_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminModelEdit(PermissionRequiredMixin, View, ABC):
@@ -1699,16 +1995,16 @@ class AdminModelEdit(PermissionRequiredMixin, View, ABC):
             request, self.get_template(), {"form": form, "instance": instance}
         )
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
 
 class AdminJoiningUpInitiativeEdit(AdminModelEdit):
     _model = JoiningUpInitiative
     _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
     _form_class = JoiningUpInitiativeEditForm
     _redirect_view = "indigo_admin_joining_up_initiative_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminModelModerate(PermissionRequiredMixin, View, ABC):
@@ -1760,29 +2056,41 @@ class AdminModelModerate(PermissionRequiredMixin, View, ABC):
             {"type": type, "record": record, "edits": edits},
         )
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
 
 class AdminFundModerate(AdminModelModerate):
     _model = Fund
     _redirect_view = "indigo_admin_fund_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminAssessmentResourceModerate(AdminModelModerate):
     _model = AssessmentResource
     _redirect_view = "indigo_admin_assessment_resource_index"
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminPipelineModerate(AdminModelModerate):
     _model = Pipeline
     _redirect_view = "indigo_admin_pipeline_index"
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminJoiningUpInitiativeModerate(AdminModelModerate):
     _model = JoiningUpInitiative
     _redirect_view = "indigo_admin_joining_up_initiative_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminModelHistory(PermissionRequiredMixin, View, ABC):
@@ -1802,40 +2110,54 @@ class AdminModelHistory(PermissionRequiredMixin, View, ABC):
             {"type": type, "record": record, "events": events},
         )
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
 
 class AdminFundHistory(AdminModelHistory):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminAssessmentResourceHistory(AdminModelHistory):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminPipelineHistory(AdminModelHistory):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminJoiningUpInitiativeHistory(AdminModelHistory):
     _model = JoiningUpInitiative
     _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
 
 class AdminModelDataQualityReport(PermissionRequiredMixin, View, ABC):
     def get(self, request, public_id):
         try:
-            type = Type.objects.get(public_id=self.__class__._type_public_id)
-            record = Record.objects.get(public_id=public_id)
-        except Type.DoesNotExist:
-            raise Http404("Type does not exist")
-        except Record.DoesNotExist:
-            raise Http404("Record does not exist")
+            data = self.__class__._model.objects.get(public_id=public_id)
+        except self._model.DoesNotExist:
+            raise Http404("Data does not exist")
+        record = data.record
+        type = record.type
+
+        if not self.has_permission_with_data(data):
+            raise PermissionDenied("You can not see data")
 
         dqr = self.__class__._data_quality_report(record.cached_data)
 
@@ -1852,9 +2174,8 @@ class AdminModelDataQualityReport(PermissionRequiredMixin, View, ABC):
             },
         )
 
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+    def has_permission_with_data(self, data):
+        return True
 
 
 class AdminProjectDataQualityReport(AdminModelDataQualityReport):
@@ -1862,11 +2183,22 @@ class AdminProjectDataQualityReport(AdminModelDataQualityReport):
     _type_public_id = TYPE_PROJECT_PUBLIC_ID
     _data_quality_report = DataQualityReportForProject
 
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+    def has_permission_with_data(self, data):
+        return user_can_access_project(self.request.user, data)
+
 
 class AdminPipelineDataQualityReport(AdminModelDataQualityReport):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
     _data_quality_report = DataQualityReportForPipeline
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 ########################### Admin - sandboxes
@@ -1904,9 +2236,17 @@ def admin_event_index(request, event_id):
         event = Event.objects.get(public_id=event_id)
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
-    edits_created = event.edits_created.all()
-    edits_approved = event.edits_approved.all()
-    edits_refused = event.edits_refused.all()
+    if not user_can_access_event(request.user, event):
+        raise PermissionDenied("You can not see data")
+    edits_created = [
+        e for e in event.edits_created.all() if user_can_access_edit(request.user, e)
+    ]
+    edits_approved = [
+        e for e in event.edits_approved.all() if user_can_access_edit(request.user, e)
+    ]
+    edits_refused = [
+        e for e in event.edits_refused.all() if user_can_access_edit(request.user, e)
+    ]
     edits_only_created = [edit for edit in edits_created if edit not in edits_approved]
     if edits_approved:
         records_with_changes = [
@@ -1946,6 +2286,8 @@ def admin_edit_index(request, edit_id):
         edit = Edit.objects.get(public_id=edit_id)
     except Edit.DoesNotExist:
         raise Http404("Edit does not exist")
+    if not user_can_access_edit(request.user, edit):
+        raise PermissionDenied("You can not see data")
     return render(
         request,
         "indigo/admin/edit/index.html",
@@ -1958,7 +2300,7 @@ def admin_edit_index(request, edit_id):
 ########################### Admin - Moderate
 
 
-@permission_admin_or_data_steward_required()
+@permission_required("indigo.admin")
 def admin_to_moderate(request):
     try:
         type_project = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)

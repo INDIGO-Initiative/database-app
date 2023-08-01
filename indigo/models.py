@@ -83,11 +83,28 @@ class Organisation(BaseModel):
     type_id = TYPE_ORGANISATION_PUBLIC_ID
 
 
+class ProjectManager(models.Manager):
+    def filter_by_admin_user_can_access(self, user):
+        if user and user.has_perm("indigo.admin"):
+            return self.all().order_by("public_id")
+        elif user and user.has_perm("indigo.data_steward"):
+            return self.raw(
+                "SELECT indigo_project.* FROM indigo_project "
+                + "JOIN indigo_adminuserhaspermissionsforproject ON indigo_adminuserhaspermissionsforproject.project_id = indigo_project.id "
+                + "AND indigo_adminuserhaspermissionsforproject.user_id=%s AND indigo_adminuserhaspermissionsforproject.permission_access = %s "
+                + "ORDER BY indigo_project.public_id ASC",
+                [user.id, True],
+            )
+        else:
+            return []
+
+
 class Project(BaseModel):
     social_investment_prototype = models.BooleanField(
         default=False, null=False, blank=True
     )
     data_quality_report_counts_by_priority = models.JSONField(default=dict)
+    objects = ProjectManager()
 
 
 class Fund(BaseModel):
@@ -178,3 +195,18 @@ class ProjectIncludesFund(models.Model):
 class Sandbox(models.Model):
     public_id = models.CharField(max_length=200, unique=True)
     title = models.TextField(default="")
+
+
+class AdminUserHasPermissionsForProject(models.Model):
+    project = models.ForeignKey(
+        Project, on_delete=models.PROTECT, null=False, blank=False
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=False, blank=False
+    )
+    # At the moment, there is only one permission possible to give
+    # Access includes read, write, change status
+    permission_access = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ("project", "user")
