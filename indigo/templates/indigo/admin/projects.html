@@ -23,7 +23,7 @@
             {% for project in projects %}
                 <tr>
                     <td><a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}">{{ project.public_id }}</a></td>
-                    <td>{{ project.cached_data.name.value }}</td>
+                    <td>{{ project.data_private.name.value }}</td>
                     <td><a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}" class="btn btn-primary">View</a></td>
 
                 </tr>

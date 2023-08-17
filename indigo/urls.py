@@ -1,598 +1,603 @@
 from django.urls import path
 
-from . import views
+from . import views_admin, views_api1, views_public
 
 urlpatterns = [
     ########################### Home Page
-    path("", views.index, name="indigo_index"),
+    path("", views_public.index, name="indigo_index"),
     ########################### Public - Project
     path(
         "project",
-        views.projects_list,
+        views_public.projects_list,
         name="indigo_project_list",
     ),
     path(
         "project_download",
-        views.projects_list_download,
+        views_public.projects_list_download,
         name="indigo_project_list_download",
     ),
     path(
         "project_download_social_investment_prototype",
-        views.projects_list_download_social_investment_prototype,
+        views_public.projects_list_download_social_investment_prototype,
         name="indigo_project_list_download_social_investment_prototype",
     ),
     path(
         "project_download_blank_form",
-        views.project_download_blank_form,
+        views_public.project_download_blank_form,
         name="indigo_project_download_blank_form",
     ),
     path(
         "project_download_data_quality_report",
-        views.project_download_data_quality_report,
+        views_public.project_download_data_quality_report,
         name="indigo_project_download_data_quality_report",
     ),
     path(
         "project/<public_id>",
-        views.project_index,
+        views_public.project_index,
         name="indigo_project_index",
     ),
     path(
         "project/<public_id>/download_form",
-        views.project_download_form,
+        views_public.project_download_form,
         name="indigo_project_download_form",
     ),
     ########################### Public - Organisation
     path(
         "organisation",
-        views.organisations_list,
+        views_public.organisations_list,
         name="indigo_organisation_list",
     ),
     path(
         "organisation_download",
-        views.OrganisationListDownload.as_view(),
+        views_public.OrganisationListDownload.as_view(),
         name="indigo_organisation_list_download",
     ),
     path(
         "organisation_download_blank_form",
-        views.organisation_download_blank_form,
+        views_public.organisation_download_blank_form,
         name="indigo_organisation_download_blank_form",
     ),
     path(
         "organisation/<public_id>",
-        views.organisation_index,
+        views_public.organisation_index,
         name="indigo_organisation_index",
     ),
     path(
         "organisation/<public_id>/download_form",
-        views.organisation_download_form,
+        views_public.organisation_download_form,
         name="indigo_organisation_download_form",
     ),
     ########################### Public - Fund
     path(
         "fund",
-        views.FundList.as_view(),
+        views_public.FundList.as_view(),
         name="indigo_fund_list",
     ),
     path(
         "fund_download",
-        views.FundListDownload.as_view(),
+        views_public.FundListDownload.as_view(),
         name="indigo_fund_list_download",
     ),
     path(
         "fund/<public_id>",
-        views.FundIndex.as_view(),
+        views_public.FundIndex.as_view(),
         name="indigo_fund_index",
     ),
     path(
         "fund/<public_id>/download_form",
-        views.FundDownloadForm.as_view(),
+        views_public.FundDownloadForm.as_view(),
         name="indigo_fund_download_form",
     ),
     ########################### Public - AssessmentResource
     path(
         "assessment_resource",
-        views.AssessmentResourceList.as_view(),
+        views_public.AssessmentResourceList.as_view(),
         name="indigo_assessment_resource_list",
     ),
     path(
         "assessment_resource/<public_id>",
-        views.AssessmentResourceIndex.as_view(),
+        views_public.AssessmentResourceIndex.as_view(),
         name="indigo_assessment_resource_index",
     ),
     ########################### Public - Pipeline
     path(
         "pipeline",
-        views.PipelineList.as_view(),
+        views_public.PipelineList.as_view(),
         name="indigo_pipeline_list",
     ),
     path(
         "pipeline_download",
-        views.PipelineListDownload.as_view(),
+        views_public.PipelineListDownload.as_view(),
         name="indigo_pipeline_list_download",
     ),
     path(
         "pipeline/<public_id>",
-        views.PipelineIndex.as_view(),
+        views_public.PipelineIndex.as_view(),
         name="indigo_pipeline_index",
     ),
     path(
         "pipeline/<public_id>/download_form",
-        views.PipelineDownloadForm.as_view(),
+        views_public.PipelineDownloadForm.as_view(),
         name="indigo_pipeline_download_form",
     ),
     path(
         "pipeline_public_data_file_per_record.zip",
-        views.pipeline_public_data_file_per_record_in_zip,
+        views_public.pipeline_public_data_file_per_record_in_zip,
         name="indigo_pipeline_public_data_file_per_record_in_zip",
     ),
     path(
         "pipeline_public_data_file_per_data_type_csv.zip",
-        views.pipeline_public_data_file_per_data_type_csv_in_zip,
+        views_public.pipeline_public_data_file_per_data_type_csv_in_zip,
         name="indigo_pipeline_public_data_file_per_data_type_csv_in_zip",
     ),
     ########################### Public - JoiningUpInitiative
     path(
         "joining_up_initiative",
-        views.JoiningUpInitiativeList.as_view(),
+        views_public.JoiningUpInitiativeList.as_view(),
         name="indigo_joining_up_initiative_list",
     ),
     path(
         "joining_up_initiative/<public_id>",
-        views.JoiningUpInitiativeIndex.as_view(),
+        views_public.JoiningUpInitiativeIndex.as_view(),
         name="indigo_joining_up_initiative_index",
     ),
     ########################### Public - All
     path(
         "all_public_data_file_per_record.zip",
-        views.all_public_data_file_per_record_in_zip,
+        views_public.all_public_data_file_per_record_in_zip,
         name="indigo_all_public_data_file_per_record_in_zip",
     ),
     path(
         "all_public_data_file_per_data_type_csv.zip",
-        views.all_public_data_file_per_data_type_csv_in_zip,
+        views_public.all_public_data_file_per_data_type_csv_in_zip,
         name="indigo_all_public_data_file_per_data_type_csv_in_zip",
     ),
     ########################### Public - Project - API
     path(
         "api1/project",
-        views.api1_projects_list,
+        views_api1.api1_projects_list,
         name="indigo_api1_project_list",
     ),
     path(
         "api1/project/<public_id>",
-        views.api1_project_index,
+        views_api1.api1_project_index,
         name="indigo_api1_project_index",
     ),
     ########################### Public - Organisation - API
     path(
         "api1/organisation",
-        views.api1_organisations_list,
+        views_api1.api1_organisations_list,
         name="indigo_api1_organisation_list",
     ),
     path(
         "api1/organisation/<public_id>",
-        views.api1_organisation_index,
+        views_api1.api1_organisation_index,
         name="indigo_api1_organisation_index",
     ),
     ########################### Public - Fund - API
     path(
         "api1/fund",
-        views.API1FundList.as_view(),
+        views_api1.API1FundList.as_view(),
         name="indigo_api1_fund_list",
     ),
     path(
         "api1/fund/<public_id>",
-        views.API1FundIndex.as_view(),
+        views_api1.API1FundIndex.as_view(),
         name="indigo_api1_fund_index",
     ),
     ########################### Public - Assessment Resource - API
     path(
         "api1/assessment_resource",
-        views.API1AssessmentResourceList.as_view(),
+        views_api1.API1AssessmentResourceList.as_view(),
         name="indigo_api1_assessment_resource_list",
     ),
     path(
         "api1/assessment_resource/<public_id>",
-        views.API1AssessmentResourceIndex.as_view(),
+        views_api1.API1AssessmentResourceIndex.as_view(),
         name="indigo_api1_assessment_resource_index",
     ),
     ########################### Public - Pipeline - API
     path(
         "api1/pipeline",
-        views.API1PipelineList.as_view(),
+        views_api1.API1PipelineList.as_view(),
         name="indigo_api1_pipeline_list",
     ),
     path(
         "api1/pipeline/<public_id>",
-        views.API1PipelineIndex.as_view(),
+        views_api1.API1PipelineIndex.as_view(),
         name="indigo_api1_pipeline_index",
     ),
     ########################### Public - Joining Up Initiative - API
     path(
         "api1/joining_up_initiative",
-        views.API1JoiningUpInitiativeList.as_view(),
+        views_api1.API1JoiningUpInitiativeList.as_view(),
         name="indigo_api1_joining_up_initiative_list",
     ),
     path(
         "api1/joining_up_initiative/<public_id>",
-        views.API1JoiningUpInitiativeIndex.as_view(),
+        views_api1.API1JoiningUpInitiativeIndex.as_view(),
         name="indigo_api1_joining_up_initiative_index",
     ),
     ########################### Admin
-    path("admin/", views.admin_index, name="indigo_admin_index"),
+    path("admin/", views_admin.admin_index, name="indigo_admin_index"),
     path(
         "admin/history",
-        views.admin_history,
+        views_admin.admin_history,
         name="indigo_admin_history",
     ),
     ########################### Admin - Project
     path(
         "admin/project_download_blank_form",
-        views.AdminProjectDownloadBlankForm.as_view(),
+        views_admin.AdminProjectDownloadBlankForm.as_view(),
         name="indigo_admin_project_download_blank_form",
     ),
     path(
         "admin/project_download_blank_simple_form",
-        views.AdminProjectDownloadBlankSimpleForm.as_view(),
+        views_admin.AdminProjectDownloadBlankSimpleForm.as_view(),
         name="indigo_admin_project_download_blank_simple_form",
     ),
     path(
         "admin/project",
-        views.admin_projects_list,
+        views_admin.admin_projects_list,
         name="indigo_admin_project_list",
     ),
     path(
         "admin/project/<public_id>",
-        views.admin_project_index,
+        views_admin.admin_project_index,
         name="indigo_admin_project_index",
     ),
     path(
         "admin/project/<public_id>/download_form",
-        views.AdminProjectDownloadForm.as_view(),
+        views_admin.AdminProjectDownloadForm.as_view(),
         name="indigo_admin_project_download_form",
     ),
     path(
         "admin/project/<public_id>/download_simple_form",
-        views.AdminProjectDownloadSimpleForm.as_view(),
+        views_admin.AdminProjectDownloadSimpleForm.as_view(),
         name="indigo_admin_project_download_simple_form",
     ),
     path(
         "admin/project/<public_id>/import_form",
-        views.AdminProjectImportFormStage1Of2.as_view(),
+        views_admin.AdminProjectImportFormStage1Of2.as_view(),
         name="indigo_admin_project_import_form",
     ),
     path(
         "admin/project/<public_id>/import_form/<import_id>",
-        views.AdminProjectImportFormStage2Of2.as_view(),
+        views_admin.AdminProjectImportFormStage2Of2.as_view(),
         name="indigo_admin_project_import_form_stage_2",
     ),
     path(
         "admin/project/<public_id>/change_status",
-        views.AdminProjectChangeStatus.as_view(),
+        views_admin.AdminProjectChangeStatus.as_view(),
         name="indigo_admin_project_change_status",
     ),
     path(
         "admin/project/<public_id>/moderate",
-        views.admin_project_moderate,
+        views_admin.admin_project_moderate,
         name="indigo_admin_project_moderate",
     ),
     path(
         "admin/project/<public_id>/history",
-        views.admin_project_history,
+        views_admin.admin_project_history,
         name="indigo_admin_project_history",
     ),
     path(
         "admin/project/<public_id>/data_quality_report",
-        views.AdminProjectDataQualityReport.as_view(),
+        views_admin.AdminProjectDataQualityReport.as_view(),
         name="indigo_admin_project_data_quality_report",
     ),
     path(
+        "admin/project/<public_id>/admin_users",
+        views_admin.admin_project_admin_users,
+        name="indigo_admin_project_admin_users",
+    ),
+    path(
         "admin/new_project",
-        views.admin_projects_new,
+        views_admin.admin_projects_new,
         name="indigo_admin_project_new",
     ),
     path(
         "admin/project_data_quality_report",
-        views.admin_all_projects_data_quality_report,
+        views_admin.admin_all_projects_data_quality_report,
         name="indigo_admin_all_projects_data_quality_report",
     ),
     path(
         "admin/project_data_quality_report/field_single",
-        views.admin_all_projects_data_quality_report_field_single,
+        views_admin.admin_all_projects_data_quality_report_field_single,
         name="indigo_admin_all_projects_data_quality_report_field_single",
     ),
     path(
         "admin/project_data_quality_report/field_list",
-        views.admin_all_projects_data_quality_report_field_list,
+        views_admin.admin_all_projects_data_quality_report_field_list,
         name="indigo_admin_all_projects_data_quality_report_field_list",
     ),
     path(
         "admin/project_data_quality_report/list_projects_by_priority_highest/<priority>",
-        views.admin_all_projects_data_quality_list_projects_by_priority_highest,
+        views_admin.admin_all_projects_data_quality_list_projects_by_priority_highest,
         name="indigo_admin_all_projects_data_quality_list_projects_by_priority_highest",
     ),
     ########################### Admin - Organisation
     path(
         "admin/organisation_download_blank_form",
-        views.admin_organisation_download_blank_form,
+        views_admin.admin_organisation_download_blank_form,
         name="indigo_admin_organisation_download_blank_form",
     ),
     path(
         "admin/organisation_download_all_csv",
-        views.admin_organisation_download_all_csv,
+        views_admin.admin_organisation_download_all_csv,
         name="indigo_admin_organisation_download_all_csv",
     ),
     path(
         "admin/organisation",
-        views.admin_organisations_list,
+        views_admin.admin_organisations_list,
         name="indigo_admin_organisation_list",
     ),
     path(
         "admin/organisation_goto",
-        views.admin_organisations_goto,
+        views_admin.admin_organisations_goto,
         name="indigo_admin_organisation_goto",
     ),
     path(
         "admin/organisation_search",
-        views.admin_organisations_search,
+        views_admin.admin_organisations_search,
         name="indigo_admin_organisation_search",
     ),
     path(
         "admin/organisation/<public_id>",
-        views.admin_organisation_index,
+        views_admin.admin_organisation_index,
         name="indigo_admin_organisation_index",
     ),
     path(
         "admin/organisation/<public_id>/change_status",
-        views.AdminOrganisationChangeStatus.as_view(),
+        views_admin.AdminOrganisationChangeStatus.as_view(),
         name="indigo_admin_organisation_change_status",
     ),
     path(
         "admin/organisation/<public_id>/projects",
-        views.admin_organisation_projects,
+        views_admin.admin_organisation_projects,
         name="indigo_admin_organisation_projects",
     ),
     path(
         "admin/organisation/<public_id>/download_form",
-        views.admin_organisation_download_form,
+        views_admin.admin_organisation_download_form,
         name="indigo_admin_organisation_download_form",
     ),
     path(
         "admin/organisation/<public_id>/import_form",
-        views.admin_organisation_import_form,
+        views_admin.admin_organisation_import_form,
         name="indigo_admin_organisation_import_form",
     ),
     path(
         "admin/organisation/<public_id>/moderate",
-        views.admin_organisation_moderate,
+        views_admin.admin_organisation_moderate,
         name="indigo_admin_organisation_moderate",
     ),
     path(
         "admin/organisation/<public_id>/history",
-        views.admin_organisation_history,
+        views_admin.admin_organisation_history,
         name="indigo_admin_organisation_history",
     ),
     path(
         "admin/new_organisation",
-        views.admin_organisations_new,
+        views_admin.admin_organisations_new,
         name="indigo_admin_organisation_new",
     ),
     ########################### Admin - Fund
     path(
         "admin/fund_download_blank_form",
-        views.AdminFundDownloadBlankForm.as_view(),
+        views_admin.AdminFundDownloadBlankForm.as_view(),
         name="indigo_admin_fund_download_blank_form",
     ),
     path(
         "admin/fund",
-        views.AdminFundList.as_view(),
+        views_admin.AdminFundList.as_view(),
         name="indigo_admin_fund_list",
     ),
     path(
         "admin/fund/<public_id>",
-        views.AdminFundIndex.as_view(),
+        views_admin.AdminFundIndex.as_view(),
         name="indigo_admin_fund_index",
     ),
     path(
         "admin/fund/<public_id>/projects",
-        views.admin_fund_projects,
+        views_admin.admin_fund_projects,
         name="indigo_admin_fund_projects",
     ),
     path(
         "admin/fund/<public_id>/download_form",
-        views.AdminFundDownloadForm.as_view(),
+        views_admin.AdminFundDownloadForm.as_view(),
         name="indigo_admin_fund_download_form",
     ),
     path(
         "admin/fund/<public_id>/import_form",
-        views.AdminFundImportForm.as_view(),
+        views_admin.AdminFundImportForm.as_view(),
         name="indigo_admin_fund_import_form",
     ),
     path(
         "admin/fund/<public_id>/change_status",
-        views.AdminFundChangeStatus.as_view(),
+        views_admin.AdminFundChangeStatus.as_view(),
         name="indigo_admin_fund_change_status",
     ),
     path(
         "admin/fund/<public_id>/moderate",
-        views.AdminFundModerate.as_view(),
+        views_admin.AdminFundModerate.as_view(),
         name="indigo_admin_fund_moderate",
     ),
     path(
         "admin/fund/<public_id>/history",
-        views.AdminFundHistory.as_view(),
+        views_admin.AdminFundHistory.as_view(),
         name="indigo_admin_fund_history",
     ),
     path(
         "admin/new_fund",
-        views.AdminFundNew.as_view(),
+        views_admin.AdminFundNew.as_view(),
         name="indigo_admin_fund_new",
     ),
     ########################### Admin - AssessmentResource
     path(
         "admin/assessment_resource_download_blank_form",
-        views.AdminAssessmentResourceDownloadBlankForm.as_view(),
+        views_admin.AdminAssessmentResourceDownloadBlankForm.as_view(),
         name="indigo_admin_assessment_resource_download_blank_form",
     ),
     path(
         "admin/assessment_resource",
-        views.AdminAssessmentResourceList.as_view(),
+        views_admin.AdminAssessmentResourceList.as_view(),
         name="indigo_admin_assessment_resource_list",
     ),
     path(
         "admin/assessment_resource/<public_id>",
-        views.AdminAssessmentResourceIndex.as_view(),
+        views_admin.AdminAssessmentResourceIndex.as_view(),
         name="indigo_admin_assessment_resource_index",
     ),
     path(
         "admin/assessment_resource/<public_id>/download_form",
-        views.AdminAssessmentResourceDownloadForm.as_view(),
+        views_admin.AdminAssessmentResourceDownloadForm.as_view(),
         name="indigo_admin_assessment_resource_download_form",
     ),
     path(
         "admin/assessment_resource/<public_id>/import_form",
-        views.AdminAssessmentResourceImportForm.as_view(),
+        views_admin.AdminAssessmentResourceImportForm.as_view(),
         name="indigo_admin_assessment_resource_import_form",
     ),
     path(
         "admin/assessment_resource/<public_id>/change_status",
-        views.AdminAssessmentResourceChangeStatus.as_view(),
+        views_admin.AdminAssessmentResourceChangeStatus.as_view(),
         name="indigo_admin_assessment_resource_change_status",
     ),
     path(
         "admin/assessment_resource/<public_id>/moderate",
-        views.AdminAssessmentResourceModerate.as_view(),
+        views_admin.AdminAssessmentResourceModerate.as_view(),
         name="indigo_admin_assessment_resource_moderate",
     ),
     path(
         "admin/assessment_resource/<public_id>/history",
-        views.AdminAssessmentResourceHistory.as_view(),
+        views_admin.AdminAssessmentResourceHistory.as_view(),
         name="indigo_admin_assessment_resource_history",
     ),
     path(
         "admin/new_assessment_resource",
-        views.AdminAssessmentResourceNew.as_view(),
+        views_admin.AdminAssessmentResourceNew.as_view(),
         name="indigo_admin_assessment_resource_new",
     ),
     ########################### Admin - Pipeline
     path(
         "admin/pipeline_download_blank_form",
-        views.AdminPipelineDownloadBlankForm.as_view(),
+        views_admin.AdminPipelineDownloadBlankForm.as_view(),
         name="indigo_admin_pipeline_download_blank_form",
     ),
     path(
         "admin/pipeline",
-        views.AdminPipelineList.as_view(),
+        views_admin.AdminPipelineList.as_view(),
         name="indigo_admin_pipeline_list",
     ),
     path(
         "admin/pipeline/<public_id>",
-        views.AdminPipelineIndex.as_view(),
+        views_admin.AdminPipelineIndex.as_view(),
         name="indigo_admin_pipeline_index",
     ),
     path(
         "admin/pipeline/<public_id>/download_form",
-        views.AdminPipelineDownloadForm.as_view(),
+        views_admin.AdminPipelineDownloadForm.as_view(),
         name="indigo_admin_pipeline_download_form",
     ),
     path(
         "admin/pipeline/<public_id>/import_form",
-        views.AdminPipelineImportFormStage1Of2.as_view(),
+        views_admin.AdminPipelineImportFormStage1Of2.as_view(),
         name="indigo_admin_pipeline_import_form",
     ),
     path(
         "admin/pipeline/<public_id>/import_form/<import_id>",
-        views.AdminPipelineImportFormStage2Of2.as_view(),
+        views_admin.AdminPipelineImportFormStage2Of2.as_view(),
         name="indigo_admin_pipeline_import_form_stage_2",
     ),
     path(
         "admin/pipeline/<public_id>/change_status",
-        views.AdminPipelineChangeStatus.as_view(),
+        views_admin.AdminPipelineChangeStatus.as_view(),
         name="indigo_admin_pipeline_change_status",
     ),
     path(
         "admin/pipeline/<public_id>/moderate",
-        views.AdminPipelineModerate.as_view(),
+        views_admin.AdminPipelineModerate.as_view(),
         name="indigo_admin_pipeline_moderate",
     ),
     path(
         "admin/pipeline/<public_id>/history",
-        views.AdminPipelineHistory.as_view(),
+        views_admin.AdminPipelineHistory.as_view(),
         name="indigo_admin_pipeline_history",
     ),
     path(
         "admin/pipeline/<public_id>/data_quality_report",
-        views.AdminPipelineDataQualityReport.as_view(),
+        views_admin.AdminPipelineDataQualityReport.as_view(),
         name="indigo_admin_pipeline_data_quality_report",
     ),
     path(
         "admin/new_pipeline",
-        views.AdminPipelineNew.as_view(),
+        views_admin.AdminPipelineNew.as_view(),
         name="indigo_admin_pipeline_new",
     ),
     ########################### Admin - Joining up initiative
     path(
         "admin/joining_up_initiative",
-        views.AdminJoiningUpInitiativeList.as_view(),
+        views_admin.AdminJoiningUpInitiativeList.as_view(),
         name="indigo_admin_joining_up_initiative_list",
     ),
     path(
         "admin/joining_up_initiative/<public_id>",
-        views.AdminJoiningUpInitiativeIndex.as_view(),
+        views_admin.AdminJoiningUpInitiativeIndex.as_view(),
         name="indigo_admin_joining_up_initiative_index",
     ),
     path(
         "admin/joining_up_initiative/<public_id>/change_status",
-        views.AdminJoiningUpInitiativeChangeStatus.as_view(),
+        views_admin.AdminJoiningUpInitiativeChangeStatus.as_view(),
         name="indigo_admin_joining_up_initiative_change_status",
     ),
     path(
         "admin/joining_up_initiative/<public_id>/moderate",
-        views.AdminJoiningUpInitiativeModerate.as_view(),
+        views_admin.AdminJoiningUpInitiativeModerate.as_view(),
         name="indigo_admin_joining_up_initiative_moderate",
     ),
     path(
         "admin/joining_up_initiative/<public_id>/history",
-        views.AdminJoiningUpInitiativeHistory.as_view(),
+        views_admin.AdminJoiningUpInitiativeHistory.as_view(),
         name="indigo_admin_joining_up_initiative_history",
     ),
     path(
         "admin/new_joining_up_initiative",
-        views.AdminJoiningUpInitiativeNew.as_view(),
+        views_admin.AdminJoiningUpInitiativeNew.as_view(),
         name="indigo_admin_joining_up_initiative_new",
     ),
     path(
         "admin/edit_joining_up_initiative/<public_id>",
-        views.AdminJoiningUpInitiativeEdit.as_view(),
+        views_admin.AdminJoiningUpInitiativeEdit.as_view(),
         name="indigo_admin_joining_up_initiative_edit",
     ),
     ########################### Admin - Sandboxes
     path(
         "admin/sandboxes",
-        views.admin_sandbox_list,
+        views_admin.admin_sandbox_list,
         name="indigo_admin_sandbox_list",
     ),
     path(
         "admin/sandbox/<public_id>",
-        views.admin_sandbox_index,
+        views_admin.admin_sandbox_index,
         name="indigo_admin_sandbox_index",
     ),
     ########################### Admin - Event
     path(
         "admin/event/<event_id>",
-        views.admin_event_index,
+        views_admin.admin_event_index,
         name="indigo_admin_event_index",
     ),
     ########################### Admin - Edit
     path(
         "admin/edit/<edit_id>",
-        views.admin_edit_index,
+        views_admin.admin_edit_index,
         name="indigo_admin_edit_index",
     ),
     ########################### Admin - Moderate
     path(
         "admin/to_moderate",
-        views.admin_to_moderate,
+        views_admin.admin_to_moderate,
         name="indigo_admin_to_moderate",
     ),
 ]

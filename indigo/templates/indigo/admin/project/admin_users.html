@@ -1,0 +1,74 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Data Steward Users of Project {{ record.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_list' %}">Projects</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_index' public_id=record.public_id  %}">Project {{ record.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Data Steward Users</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Admin Users</h2>
+
+    {% if admin_users_with_access %}
+        <h3>Data Stewards With Access</h3>
+        <table class="table">
+            <tr>
+                <th>User</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for admin_user_with_access in admin_users_with_access %}
+                <tr>
+                    <td>
+                        {{ admin_user_with_access.username }}
+                    </td>
+                    <td>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="user" value="{{ admin_user_with_access.id }}">
+                            <input type="submit" value="Remove" class="btn btn-primary">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if admin_users_to_add %}
+        <h3>Data Stewards To Add</h3>
+        <table class="table">
+            <tr>
+                <th>User</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for admin_user_to_add in admin_users_to_add %}
+                <tr>
+                    <td>
+                        {{ admin_user_to_add.username }}
+                    </td>
+                    <td>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="add">
+                            <input type="hidden" name="user" value="{{ admin_user_to_add.id }}">
+                            <input type="submit" value="Add" class="btn btn-primary">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    {% endif %}
+
+
+
+
+{% endblock %}

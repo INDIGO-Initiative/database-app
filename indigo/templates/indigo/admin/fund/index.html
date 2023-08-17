@@ -25,7 +25,9 @@
     {% endfor %}
 </table>
 
+{% if perms.indigo.admin %}
 <P><a href="{% url 'indigo_admin_fund_projects' public_id=data.public_id %}" class="btn btn-primary">Projects Using This</a></P>
+{% endif %}
 <P><a href="{% url 'indigo_admin_fund_change_status' public_id=data.public_id %}" class="btn btn-primary">Change Status</a></P>
 <P>
     <a href="{% url 'indigo_admin_fund_download_form' public_id=data.public_id %}" class="btn btn-primary">Download Form</a>
