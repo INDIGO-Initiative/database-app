@@ -33,7 +33,9 @@
         <p>No projects are available.</p>
     {% endif %}
 
-    <p><a href="{% url 'indigo_admin_all_projects_data_quality_report' %}" class="btn btn-primary">Data Quality Report</a></p>
+    {% if perms.indigo.admin %}
+        <p><a href="{% url 'indigo_admin_all_projects_data_quality_report' %}" class="btn btn-primary">Data Quality Report</a></p>
+    {% endif %}
     <p><a href="{% url 'indigo_admin_project_download_blank_form' %}" class="btn btn-primary">Download Blank Form</a></p>
     <p><a href="{% url 'indigo_admin_project_download_blank_simple_form' %}" class="btn btn-primary">Download Blank Simple Form</a></p>
     <p><a href="{% url 'indigo_admin_project_new' %}" class="btn btn-primary">New Project</a></p>

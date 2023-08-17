@@ -41,7 +41,7 @@ If you already have a database, you need to clear out the old one:
 Run in console:
 
 ```
-docker compose -f docker-compose.dev.yml run postgres  su -c 'PGPASSWORD=1234 psql   -U postgres -h postgres'
+docker compose -f docker-compose.dev.yml run postgres  su -c 'PGPASSWORD=1234 psql   -U postgres -h postgres app'
 ```
 
 Run in Shell:

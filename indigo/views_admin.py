@@ -435,7 +435,7 @@ def admin_project_admin_users(request, public_id):
     )
 
 
-@permission_admin_or_data_steward_required()
+@permission_required("indigo.admin")
 def admin_all_projects_data_quality_report(request):
     data_quality_report = DataQualityReportForAllProjects()
     return render(
@@ -448,7 +448,7 @@ def admin_all_projects_data_quality_report(request):
     )
 
 
-@permission_admin_or_data_steward_required()
+@permission_required("indigo.admin")
 def admin_all_projects_data_quality_report_field_single(request):
 
     data_quality_report = DataQualityReportForAllProjects()
@@ -475,7 +475,7 @@ def admin_all_projects_data_quality_report_field_single(request):
     )
 
 
-@permission_admin_or_data_steward_required()
+@permission_required("indigo.admin")
 def admin_all_projects_data_quality_report_field_list(request):
 
     data_quality_report = DataQualityReportForAllProjects()
@@ -502,7 +502,7 @@ def admin_all_projects_data_quality_report_field_list(request):
     )
 
 
-@permission_admin_or_data_steward_required()
+@permission_required("indigo.admin")
 def admin_all_projects_data_quality_list_projects_by_priority_highest(
     request, priority
 ):
