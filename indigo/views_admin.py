@@ -1671,6 +1671,9 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
         except self._model.DoesNotExist:
             raise Http404("Data does not exist")
 
+        if not self.has_permission_with_data(data):
+            raise PermissionDenied("You can not see data")
+
         record = data.record
 
         # Create a form instance and populate it with data from the request (binding):
@@ -1729,6 +1732,9 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
             + "/change_status.html",
             context,
         )
+
+    def has_permission_with_data(self, data):
+        return True
 
 
 class AdminProjectChangeStatus(AdminModelChangeStatus):
