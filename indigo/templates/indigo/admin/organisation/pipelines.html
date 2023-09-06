@@ -1,0 +1,40 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Pipelines for Organisation {{ organisation.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_organisation_list' %}">Organisations</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id  %}">Organisation {{ organisation.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Pipelines</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+
+    <h2>Pipelines linked (previously or currently)</h2>
+
+    {% if pipeline_links %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for pipeline_link in pipeline_links %}
+                <tr>
+                    <td><a href="{% url 'indigo_admin_pipeline_index' public_id=pipeline_link.pipeline.public_id %}">{{ pipeline_link.pipeline.public_id }}</a></td>
+                    <td>{{ pipeline_link.pipeline.data_private.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_pipeline_index' public_id=pipeline_link.pipeline.public_id %}" class="btn btn-primary">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No pipelines are linked.</p>
+    {% endif %}
+
+{% endblock %}

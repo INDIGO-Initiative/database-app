@@ -192,6 +192,26 @@ class ProjectIncludesFund(models.Model):
         )
 
 
+class PipelineIncludesOrganisation(models.Model):
+    pipeline = models.ForeignKey(
+        Pipeline,
+        on_delete=models.PROTECT,
+        related_name="includes_organisations",
+    )
+    organisation = models.ForeignKey(
+        Organisation,
+        on_delete=models.PROTECT,
+        related_name="included_by_pipelines",
+    )
+    in_current_data = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = (
+            "pipeline",
+            "organisation",
+        )
+
+
 class Sandbox(models.Model):
     public_id = models.CharField(max_length=200, unique=True)
     title = models.TextField(default="")

@@ -30,6 +30,7 @@ from indigo.models import (
     JoiningUpInitiative,
     Organisation,
     Pipeline,
+    PipelineIncludesOrganisation,
     Project,
     ProjectIncludesFund,
     ProjectIncludesOrganisation,
@@ -91,7 +92,7 @@ def update_all_data():
     try:
         type_pipeline = Type.objects.get(public_id=TYPE_PIPELINE_PUBLIC_ID)
         for pipeline in Record.objects.filter(type=type_pipeline):
-            update_pipeline(pipeline)
+            update_pipeline(pipeline, update_include_organisations=True)
     except Type.DoesNotExist:
         pass
 
@@ -350,7 +351,7 @@ def update_fund(record, update_projects=False):
             )
 
 
-def update_pipeline(record):
+def update_pipeline(record, update_include_organisations=False):
 
     try:
         pipeline = Pipeline.objects.get(public_id=record.public_id)
@@ -422,6 +423,34 @@ def update_pipeline(record):
     )
     # Finally, Save
     pipeline.save()
+
+    if update_include_organisations:
+        organisations = []
+        for (
+            org_id
+        ) in indigo.processdata.find_unique_organisation_ids_referenced_in_pipeline_data(
+            record.cached_data
+        ):
+            try:
+                organisations.append(Organisation.objects.get(public_id=org_id))
+            except Organisation.DoesNotExist:
+                pass
+        # Save Organisations
+        for organisation in organisations:
+            try:
+                pipeline_includes_organisation = (
+                    PipelineIncludesOrganisation.objects.get(
+                        pipeline=pipeline, organisation=organisation
+                    )
+                )
+            except PipelineIncludesOrganisation.DoesNotExist:
+                pipeline_includes_organisation = PipelineIncludesOrganisation()
+                pipeline_includes_organisation.organisation = organisation
+                pipeline_includes_organisation.pipeline = pipeline
+            pipeline_includes_organisation.in_current_data = True
+            pipeline_includes_organisation.save()
+        # TODO also need to set in_current_data=False if org is removed
+        # But at moment, how we use than variable it doesnt matter
 
 
 def update_assessment_resource(record):

@@ -2,9 +2,7 @@ import json
 import os
 
 from django import forms
-
 from django_jsonforms.forms import JSONSchemaField
-
 
 COMMENT_LABEL = "Comment for history"
 

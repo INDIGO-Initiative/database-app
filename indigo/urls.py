@@ -358,6 +358,11 @@ urlpatterns = [
         name="indigo_admin_organisation_projects",
     ),
     path(
+        "admin/organisation/<public_id>/pipelines",
+        views_admin.admin_organisation_pipelines,
+        name="indigo_admin_organisation_pipelines",
+    ),
+    path(
         "admin/organisation/<public_id>/download_form",
         views_admin.admin_organisation_download_form,
         name="indigo_admin_organisation_download_form",

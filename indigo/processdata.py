@@ -30,6 +30,22 @@ TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST = [
     if i.get("model") == "organisation" and i.get("multiple-seperator") == ","
 ]
 
+TYPE_PIPELINE_ORGANISATION_REFERENCES_LIST = [
+    i
+    for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PIPELINE_PUBLIC_ID).get(
+        "references_models"
+    )
+    if i.get("model") == "organisation" and not i.get("multiple-seperator")
+]
+
+TYPE_PIPELINE_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST = [
+    i
+    for i in settings.JSONDATAFERRET_TYPE_INFORMATION.get(TYPE_PIPELINE_PUBLIC_ID).get(
+        "references_models"
+    )
+    if i.get("model") == "organisation" and i.get("multiple-seperator") == ","
+]
+
 
 def _add_organisation_info_in_place_where_possible_and_build_dict(
     input_json, references_models_list, public_only
@@ -249,10 +265,29 @@ def does_organisation_data_contain_changes(organisation_model, new_data):
 
 
 def find_unique_organisation_ids_referenced_in_project_data(input_json):
+    return _find_unique_organisation_ids_referenced_in_data(
+        input_json,
+        references_list=TYPE_PROJECT_ORGANISATION_REFERENCES_LIST,
+        comma_seperated_references_list=TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST,
+    )
+
+
+def find_unique_organisation_ids_referenced_in_pipeline_data(input_json):
+    return _find_unique_organisation_ids_referenced_in_data(
+        input_json,
+        references_list=TYPE_PIPELINE_ORGANISATION_REFERENCES_LIST,
+        comma_seperated_references_list=TYPE_PIPELINE_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST,
+    )
+
+
+def _find_unique_organisation_ids_referenced_in_data(
+    input_json, references_list=[], comma_seperated_references_list=[]
+):
+
     org_ids = []
 
     # For single keys
-    for config in TYPE_PROJECT_ORGANISATION_REFERENCES_LIST:
+    for config in references_list:
         data_list = jsonpointer.resolve_pointer(
             input_json, config["list_key"], default=None
         )
@@ -265,7 +300,7 @@ def find_unique_organisation_ids_referenced_in_project_data(input_json):
                     org_ids.append(field_value)
 
     # For comma separated keys
-    for config in TYPE_PROJECT_ORGANISATION_COMMA_SEPARATED_REFERENCES_LIST:
+    for config in comma_seperated_references_list:
         data_list = jsonpointer.resolve_pointer(
             input_json, config["list_key"], default=None
         )
