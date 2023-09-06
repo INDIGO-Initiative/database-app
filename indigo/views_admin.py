@@ -664,7 +664,9 @@ def admin_organisation_projects(request, public_id):
         "indigo/admin/organisation/projects.html",
         {
             "organisation": organisation,
-            "project_links": organisation.included_by_projects.all(),
+            "project_links": [
+                i for i in organisation.included_by_projects.all() if i.in_current_data
+            ],
         },
     )
 
@@ -680,7 +682,9 @@ def admin_organisation_pipelines(request, public_id):
         "indigo/admin/organisation/pipelines.html",
         {
             "organisation": organisation,
-            "pipeline_links": organisation.included_by_pipelines.all(),
+            "pipeline_links": [
+                i for i in organisation.included_by_pipelines.all() if i.in_current_data
+            ],
         },
     )
 
@@ -1099,7 +1103,9 @@ def admin_fund_projects(request, public_id):
         "indigo/admin/fund/projects.html",
         {
             "fund": fund,
-            "project_links": fund.included_by_projects.all(),
+            "project_links": [
+                i for i in fund.included_by_projects.all() if i.in_current_data
+            ],
         },
     )
 

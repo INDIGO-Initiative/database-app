@@ -201,8 +201,17 @@ def update_project(
                 project_includes_organisation.project = project
             project_includes_organisation.in_current_data = True
             project_includes_organisation.save()
-        # TODO also need to set in_current_data=False if org is removed
-        # But at moment, how we use than variable it doesnt matter
+        # Also need to set in_current_data=False if removed
+        for project_includes_organisation in ProjectIncludesOrganisation.objects.filter(
+            project=project
+        ):
+            if not [
+                i
+                for i in organisations
+                if i.public_id == project_includes_organisation.organisation.public_id
+            ]:
+                project_includes_organisation.in_current_data = False
+                project_includes_organisation.save()
 
     if update_include_funds:
         funds = []
@@ -227,8 +236,15 @@ def update_project(
                 project_includes_fund.project = project
             project_includes_fund.in_current_data = True
             project_includes_fund.save()
-        # TODO also need to set in_current_data=False if fund is removed
-        # But at moment, how we use than variable it doesnt matter
+        # Also need to set in_current_data=False if removed
+        for project_includes_fund in ProjectIncludesFund.objects.filter(
+            project=project
+        ):
+            if not [
+                i for i in funds if i.public_id == project_includes_fund.fund.public_id
+            ]:
+                project_includes_fund.in_current_data = False
+                project_includes_fund.save()
 
 
 def update_project_low_priority(record):
@@ -449,8 +465,17 @@ def update_pipeline(record, update_include_organisations=False):
                 pipeline_includes_organisation.pipeline = pipeline
             pipeline_includes_organisation.in_current_data = True
             pipeline_includes_organisation.save()
-        # TODO also need to set in_current_data=False if org is removed
-        # But at moment, how we use than variable it doesnt matter
+        # Also need to set in_current_data=False if removed
+        for (
+            pipeline_includes_organisation
+        ) in PipelineIncludesOrganisation.objects.filter(pipeline=pipeline):
+            if not [
+                i
+                for i in organisations
+                if i.public_id == pipeline_includes_organisation.organisation.public_id
+            ]:
+                pipeline_includes_organisation.in_current_data = False
+                pipeline_includes_organisation.save()
 
 
 def update_assessment_resource(record):
