@@ -30,6 +30,7 @@ from indigo.models import (
     JoiningUpInitiative,
     Organisation,
     Pipeline,
+    PipelineIncludesOrganisation,
     Project,
     ProjectIncludesFund,
     ProjectIncludesOrganisation,
@@ -91,7 +92,7 @@ def update_all_data():
     try:
         type_pipeline = Type.objects.get(public_id=TYPE_PIPELINE_PUBLIC_ID)
         for pipeline in Record.objects.filter(type=type_pipeline):
-            update_pipeline(pipeline)
+            update_pipeline(pipeline, update_include_organisations=True)
     except Type.DoesNotExist:
         pass
 
@@ -200,8 +201,17 @@ def update_project(
                 project_includes_organisation.project = project
             project_includes_organisation.in_current_data = True
             project_includes_organisation.save()
-        # TODO also need to set in_current_data=False if org is removed
-        # But at moment, how we use than variable it doesnt matter
+        # Also need to set in_current_data=False if removed
+        for project_includes_organisation in ProjectIncludesOrganisation.objects.filter(
+            project=project
+        ):
+            if not [
+                i
+                for i in organisations
+                if i.public_id == project_includes_organisation.organisation.public_id
+            ]:
+                project_includes_organisation.in_current_data = False
+                project_includes_organisation.save()
 
     if update_include_funds:
         funds = []
@@ -226,8 +236,15 @@ def update_project(
                 project_includes_fund.project = project
             project_includes_fund.in_current_data = True
             project_includes_fund.save()
-        # TODO also need to set in_current_data=False if fund is removed
-        # But at moment, how we use than variable it doesnt matter
+        # Also need to set in_current_data=False if removed
+        for project_includes_fund in ProjectIncludesFund.objects.filter(
+            project=project
+        ):
+            if not [
+                i for i in funds if i.public_id == project_includes_fund.fund.public_id
+            ]:
+                project_includes_fund.in_current_data = False
+                project_includes_fund.save()
 
 
 def update_project_low_priority(record):
@@ -350,7 +367,7 @@ def update_fund(record, update_projects=False):
             )
 
 
-def update_pipeline(record):
+def update_pipeline(record, update_include_organisations=False):
 
     try:
         pipeline = Pipeline.objects.get(public_id=record.public_id)
@@ -422,6 +439,43 @@ def update_pipeline(record):
     )
     # Finally, Save
     pipeline.save()
+
+    if update_include_organisations:
+        organisations = []
+        for (
+            org_id
+        ) in indigo.processdata.find_unique_organisation_ids_referenced_in_pipeline_data(
+            record.cached_data
+        ):
+            try:
+                organisations.append(Organisation.objects.get(public_id=org_id))
+            except Organisation.DoesNotExist:
+                pass
+        # Save Organisations
+        for organisation in organisations:
+            try:
+                pipeline_includes_organisation = (
+                    PipelineIncludesOrganisation.objects.get(
+                        pipeline=pipeline, organisation=organisation
+                    )
+                )
+            except PipelineIncludesOrganisation.DoesNotExist:
+                pipeline_includes_organisation = PipelineIncludesOrganisation()
+                pipeline_includes_organisation.organisation = organisation
+                pipeline_includes_organisation.pipeline = pipeline
+            pipeline_includes_organisation.in_current_data = True
+            pipeline_includes_organisation.save()
+        # Also need to set in_current_data=False if removed
+        for (
+            pipeline_includes_organisation
+        ) in PipelineIncludesOrganisation.objects.filter(pipeline=pipeline):
+            if not [
+                i
+                for i in organisations
+                if i.public_id == pipeline_includes_organisation.organisation.public_id
+            ]:
+                pipeline_includes_organisation.in_current_data = False
+                pipeline_includes_organisation.save()
 
 
 def update_assessment_resource(record):

@@ -1,6 +1,6 @@
 {% extends 'indigo/base-admin.html' %}
 
-{% block head_title %}Projects for Organisation {{ organisation.public_id }}{% endblock %}
+{% block head_title %}Pipelines for Organisation {{ organisation.public_id }}{% endblock %}
 
 {% block breadcrumbs %}
     <nav aria-label="breadcrumb">
@@ -8,7 +8,7 @@
         <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
         <li class="breadcrumb-item"><a href="{% url 'indigo_admin_organisation_list' %}">Organisations</a></li>
         <li class="breadcrumb-item"><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id  %}">Organisation {{ organisation.public_id }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Projects</li>
+        <li class="breadcrumb-item active" aria-current="page">Pipelines</li>
       </ol>
     </nav>
 {% endblock %}
@@ -16,25 +16,25 @@
 
 {% block content %}
 
-    <h2>Projects linked (currently)</h2>
+    <h2>Pipelines linked (currently)</h2>
 
-    {% if project_links %}
+    {% if pipeline_links %}
         <table class="table">
             <tr>
                 <th>ID</th>
                 <th>Title</th>
                 <th>&nbsp;</th>
             </tr>
-            {% for project_link in project_links %}
+            {% for pipeline_link in pipeline_links %}
                 <tr>
-                    <td><a href="{% url 'indigo_admin_project_index' public_id=project_link.project.public_id %}">{{ project_link.project.public_id }}</a></td>
-                    <td>{{ project_link.project.data_private.name.value }}</td>
-                    <td><a href="{% url 'indigo_admin_project_index' public_id=project_link.project.public_id %}" class="btn btn-primary">View</a></td>
+                    <td><a href="{% url 'indigo_admin_pipeline_index' public_id=pipeline_link.pipeline.public_id %}">{{ pipeline_link.pipeline.public_id }}</a></td>
+                    <td>{{ pipeline_link.pipeline.data_private.name.value }}</td>
+                    <td><a href="{% url 'indigo_admin_pipeline_index' public_id=pipeline_link.pipeline.public_id %}" class="btn btn-primary">View</a></td>
                 </tr>
             {% endfor %}
         </table>
     {% else %}
-        <p>No projects are linked.</p>
+        <p>No pipelines are linked.</p>
     {% endif %}
 
 {% endblock %}

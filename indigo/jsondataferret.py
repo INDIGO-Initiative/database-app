@@ -37,6 +37,6 @@ def on_update_callback(record):
     elif record.type.public_id == TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID:
         update_assessment_resource(record)
     elif record.type.public_id == TYPE_PIPELINE_PUBLIC_ID:
-        update_pipeline(record)
+        update_pipeline(record, update_include_organisations=True)
     elif record.type.public_id == TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID:
         update_joining_up_initiative(record)
