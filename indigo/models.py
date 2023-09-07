@@ -82,6 +82,24 @@ class BaseModel(models.Model):
 class Organisation(BaseModel):
     type_id = TYPE_ORGANISATION_PUBLIC_ID
 
+    def is_in_any_public_projects(self):
+        """Note this includes if the organisation reference is private but the project is public.
+        https://github.com/INDIGO-Initiative/database-app/issues/180"""
+        return bool(
+            self.included_by_projects.filter(
+                project__status_public=True, in_current_data=True
+            )
+        )
+
+    def is_in_any_public_pipelines(self):
+        """Note this includes if the organisation reference is private but the pipeline is public.
+        https://github.com/INDIGO-Initiative/database-app/issues/180"""
+        return bool(
+            self.included_by_pipelines.filter(
+                pipeline__status_public=True, in_current_data=True
+            )
+        )
+
 
 class ProjectManager(models.Manager):
     def filter_by_admin_user_can_access(self, user):

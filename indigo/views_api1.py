@@ -76,6 +76,8 @@ def api1_organisation_index(request, public_id):
         "organisation": {
             "id": organisation.public_id,
             "data": organisation.data_public,
+            "is_in_any_public_projects": organisation.is_in_any_public_projects(),
+            "is_in_any_public_pipelines": organisation.is_in_any_public_pipelines(),
         }
     }
     return JsonResponse(data)
