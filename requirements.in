@@ -1,4 +1,4 @@
-Django<4
+Django<5
 psycopg2
 django-environ
 jsondataferret==0.7.0

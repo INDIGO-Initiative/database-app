@@ -1,4 +1,4 @@
-FROM python:3.8.16-bullseye
+FROM python:3.11.5-bookworm
 
 RUN mkdir -p /app
 COPY . /app
@@ -8,4 +8,7 @@ RUN pip install -r requirements_dev.txt
 
 EXPOSE 8000
 
-CMD gunicorn --bind 0.0.0.0:8000 djangoproject.wsgi:application
+#The manage.py command gives you a nice dev environment,
+#but you may want to temporarily switch to gunicorn if you need to debug server problems on live
+#CMD gunicorn --bind 0.0.0.0:8000 djangoproject.wsgi:application
+CMD python manage.py runserver 0.0.0.0:8000
