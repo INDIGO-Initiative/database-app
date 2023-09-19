@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:11
+        image: postgres:12
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
       with:
-        python-version: 3.8
+        python-version: 3.11
     - uses: actions/cache@v1
       with:
         path: ~/.cache/pip
