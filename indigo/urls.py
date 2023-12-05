@@ -152,6 +152,11 @@ urlpatterns = [
         views_public.all_public_data_file_per_data_type_csv_in_zip,
         name="indigo_all_public_data_file_per_data_type_csv_in_zip",
     ),
+    path(
+        "all_public_data.sqlite",
+        views_public.all_public_data_sqlite,
+        name="indigo_all_public_data_sqlite",
+    ),
     ########################### Public - Project - API
     path(
         "api1/project",

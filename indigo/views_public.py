@@ -559,3 +559,11 @@ def all_public_data_file_per_data_type_csv_in_zip(request):
             "Content-Disposition"
         ] = "attachment; filename=all_data_per_data_type_csv.zip"
         return response
+
+
+def all_public_data_sqlite(request):
+    if default_storage.exists("public/all_data.sqlite"):
+        wrapper = default_storage.open("public/all_data.sqlite")
+        response = HttpResponse(wrapper, content_type="application/vnd.sqlite3")
+        response["Content-Disposition"] = "attachment; filename=all_data.sqlite"
+        return response

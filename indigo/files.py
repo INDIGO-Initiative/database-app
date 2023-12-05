@@ -3,6 +3,7 @@ import io
 import os
 import tempfile
 from zipfile import ZipFile
+import sqlite3
 
 import jsonpointer
 import spreadsheetforms.api
@@ -123,6 +124,7 @@ def update_public_archive_files():
 
     _update_public_archive_files_file_per_record_in_zip()
     _update_public_archive_files_file_per_data_type_csv_in_zip()
+    _update_public_archive_file_sqlite()
 
 
 def _update_public_archive_files_file_per_data_type_csv_in_zip():
@@ -263,6 +265,165 @@ def _update_public_archive_files_file_per_data_type_csv_in_zip_for_records(
                 output_file_prepend + "_" + file_to_make_id + ".csv",
                 csv_output.getvalue(),
             )
+
+
+def _update_public_archive_file_sqlite():
+
+    # ---------------------------------------- All data (which actually excludes pipeline)
+    # Create Sqlite File, connect
+    file = tempfile.NamedTemporaryFile(delete=False, suffix=".sqlite")
+    out_file_sqlite = file.name
+    file.close()
+    connection = sqlite3.connect(out_file_sqlite, isolation_level=None)
+    cursor = connection.cursor()
+
+    # Projects
+    _update_public_archive_file_sqlite_for_records(
+        "project",
+        "Project",
+        settings.JSONDATAFERRET_TYPE_INFORMATION["project"]["fields"],
+        Project.objects.filter(exists=True, status_public=True).order_by("public_id"),
+        cursor,
+    )
+
+    # Organisations
+    _update_public_archive_file_sqlite_for_records(
+        "organisation",
+        "Organisation",
+        settings.JSONDATAFERRET_TYPE_INFORMATION["organisation"]["fields"],
+        Organisation.objects.filter(exists=True, status_public=True).order_by(
+            "public_id"
+        ),
+        cursor,
+    )
+
+    # Funds
+    _update_public_archive_file_sqlite_for_records(
+        "fund",
+        "Fund",
+        settings.JSONDATAFERRET_TYPE_INFORMATION["fund"]["fields"],
+        Fund.objects.filter(exists=True, status_public=True).order_by("public_id"),
+        cursor,
+    )
+
+    # Close database
+    del cursor
+    connection.close()
+
+    # Move to Django Storage
+    default_storage_name = "public/all_data.sqlite"
+    default_storage.delete(default_storage_name)
+    with open(out_file_sqlite, "rb") as fp:
+        default_storage.save(default_storage_name, ContentFile(fp.read()))
+
+    # Delete Temp file
+    os.remove(out_file_sqlite)
+
+
+def _update_public_archive_file_sqlite_for_records(
+    table_prepend, type_name, type_information_fields, records, cursor
+):
+
+    # Make list of files to make, and the labels and keys that will be used for each one
+    main_file_keys = []
+    files_to_make = {}
+
+    for config in type_information_fields:
+        if config.get("type", "") != "list" and config.get("key").find("/status") == -1:
+            main_file_keys.append(config.get("key"))
+        elif config.get("type", "") == "list":
+            file_to_make = {
+                "list_key": config["key"],
+                "keys": [],
+            }
+            for field in config["fields"]:
+                if field["key"].find("/status") == -1:
+                    file_to_make["keys"].append(field["key"])
+            files_to_make[
+                config["key"][1:].replace("/", "_").replace("-", "")
+            ] = file_to_make
+
+    # Create main tables
+    cursor.execute(
+        "CREATE TABLE "
+        + table_prepend
+        + " ("
+        + "id TEXT, "
+        + ",".join(
+            [
+                cn[1:].replace("/", "_").replace("-", "") + " TEXT "
+                for cn in main_file_keys
+            ]
+        )
+        + ")"
+    )
+    insert_sql = (
+        "INSERT INTO "
+        + table_prepend
+        + " VALUES(:id, "
+        + ",".join(
+            [":" + cn[1:].replace("/", "_").replace("-", "") for cn in main_file_keys]
+        )
+        + ")"
+    )
+    for record in records:
+        # id
+        row = {"id": record.public_id}
+        # fields
+        for key in main_file_keys:
+            row[
+                key[1:].replace("/", "_").replace("-", "")
+            ] = jsonpointer.resolve_pointer(record.data_public, key, "")
+        # record done
+        cursor.execute(insert_sql, row)
+
+    # Create sub tables
+    for table_to_make_id, table_to_make_config in files_to_make.items():
+        cursor.execute(
+            "CREATE TABLE "
+            + table_prepend
+            + "_"
+            + table_to_make_id
+            + " ("
+            + table_prepend
+            + "_id TEXT, "
+            + ",".join(
+                [
+                    cn[1:].replace("/", "_").replace("-", "") + " TEXT "
+                    for cn in table_to_make_config["keys"]
+                ]
+            )
+            + ")"
+        )
+        insert_sql = (
+            "INSERT INTO "
+            + table_prepend
+            + "_"
+            + table_to_make_id
+            + " VALUES(:record_id, "
+            + ",".join(
+                [
+                    ":" + cn[1:].replace("/", "_").replace("-", "")
+                    for cn in table_to_make_config["keys"]
+                ]
+            )
+            + ")"
+        )
+        for record in records:
+            row_datas = jsonpointer.resolve_pointer(
+                record.data_public, table_to_make_config["list_key"], []
+            )
+            if row_datas and isinstance(row_datas, list):
+                for row_data in row_datas:
+                    # id
+                    row = {"record_id": record.public_id}
+                    # fields
+                    for key in table_to_make_config["keys"]:
+                        row[
+                            key[1:].replace("/", "_").replace("-", "")
+                        ] = jsonpointer.resolve_pointer(row_data, key, "")
+                    # record done
+                    cursor.execute(insert_sql, row)
 
 
 def _update_public_archive_files_file_per_record_in_zip():
