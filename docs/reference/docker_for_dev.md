@@ -36,12 +36,18 @@ Add some `Types` records in the `Jsondataferret` section :
 
 ### Clear out old database
 
-If you already have a database, you need to clear out the old one:
+If you already have a database, you need to clear out the old one.
+
+Stop the usual Docker Compose Up command and instead run this command that only runs the database:
+
+```commandline
+docker compose -f docker-compose.dev.yml up postgres
+```
 
 Run in console:
 
 ```
-docker compose -f docker-compose.dev.yml run postgres  su -c 'PGPASSWORD=1234 psql   -U postgres -h postgres app'
+docker compose -f docker-compose.dev.yml run postgres  su -c 'PGPASSWORD=1234 psql   -U postgres -h postgres postgres'
 ```
 
 Run in Shell:
@@ -51,6 +57,8 @@ DROP DATABASE app;
 CREATE DATABASE app WITH OWNER postgres ENCODING 'UTF8'  LC_COLLATE='en_US.UTF-8' LC_CTYPE='en_US.UTF-8'  TEMPLATE=template0 ;
 \q
 ```
+
+You can now switch back to the normal Docker Compose Up command before moving to the import.
 
 ### Import
 
