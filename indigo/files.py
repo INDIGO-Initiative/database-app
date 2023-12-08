@@ -276,6 +276,7 @@ def _update_public_archive_file_sqlite():
     file.close()
     connection = sqlite3.connect(out_file_sqlite, isolation_level=None)
     cursor = connection.cursor()
+    cursor.execute("PRAGMA foreign_keys = ON;")
 
     # Projects
     _update_public_archive_file_sqlite_for_records(
@@ -348,7 +349,7 @@ def _update_public_archive_file_sqlite_for_records(
         "CREATE TABLE "
         + table_prepend
         + " ("
-        + "id TEXT, "
+        + "id TEXT PRIMARY KEY, "
         + ",".join(
             [
                 cn[1:].replace("/", "_").replace("-", "") + " TEXT "
@@ -380,20 +381,17 @@ def _update_public_archive_file_sqlite_for_records(
     # Create sub tables
     for table_to_make_id, table_to_make_config in files_to_make.items():
         cursor.execute(
-            "CREATE TABLE "
-            + table_prepend
-            + "_"
-            + table_to_make_id
-            + " ("
-            + table_prepend
-            + "_id TEXT, "
-            + ",".join(
-                [
-                    cn[1:].replace("/", "_").replace("-", "") + " TEXT "
-                    for cn in table_to_make_config["keys"]
-                ]
-            )
-            + ")"
+            (
+                "CREATE TABLE {table_prepend}_{table_to_make_id} "
+                + " ({table_prepend}_id TEXT REFERENCES {table_prepend}(id), "
+                + ",".join(
+                    [
+                        cn[1:].replace("/", "_").replace("-", "") + " TEXT "
+                        for cn in table_to_make_config["keys"]
+                    ]
+                )
+                + ")"
+            ).format(table_prepend=table_prepend, table_to_make_id=table_to_make_id)
         )
         insert_sql = (
             "INSERT INTO "
