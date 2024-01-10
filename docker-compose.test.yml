@@ -21,7 +21,7 @@ services:
     command: "su -c 'sleep 10; python manage.py test --noinput'"
 
   postgres:
-    image: postgres:12
+    image: postgres:15
     environment:
       POSTGRES_PASSWORD: 1234
       POSTGRES_USER: postgres
