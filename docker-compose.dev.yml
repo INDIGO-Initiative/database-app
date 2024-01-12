@@ -42,7 +42,7 @@ services:
     command: "celery -A indigo worker --without-heartbeat --without-gossip --without-mingle -l info"
 
   postgres:
-    image: postgres:12
+    image: postgres:15
     environment:
       POSTGRES_PASSWORD: 1234
       POSTGRES_USER: postgres
