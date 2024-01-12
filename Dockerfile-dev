@@ -1,4 +1,4 @@
-FROM python:3.11.5-bookworm
+FROM python:3.11.7-bookworm
 
 RUN mkdir -p /app
 COPY . /app
