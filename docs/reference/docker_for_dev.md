@@ -88,15 +88,15 @@ docker compose -f docker-compose.dev.yml  restart indigo-database-app-dev && doc
 To run the tests with docker compose locally:
 
 ```bash
-docker compose  -f docker compose.test.yml  -p indigo-database-test up
+docker compose  -f docker-compose.test.yml  -p indigo-database-test up
 ```
 
 As before, you'll need to rebuild the docker environment if you add, remove, or upgrade the dependencies:
 
 ```bash
-docker compose  -f docker compose.test.yml -p indigo-database-test down
-docker compose  -f docker compose.test.yml -p indigo-database-test build --no-cache
-docker compose  -f docker compose.test.yml -p indigo-database-test up
+docker compose  -f docker-compose.test.yml -p indigo-database-test down
+docker compose  -f docker-compose.test.yml -p indigo-database-test build --no-cache
+docker compose  -f docker-compose.test.yml -p indigo-database-test up
 ```
 
 ## Running commands
