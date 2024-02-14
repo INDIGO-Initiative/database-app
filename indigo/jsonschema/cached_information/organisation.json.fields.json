@@ -1,53 +1,65 @@
 [
     {
         "key": "/status",
-        "title": "Status"
+        "title": "Status",
+        "type": "string"
     },
     {
         "key": "/name/value",
-        "title": "Name"
+        "title": "Name",
+        "type": "string"
     },
     {
         "key": "/trading_name/value",
-        "title": "Trading Name"
+        "title": "Trading Name",
+        "type": "string"
     },
     {
         "key": "/translated_official_name/english/value",
-        "title": "Translated Official Name - English"
+        "title": "Translated Official Name - English",
+        "type": "string"
     },
     {
         "key": "/translated_official_name/source_language/value",
-        "title": "Translated Official Name - Source Language"
+        "title": "Translated Official Name - Source Language",
+        "type": "string"
     },
     {
         "key": "/description/value",
-        "title": "Description"
+        "title": "Description",
+        "type": "string"
     },
     {
         "key": "/jurisdiction/value",
-        "title": "Jurisdiction"
+        "title": "Jurisdiction",
+        "type": "string"
     },
     {
         "key": "/type/value",
-        "title": "Type - (Value)"
+        "title": "Type - (Value)",
+        "type": "string"
     },
     {
         "key": "/org-ids/primary/value",
-        "title": "ORG-Ids - Primary"
+        "title": "ORG-Ids - Primary",
+        "type": "string"
     },
     {
         "fields": [
             {
                 "key": "/organisation_id/value",
-                "title": "By Organisation ID"
+                "title": "By Organisation ID",
+                "type": "string"
             },
             {
                 "key": "/source_ids",
-                "title": "Sources"
+                "title": "Sources",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             }
         ],
         "key": "/org-ids/secondary",
@@ -56,81 +68,100 @@
     },
     {
         "key": "/contact/name/value",
-        "title": "Contact - Name - (Value)"
+        "title": "Contact - Name - (Value)",
+        "type": "string"
     },
     {
         "key": "/contact/name/status",
-        "title": "Contact - Name - (Status)"
+        "title": "Contact - Name - (Status)",
+        "type": "string"
     },
     {
         "key": "/contact/job_title/value",
-        "title": "Contact - Job title - (Value)"
+        "title": "Contact - Job title - (Value)",
+        "type": "string"
     },
     {
         "key": "/contact/job_title/status",
-        "title": "Contact - Job title - (Status)"
+        "title": "Contact - Job title - (Status)",
+        "type": "string"
     },
     {
         "key": "/contact/profile/value",
-        "title": "Contact - Profile - (Value)"
+        "title": "Contact - Profile - (Value)",
+        "type": "string"
     },
     {
         "key": "/contact/profile/status",
-        "title": "Contact - Profile - (Status)"
+        "title": "Contact - Profile - (Status)",
+        "type": "string"
     },
     {
         "key": "/contact/email/value",
-        "title": "Contact - Email - (Value)"
+        "title": "Contact - Email - (Value)",
+        "type": "string"
     },
     {
         "key": "/contact/email/status",
-        "title": "Contact - Email - (Status)"
+        "title": "Contact - Email - (Status)",
+        "type": "string"
     },
     {
         "key": "/contact/twitter/value",
-        "title": "Contact - Twitter - (Value)"
+        "title": "Contact - Twitter - (Value)",
+        "type": "string"
     },
     {
         "key": "/contact/twitter/status",
-        "title": "Contact - Twitter - (Status)"
+        "title": "Contact - Twitter - (Status)",
+        "type": "string"
     },
     {
         "key": "/contact/linkedin/value",
-        "title": "Contact - LinkedIn - (Value)"
+        "title": "Contact - LinkedIn - (Value)",
+        "type": "string"
     },
     {
         "key": "/contact/linkedin/status",
-        "title": "Contact - LinkedIn - (Status)"
+        "title": "Contact - LinkedIn - (Status)",
+        "type": "string"
     },
     {
         "key": "/website/value",
-        "title": "Website"
+        "title": "Website",
+        "type": "string"
     },
     {
         "key": "/address/value",
-        "title": "Address"
+        "title": "Address",
+        "type": "string"
     },
     {
         "key": "/postcode/value",
-        "title": "Postcode"
+        "title": "Postcode",
+        "type": "string"
     },
     {
         "key": "/country/value",
-        "title": "Country"
+        "title": "Country",
+        "type": "string"
     },
     {
         "fields": [
             {
                 "key": "/organisation_id/value",
-                "title": "By Organisation ID"
+                "title": "By Organisation ID",
+                "type": "string"
             },
             {
                 "key": "/source_ids",
-                "title": "Sources"
+                "title": "Sources",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             }
         ],
         "key": "/controlled_by",
@@ -141,39 +172,48 @@
         "fields": [
             {
                 "key": "/id",
-                "title": "Id"
+                "title": "Id",
+                "type": "string"
             },
             {
                 "key": "/name/value",
-                "title": "Name"
+                "title": "Name",
+                "type": "string"
             },
             {
                 "key": "/type/value",
-                "title": "Type - (Value)"
+                "title": "Type - (Value)",
+                "type": "string"
             },
             {
                 "key": "/publishing_organisation_ids/value",
-                "title": "Publishing Organisations"
+                "title": "Publishing Organisations",
+                "type": "string"
             },
             {
                 "key": "/url/value",
-                "title": "URL"
+                "title": "URL",
+                "type": "string"
             },
             {
                 "key": "/archive_url/value",
-                "title": "Archive URL"
+                "title": "Archive URL",
+                "type": "string"
             },
             {
                 "key": "/internal_url/value",
-                "title": "Internal URL"
+                "title": "Internal URL",
+                "type": "string"
             },
             {
                 "key": "/publication_date/value",
-                "title": "Publication Date"
+                "title": "Publication Date",
+                "type": "string"
             },
             {
                 "key": "/accessed_date/value",
-                "title": "Accessed Date"
+                "title": "Accessed Date",
+                "type": "string"
             }
         ],
         "key": "/sources",

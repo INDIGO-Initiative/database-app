@@ -1,585 +1,730 @@
 [
     {
         "key": "/status",
-        "title": "Status"
+        "title": "Status",
+        "type": "string"
     },
     {
         "key": "/name/value",
-        "title": "Project Name - (Value)"
+        "title": "Project Name - (Value)",
+        "type": "string"
     },
     {
         "key": "/alternative_names/value",
-        "title": "Alternative Names - (Value)"
+        "title": "Alternative Names - (Value)",
+        "type": "string"
     },
     {
         "key": "/contact/name/value",
-        "title": "Contact - Name - (Value)"
+        "title": "Contact - Name - (Value)",
+        "type": "string"
     },
     {
         "key": "/contact/name/status",
-        "title": "Contact - Name - (Status)"
+        "title": "Contact - Name - (Status)",
+        "type": "string"
     },
     {
         "key": "/contact/email/value",
-        "title": "Contact - Email - (Value)"
+        "title": "Contact - Email - (Value)",
+        "type": "string"
     },
     {
         "key": "/contact/email/status",
-        "title": "Contact - Email - (Status)"
+        "title": "Contact - Email - (Status)",
+        "type": "string"
     },
     {
         "key": "/state_development/state/value",
-        "title": "State of Development - (Value)"
+        "title": "State of Development - (Value)",
+        "type": "string"
     },
     {
         "key": "/state_development/state/status",
-        "title": "State of Development - (Status)"
+        "title": "State of Development - (Status)",
+        "type": "string"
     },
     {
         "key": "/state_development/reason_abandoned/value",
-        "title": "State of Development - Reason for abandoned - (Value)"
+        "title": "State of Development - Reason for abandoned - (Value)",
+        "type": "string"
     },
     {
         "key": "/state_development/reason_abandoned/status",
-        "title": "State of Development - Reason for abandoned - (Status)"
+        "title": "State of Development - Reason for abandoned - (Status)",
+        "type": "string"
     },
     {
         "key": "/state_development/source_ids",
-        "title": "State of Development - (Source ID's)"
+        "title": "State of Development - (Source ID's)",
+        "type": "string"
     },
     {
         "key": "/state_development/notes",
-        "title": "State of Development - (Notes)"
+        "title": "State of Development - (Notes)",
+        "type": "string"
     },
     {
         "key": "/stage_development/stage/value",
-        "title": "Stage of Development - (Value)"
+        "title": "Stage of Development - (Value)",
+        "type": "string"
     },
     {
         "key": "/stage_development/stage/status",
-        "title": "Stage of Development - (Status)"
+        "title": "Stage of Development - (Status)",
+        "type": "string"
     },
     {
         "key": "/stage_development/source_ids",
-        "title": "Stage of Development - (Source ID's)"
+        "title": "Stage of Development - (Source ID's)",
+        "type": "string"
     },
     {
         "key": "/stage_development/notes",
-        "title": "Stage of Development - (Notes)"
+        "title": "Stage of Development - (Notes)",
+        "type": "string"
     },
     {
         "key": "/misc1/type_instrument_project/impact_bond/value",
-        "title": "Type of instrument and project - Impact Bond - (Value)"
+        "title": "Type of instrument and project - Impact Bond - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc1/type_instrument_project/outcomes_fund/value",
-        "title": "Type of instrument and project - Outcomes Fund - (Value)"
+        "title": "Type of instrument and project - Outcomes Fund - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc1/type_instrument_project/social_impact_incentives_siinc/value",
-        "title": "Type of instrument and project - Social Impact Incentives (SIINC) - (Value)"
+        "title": "Type of instrument and project - Social Impact Incentives (SIINC) - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc1/type_instrument_project/social_impact_guarantee/value",
-        "title": "Type of instrument and project - Social Impact Guarantee - (Value)"
+        "title": "Type of instrument and project - Social Impact Guarantee - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc1/type_instrument_project/payment_by_results_no_prefinancing/value",
-        "title": "Type of instrument and project - Payment-by-results (no pre-financing) - (Value)"
+        "title": "Type of instrument and project - Payment-by-results (no pre-financing) - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc1/type_instrument_project/technical_assistance_and_market_building_programme_with_dedicated_grant/value",
-        "title": "Type of instrument and project - Technical Assistance and Market-building program (Must involve dedicated grant resources) - (Value)"
+        "title": "Type of instrument and project - Technical Assistance and Market-building program (Must involve dedicated grant resources) - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc1/type_instrument_project/other/value",
-        "title": "Type of instrument and project - Other - (Value)"
+        "title": "Type of instrument and project - Other - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc1/type_instrument_project/status",
-        "title": "Type of instrument and project - (Status)"
+        "title": "Type of instrument and project - (Status)",
+        "type": "string"
     },
     {
         "key": "/misc1/source_ids",
-        "title": "(Source ID's)"
+        "title": "(Source ID's)",
+        "type": "string"
     },
     {
         "key": "/misc1/notes",
-        "title": "(Notes)"
+        "title": "(Notes)",
+        "type": "string"
     },
     {
         "key": "/part_larger_program/main/value",
-        "title": "Part of a larger outcomes-based financing program? - Part of a larger outcomes-based financing program? - (Value)"
+        "title": "Part of a larger outcomes-based financing program? - Part of a larger outcomes-based financing program? - (Value)",
+        "type": "string"
     },
     {
         "key": "/part_larger_program/main/status",
-        "title": "Part of a larger outcomes-based financing program? - Part of a larger outcomes-based financing program? - (Status)"
+        "title": "Part of a larger outcomes-based financing program? - Part of a larger outcomes-based financing program? - (Status)",
+        "type": "string"
     },
     {
         "key": "/part_larger_program/details/value",
-        "title": "Part of a larger outcomes-based financing program? - Details - (Value)"
+        "title": "Part of a larger outcomes-based financing program? - Details - (Value)",
+        "type": "string"
     },
     {
         "key": "/part_larger_program/details/status",
-        "title": "Part of a larger outcomes-based financing program? - Details - (Status)"
+        "title": "Part of a larger outcomes-based financing program? - Details - (Status)",
+        "type": "string"
     },
     {
         "key": "/part_larger_program/source_ids",
-        "title": "Part of a larger outcomes-based financing program? - (Source ID's)"
+        "title": "Part of a larger outcomes-based financing program? - (Source ID's)",
+        "type": "string"
     },
     {
         "key": "/part_larger_program/notes",
-        "title": "Part of a larger outcomes-based financing program? - (Notes)"
+        "title": "Part of a larger outcomes-based financing program? - (Notes)",
+        "type": "string"
     },
     {
         "key": "/dates/expected_launch_date/value",
-        "title": "Dates - Expected Launch Date - (Value)"
+        "title": "Dates - Expected Launch Date - (Value)",
+        "type": "string"
     },
     {
         "key": "/dates/expected_launch_date/status",
-        "title": "Dates - Expected Launch Date - (Status)"
+        "title": "Dates - Expected Launch Date - (Status)",
+        "type": "string"
     },
     {
         "key": "/dates/expected_development_time/value",
-        "title": "Dates - Total expected project development time - (Value)"
+        "title": "Dates - Total expected project development time - (Value)",
+        "type": "string"
     },
     {
         "key": "/dates/expected_development_time/status",
-        "title": "Dates - Total expected project development time - (Status)"
+        "title": "Dates - Total expected project development time - (Status)",
+        "type": "string"
     },
     {
         "key": "/dates/expected_length/value",
-        "title": "Dates - Expected length of project (years) - (Value)"
+        "title": "Dates - Expected length of project (years) - (Value)",
+        "type": "string"
     },
     {
         "key": "/dates/expected_length/status",
-        "title": "Dates - Expected length of project (years) - (Status)"
+        "title": "Dates - Expected length of project (years) - (Status)",
+        "type": "string"
     },
     {
         "key": "/dates/design_process_began/value",
-        "title": "Dates - Project design process began - (Value)"
+        "title": "Dates - Project design process began - (Value)",
+        "type": "string"
     },
     {
         "key": "/dates/design_process_began/status",
-        "title": "Dates - Project design process began - (Status)"
+        "title": "Dates - Project design process began - (Status)",
+        "type": "string"
     },
     {
         "key": "/dates/source_ids",
-        "title": "Dates - (Source ID's)"
+        "title": "Dates - (Source ID's)",
+        "type": "string"
     },
     {
         "key": "/dates/notes",
-        "title": "Dates - (Notes)"
+        "title": "Dates - (Notes)",
+        "type": "string"
     },
     {
         "key": "/misc2/rationale_outcomes_based_financing/value",
-        "title": "Rationale for using outcome based finance - (Value)"
+        "title": "Rationale for using outcome based finance - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc2/rationale_outcomes_based_financing/status",
-        "title": "Rationale for using outcome based finance - (Status)"
+        "title": "Rationale for using outcome based finance - (Status)",
+        "type": "string"
     },
     {
         "key": "/misc2/source_ids",
-        "title": "(Source ID's)"
+        "title": "(Source ID's)",
+        "type": "string"
     },
     {
         "key": "/misc2/notes",
-        "title": "(Notes)"
+        "title": "(Notes)",
+        "type": "string"
     },
     {
         "key": "/misc3/key_challenges_launch/value",
-        "title": "Key challenges to launch - (Value)"
+        "title": "Key challenges to launch - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc3/key_challenges_launch/status",
-        "title": "Key challenges to launch - (Status)"
+        "title": "Key challenges to launch - (Status)",
+        "type": "string"
     },
     {
         "key": "/misc3/source_ids",
-        "title": "(Source ID's)"
+        "title": "(Source ID's)",
+        "type": "string"
     },
     {
         "key": "/misc3/notes",
-        "title": "(Notes)"
+        "title": "(Notes)",
+        "type": "string"
     },
     {
         "key": "/misc4/role_domestic_government/outcomes_funder/value",
-        "title": "Role of the domestic government - Outcomes funder - (Value)"
+        "title": "Role of the domestic government - Outcomes funder - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc4/role_domestic_government/service_provider/value",
-        "title": "Role of the domestic government - Service provider - (Value)"
+        "title": "Role of the domestic government - Service provider - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc4/role_domestic_government/member_project_committee/value",
-        "title": "Role of the domestic government - Member of project committee - (Value)"
+        "title": "Role of the domestic government - Member of project committee - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc4/role_domestic_government/no_formal_role/value",
-        "title": "Role of the domestic government - No formal role - (Value)"
+        "title": "Role of the domestic government - No formal role - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc4/role_domestic_government/other/value",
-        "title": "Role of the domestic government - Other - (Value)"
+        "title": "Role of the domestic government - Other - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc4/role_domestic_government/status",
-        "title": "Role of the domestic government - (Status)"
+        "title": "Role of the domestic government - (Status)",
+        "type": "string"
     },
     {
         "key": "/misc4/source_ids",
-        "title": "(Source ID's)"
+        "title": "(Source ID's)",
+        "type": "string"
     },
     {
         "key": "/misc4/notes",
-        "title": "(Notes)"
+        "title": "(Notes)",
+        "type": "string"
     },
     {
         "key": "/misc5/service_providers_identified_selected/request_for_proposals/value",
-        "title": "Service providers identified and selected - Request-for-proposals - (Value)"
+        "title": "Service providers identified and selected - Request-for-proposals - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc5/service_providers_identified_selected/direct_contracting/value",
-        "title": "Service providers identified and selected - Direct contracting by outcome funder/investor/intermediary - (Value)"
+        "title": "Service providers identified and selected - Direct contracting by outcome funder/investor/intermediary - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc5/service_providers_identified_selected/provider_led_development/value",
-        "title": "Service providers identified and selected - Provider-led deal development - (Value)"
+        "title": "Service providers identified and selected - Provider-led deal development - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc5/service_providers_identified_selected/other/value",
-        "title": "Service providers identified and selected - Other - (Value)"
+        "title": "Service providers identified and selected - Other - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc5/service_providers_identified_selected/status",
-        "title": "Service providers identified and selected - (Status)"
+        "title": "Service providers identified and selected - (Status)",
+        "type": "string"
     },
     {
         "key": "/misc5/source_ids",
-        "title": "(Source ID's)"
+        "title": "(Source ID's)",
+        "type": "string"
     },
     {
         "key": "/misc5/notes",
-        "title": "(Notes)"
+        "title": "(Notes)",
+        "type": "string"
     },
     {
         "key": "/misc6/feasibility_study/value",
-        "title": "Feasibility study - (Value)"
+        "title": "Feasibility study - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc6/feasibility_study/status",
-        "title": "Feasibility study - (Status)"
+        "title": "Feasibility study - (Status)",
+        "type": "string"
     },
     {
         "key": "/misc6/source_ids",
-        "title": "(Source ID's)"
+        "title": "(Source ID's)",
+        "type": "string"
     },
     {
         "key": "/misc6/notes",
-        "title": "(Notes)"
+        "title": "(Notes)",
+        "type": "string"
     },
     {
         "key": "/misc7/proposed_financing_instruments/debt/value",
-        "title": "Proposed financing instruments - Debt - (Value)"
+        "title": "Proposed financing instruments - Debt - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc7/proposed_financing_instruments/equity/value",
-        "title": "Proposed financing instruments - Equity - (Value)"
+        "title": "Proposed financing instruments - Equity - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc7/proposed_financing_instruments/guarantee/value",
-        "title": "Proposed financing instruments - Guarantee - (Value)"
+        "title": "Proposed financing instruments - Guarantee - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc7/proposed_financing_instruments/grant/value",
-        "title": "Proposed financing instruments - Grant - (Value)"
+        "title": "Proposed financing instruments - Grant - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc7/proposed_financing_instruments/other/value",
-        "title": "Proposed financing instruments - Other - (Value)"
+        "title": "Proposed financing instruments - Other - (Value)",
+        "type": "string"
     },
     {
         "key": "/misc7/proposed_financing_instruments/status",
-        "title": "Proposed financing instruments - (Status)"
+        "title": "Proposed financing instruments - (Status)",
+        "type": "string"
     },
     {
         "key": "/misc7/source_ids",
-        "title": "(Source ID's)"
+        "title": "(Source ID's)",
+        "type": "string"
     },
     {
         "key": "/misc7/notes",
-        "title": "(Notes)"
+        "title": "(Notes)",
+        "type": "string"
     },
     {
         "key": "/technical_assistance_grant_development/main/value",
-        "title": "Technical assistance grant - Technical assistance grant - (Value)"
+        "title": "Technical assistance grant - Technical assistance grant - (Value)",
+        "type": "string"
     },
     {
         "key": "/technical_assistance_grant_development/main/status",
-        "title": "Technical assistance grant - Technical assistance grant - (Status)"
+        "title": "Technical assistance grant - Technical assistance grant - (Status)",
+        "type": "string"
     },
     {
         "key": "/technical_assistance_grant_development/details/value",
-        "title": "Technical assistance grant - Details - (Value)"
+        "title": "Technical assistance grant - Details - (Value)",
+        "type": "string"
     },
     {
         "key": "/technical_assistance_grant_development/details/status",
-        "title": "Technical assistance grant - Details - (Status)"
+        "title": "Technical assistance grant - Details - (Status)",
+        "type": "string"
     },
     {
         "key": "/technical_assistance_grant_development/source_ids",
-        "title": "Technical assistance grant - (Source ID's)"
+        "title": "Technical assistance grant - (Source ID's)",
+        "type": "string"
     },
     {
         "key": "/technical_assistance_grant_development/notes",
-        "title": "Technical assistance grant - (Notes)"
+        "title": "Technical assistance grant - (Notes)",
+        "type": "string"
     },
     {
         "key": "/overall_project_finance/maximum_potential_outcome_payment_v2/currency/value",
-        "title": "Overall project finance - Estimated Maximum potential outcome payment - Currency - (Value)"
+        "title": "Overall project finance - Estimated Maximum potential outcome payment - Currency - (Value)",
+        "type": "string"
     },
     {
         "key": "/overall_project_finance/maximum_potential_outcome_payment_v2/currency/status",
-        "title": "Overall project finance - Estimated Maximum potential outcome payment - Currency - (Status)"
+        "title": "Overall project finance - Estimated Maximum potential outcome payment - Currency - (Status)",
+        "type": "string"
     },
     {
         "key": "/overall_project_finance/maximum_potential_outcome_payment_v2/amount/value",
-        "title": "Overall project finance - Estimated Maximum potential outcome payment - Amount - (Value)"
+        "title": "Overall project finance - Estimated Maximum potential outcome payment - Amount - (Value)",
+        "type": "number"
     },
     {
         "key": "/overall_project_finance/maximum_potential_outcome_payment_v2/amount/status",
-        "title": "Overall project finance - Estimated Maximum potential outcome payment - Amount - (Status)"
+        "title": "Overall project finance - Estimated Maximum potential outcome payment - Amount - (Status)",
+        "type": "string"
     },
     {
         "key": "/overall_project_finance/source_ids",
-        "title": "Overall project finance - (Source ID's)"
+        "title": "Overall project finance - (Source ID's)",
+        "type": "string"
     },
     {
         "key": "/overall_project_finance/notes",
-        "title": "Overall project finance - (Notes)"
+        "title": "Overall project finance - (Notes)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/social_challenge/value",
-        "title": "Purpose and classifications - Social/Developmental challenge - (Value)"
+        "title": "Purpose and classifications - Social/Developmental challenge - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/social_challenge/status",
-        "title": "Purpose and classifications - Social/Developmental challenge - (Status)"
+        "title": "Purpose and classifications - Social/Developmental challenge - (Status)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/intervention/value",
-        "title": "Purpose and classifications - Expected intervention model - (Value)"
+        "title": "Purpose and classifications - Expected intervention model - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/intervention/status",
-        "title": "Purpose and classifications - Expected intervention model - (Status)"
+        "title": "Purpose and classifications - Expected intervention model - (Status)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/employment_and_private_sector_development/value",
-        "title": "Purpose and classifications - Policy sector - Employment and private sector development - (Value)"
+        "title": "Purpose and classifications - Policy sector - Employment and private sector development - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/education/value",
-        "title": "Purpose and classifications - Policy sector - Education - (Value)"
+        "title": "Purpose and classifications - Policy sector - Education - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/social_protection/value",
-        "title": "Purpose and classifications - Policy sector - Social protection - (Value)"
+        "title": "Purpose and classifications - Policy sector - Social protection - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/criminal_justice/value",
-        "title": "Purpose and classifications - Policy sector - Criminal justice - (Value)"
+        "title": "Purpose and classifications - Policy sector - Criminal justice - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/health/value",
-        "title": "Purpose and classifications - Policy sector - Health - (Value)"
+        "title": "Purpose and classifications - Policy sector - Health - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/agriculture/value",
-        "title": "Purpose and classifications - Policy sector - Agriculture - (Value)"
+        "title": "Purpose and classifications - Policy sector - Agriculture - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/environment_and_climate_change/value",
-        "title": "Purpose and classifications - Policy sector - Environment and climate change - (Value)"
+        "title": "Purpose and classifications - Policy sector - Environment and climate change - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/water_sanitation_hygiene/value",
-        "title": "Purpose and classifications - Policy sector - Water, Sanitation and Hygiene - (Value)"
+        "title": "Purpose and classifications - Policy sector - Water, Sanitation and Hygiene - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/energy/value",
-        "title": "Purpose and classifications - Policy sector - Energy - (Value)"
+        "title": "Purpose and classifications - Policy sector - Energy - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/humanitarian/value",
-        "title": "Purpose and classifications - Policy sector - Humanitarian - (Value)"
+        "title": "Purpose and classifications - Policy sector - Humanitarian - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/other/value",
-        "title": "Purpose and classifications - Policy sector - Other - (Value)"
+        "title": "Purpose and classifications - Policy sector - Other - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/policy_sector/status",
-        "title": "Purpose and classifications - Policy sector - (Status)"
+        "title": "Purpose and classifications - Policy sector - (Status)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/primary_sdg_goal/value",
-        "title": "Purpose and classifications - Primary SDG goal - (Value)"
+        "title": "Purpose and classifications - Primary SDG goal - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/primary_sdg_goal/status",
-        "title": "Purpose and classifications - Primary SDG goal - (Status)"
+        "title": "Purpose and classifications - Primary SDG goal - (Status)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/secondary_sdg_goals/value",
-        "title": "Purpose and classifications - Secondary SDG goals - (Value)"
+        "title": "Purpose and classifications - Secondary SDG goals - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/secondary_sdg_goals/status",
-        "title": "Purpose and classifications - Secondary SDG goals - (Status)"
+        "title": "Purpose and classifications - Secondary SDG goals - (Status)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/primary_sdg_target/value",
-        "title": "Purpose and classifications - Primary SDG target - (Value)"
+        "title": "Purpose and classifications - Primary SDG target - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/primary_sdg_target/status",
-        "title": "Purpose and classifications - Primary SDG target - (Status)"
+        "title": "Purpose and classifications - Primary SDG target - (Status)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/secondary_sdg_targets/value",
-        "title": "Purpose and classifications - Secondary SDG targets - (Value)"
+        "title": "Purpose and classifications - Secondary SDG targets - (Value)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/secondary_sdg_targets/status",
-        "title": "Purpose and classifications - Secondary SDG targets - (Status)"
+        "title": "Purpose and classifications - Secondary SDG targets - (Status)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/source_ids",
-        "title": "Purpose and classifications - (Source ID's)"
+        "title": "Purpose and classifications - (Source ID's)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/notes",
-        "title": "Purpose and classifications - (Notes)"
+        "title": "Purpose and classifications - (Notes)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/target_population/value",
-        "title": "Service users and beneficiaries - Target population - (Value)"
+        "title": "Service users and beneficiaries - Target population - (Value)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/target_population/status",
-        "title": "Service users and beneficiaries - Target population - (Status)"
+        "title": "Service users and beneficiaries - Target population - (Status)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/targeted_number_service_users_or_beneficiaries_total/value",
-        "title": "Service users and beneficiaries - Targeted number of unique service users or beneficiaries (total) - (Value)"
+        "title": "Service users and beneficiaries - Targeted number of unique service users or beneficiaries (total) - (Value)",
+        "type": "number"
     },
     {
         "key": "/service_and_beneficiaries/targeted_number_service_users_or_beneficiaries_total/status",
-        "title": "Service users and beneficiaries - Targeted number of unique service users or beneficiaries (total) - (Status)"
+        "title": "Service users and beneficiaries - Targeted number of unique service users or beneficiaries (total) - (Status)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/unit_type_targeted_service_users_or_beneficiaries/value",
-        "title": "Service users and beneficiaries - Unit type of targeted service users or beneficiaries - (Value)"
+        "title": "Service users and beneficiaries - Unit type of targeted service users or beneficiaries - (Value)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/unit_type_targeted_service_users_or_beneficiaries/status",
-        "title": "Service users and beneficiaries - Unit type of targeted service users or beneficiaries - (Status)"
+        "title": "Service users and beneficiaries - Unit type of targeted service users or beneficiaries - (Status)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/unit_description_of_service_user_or_beneficiaries/value",
-        "title": "Service users and beneficiaries - Unit description of targeted service user or beneficiaries - (Value)"
+        "title": "Service users and beneficiaries - Unit description of targeted service user or beneficiaries - (Value)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/unit_description_of_service_user_or_beneficiaries/status",
-        "title": "Service users and beneficiaries - Unit description of targeted service user or beneficiaries - (Status)"
+        "title": "Service users and beneficiaries - Unit description of targeted service user or beneficiaries - (Status)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/country_classification/low_income/value",
-        "title": "Service users and beneficiaries - Country Classification of Service and beneficiaries - Low-income - (Value)"
+        "title": "Service users and beneficiaries - Country Classification of Service and beneficiaries - Low-income - (Value)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/country_classification/lower_middle_income/value",
-        "title": "Service users and beneficiaries - Country Classification of Service and beneficiaries - Lower-middle-income - (Value)"
+        "title": "Service users and beneficiaries - Country Classification of Service and beneficiaries - Lower-middle-income - (Value)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/country_classification/upper_middle_income/value",
-        "title": "Service users and beneficiaries - Country Classification of Service and beneficiaries - Upper-middle-income - (Value)"
+        "title": "Service users and beneficiaries - Country Classification of Service and beneficiaries - Upper-middle-income - (Value)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/country_classification/high_income/value",
-        "title": "Service users and beneficiaries - Country Classification of Service and beneficiaries - High-income - (Value)"
+        "title": "Service users and beneficiaries - Country Classification of Service and beneficiaries - High-income - (Value)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/country_classification/status",
-        "title": "Service users and beneficiaries - Country Classification of Service and beneficiaries - (Status)"
+        "title": "Service users and beneficiaries - Country Classification of Service and beneficiaries - (Status)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/source_ids",
-        "title": "Service users and beneficiaries - (Source ID's)"
+        "title": "Service users and beneficiaries - (Source ID's)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/notes",
-        "title": "Service users and beneficiaries - (Notes)"
+        "title": "Service users and beneficiaries - (Notes)",
+        "type": "string"
     },
     {
         "key": "/notes/value",
-        "title": "Notes - (Value)"
+        "title": "Notes - (Value)",
+        "type": "string"
     },
     {
         "key": "/notes/status",
-        "title": "Notes - (Status)"
+        "title": "Notes - (Status)",
+        "type": "string"
     },
     {
         "fields": [
             {
                 "key": "/service_provision_id/value",
-                "title": "Service Provision ID - (Value)"
+                "title": "Service Provision ID - (Value)",
+                "type": "string"
             },
             {
                 "key": "/location_name/value",
-                "title": "Location - Name - (Value)"
+                "title": "Location - Name - (Value)",
+                "type": "string"
             },
             {
                 "key": "/location_postcode/value",
-                "title": "Location - Postcode - (Value)"
+                "title": "Location - Postcode - (Value)",
+                "type": "string"
             },
             {
                 "key": "/location_country/value",
-                "title": "Location - Country - (Value)"
+                "title": "Location - Country - (Value)",
+                "type": "string"
             },
             {
                 "key": "/lat_lng/lat/value",
-                "title": "Lat/Lng - Lat - (Value)"
+                "title": "Lat/Lng - Lat - (Value)",
+                "type": "number"
             },
             {
                 "key": "/lat_lng/lng/value",
-                "title": "Lat/Lng - Lng - (Value)"
+                "title": "Lat/Lng - Lng - (Value)",
+                "type": "number"
             },
             {
                 "key": "/adminstrative_geography_name/value",
-                "title": "Adminstrative geography - Name - (Value)"
+                "title": "Adminstrative geography - Name - (Value)",
+                "type": "string"
             },
             {
                 "key": "/adminstrative_geography_code_type/value",
-                "title": "Adminstrative geography - Code Type - (Value)"
+                "title": "Adminstrative geography - Code Type - (Value)",
+                "type": "string"
             },
             {
                 "key": "/adminstrative_geography_code/value",
-                "title": "Adminstrative geography - Code - (Value)"
+                "title": "Adminstrative geography - Code - (Value)",
+                "type": "string"
             },
             {
                 "key": "/source_ids",
-                "title": "Sources"
+                "title": "Sources",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "Status",
+                "type": "string"
             }
         ],
         "key": "/delivery_locations",
@@ -590,47 +735,58 @@
         "fields": [
             {
                 "key": "/id",
-                "title": "Id"
+                "title": "Id",
+                "type": "string"
             },
             {
                 "key": "/name/value",
-                "title": "Name - (Value)"
+                "title": "Name - (Value)",
+                "type": "string"
             },
             {
                 "key": "/type/value",
-                "title": "Type - (Value)"
+                "title": "Type - (Value)",
+                "type": "string"
             },
             {
                 "key": "/publishing_organisation_ids/value",
-                "title": "Publishing Organisations - (Value)"
+                "title": "Publishing Organisations - (Value)",
+                "type": "string"
             },
             {
                 "key": "/url/value",
-                "title": "URL - (Value)"
+                "title": "URL - (Value)",
+                "type": "string"
             },
             {
                 "key": "/archive_url/value",
-                "title": "Archive URL - (Value)"
+                "title": "Archive URL - (Value)",
+                "type": "string"
             },
             {
                 "key": "/internal_url/value",
-                "title": "Internal URL - (Value)"
+                "title": "Internal URL - (Value)",
+                "type": "string"
             },
             {
                 "key": "/publication_date/value",
-                "title": "Publication Date - (Value)"
+                "title": "Publication Date - (Value)",
+                "type": "string"
             },
             {
                 "key": "/accessed_date/value",
-                "title": "Accessed Date - (Value)"
+                "title": "Accessed Date - (Value)",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "Status",
+                "type": "string"
             }
         ],
         "key": "/sources",
@@ -641,39 +797,48 @@
         "fields": [
             {
                 "key": "/id",
-                "title": "Id"
+                "title": "Id",
+                "type": "string"
             },
             {
                 "key": "/organisation_id/value",
-                "title": "Organisation ID - (Value)"
+                "title": "Organisation ID - (Value)",
+                "type": "string"
             },
             {
                 "key": "/organisation_role_category/value",
-                "title": "Organisation Role Category - (Value)"
+                "title": "Organisation Role Category - (Value)",
+                "type": "string"
             },
             {
                 "key": "/intervention/value",
-                "title": "Intervention - (Value)"
+                "title": "Intervention - (Value)",
+                "type": "string"
             },
             {
                 "key": "/planned_service/start_date/value",
-                "title": "Planned Service - Start - (Value)"
+                "title": "Planned Service - Start - (Value)",
+                "type": "string"
             },
             {
                 "key": "/planned_service/end_date/value",
-                "title": "Planned Service - End - (Value)"
+                "title": "Planned Service - End - (Value)",
+                "type": "string"
             },
             {
                 "key": "/source_ids",
-                "title": "Sources"
+                "title": "Sources",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "Status",
+                "type": "string"
             }
         ],
         "key": "/service_provisions",
@@ -684,67 +849,83 @@
         "fields": [
             {
                 "key": "/organisation_id/value",
-                "title": "Organisation ID - (Value)"
+                "title": "Organisation ID - (Value)",
+                "type": "string"
             },
             {
                 "key": "/organisation_role_category/value",
-                "title": "Organisation Role Category - (Value)"
+                "title": "Organisation Role Category - (Value)",
+                "type": "string"
             },
             {
                 "key": "/maximum_potential_outcome_payment/currency/value",
-                "title": "Maximum potential Outcome payment - Currency - (Value)"
+                "title": "Maximum potential Outcome payment - Currency - (Value)",
+                "type": "string"
             },
             {
                 "key": "/maximum_potential_outcome_payment/currency/status",
-                "title": "Maximum potential Outcome payment - Currency - (Status)"
+                "title": "Maximum potential Outcome payment - Currency - (Status)",
+                "type": "string"
             },
             {
                 "key": "/maximum_potential_outcome_payment/amount/value",
-                "title": "Maximum potential Outcome payment - Amount - (Value)"
+                "title": "Maximum potential Outcome payment - Amount - (Value)",
+                "type": "number"
             },
             {
                 "key": "/maximum_potential_outcome_payment/amount_usd/value",
-                "title": "Maximum potential Outcome payment - Amount USD - (Value)"
+                "title": "Maximum potential Outcome payment - Amount USD - (Value)",
+                "type": "number"
             },
             {
                 "key": "/result_type/value",
-                "title": "Result type - (Value)"
+                "title": "Result type - (Value)",
+                "type": "string"
             },
             {
                 "key": "/period/start_date/value",
-                "title": "Period - Start - (Value)"
+                "title": "Period - Start - (Value)",
+                "type": "string"
             },
             {
                 "key": "/period/end_date/value",
-                "title": "Period - End - (Value)"
+                "title": "Period - End - (Value)",
+                "type": "string"
             },
             {
                 "key": "/total_outcome_payments/currency/value",
-                "title": "Total outcome payments made - Currency - (Value)"
+                "title": "Total outcome payments made - Currency - (Value)",
+                "type": "string"
             },
             {
                 "key": "/total_outcome_payments/currency/status",
-                "title": "Total outcome payments made - Currency - (Status)"
+                "title": "Total outcome payments made - Currency - (Status)",
+                "type": "string"
             },
             {
                 "key": "/total_outcome_payments/amount/value",
-                "title": "Total outcome payments made - Amount - (Value)"
+                "title": "Total outcome payments made - Amount - (Value)",
+                "type": "number"
             },
             {
                 "key": "/total_outcome_payments/amount_usd/value",
-                "title": "Total outcome payments made - Amount USD - (Value)"
+                "title": "Total outcome payments made - Amount USD - (Value)",
+                "type": "number"
             },
             {
                 "key": "/source_ids",
-                "title": "Sources"
+                "title": "Sources",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "Status",
+                "type": "string"
             }
         ],
         "key": "/outcome_payment_commitments",
@@ -755,75 +936,93 @@
         "fields": [
             {
                 "key": "/id",
-                "title": "Id"
+                "title": "Id",
+                "type": "string"
             },
             {
                 "key": "/organisation_id/value",
-                "title": "Organisation ID - (Value)"
+                "title": "Organisation ID - (Value)",
+                "type": "string"
             },
             {
                 "key": "/organisation_role_category/value",
-                "title": "Organisation Role Category - (Value)"
+                "title": "Organisation Role Category - (Value)",
+                "type": "string"
             },
             {
                 "key": "/investment_commitment/currency/value",
-                "title": "Investment Commitment - Currency - (Value)"
+                "title": "Investment Commitment - Currency - (Value)",
+                "type": "string"
             },
             {
                 "key": "/investment_commitment/amount/min/value",
-                "title": "Investment Commitment - Amount - Min - (Value)"
+                "title": "Investment Commitment - Amount - Min - (Value)",
+                "type": "number"
             },
             {
                 "key": "/investment_commitment/amount/exact/value",
-                "title": "Investment Commitment - Amount - Exact - (Value)"
+                "title": "Investment Commitment - Amount - Exact - (Value)",
+                "type": "number"
             },
             {
                 "key": "/investment_commitment/amount/max/value",
-                "title": "Investment Commitment - Amount - Max - (Value)"
+                "title": "Investment Commitment - Amount - Max - (Value)",
+                "type": "number"
             },
             {
                 "key": "/investment_commitment/amount_usd/min/value",
-                "title": "Investment Commitment - Amount USD - Min - (Value)"
+                "title": "Investment Commitment - Amount USD - Min - (Value)",
+                "type": "number"
             },
             {
                 "key": "/investment_commitment/amount_usd/exact/value",
-                "title": "Investment Commitment - Amount USD - Exact - (Value)"
+                "title": "Investment Commitment - Amount USD - Exact - (Value)",
+                "type": "number"
             },
             {
                 "key": "/investment_commitment/amount_usd/max/value",
-                "title": "Investment Commitment - Amount USD - Max - (Value)"
+                "title": "Investment Commitment - Amount USD - Max - (Value)",
+                "type": "number"
             },
             {
                 "key": "/maximum_potential_loss/value",
-                "title": "Maximum Potential loss - (Value)"
+                "title": "Maximum Potential loss - (Value)",
+                "type": "string"
             },
             {
                 "key": "/maximum_potential_return_type/value",
-                "title": "Maximum Potential Return Type - (Value)"
+                "title": "Maximum Potential Return Type - (Value)",
+                "type": "string"
             },
             {
                 "key": "/maximum_potential_return/value",
-                "title": "Maximum Potential Return - (Value)"
+                "title": "Maximum Potential Return - (Value)",
+                "type": "number"
             },
             {
                 "key": "/investor_repayment/value",
-                "title": "Investor Repayment - (Value)"
+                "title": "Investor Repayment - (Value)",
+                "type": "string"
             },
             {
                 "key": "/investment_type/value",
-                "title": "Investment Type - (Value)"
+                "title": "Investment Type - (Value)",
+                "type": "string"
             },
             {
                 "key": "/source_ids",
-                "title": "Sources"
+                "title": "Sources",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "Status",
+                "type": "string"
             }
         ],
         "key": "/investments",
@@ -834,27 +1033,33 @@
         "fields": [
             {
                 "key": "/organisation_id/value",
-                "title": "Organisation ID - (Value)"
+                "title": "Organisation ID - (Value)",
+                "type": "string"
             },
             {
                 "key": "/organisation_role_category/value",
-                "title": "Organisation Role Category - (Value)"
+                "title": "Organisation Role Category - (Value)",
+                "type": "string"
             },
             {
                 "key": "/other_role_description/value",
-                "title": "Other Role Description - (Value)"
+                "title": "Other Role Description - (Value)",
+                "type": "string"
             },
             {
                 "key": "/source_ids",
-                "title": "Sources"
+                "title": "Sources",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "Status",
+                "type": "string"
             }
         ],
         "key": "/intermediary_services",
@@ -865,75 +1070,93 @@
         "fields": [
             {
                 "key": "/id",
-                "title": "Id"
+                "title": "Id",
+                "type": "string"
             },
             {
                 "key": "/definition/value",
-                "title": "Outcome Definition - (Value)"
+                "title": "Outcome Definition - (Value)",
+                "type": "string"
             },
             {
                 "key": "/target_population/value",
-                "title": "Target Population - (Value)"
+                "title": "Target Population - (Value)",
+                "type": "string"
             },
             {
                 "key": "/targeted_number_of_service_users_or_beneficiaries_total/value",
-                "title": "Targeted number of service users Or beneficiaries (total) - (Value)"
+                "title": "Targeted number of service users Or beneficiaries (total) - (Value)",
+                "type": "number"
             },
             {
                 "key": "/unit_type_of_targeted_service_users_or_beneficiaries/value",
-                "title": "Unit type of targeted Service users or beneficiaries - (Value)"
+                "title": "Unit type of targeted Service users or beneficiaries - (Value)",
+                "type": "string"
             },
             {
                 "key": "/unit_description_of_service_user_or_beneficiaries/value",
-                "title": "Unit description of Service user or beneficiaries - (Value)"
+                "title": "Unit description of Service user or beneficiaries - (Value)",
+                "type": "string"
             },
             {
                 "key": "/outcome_metric_target/value",
-                "title": "Outcome metric target - (Value)"
+                "title": "Outcome metric target - (Value)",
+                "type": "string"
             },
             {
                 "key": "/other_target_for_meeting_outcome_metric_target/value",
-                "title": "Other target for Meeting outcome metric target - (Value)"
+                "title": "Other target for Meeting outcome metric target - (Value)",
+                "type": "string"
             },
             {
                 "key": "/outcome_validation_method/value",
-                "title": "Outcome validation Method - (Value)"
+                "title": "Outcome validation Method - (Value)",
+                "type": "string"
             },
             {
                 "key": "/data_source_for_outcome_validation/value",
-                "title": "Data source for Outcome validation - (Value)"
+                "title": "Data source for Outcome validation - (Value)",
+                "type": "string"
             },
             {
                 "key": "/policy_sector/value",
-                "title": "Policy sector - (Value)"
+                "title": "Policy sector - (Value)",
+                "type": "string"
             },
             {
                 "key": "/primary_sdg_goal/value",
-                "title": "Primary SDG goal - (Value)"
+                "title": "Primary SDG goal - (Value)",
+                "type": "string"
             },
             {
                 "key": "/secondary_sdg_goals/value",
-                "title": "Secondary SDG goals - (Value)"
+                "title": "Secondary SDG goals - (Value)",
+                "type": "string"
             },
             {
                 "key": "/primary_sdg_target/value",
-                "title": "Primary SDG target - (Value)"
+                "title": "Primary SDG target - (Value)",
+                "type": "string"
             },
             {
                 "key": "/secondary_sdg_targets/value",
-                "title": "Secondary SDG targets - (Value)"
+                "title": "Secondary SDG targets - (Value)",
+                "type": "string"
             },
             {
                 "key": "/source_ids",
-                "title": "Sources"
+                "title": "Sources",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "Status",
+                "type": "string"
             }
         ],
         "key": "/outcome_metrics",
@@ -944,19 +1167,23 @@
         "fields": [
             {
                 "key": "/title/value",
-                "title": "Title - (Value)"
+                "title": "Title - (Value)",
+                "type": "string"
             },
             {
                 "key": "/url/value",
-                "title": "URL - (Value)"
+                "title": "URL - (Value)",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "Status",
+                "type": "string"
             }
         ],
         "key": "/documents",
@@ -967,19 +1194,23 @@
         "fields": [
             {
                 "key": "/project/value",
-                "title": "Id of project"
+                "title": "Id of project",
+                "type": "string"
             },
             {
                 "key": "/source_ids",
-                "title": "Sources"
+                "title": "Sources",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "Status",
+                "type": "string"
             }
         ],
         "key": "/projects",
