@@ -1,0 +1,25 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Edit Organisation {{ organisation.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_organisation_list' %}">Organisations</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_organisation_index' public_id=instance.public_id  %}">Organisation {{ instance.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <h2 class="my-5">Edit Organisation: {{ instance.public_id }} {{ instance.data_private.name.value }}</h2>
+
+    <form action="" method="post" class="form mb-5">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form }}
+        <input type="submit" value="Save changes" class="btn btn-primary my-3">
+    </form>
+{% endblock %}

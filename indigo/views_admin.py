@@ -60,6 +60,7 @@ from .forms import (
     PipelineNewForm,
     ProjectNewForm,
     RecordChangeStatusForm,
+    OrganisationEditForm,
 )
 from .models import (
     AdminUserHasPermissionsForProject,
@@ -2033,6 +2034,17 @@ class AdminJoiningUpInitiativeEdit(AdminModelEdit):
     def has_permission(self):
         user = self.request.user
         return user.has_perm("indigo.admin")
+
+
+class AdminOrganisationEdit(AdminModelEdit):
+    _model = Organisation
+    _type_public_id = TYPE_ORGANISATION_PUBLIC_ID
+    _form_class = OrganisationEditForm
+    _redirect_view = "indigo_admin_organisation_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
 
 
 class AdminModelModerate(PermissionRequiredMixin, View, ABC):
