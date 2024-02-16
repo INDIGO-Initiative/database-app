@@ -1,33 +1,40 @@
 [
     {
         "key": "/status",
-        "title": "Joining Up Initiative - Status"
+        "title": "Joining Up Initiative - Status",
+        "type": "string"
     },
     {
         "key": "/name/value",
-        "title": "Joining Up Initiative - Name - (Value)"
+        "title": "Joining Up Initiative - Name - (Value)",
+        "type": "string"
     },
     {
         "key": "/dates/start_date/value",
-        "title": "Joining Up Initiative - Dates - Start date of initiative - (Value)"
+        "title": "Joining Up Initiative - Dates - Start date of initiative - (Value)",
+        "type": "string"
     },
     {
         "key": "/lever/value",
-        "title": "Joining Up Initiative - Lever - (Value)"
+        "title": "Joining Up Initiative - Lever - (Value)",
+        "type": "string"
     },
     {
         "key": "/governance_model/value",
-        "title": "Joining Up Initiative - Governance model - (Value)"
+        "title": "Joining Up Initiative - Governance model - (Value)",
+        "type": "string"
     },
     {
         "key": "/allocation_process/value",
-        "title": "Joining Up Initiative - Allocation process - (Value)"
+        "title": "Joining Up Initiative - Allocation process - (Value)",
+        "type": "string"
     },
     {
         "fields": [
             {
                 "key": "/value",
-                "title": "(Value)"
+                "title": "(Value)",
+                "type": "string"
             }
         ],
         "key": "/policy_sector",
@@ -38,7 +45,8 @@
         "fields": [
             {
                 "key": "/title/value",
-                "title": "Name - (Value)"
+                "title": "Name - (Value)",
+                "type": "string"
             }
         ],
         "key": "/departments",
@@ -49,11 +57,13 @@
         "fields": [
             {
                 "key": "/title/value",
-                "title": "Title - (Value)"
+                "title": "Title - (Value)",
+                "type": "string"
             },
             {
                 "key": "/url/value",
-                "title": "URL - (Value)"
+                "title": "URL - (Value)",
+                "type": "string"
             }
         ],
         "key": "/headline_evaluation",
@@ -64,11 +74,13 @@
         "fields": [
             {
                 "key": "/title/value",
-                "title": "Title - (Value)"
+                "title": "Title - (Value)",
+                "type": "string"
             },
             {
                 "key": "/url/value",
-                "title": "URL - (Value)"
+                "title": "URL - (Value)",
+                "type": "string"
             }
         ],
         "key": "/other_evaluation_materials",

@@ -1,189 +1,235 @@
 [
     {
         "key": "/status",
-        "title": "Fund - Status"
+        "title": "Fund - Status",
+        "type": "string"
     },
     {
         "key": "/name/value",
-        "title": "Fund - Name"
+        "title": "Fund - Name",
+        "type": "string"
     },
     {
         "key": "/stage_development/value",
-        "title": "Fund - Stage of Development - (Value)"
+        "title": "Fund - Stage of Development - (Value)",
+        "type": "string"
     },
     {
         "key": "/host_institution_of_outcome_fund/value",
-        "title": "Fund - Host institution of Outcome Fund"
+        "title": "Fund - Host institution of Outcome Fund",
+        "type": "string"
     },
     {
         "key": "/mechanism/value",
-        "title": "Fund - Mechanism"
+        "title": "Fund - Mechanism",
+        "type": "string"
     },
     {
         "key": "/dates/expression_of_interest/value",
-        "title": "Fund - Dates - Expression of interest - (Value)"
+        "title": "Fund - Dates - Expression of interest - (Value)",
+        "type": "string"
     },
     {
         "key": "/dates/launch_date/value",
-        "title": "Fund - Dates - Launch date - (Value)"
+        "title": "Fund - Dates - Launch date - (Value)",
+        "type": "string"
     },
     {
         "key": "/dates/anticipated_end_date/value",
-        "title": "Fund - Dates - Anticipated End date - (Value)"
+        "title": "Fund - Dates - Anticipated End date - (Value)",
+        "type": "string"
     },
     {
         "key": "/dates/actual_end_date/value",
-        "title": "Fund - Dates - Actual End date - (Value)"
+        "title": "Fund - Dates - Actual End date - (Value)",
+        "type": "string"
     },
     {
         "key": "/dates/notes",
-        "title": "Fund - Dates - (Notes)"
+        "title": "Fund - Dates - (Notes)",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/purpose/value",
-        "title": "Fund - Purpose and classifications - Purpose"
+        "title": "Fund - Purpose and classifications - Purpose",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/primary_sdg_goal/value",
-        "title": "Fund - Purpose and classifications - Primary SDG goal"
+        "title": "Fund - Purpose and classifications - Primary SDG goal",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/secondary_sdg_goals/value",
-        "title": "Fund - Purpose and classifications - Secondary SDG goals"
+        "title": "Fund - Purpose and classifications - Secondary SDG goals",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/primary_sdg_target/value",
-        "title": "Fund - Purpose and classifications - Primary SDG target"
+        "title": "Fund - Purpose and classifications - Primary SDG target",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/secondary_sdg_targets/value",
-        "title": "Fund - Purpose and classifications - Secondary SDG targets"
+        "title": "Fund - Purpose and classifications - Secondary SDG targets",
+        "type": "string"
     },
     {
         "key": "/purpose_and_classifications/notes",
-        "title": "Fund - Purpose and classifications - (Notes)"
+        "title": "Fund - Purpose and classifications - (Notes)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/target_population/value",
-        "title": "Fund - Service and beneficiaries - Target population"
+        "title": "Fund - Service and beneficiaries - Target population",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/targeted_number_service_users_or_beneficiaries_total/value",
-        "title": "Fund - Service and beneficiaries - Targeted number of unique service users or beneficiaries (total) - (Value)"
+        "title": "Fund - Service and beneficiaries - Targeted number of unique service users or beneficiaries (total) - (Value)",
+        "type": "number"
     },
     {
         "key": "/service_and_beneficiaries/unit_type_targeted_service_users_or_beneficiaries/value",
-        "title": "Fund - Service and beneficiaries - Unit type of targeted service users or beneficiaries - (Value)"
+        "title": "Fund - Service and beneficiaries - Unit type of targeted service users or beneficiaries - (Value)",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/unit_description_of_service_user_or_beneficiaries/value",
-        "title": "Fund - Service and beneficiaries - Unit description of targeted service user or beneficiaries"
+        "title": "Fund - Service and beneficiaries - Unit description of targeted service user or beneficiaries",
+        "type": "string"
     },
     {
         "key": "/service_and_beneficiaries/notes",
-        "title": "Fund - Service and beneficiaries - (Notes)"
+        "title": "Fund - Service and beneficiaries - (Notes)",
+        "type": "string"
     },
     {
         "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/currency/value",
-        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Currency"
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Currency",
+        "type": "string"
     },
     {
         "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/aspiration/amount/value",
-        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Aspiration - Amount - (Value)"
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Aspiration - Amount - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/aspiration/amount_usd/value",
-        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Aspiration - Amount USD - (Value)"
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Aspiration - Amount USD - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/actual/amount/value",
-        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Actual - Amount - (Value)"
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Actual - Amount - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/actual/amount_usd/value",
-        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Actual - Amount USD - (Value)"
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - Actual - Amount USD - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/total_outcome_fund_value_outcomes_funding/notes",
-        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - (Notes)"
+        "title": "Fund - Dimensions of Scale - Total Outcome Fund value (outcomes funding) - (Notes)",
+        "type": "string"
     },
     {
         "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/currency/value",
-        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Currency"
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Currency",
+        "type": "string"
     },
     {
         "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/aspiration/amount/value",
-        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Aspiration - Amount - (Value)"
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Aspiration - Amount - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/aspiration/amount_usd/value",
-        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Aspiration - Amount USD - (Value)"
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Aspiration - Amount USD - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/actual/amount/value",
-        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Actual - Amount - (Value)"
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Actual - Amount - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/actual/amount_usd/value",
-        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Actual - Amount USD - (Value)"
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - Actual - Amount USD - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/total_value_of_repayable_investment_linked_to_outcome_fund/notes",
-        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - (Notes)"
+        "title": "Fund - Dimensions of Scale - Total value of repayable investment linked to Outcome Fund - (Notes)",
+        "type": "string"
     },
     {
         "key": "/dimensions_of_scale/number_of_outcome_contracts/aspiration/value",
-        "title": "Fund - Dimensions of Scale - Number of outcome contracts - Aspiration - (Value)"
+        "title": "Fund - Dimensions of Scale - Number of outcome contracts - Aspiration - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/number_of_outcome_contracts/actual/value",
-        "title": "Fund - Dimensions of Scale - Number of outcome contracts - Actual - (Value)"
+        "title": "Fund - Dimensions of Scale - Number of outcome contracts - Actual - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/number_of_outcome_contracts/notes",
-        "title": "Fund - Dimensions of Scale - Number of outcome contracts - (Notes)"
+        "title": "Fund - Dimensions of Scale - Number of outcome contracts - (Notes)",
+        "type": "string"
     },
     {
         "key": "/dimensions_of_scale/number_of_contributing_outcome_funders/aspiration/value",
-        "title": "Fund - Dimensions of Scale - Number of Contributing Outcome Funders - Aspiration - (Value)"
+        "title": "Fund - Dimensions of Scale - Number of Contributing Outcome Funders - Aspiration - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/number_of_contributing_outcome_funders/actual/value",
-        "title": "Fund - Dimensions of Scale - Number of Contributing Outcome Funders - Actual - (Value)"
+        "title": "Fund - Dimensions of Scale - Number of Contributing Outcome Funders - Actual - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/number_of_contributing_outcome_funders/notes",
-        "title": "Fund - Dimensions of Scale - Number of Contributing Outcome Funders - (Notes)"
+        "title": "Fund - Dimensions of Scale - Number of Contributing Outcome Funders - (Notes)",
+        "type": "string"
     },
     {
         "key": "/dimensions_of_scale/number_of_independent_investor_organisations/aspiration/value",
-        "title": "Fund - Dimensions of Scale - Number of independent investor organisations - Aspiration - (Value)"
+        "title": "Fund - Dimensions of Scale - Number of independent investor organisations - Aspiration - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/number_of_independent_investor_organisations/actual/value",
-        "title": "Fund - Dimensions of Scale - Number of independent investor organisations - Actual - (Value)"
+        "title": "Fund - Dimensions of Scale - Number of independent investor organisations - Actual - (Value)",
+        "type": "number"
     },
     {
         "key": "/dimensions_of_scale/number_of_independent_investor_organisations/notes",
-        "title": "Fund - Dimensions of Scale - Number of independent investor organisations - (Notes)"
+        "title": "Fund - Dimensions of Scale - Number of independent investor organisations - (Notes)",
+        "type": "string"
     },
     {
         "key": "/identifier_scheme/value",
-        "title": "Fund - Identifier Scheme"
+        "title": "Fund - Identifier Scheme",
+        "type": "string"
     },
     {
         "key": "/identifier/value",
-        "title": "Fund - Identifier"
+        "title": "Fund - Identifier",
+        "type": "string"
     },
     {
         "key": "/country/value",
-        "title": "Fund - Country"
+        "title": "Fund - Country",
+        "type": "string"
     },
     {
         "fields": [
             {
                 "key": "/organisation_id/value",
-                "title": "Organisation ID - (Value)"
+                "title": "Organisation ID - (Value)",
+                "type": "string"
             }
         ],
         "key": "/organisations",
@@ -194,7 +240,8 @@
         "fields": [
             {
                 "key": "/country/value",
-                "title": "Country - (Value)"
+                "title": "Country - (Value)",
+                "type": "string"
             }
         ],
         "key": "/geographic_areas_for_outcome_payment",
@@ -205,19 +252,23 @@
         "fields": [
             {
                 "key": "/title/value",
-                "title": "Title"
+                "title": "Title",
+                "type": "string"
             },
             {
                 "key": "/url/value",
-                "title": "URL"
+                "title": "URL",
+                "type": "string"
             },
             {
                 "key": "/notes",
-                "title": "Notes"
+                "title": "Notes",
+                "type": "string"
             },
             {
                 "key": "/status",
-                "title": "Status"
+                "title": "Status",
+                "type": "string"
             }
         ],
         "key": "/documents",

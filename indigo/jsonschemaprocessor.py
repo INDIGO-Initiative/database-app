@@ -34,6 +34,7 @@ class JsonSchemaProcessor:
                 {
                     "key": start_pointer.replace("/properties/", "/"),
                     "title": self._join_title(title, our_json_schema.get("title", "")),
+                    "type": our_json_schema.get("type"),
                 }
             )
         elif our_json_schema.get("type") == "array":

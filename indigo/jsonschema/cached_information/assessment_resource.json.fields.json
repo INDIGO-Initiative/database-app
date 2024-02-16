@@ -1,330 +1,412 @@
 [
     {
         "key": "/status",
-        "title": "Assessment Resource - Status"
+        "title": "Assessment Resource - Status",
+        "type": "string"
     },
     {
         "key": "/name/value",
-        "title": "Assessment Resource - Name"
+        "title": "Assessment Resource - Name",
+        "type": "string"
     },
     {
         "key": "/who/public_sector",
-        "title": "Assessment Resource - Who? - Public Sector"
+        "title": "Assessment Resource - Who? - Public Sector",
+        "type": "string"
     },
     {
         "key": "/who/private_sector",
-        "title": "Assessment Resource - Who? - Private Sector"
+        "title": "Assessment Resource - Who? - Private Sector",
+        "type": "string"
     },
     {
         "key": "/who/third_sector",
-        "title": "Assessment Resource - Who? - Third Sector"
+        "title": "Assessment Resource - Who? - Third Sector",
+        "type": "string"
     },
     {
         "key": "/output_format/agnostic",
-        "title": "Assessment Resource - Output Format - Agnostic"
+        "title": "Assessment Resource - Output Format - Agnostic",
+        "type": "string"
     },
     {
         "key": "/output_format/monetary_valuation",
-        "title": "Assessment Resource - Output Format - Monetary Valuation"
+        "title": "Assessment Resource - Output Format - Monetary Valuation",
+        "type": "string"
     },
     {
         "key": "/output_format/non_monetary_quant_index",
-        "title": "Assessment Resource - Output Format - Non-monetary quant index"
+        "title": "Assessment Resource - Output Format - Non-monetary quant index",
+        "type": "string"
     },
     {
         "key": "/output_format/ordinal",
-        "title": "Assessment Resource - Output Format - Ordinal"
+        "title": "Assessment Resource - Output Format - Ordinal",
+        "type": "string"
     },
     {
         "key": "/output_format/qualitative_only",
-        "title": "Assessment Resource - Output Format - Qualitative only"
+        "title": "Assessment Resource - Output Format - Qualitative only",
+        "type": "string"
     },
     {
         "key": "/output_format/quant_but_no_index",
-        "title": "Assessment Resource - Output Format - Quant but no index"
+        "title": "Assessment Resource - Output Format - Quant but no index",
+        "type": "string"
     },
     {
         "key": "/time_frame/ongoing",
-        "title": "Assessment Resource - Time frame? - Ongoing"
+        "title": "Assessment Resource - Time frame? - Ongoing",
+        "type": "string"
     },
     {
         "key": "/time_frame/prospective",
-        "title": "Assessment Resource - Time frame? - Prospective"
+        "title": "Assessment Resource - Time frame? - Prospective",
+        "type": "string"
     },
     {
         "key": "/time_frame/retrospective",
-        "title": "Assessment Resource - Time frame? - Retrospective"
+        "title": "Assessment Resource - Time frame? - Retrospective",
+        "type": "string"
     },
     {
         "key": "/scale/agnostic",
-        "title": "Assessment Resource - Scale? - Agnostic"
+        "title": "Assessment Resource - Scale? - Agnostic",
+        "type": "string"
     },
     {
         "key": "/scale/micro",
-        "title": "Assessment Resource - Scale? - Micro"
+        "title": "Assessment Resource - Scale? - Micro",
+        "type": "string"
     },
     {
         "key": "/scale/meso",
-        "title": "Assessment Resource - Scale? - Meso"
+        "title": "Assessment Resource - Scale? - Meso",
+        "type": "string"
     },
     {
         "key": "/scale/macro",
-        "title": "Assessment Resource - Scale? - Macro"
+        "title": "Assessment Resource - Scale? - Macro",
+        "type": "string"
     },
     {
         "key": "/impact_goal/agnostic",
-        "title": "Assessment Resource - Impact Goal - Agnostic"
+        "title": "Assessment Resource - Impact Goal - Agnostic",
+        "type": "string"
     },
     {
         "key": "/impact_goal/defence",
-        "title": "Assessment Resource - Impact Goal - Defence"
+        "title": "Assessment Resource - Impact Goal - Defence",
+        "type": "string"
     },
     {
         "key": "/impact_goal/democracy",
-        "title": "Assessment Resource - Impact Goal - Democracy"
+        "title": "Assessment Resource - Impact Goal - Democracy",
+        "type": "string"
     },
     {
         "key": "/impact_goal/development_poverty_reduction",
-        "title": "Assessment Resource - Impact Goal - Development/ Poverty Reduction"
+        "title": "Assessment Resource - Impact Goal - Development/ Poverty Reduction",
+        "type": "string"
     },
     {
         "key": "/impact_goal/education",
-        "title": "Assessment Resource - Impact Goal - Education"
+        "title": "Assessment Resource - Impact Goal - Education",
+        "type": "string"
     },
     {
         "key": "/impact_goal/employment_financial_well_being",
-        "title": "Assessment Resource - Impact Goal - Employment/ Financial well-being"
+        "title": "Assessment Resource - Impact Goal - Employment/ Financial well-being",
+        "type": "string"
     },
     {
         "key": "/impact_goal/health",
-        "title": "Assessment Resource - Impact Goal - Health"
+        "title": "Assessment Resource - Impact Goal - Health",
+        "type": "string"
     },
     {
         "key": "/impact_goal/housing",
-        "title": "Assessment Resource - Impact Goal - Housing"
+        "title": "Assessment Resource - Impact Goal - Housing",
+        "type": "string"
     },
     {
         "key": "/impact_goal/local_rejuvenation",
-        "title": "Assessment Resource - Impact Goal - Local rejuvenation"
+        "title": "Assessment Resource - Impact Goal - Local rejuvenation",
+        "type": "string"
     },
     {
         "key": "/impact_goal/sdg_oriented",
-        "title": "Assessment Resource - Impact Goal - SDG oriented"
+        "title": "Assessment Resource - Impact Goal - SDG oriented",
+        "type": "string"
     },
     {
         "key": "/impact_goal/social_impact",
-        "title": "Assessment Resource - Impact Goal - Social impact"
+        "title": "Assessment Resource - Impact Goal - Social impact",
+        "type": "string"
     },
     {
         "key": "/impact_goal/sustainability_eco",
-        "title": "Assessment Resource - Impact Goal - Sustainability/ Eco"
+        "title": "Assessment Resource - Impact Goal - Sustainability/ Eco",
+        "type": "string"
     },
     {
         "key": "/impact_goal/well_being",
-        "title": "Assessment Resource - Impact Goal - Well-being"
+        "title": "Assessment Resource - Impact Goal - Well-being",
+        "type": "string"
     },
     {
         "key": "/type/case_study",
-        "title": "Assessment Resource - Type - Case Study"
+        "title": "Assessment Resource - Type - Case Study",
+        "type": "string"
     },
     {
         "key": "/type/classification",
-        "title": "Assessment Resource - Type - Classification"
+        "title": "Assessment Resource - Type - Classification",
+        "type": "string"
     },
     {
         "key": "/type/consultancy",
-        "title": "Assessment Resource - Type - Consultancy"
+        "title": "Assessment Resource - Type - Consultancy",
+        "type": "string"
     },
     {
         "key": "/type/framework",
-        "title": "Assessment Resource - Type - Framework"
+        "title": "Assessment Resource - Type - Framework",
+        "type": "string"
     },
     {
         "key": "/type/guide",
-        "title": "Assessment Resource - Type - Guide"
+        "title": "Assessment Resource - Type - Guide",
+        "type": "string"
     },
     {
         "key": "/type/dataset",
-        "title": "Assessment Resource - Type - Dataset"
+        "title": "Assessment Resource - Type - Dataset",
+        "type": "string"
     },
     {
         "key": "/type/principles",
-        "title": "Assessment Resource - Type - Principles"
+        "title": "Assessment Resource - Type - Principles",
+        "type": "string"
     },
     {
         "key": "/type/reporting_standards",
-        "title": "Assessment Resource - Type - Reporting Standards"
+        "title": "Assessment Resource - Type - Reporting Standards",
+        "type": "string"
     },
     {
         "key": "/type/resource_repository_or_summary",
-        "title": "Assessment Resource - Type - Resource Repository or Summary"
+        "title": "Assessment Resource - Type - Resource Repository or Summary",
+        "type": "string"
     },
     {
         "key": "/type/tool",
-        "title": "Assessment Resource - Type - Tool"
+        "title": "Assessment Resource - Type - Tool",
+        "type": "string"
     },
     {
         "key": "/type/training_programme",
-        "title": "Assessment Resource - Type - Training Programme"
+        "title": "Assessment Resource - Type - Training Programme",
+        "type": "string"
     },
     {
         "key": "/sourcing/agnostic",
-        "title": "Assessment Resource - Sourcing? - Agnostic"
+        "title": "Assessment Resource - Sourcing? - Agnostic",
+        "type": "string"
     },
     {
         "key": "/sourcing/outsource_to_vendor",
-        "title": "Assessment Resource - Sourcing? - Outsource to Vendor"
+        "title": "Assessment Resource - Sourcing? - Outsource to Vendor",
+        "type": "string"
     },
     {
         "key": "/sourcing/paid_tool",
-        "title": "Assessment Resource - Sourcing? - Paid tool"
+        "title": "Assessment Resource - Sourcing? - Paid tool",
+        "type": "string"
     },
     {
         "key": "/sourcing/proprietary_in_house",
-        "title": "Assessment Resource - Sourcing? - Proprietary in-house"
+        "title": "Assessment Resource - Sourcing? - Proprietary in-house",
+        "type": "string"
     },
     {
         "key": "/sourcing/self_driven",
-        "title": "Assessment Resource - Sourcing? - Self-driven"
+        "title": "Assessment Resource - Sourcing? - Self-driven",
+        "type": "string"
     },
     {
         "key": "/method/attribution",
-        "title": "Assessment Resource - Method? - Attribution"
+        "title": "Assessment Resource - Method? - Attribution",
+        "type": "string"
     },
     {
         "key": "/method/diff_in_diff_statistical_analysis",
-        "title": "Assessment Resource - Method? - Diff-in-Diff statistical analysis"
+        "title": "Assessment Resource - Method? - Diff-in-Diff statistical analysis",
+        "type": "string"
     },
     {
         "key": "/method/ex_ante_projections",
-        "title": "Assessment Resource - Method? - Ex-ante projections"
+        "title": "Assessment Resource - Method? - Ex-ante projections",
+        "type": "string"
     },
     {
         "key": "/method/focus_groups",
-        "title": "Assessment Resource - Method? - Focus Groups"
+        "title": "Assessment Resource - Method? - Focus Groups",
+        "type": "string"
     },
     {
         "key": "/method/framework_agnostic",
-        "title": "Assessment Resource - Method? - Framework agnostic"
+        "title": "Assessment Resource - Method? - Framework agnostic",
+        "type": "string"
     },
     {
         "key": "/method/interviews",
-        "title": "Assessment Resource - Method? - Interviews"
+        "title": "Assessment Resource - Method? - Interviews",
+        "type": "string"
     },
     {
         "key": "/method/mission_alignment",
-        "title": "Assessment Resource - Method? - Mission Alignment"
+        "title": "Assessment Resource - Method? - Mission Alignment",
+        "type": "string"
     },
     {
         "key": "/method/observation",
-        "title": "Assessment Resource - Method? - Observation"
+        "title": "Assessment Resource - Method? - Observation",
+        "type": "string"
     },
     {
         "key": "/method/operational_data",
-        "title": "Assessment Resource - Method? - Operational Data"
+        "title": "Assessment Resource - Method? - Operational Data",
+        "type": "string"
     },
     {
         "key": "/method/rcts",
-        "title": "Assessment Resource - Method? - RCTs"
+        "title": "Assessment Resource - Method? - RCTs",
+        "type": "string"
     },
     {
         "key": "/method/surveys",
-        "title": "Assessment Resource - Method? - Surveys"
+        "title": "Assessment Resource - Method? - Surveys",
+        "type": "string"
     },
     {
         "key": "/method/theory_of_change",
-        "title": "Assessment Resource - Method? - Theory of Change"
+        "title": "Assessment Resource - Method? - Theory of Change",
+        "type": "string"
     },
     {
         "key": "/method/before_and_after",
-        "title": "Assessment Resource - Method? - Before and After"
+        "title": "Assessment Resource - Method? - Before and After",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/charity",
-        "title": "Assessment Resource - Used in sectors? - Charity"
+        "title": "Assessment Resource - Used in sectors? - Charity",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/csr",
-        "title": "Assessment Resource - Used in sectors? - CSR"
+        "title": "Assessment Resource - Used in sectors? - CSR",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/development",
-        "title": "Assessment Resource - Used in sectors? - Development"
+        "title": "Assessment Resource - Used in sectors? - Development",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/governance_policy",
-        "title": "Assessment Resource - Used in sectors? - Governance/ Policy"
+        "title": "Assessment Resource - Used in sectors? - Governance/ Policy",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/green_book",
-        "title": "Assessment Resource - Used in sectors? - Green Book"
+        "title": "Assessment Resource - Used in sectors? - Green Book",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/healthcare",
-        "title": "Assessment Resource - Used in sectors? - Healthcare"
+        "title": "Assessment Resource - Used in sectors? - Healthcare",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/housing",
-        "title": "Assessment Resource - Used in sectors? - Housing"
+        "title": "Assessment Resource - Used in sectors? - Housing",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/igos",
-        "title": "Assessment Resource - Used in sectors? - IGOs"
+        "title": "Assessment Resource - Used in sectors? - IGOs",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/impact_investing",
-        "title": "Assessment Resource - Used in sectors? - Impact investing"
+        "title": "Assessment Resource - Used in sectors? - Impact investing",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/microfinance",
-        "title": "Assessment Resource - Used in sectors? - Microfinance"
+        "title": "Assessment Resource - Used in sectors? - Microfinance",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/sibs",
-        "title": "Assessment Resource - Used in sectors? - SIBs"
+        "title": "Assessment Resource - Used in sectors? - SIBs",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/social_enterprises",
-        "title": "Assessment Resource - Used in sectors? - Social Enterprises"
+        "title": "Assessment Resource - Used in sectors? - Social Enterprises",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/sustainability_eco",
-        "title": "Assessment Resource - Used in sectors? - Sustainability/ Eco"
+        "title": "Assessment Resource - Used in sectors? - Sustainability/ Eco",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/developed_countries",
-        "title": "Assessment Resource - Used in sectors? - Developed Countries"
+        "title": "Assessment Resource - Used in sectors? - Developed Countries",
+        "type": "string"
     },
     {
         "key": "/used_in_sectors/developing_countries",
-        "title": "Assessment Resource - Used in sectors? - Developing Countries"
+        "title": "Assessment Resource - Used in sectors? - Developing Countries",
+        "type": "string"
     },
     {
         "key": "/internal_external/internal",
-        "title": "Assessment Resource - Internal / External? - Internal"
+        "title": "Assessment Resource - Internal / External? - Internal",
+        "type": "string"
     },
     {
         "key": "/internal_external/external",
-        "title": "Assessment Resource - Internal / External? - External"
+        "title": "Assessment Resource - Internal / External? - External",
+        "type": "string"
     },
     {
         "key": "/leader/value",
-        "title": "Assessment Resource - Leader"
+        "title": "Assessment Resource - Leader",
+        "type": "string"
     },
     {
         "key": "/purpose/value",
-        "title": "Assessment Resource - Purpose"
+        "title": "Assessment Resource - Purpose",
+        "type": "string"
     },
     {
         "key": "/content/value",
-        "title": "Assessment Resource - Content"
+        "title": "Assessment Resource - Content",
+        "type": "string"
     },
     {
         "key": "/link/value",
-        "title": "Assessment Resource - Link"
+        "title": "Assessment Resource - Link",
+        "type": "string"
     },
     {
         "key": "/notes/value",
-        "title": "Assessment Resource - Notes"
+        "title": "Assessment Resource - Notes",
+        "type": "string"
     }
 ]

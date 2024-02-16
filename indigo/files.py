@@ -326,70 +326,95 @@ def _update_public_archive_file_sqlite_for_records(
 ):
 
     # Make list of files to make, and the labels and keys that will be used for each one
-    main_file_keys = []
+    main_file_fields = []
     files_to_make = {}
 
     for config in type_information_fields:
         if config.get("type", "") != "list" and config.get("key").find("/status") == -1:
-            main_file_keys.append(config.get("key"))
+            main_file_fields.append(config)
         elif config.get("type", "") == "list":
             file_to_make = {
                 "list_key": config["key"],
-                "keys": [],
+                "fields": [],
             }
             for field in config["fields"]:
                 if field["key"].find("/status") == -1:
-                    file_to_make["keys"].append(field["key"])
+                    file_to_make["fields"].append(field)
             files_to_make[
                 config["key"][1:].replace("/", "_").replace("-", "")
             ] = file_to_make
 
     # Create main tables
+    field_definitions = []
+    field_lists = []
+    for fc in main_file_fields:
+        field_definitions.append(
+            fc["key"][1:].replace("/", "_").replace("-", "") + " TEXT "
+        )
+        field_lists.append(":" + fc["key"][1:].replace("/", "_").replace("-", ""))
+        if fc.get("type") == "number":
+            field_definitions.append(
+                fc["key"][1:].replace("/", "_").replace("-", "") + "_integer INTEGER "
+            )
+            field_lists.append(":" + fc["key"][1:].replace("/", "_").replace("-", ""))
+            field_definitions.append(
+                fc["key"][1:].replace("/", "_").replace("-", "") + "_real REAL "
+            )
+            field_lists.append(":" + fc["key"][1:].replace("/", "_").replace("-", ""))
     cursor.execute(
         "CREATE TABLE "
         + table_prepend
         + " ("
         + "id TEXT PRIMARY KEY, "
-        + ",".join(
-            [
-                cn[1:].replace("/", "_").replace("-", "") + " TEXT "
-                for cn in main_file_keys
-            ]
-        )
+        + ",".join([x for x in field_definitions])
         + ")"
     )
     insert_sql = (
         "INSERT INTO "
         + table_prepend
         + " VALUES(:id, "
-        + ",".join(
-            [":" + cn[1:].replace("/", "_").replace("-", "") for cn in main_file_keys]
-        )
+        + ",".join([x for x in field_lists])
         + ")"
     )
     for record in records:
         # id
         row = {"id": record.public_id}
         # fields
-        for key in main_file_keys:
+        for fc in main_file_fields:
             row[
-                key[1:].replace("/", "_").replace("-", "")
-            ] = jsonpointer.resolve_pointer(record.data_public, key, "")
+                fc["key"][1:].replace("/", "_").replace("-", "")
+            ] = jsonpointer.resolve_pointer(record.data_public, fc["key"], "")
         # record done
         cursor.execute(insert_sql, row)
 
     # Create sub tables
     for table_to_make_id, table_to_make_config in files_to_make.items():
+        field_definitions = []
+        field_lists = []
+        for fc in table_to_make_config["fields"]:
+            field_definitions.append(
+                fc["key"][1:].replace("/", "_").replace("-", "") + " TEXT "
+            )
+            field_lists.append(":" + fc["key"][1:].replace("/", "_").replace("-", ""))
+            if fc.get("type") == "number":
+                field_definitions.append(
+                    fc["key"][1:].replace("/", "_").replace("-", "")
+                    + "_integer INTEGER "
+                )
+                field_lists.append(
+                    ":" + fc["key"][1:].replace("/", "_").replace("-", "")
+                )
+                field_definitions.append(
+                    fc["key"][1:].replace("/", "_").replace("-", "") + "_real REAL "
+                )
+                field_lists.append(
+                    ":" + fc["key"][1:].replace("/", "_").replace("-", "")
+                )
         cursor.execute(
             (
                 "CREATE TABLE {table_prepend}_{table_to_make_id} "
                 + " ({table_prepend}_id TEXT REFERENCES {table_prepend}(id), "
-                + ",".join(
-                    [
-                        cn[1:].replace("/", "_").replace("-", "") + " TEXT "
-                        for cn in table_to_make_config["keys"]
-                    ]
-                )
+                + ",".join([x for x in field_definitions])
                 + ")"
             ).format(table_prepend=table_prepend, table_to_make_id=table_to_make_id)
         )
@@ -399,12 +424,7 @@ def _update_public_archive_file_sqlite_for_records(
             + "_"
             + table_to_make_id
             + " VALUES(:record_id, "
-            + ",".join(
-                [
-                    ":" + cn[1:].replace("/", "_").replace("-", "")
-                    for cn in table_to_make_config["keys"]
-                ]
-            )
+            + ",".join([x for x in field_lists])
             + ")"
         )
         for record in records:
@@ -416,10 +436,10 @@ def _update_public_archive_file_sqlite_for_records(
                     # id
                     row = {"record_id": record.public_id}
                     # fields
-                    for key in table_to_make_config["keys"]:
+                    for fc in table_to_make_config["fields"]:
                         row[
-                            key[1:].replace("/", "_").replace("-", "")
-                        ] = jsonpointer.resolve_pointer(row_data, key, "")
+                            fc["key"][1:].replace("/", "_").replace("-", "")
+                        ] = jsonpointer.resolve_pointer(row_data, fc["key"], "")
                     # record done
                     cursor.execute(insert_sql, row)
 
