@@ -2255,6 +2255,20 @@
                             "title": "Criminal justice",
                             "type": "object"
                         },
+                        "early_childhood_education": {
+                            "properties": {
+                                "value": {
+                                    "enum": [
+                                        "Yes",
+                                        "No"
+                                    ],
+                                    "title": "(Value)",
+                                    "type": "string"
+                                }
+                            },
+                            "title": "Early Childhood Education",
+                            "type": "object"
+                        },
                         "education": {
                             "properties": {
                                 "value": {

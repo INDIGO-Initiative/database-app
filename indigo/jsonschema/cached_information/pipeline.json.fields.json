@@ -520,6 +520,11 @@
         "type": "string"
     },
     {
+        "key": "/purpose_and_classifications/policy_sector/early_childhood_education/value",
+        "title": "Purpose and classifications - Policy sector - Early Childhood Education - (Value)",
+        "type": "string"
+    },
+    {
         "key": "/purpose_and_classifications/policy_sector/other/value",
         "title": "Purpose and classifications - Policy sector - Other - (Value)",
         "type": "string"
