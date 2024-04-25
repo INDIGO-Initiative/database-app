@@ -112,7 +112,7 @@ def update_public_files_for_pipeline(pipeline):
                 settings.BASE_DIR,
                 "indigo",
                 "spreadsheetform_guides",
-                "pipeline_public_v001.xlsx",
+                "pipeline_public_v002.xlsx",
             ),
         )
     else:
