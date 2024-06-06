@@ -107,7 +107,7 @@ json-merge-patch==0.2
     # via
     #   -r requirements.txt
     #   jsondataferret
-jsondataferret==0.7.0
+jsondataferret==0.7.1
     # via -r requirements.txt
 jsonmerge==1.9.2
     # via

@@ -405,7 +405,7 @@ def update_pipeline(record, update_include_organisations=False):
         # Some data cleaning - values from import scripts had '(eg ...)' included too.
         if (
             "stage_development" in pipeline.data_public
-            and "stage" in pipeline.data_public["stage_development"]
+            and pipeline.data_public["stage_development"].get("stage") is not None
         ):
             stage_development = (
                 pipeline.data_public["stage_development"]["stage"]
@@ -628,6 +628,7 @@ def is_block_status_public_or_in_sandbox(data, sandbox=None):
         sandbox
         and isinstance(key_status, str)
         and key_status.strip().lower() == "sandbox"
+        and data.get("sandboxes") is not None
     ):
         sandboxes = [
             i.strip() for i in data.get("sandboxes", "").split(",") if i.strip()
