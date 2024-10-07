@@ -406,6 +406,8 @@ def update_pipeline(record, update_include_organisations=False):
         if (
             "stage_development" in pipeline.data_public
             and pipeline.data_public["stage_development"].get("stage") is not None
+            and pipeline.data_public["stage_development"].get("stage", {}).get("value")
+            is not None
         ):
             stage_development = (
                 pipeline.data_public["stage_development"]["stage"]
