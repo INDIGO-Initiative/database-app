@@ -12,20 +12,64 @@
 
 {% block content %}
 
-<p>Welcome</p>
+<h2 class="mt-4 mb-4">Welcome, {{ user.get_full_name|default:user.username }}</h2>
 
-<p><a href="{% url 'indigo_admin_project_list' %}" class="btn btn-primary">Projects</a></p>
-<p><a href="{% url 'indigo_admin_organisation_list' %}" class="btn btn-primary">Organisations</a></p>
-<p><a href="{% url 'indigo_admin_fund_list' %}" class="btn btn-primary">Funds</a></p>
 {% if perms.indigo.admin %}
-<p><a href="{% url 'indigo_admin_pipeline_list' %}" class="btn btn-primary">Pipelines</a></p>
-<p><a href="{% url 'indigo_admin_assessment_resource_list' %}" class="btn btn-primary">Assessment Resources</a></p>
-<p><a href="{% url 'indigo_admin_joining_up_initiative_list' %}" class="btn btn-primary">Joining Up Initiatives</a></p>
+    {% if waiting_total %}
+        <div class="alert alert-warning d-flex flex-wrap justify-content-between align-items-center">
+            <span>
+                <i class="fa-solid fa-gavel mr-2" aria-hidden="true"></i>
+                <strong>{{ waiting_total }}</strong> record{{ waiting_total|pluralize }} with changes waiting to be moderated.
+            </span>
+            <a href="{% url 'indigo_admin_to_moderate' %}" class="btn btn-warning btn-sm">Review changes</a>
+        </div>
+    {% else %}
+        <p class="text-muted"><i class="fa-solid fa-check mr-2" aria-hidden="true"></i>Nothing is waiting to be moderated.</p>
+    {% endif %}
 {% endif %}
-<p><a href="{% url 'indigo_admin_sandbox_list' %}" class="btn btn-primary">Sandboxes</a></p>
-{% if perms.indigo.admin %}
-<p><a href="{% url 'indigo_admin_to_moderate' %}" class="btn btn-primary">To Moderate</a></p>
-<p><a href="{% url 'indigo_admin_history' %}" class="btn btn-primary">History</a></p>
-{% endif %}
+
+<div class="row">
+    {% for section in sections %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+                    <h5 class="card-title d-flex justify-content-between align-items-center">
+                        <a href="{% url section.list_url %}" class="dashboard-card__title stretched-link">
+                            <i class="fa-solid fa-{{ section.icon }} mr-2 text-muted" aria-hidden="true"></i>{{ section.title }}
+                        </a>
+                    </h5>
+                    <p class="dashboard-card__count mb-1">{{ section.count }}</p>
+                    <p class="text-muted small mb-0">
+                        {% if section.count == 1 %}record{% else %}records{% endif %}
+                        {% if section.waiting %}
+                            <span class="badge badge-warning ml-1">{{ section.waiting }} to moderate</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent dashboard-card__actions">
+                    <a href="{% url section.list_url %}" class="btn btn-primary btn-sm">View all</a>
+                    <a href="{% url section.new_url %}" class="btn btn-outline-primary btn-sm">Add <i class="far fa-plus" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<h5 class="mt-2 mb-3 text-muted">More</h5>
+<div class="list-group dashboard-tools mb-5">
+    {% if perms.indigo.admin %}
+        <a href="{% url 'indigo_admin_to_moderate' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span><i class="fa-solid fa-gavel mr-2 text-muted" aria-hidden="true"></i>To Moderate</span>
+            {% if waiting_total %}<span class="badge badge-warning badge-pill">{{ waiting_total }}</span>{% endif %}
+        </a>
+        <a href="{% url 'indigo_admin_history' %}" class="list-group-item list-group-item-action">
+            <i class="fa-solid fa-clock-rotate-left mr-2 text-muted" aria-hidden="true"></i>History of all changes
+        </a>
+    {% endif %}
+    <a href="{% url 'indigo_admin_sandbox_list' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <span><i class="fa-solid fa-flask mr-2 text-muted" aria-hidden="true"></i>Sandboxes</span>
+        <span class="badge badge-secondary badge-pill">{{ sandbox_count }}</span>
+    </a>
+</div>
 
 {% endblock %}

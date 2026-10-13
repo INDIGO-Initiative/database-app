@@ -272,6 +272,11 @@ urlpatterns = [
         name="indigo_admin_project_import_form_stage_2",
     ),
     path(
+        "admin/project/<public_id>/edit",
+        views_admin.AdminProjectEdit.as_view(),
+        name="indigo_admin_project_edit",
+    ),
+    path(
         "admin/project/<public_id>/change_status",
         views_admin.AdminProjectChangeStatus.as_view(),
         name="indigo_admin_project_change_status",
@@ -334,13 +339,18 @@ urlpatterns = [
     ),
     path(
         "admin/organisation",
-        views_admin.admin_organisations_list,
+        views_admin.admin_organisations_search,
         name="indigo_admin_organisation_list",
     ),
     path(
         "admin/organisation_goto",
         views_admin.admin_organisations_goto,
         name="indigo_admin_organisation_goto",
+    ),
+    path(
+        "admin/organisation_search_json",
+        views_admin.admin_organisations_search_json,
+        name="indigo_admin_organisation_search_json",
     ),
     path(
         "admin/organisation_search",
@@ -429,6 +439,11 @@ urlpatterns = [
         name="indigo_admin_fund_import_form",
     ),
     path(
+        "admin/fund/<public_id>/edit",
+        views_admin.AdminFundEdit.as_view(),
+        name="indigo_admin_fund_edit",
+    ),
+    path(
         "admin/fund/<public_id>/change_status",
         views_admin.AdminFundChangeStatus.as_view(),
         name="indigo_admin_fund_change_status",
@@ -473,6 +488,11 @@ urlpatterns = [
         "admin/assessment_resource/<public_id>/import_form",
         views_admin.AdminAssessmentResourceImportForm.as_view(),
         name="indigo_admin_assessment_resource_import_form",
+    ),
+    path(
+        "admin/assessment_resource/<public_id>/edit",
+        views_admin.AdminAssessmentResourceEdit.as_view(),
+        name="indigo_admin_assessment_resource_edit",
     ),
     path(
         "admin/assessment_resource/<public_id>/change_status",
@@ -524,6 +544,11 @@ urlpatterns = [
         "admin/pipeline/<public_id>/import_form/<import_id>",
         views_admin.AdminPipelineImportFormStage2Of2.as_view(),
         name="indigo_admin_pipeline_import_form_stage_2",
+    ),
+    path(
+        "admin/pipeline/<public_id>/edit",
+        views_admin.AdminPipelineEdit.as_view(),
+        name="indigo_admin_pipeline_edit",
     ),
     path(
         "admin/pipeline/<public_id>/change_status",

@@ -1,0 +1,66 @@
+{% load indigo_extras %}
+{# The fields of a record, in sections with a sidebar to jump between them. Pass the sections from indigo/recordpages.py #}
+{% if sections %}
+    <div class="record-layout">
+        <nav class="record-nav" id="record-nav" aria-label="Sections">
+            <ul class="nav nav-pills flex-column">
+                {% for section in sections %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#{{ section.id }}"><span>{{ section.title }}</span><span class="badge badge-light">{{ section.count }}</span></a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <div class="record-sections">
+            {% for section in sections %}
+                <section id="{{ section.id }}" class="record-section">
+                    <h3 class="record-section__title">{{ section.title }}</h3>
+                    {% for block in section.blocks %}
+                        {% if block.kind == "fields" %}
+                            {% if block.title %}<h4 class="record-block__title">{{ block.title }}</h4>{% endif %}
+                            <table class="table record-details">
+                                {% for row in block.rows %}
+                                    <tr><th>{{ row.title }}</th><td>{{ row.value|linkify }}</td></tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            <h4 class="record-block__title">{{ block.title }} <span class="badge badge-secondary">{{ block.items|length }}</span></h4>
+                            {% for item in block.items %}
+                                <div class="card record-item mb-3">
+                                    <div class="card-header">{{ item.title }}</div>
+                                    <table class="table table-sm mb-0 record-details">
+                                        {% for row in item.rows %}
+                                            <tr><th>{{ row.title }}</th><td>{{ row.value|linkify }}</td></tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </section>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Highlight the section being read in the sidebar
+        (function () {
+            var links = document.querySelectorAll("#record-nav a");
+            if (!("IntersectionObserver" in window) || !links.length) { return; }
+            var byId = {};
+            links.forEach(function (link) { byId[link.getAttribute("href").slice(1)] = link; });
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        links.forEach(function (link) { link.classList.remove("active"); });
+                        byId[entry.target.id].classList.add("active");
+                    }
+                });
+            }, { rootMargin: "0px 0px -70% 0px" });
+            document.querySelectorAll(".record-section").forEach(function (section) { observer.observe(section); });
+        })();
+    </script>
+{% else %}
+    <p class="text-muted">No details have been added yet.</p>
+{% endif %}

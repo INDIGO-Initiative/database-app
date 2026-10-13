@@ -24,7 +24,7 @@
             <th>Creation</th>
             <td>
                 Created {{ edit.creation_event.created }} / {{ edit.creation_event.user }}
-                <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary">View</a>
+                <a href="{% url 'indigo_admin_event_index' event_id=edit.creation_event.public_id %}" class="btn btn-primary btn-sm">View change</a>
             </td>
         </tr>
         {% if edit.approval_event %}
@@ -36,7 +36,7 @@
                     {% else %}
                         Approved
                         {{ edit.approval_event.created }} / {{ edit.approval_event.user }}
-                        <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary">View</a>
+                        <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary btn-sm">View change</a>
                     {% endif %}
                 </td>
             </tr>
@@ -45,7 +45,7 @@
                 <th>State</th>
                 <td>
                     Refused {{ edit.refusal_event.created }} / {{ edit.refusal_event.user }}
-                    <a href="{% url 'indigo_admin_event_index' event_id=edit.refusal_event.public_id %}" class="btn btn-primary">View</a>
+                    <a href="{% url 'indigo_admin_event_index' event_id=edit.refusal_event.public_id %}" class="btn btn-primary btn-sm">View change</a>
                 </td>
             </tr>
         {% else %}

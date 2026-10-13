@@ -13,136 +13,72 @@
 
 {% block content %}
 
-    <h3>Projects</h3>
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">To Moderate</h2>
+        <div class="record-header__actions">
+            <a href="{% url 'indigo_admin_history' %}" class="btn btn-secondary">History of all changes</a>
+        </div>
+    </div>
 
-    {% if projects %}
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>Project Name</th>
-                <th>&nbsp;</th>
-            </tr>
-            {% for project in projects %}
-                <tr>
-                    <td><a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}">{{ project.public_id }}</a></td>
-                    <td>{{ project.cached_data.name.value }}</td>
-                    <td><a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}" class="btn btn-primary">View</a></td>
+    {% if total %}
+        <p class="text-muted">
+            <strong>{{ total }}</strong> record{{ total|pluralize }} with changes waiting, the ones that have waited longest first.
+        </p>
 
-                </tr>
+        <p>
+            {% for section in sections %}
+                {% if section.rows %}
+                    <a href="#moderate-{{ section.anchor }}" class="btn btn-sm btn-outline-secondary mb-1">
+                        {{ section.title }} <span class="badge badge-warning">{{ section.rows|length }}</span>
+                    </a>
+                {% endif %}
             {% endfor %}
-        </table>
+        </p>
+
+        {% for section in sections %}
+            {% if section.rows %}
+                <div class="card mb-4" id="moderate-{{ section.anchor }}">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <strong>{{ section.title }}</strong>
+                        <span class="badge badge-warning">{{ section.rows|length }}</span>
+                    </div>
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th class="text-center">Edits</th>
+                                <th>Latest edit by</th>
+                                <th>Waiting</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in section.rows %}
+                                <tr>
+                                    <td class="text-nowrap"><a href="{% url section.index_url public_id=row.record.public_id %}">{{ row.record.public_id }}</a></td>
+                                    <td><a href="{% url section.index_url public_id=row.record.public_id %}" class="text-body">{{ row.name }}</a></td>
+                                    <td class="text-center">{{ row.edit_count }}</td>
+                                    <td>{{ row.latest_user|default:"" }}</td>
+                                    <td class="text-nowrap" title="{{ row.waiting_since }}">{{ row.waiting_since|timesince }}</td>
+                                    <td class="text-nowrap text-right">
+                                        <a href="{% url section.moderate_url public_id=row.record.public_id %}" class="btn btn-primary btn-sm">Review</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {% if empty_titles %}
+            <p class="text-muted small">Nothing waiting for: {{ empty_titles|join:", " }}.</p>
+        {% endif %}
     {% else %}
-        <p>No projects need moderation.</p>
-    {% endif %}
-
-    <h3>Organisations</h3>
-
-    {% if organisations %}
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>Organisation Name</th>
-                <th>&nbsp;</th>
-            </tr>
-            {% for organisation in organisations %}
-                <tr>
-                    <td><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id %}">{{ organisation.public_id }}</a></td>
-                    <td>{{ organisation.cached_data.name.value }}</td>
-                    <td><a href="{% url 'indigo_admin_organisation_index' public_id=organisation.public_id %}" class="btn btn-primary">View</a></td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No organisations need moderation.</p>
-    {% endif %}
-
-    <h3>Funds</h3>
-
-    {% if funds %}
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>Fund Name</th>
-                <th>&nbsp;</th>
-            </tr>
-            {% for fund in funds %}
-                <tr>
-                    <td><a href="{% url 'indigo_admin_fund_index' public_id=fund.public_id %}">{{ fund.public_id }}</a></td>
-                    <td>{{ fund.cached_data.name.value }}</td>
-                    <td><a href="{% url 'indigo_admin_fund_index' public_id=fund.public_id %}" class="btn btn-primary">View</a></td>
-
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No funds need moderation.</p>
-    {% endif %}
-
-    <h3>Pipelines</h3>
-
-
-    {% if pipelines %}
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>Pipeline Name</th>
-                <th>&nbsp;</th>
-            </tr>
-            {% for pipeline in pipelines %}
-                <tr>
-                    <td><a href="{% url 'indigo_admin_pipeline_index' public_id=pipeline.public_id %}">{{ pipeline.public_id }}</a></td>
-                    <td>{{ pipeline.cached_data.name.value }}</td>
-                    <td><a href="{% url 'indigo_admin_pipeline_index' public_id=pipeline.public_id %}" class="btn btn-primary">View</a></td>
-
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No pipelines need moderation.</p>
-    {% endif %}
-
-    <h3>Assessment Resources</h3>
-
-    {% if assessment_resources %}
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>&nbsp;</th>
-            </tr>
-            {% for assessment_resource in assessment_resources %}
-                <tr>
-                    <td><a href="{% url 'indigo_admin_assessment_resource_index' public_id=assessment_resource.public_id %}">{{ assessment_resource.public_id }}</a></td>
-                    <td>{{ assessment_resource.cached_data.name.value }}</td>
-                    <td><a href="{% url 'indigo_admin_assessment_resource_index' public_id=assessment_resource.public_id %}" class="btn btn-primary">View</a></td>
-
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No assessment resources need moderation.</p>
-    {% endif %}
-
-    <h3>Joining Up Initiative</h3>
-
-    {% if joining_up_initiatives %}
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>&nbsp;</th>
-            </tr>
-            {% for joining_up_initiative in joining_up_initiatives %}
-                <tr>
-                    <td><a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=joining_up_initiative.public_id %}">{{ joining_up_initiative.public_id }}</a></td>
-                    <td>{{ joining_up_initiative.cached_data.name.value }}</td>
-                    <td><a href="{% url 'indigo_admin_joining_up_initiative_index' public_id=joining_up_initiative.public_id %}" class="btn btn-primary">View</a></td>
-
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No Joining Up Initiative need moderation.</p>
+        <div class="alert alert-success">
+            <i class="fa-solid fa-check mr-2" aria-hidden="true"></i>Nothing is waiting to be moderated.
+        </div>
     {% endif %}
 
 {% endblock %}

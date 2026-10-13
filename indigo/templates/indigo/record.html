@@ -1,0 +1,8 @@
+{% extends 'indigo/base.html' %}
+
+{% block head_title %}{{ record_title }} {{ record.public_id }}{% endblock %}
+
+{% block content %}
+    {% include "indigo/includes/record_header.html" %}
+    {% include "indigo/includes/record_sections.html" %}
+{% endblock %}

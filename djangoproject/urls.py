@@ -14,14 +14,40 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import include, path
+
+from indigo.forms import StyledAuthenticationForm
 
 from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path(
+        "accounts/login/",
+        LoginView.as_view(authentication_form=StyledAuthenticationForm),
+        name="login",
+    ),
+    # Django's admin app has its own logged_out.html that would win over ours, so ours is named differently
+    path(
+        "accounts/logout/",
+        LogoutView.as_view(template_name="indigo/logged_out.html"),
+        name="logout",
+    ),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("jsondataferret/", include("jsondataferret.urls")),
+    # The JSON Data Ferret library has web pages of its own (event and record lists, a record edit form and so on). We
+    # do not use them: the app has its own admin pages that apply our permissions and validation. So they are not
+    # included here, and old links to them go to the admin home page instead.
+    path(
+        "jsondataferret/",
+        views.RetiredPageRedirect.as_view(),
+        name="jsondataferret_retired",
+    ),
+    path(
+        "jsondataferret/<path:rest>",
+        views.RetiredPageRedirect.as_view(),
+        name="jsondataferret_retired_path",
+    ),
     path("app/", include("indigo.urls")),
     path("admin/", admin.site.urls),
 ]

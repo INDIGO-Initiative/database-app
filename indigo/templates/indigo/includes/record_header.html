@@ -1,0 +1,10 @@
+{# The title of a record page, with its buttons. Pass: record, record_title, display_name, and optionally edit_url and menu. #}
+<div class="record-header mt-5 mb-3">
+    <h2 class="record-header__title">{{ record_title }}: {{ record.public_id }} {{ display_name }}</h2>
+    {% if edit_url or menu %}
+        <div class="record-header__actions">
+            {% if edit_url %}<a href="{{ edit_url }}" class="btn btn-primary">Edit</a>{% endif %}
+            {% if menu %}{% include "indigo/includes/actions_menu.html" %}{% endif %}
+        </div>
+    {% endif %}
+</div>

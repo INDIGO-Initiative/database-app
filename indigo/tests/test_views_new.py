@@ -15,6 +15,7 @@ from indigo.models import AssessmentResource, Fund, Organisation, Pipeline, Proj
 
 class TestViewsNew(TestCase):
     def test_new(self):
+        # Creating a record takes you straight to its edit form to fill in the rest of the details
         # Create data
         types_and_models = [
             (
@@ -69,7 +70,7 @@ class TestViewsNew(TestCase):
                 )
                 self.assertEquals(
                     resp.url,
-                    f"/app/admin/{type_.public_id}/{ID_PREFIX_BY_TYPE[type_.public_id]}0001",
+                    f"/app/admin/{type_.public_id}/{ID_PREFIX_BY_TYPE[type_.public_id]}0001/edit",
                 )
                 resp = self.client.post(
                     f"/app/admin/new_{type_.public_id}",
@@ -80,7 +81,7 @@ class TestViewsNew(TestCase):
                 )
                 self.assertEquals(
                     resp.url,
-                    f"/app/admin/{type_.public_id}/{ID_PREFIX_BY_TYPE[type_.public_id]}0002",
+                    f"/app/admin/{type_.public_id}/{ID_PREFIX_BY_TYPE[type_.public_id]}0002/edit",
                 )
                 objects = model.objects.order_by("public_id").all()
                 self.assertEquals(len(objects), 2)

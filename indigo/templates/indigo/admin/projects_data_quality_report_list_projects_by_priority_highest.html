@@ -14,6 +14,9 @@
 {% endblock %}
 
 {% block content %}
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">Projects with priority {{ priority }} issues</h2>
+    </div>
 
     {% if projects_with_count %}
         <table class="table">
@@ -28,9 +31,9 @@
                     <td><a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}">{{ project.public_id }}</a></td>
                     <td>{{ project.data_private.name.value }}</td>
                     <td>{{ count }}</td>
-                    <td>
-                        <a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}" class="btn btn-primary">View Project</a>
-                        <a href="{% url 'indigo_admin_project_data_quality_report' public_id=project.public_id %}" class="btn btn-primary">View Report</a>
+                    <td class="text-nowrap text-right">
+                        <a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}" class="btn btn-primary btn-sm">View Project</a>
+                        <a href="{% url 'indigo_admin_project_data_quality_report' public_id=project.public_id %}" class="btn btn-primary btn-sm">View Report</a>
                     </td>
 
                 </tr>

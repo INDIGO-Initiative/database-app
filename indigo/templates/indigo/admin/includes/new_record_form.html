@@ -1,0 +1,25 @@
+{# The page for adding a record by its name. Pass: form, noun (eg "project"), cancel_url. #}
+<div class="record-header mt-5 mb-3">
+    <h2 class="record-header__title">Add {{ noun }}</h2>
+</div>
+
+<p class="text-muted">Start by giving the {{ noun }} a name. You will fill in the rest of the details on the next page.</p>
+
+<form action="" method="post" class="new-record-form mb-5">
+    {% csrf_token %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endfor %}
+    {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="font-weight-bold">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
+            {% for error in field.errors %}
+                <div class="text-danger small mt-1">{{ error }}</div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Create and continue</button>
+    <a href="{{ cancel_url }}" class="btn btn-link">Cancel</a>
+</form>

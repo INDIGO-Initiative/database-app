@@ -4,25 +4,64 @@
 
 {% block content %}
 
-<p>Welcome</p>
+<div class="home-intro mt-4 mb-5">
+    <h2 class="home-intro__title">Better data for better social outcomes</h2>
+    <p class="lead home-intro__text mb-0">International Network for Data on Impact and Government Outcomes (INDIGO). Browse the records that have been made public, search them by name or ID, or download all of the data as spreadsheets, CSV files or a SQLite database.</p>
+</div>
 
-<p>Browse</p>
+<h5 class="text-muted mb-3">Browse</h5>
+<div class="row">
+    {% for section in sections %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url section.list_url %}" class="dashboard-card__title stretched-link">
+                            <i class="fa-solid fa-{{ section.icon }} mr-2 text-muted" aria-hidden="true"></i>{{ section.title }}
+                        </a>
+                    </h5>
+                    <p class="dashboard-card__count mb-1">{{ section.count }}</p>
+                    <p class="text-muted small mb-0">public record{{ section.count|pluralize }}</p>
+                </div>
+                <div class="card-footer bg-transparent dashboard-card__actions">
+                    <a href="{% url section.list_url %}" class="btn btn-primary btn-sm">Browse</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 
-<p><a href="{% url 'indigo_project_list' %}" class="btn btn-primary">Projects</a></p>
-<p><a href="{% url 'indigo_organisation_list' %}" class="btn btn-primary">Organisations</a></p>
-<p><a href="{% url 'indigo_fund_list' %}" class="btn btn-primary">Funds</a></p>
-<p><a href="{% url 'indigo_pipeline_list' %}" class="btn btn-primary">Pipelines</a></p>
-<p><a href="{% url 'indigo_assessment_resource_list' %}" class="btn btn-primary">Assessment Resources</a></p>
-<p><a href="{% url 'indigo_joining_up_initiative_list' %}" class="btn btn-primary">Joining Up Initiatives</a></p>
+<h5 class="text-muted mt-2 mb-3">Download all public data</h5>
+<div class="list-group home-downloads mb-4">
+    <div class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+            <strong>Spreadsheets</strong>
+            <div class="text-muted small">A zip file of spreadsheets, one for each record.</div>
+        </div>
+        <a href="{% url 'indigo_all_public_data_file_per_record_in_zip' %}" class="btn btn-outline-primary btn-sm text-nowrap ml-3"><i class="fa-solid fa-download mr-1" aria-hidden="true"></i>Download</a>
+    </div>
+    <div class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+            <strong>CSV files</strong>
+            <div class="text-muted small">A zip file of CSVs, one for each type of data.</div>
+        </div>
+        <a href="{% url 'indigo_all_public_data_file_per_data_type_csv_in_zip' %}" class="btn btn-outline-primary btn-sm text-nowrap ml-3"><i class="fa-solid fa-download mr-1" aria-hidden="true"></i>Download</a>
+    </div>
+    <div class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+            <strong>SQLite database</strong>
+            <div class="text-muted small">All of the public data in one SQLite database.</div>
+        </div>
+        <a href="{% url 'indigo_all_public_data_sqlite' %}" class="btn btn-outline-primary btn-sm text-nowrap ml-3"><i class="fa-solid fa-download mr-1" aria-hidden="true"></i>Download</a>
+    </div>
+</div>
 
-<p>Download</p>
-
-<p><a href="{% url 'indigo_all_public_data_file_per_record_in_zip' %}" class="btn btn-primary">Download all public data (Zip File of Spreadsheets, one per record)</a></p>
-<p><a href="{% url 'indigo_all_public_data_file_per_data_type_csv_in_zip' %}" class="btn btn-primary">Download all public data (Zip File of CSVs, one per data type)</a></p>
-<p><a href="{% url 'indigo_all_public_data_sqlite' %}" class="btn btn-primary">Download all public data (SQLite)</a></p>
-
-<p>Admin</p>
-
-<p><a href="{% url 'indigo_admin_index' %}" class="btn btn-primary">Admin</a></p>
+<h5 class="text-muted mt-4 mb-3">For developers</h5>
+<p class="text-muted small mb-2">The same public data is available as JSON:</p>
+<p class="mb-5">
+    {% for section in sections %}
+        <a href="{% url section.api_url %}" class="btn btn-sm btn-outline-secondary mb-1">{{ section.title }}</a>
+    {% endfor %}
+</p>
 
 {% endblock %}

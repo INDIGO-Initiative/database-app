@@ -1,0 +1,8 @@
+{% extends 'indigo/admin/record_subpage.html' %}
+
+{% block head_title %}Moderate {{ record_title }} {{ record.public_id }}{% endblock %}
+{% block current_crumb %}Moderate{% endblock %}
+
+{% block content %}
+    {% include "indigo/admin/includes/moderate_edits.html" with noun=record_title|lower %}
+{% endblock %}

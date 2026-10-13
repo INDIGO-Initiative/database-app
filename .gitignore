@@ -6,3 +6,5 @@ __pycache__
 *.log
 *.dump
 data/
+
+frontend/node_modules

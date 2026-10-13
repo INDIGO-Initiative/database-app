@@ -1,0 +1,57 @@
+{# The date filter, count, table and page links of a list of events. Used by the site-wide History page and by the History page of each record. #}
+{% if filter %}
+<form method="get" class="form-inline mb-2 history-filter">
+    <label for="{{ filter.form.created__gt.id_for_label }}" class="mr-2">From</label>
+    {{ filter.form.created__gt }}
+    <label for="{{ filter.form.created__lt.id_for_label }}" class="mx-2">To</label>
+    {{ filter.form.created__lt }}
+    <button type="submit" class="btn btn-primary ml-3">Filter</button>
+    {% if filtered %}<a href="{{ request.path }}" class="btn btn-secondary ml-2">Clear</a>{% endif %}
+</form>
+{% for field in filter.form %}
+    {% for error in field.errors %}<div class="text-danger small mb-2">{{ field.label }}: {{ error }}</div>{% endfor %}
+{% endfor %}
+
+<p class="small mb-3">
+    <span class="text-muted">Quick ranges:</span>
+    {% for range in quick_ranges %}
+        <a href="{{ range.url }}" class="btn btn-sm btn-outline-secondary ml-1">{{ range.label }}</a>
+    {% endfor %}
+</p>
+{% endif %}
+
+{% if page_obj.paginator.count > 0 %}
+    {% include "indigo/includes/result_count.html" with noun="event" %}
+
+    <table class="table">
+        <tr>
+            <th>When</th>
+            <th>By</th>
+            {% if show_records %}<th>Records</th>{% endif %}
+            <th>Comment</th>
+            <th>&nbsp;</th>
+        </tr>
+        {% for event in page_obj %}
+            <tr>
+                <td class="text-nowrap" title="{{ event.created }}">{{ event.created|date:"j M Y, H:i" }}</td>
+                <td class="text-nowrap">{{ event.user|default:"&mdash;" }}</td>
+                {% if show_records %}
+                    <td>
+                        {% for link in event.record_links %}
+                            <div>{% if link.url %}<a href="{{ link.url }}">{{ link.label }}</a>{% else %}{{ link.label }}{% endif %}</div>
+                        {% endfor %}
+                        {% if event.more_records %}<div class="text-muted">&hellip;</div>{% endif %}
+                    </td>
+                {% endif %}
+                <td>{{ event.comment|linebreaksbr }}</td>
+                <td class="text-nowrap text-right"><a href="{% url 'indigo_admin_event_index' event_id=event.public_id %}" class="btn btn-primary btn-sm">View change</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+        {% include "jsondataferret/common/pagination.html" %}
+    {% endif %}
+{% else %}
+    <p>{% if filtered %}No events in that date range.{% else %}No events are available.{% endif %}</p>
+{% endif %}

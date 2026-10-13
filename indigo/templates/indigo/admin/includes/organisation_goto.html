@@ -1,0 +1,7 @@
+{# Jump straight to an organisation by its exact ID. Sits beside the search box on the organisation list. #}
+<form action="{% url 'indigo_admin_organisation_goto' %}" method="post" class="form-inline mb-3">
+    {% csrf_token %}
+    <label for="organisation-goto" class="mr-2">Go to ID:</label>
+    <input type="text" id="organisation-goto" name="goto" value="INDIGO-ORG-" class="form-control mr-2">
+    <input type="submit" value="Go" class="btn btn-secondary">
+</form>

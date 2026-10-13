@@ -1,4 +1,5 @@
 import csv
+import datetime
 import os
 import random
 import tempfile
@@ -15,15 +16,14 @@ from django.contrib.auth.decorators import permission_required, user_passes_test
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied, ValidationError
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.db.models.functions import Now
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
-from jsondataferret.filters import EventFilter
 from jsondataferret.models import CachedRecordHistory, Edit, Event, Record, Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 
@@ -42,13 +42,18 @@ from indigo.dataqualityreport import (
     DataQualityReportForPipeline,
     DataQualityReportForProject,
 )
+from indigo.filters import HistoryFilter
+from indigo.listpages import list_context, paginate, search_filter, visible_menu
+from indigo.recordpages import build_record_sections
 from indigo.tasks import (
     task_process_imported_pipeline_file,
     task_process_imported_project_file,
 )
 
 from .forms import (
+    AssessmentResourceEditForm,
     AssessmentResourceNewForm,
+    FundEditForm,
     FundNewForm,
     JoiningUpInitiativeEditForm,
     JoiningUpInitiativeNewForm,
@@ -57,7 +62,9 @@ from .forms import (
     ModelImportStage2Of2Form,
     OrganisationImportForm,
     OrganisationNewForm,
+    PipelineEditForm,
     PipelineNewForm,
+    ProjectEditForm,
     ProjectNewForm,
     RecordChangeStatusForm,
     OrganisationEditForm,
@@ -81,12 +88,251 @@ from .spreadsheetforms import (
     convert_pipeline_data_to_spreadsheetforms_data,
     convert_project_data_to_spreadsheetforms_data,
     extract_edits_from_assessment_resource_spreadsheet,
+    extract_edits_from_form,
     extract_edits_from_fund_spreadsheet,
-    extract_edits_from_joining_up_initiative_form,
     extract_edits_from_organisation_spreadsheet,
     extract_edits_from_pipeline_spreadsheet,
     extract_edits_from_project_spreadsheet,
 )
+
+
+RECORD_TITLES = {
+    TYPE_PROJECT_PUBLIC_ID: ("Project", "Projects"),
+    TYPE_ORGANISATION_PUBLIC_ID: ("Organisation", "Organisations"),
+    TYPE_FUND_PUBLIC_ID: ("Fund", "Funds"),
+    TYPE_PIPELINE_PUBLIC_ID: ("Pipeline", "Pipelines"),
+    TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID: ("Assessment Resource", "Assessment Resources"),
+    TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID: (
+        "Joining Up Initiative",
+        "Joining Up Initiatives",
+    ),
+}
+
+
+def _list_context_for_type(type_public_id):
+    """What the pages of a type's records need to link back to the type's list (type ids are also the URL prefixes)."""
+    record_title, list_title = RECORD_TITLES[type_public_id]
+    return {
+        "record_title": record_title,
+        "list_title": list_title,
+        "list_url": reverse(f"indigo_admin_{type_public_id}_list"),
+    }
+
+
+def _new_page(request, type_public_id, form, full_form=False):
+    """The page for adding a record: just a name to start with, or (full_form) the whole record in one go."""
+    context = _list_context_for_type(type_public_id)
+    context.update({"form": form, "full_form": full_form})
+    return render(request, "indigo/admin/new.html", context)
+
+
+def _subpage_context(record, **extra):
+    """The context of a page about one record (change status, history...): see admin/record_subpage.html."""
+    type_public_id = record.type.public_id
+    data = (record.cached_data if record.cached_exists else None) or {}
+    name = data.get("name")
+    context = _list_context_for_type(type_public_id)
+    context.update(
+        {
+            "record": record,
+            "record_url": reverse(
+                f"indigo_admin_{type_public_id}_index",
+                kwargs={"public_id": record.public_id},
+            ),
+            "display_name": name.get("value", "") if isinstance(name, dict) else "",
+        }
+    )
+    context.update(extra)
+    return context
+
+
+def _related_records_page(
+    request, model_instance, related_title, related_noun, related_records
+):
+    """A page listing the records of another type that link to this one, eg the projects using an organisation."""
+    links = [
+        {
+            "public_id": related.public_id,
+            "name": ((related.data_private or {}).get("name") or {}).get("value", ""),
+            "url": reverse(
+                f"indigo_admin_{related.record.type.public_id}_index",
+                kwargs={"public_id": related.public_id},
+            ),
+        }
+        for related in related_records
+    ]
+    return render(
+        request,
+        "indigo/admin/related_records.html",
+        _subpage_context(
+            model_instance.record,
+            related_title=related_title,
+            related_noun=related_noun,
+            links=links,
+        ),
+    )
+
+
+def _record_history_page(request, record):
+    page_obj, pagination_get_params = paginate(
+        request, _events_for_record_newest_first(record)
+    )
+    return render(
+        request,
+        "indigo/admin/record_history.html",
+        _subpage_context(
+            record, page_obj=page_obj, pagination_get_params=pagination_get_params
+        ),
+    )
+
+
+def _events_for_record_newest_first(record):
+    """The events that changed a record (or tried to), latest first.
+
+    (jsondataferret gives them oldest first, so we turn them round.)"""
+    return sorted(
+        Event.objects.filter_by_record(record),
+        key=lambda event: (event.created, event.id),
+        reverse=True,
+    )
+
+
+def _edit_changes(edit, record):
+    """What approving this edit would change on the record, as a list of
+    {"title", "old", "new", "kind"} where kind is "added", "changed" or "removed".
+
+    Only fields that differ are included, so a big edit that mostly repeats the current data is still easy to read."""
+    type_public_id = record.type.public_id
+    get_fields = jsondataferret.utils.get_field_list_from_json
+    old_fields = {
+        f["key"]: f
+        for f in get_fields(
+            type_public_id, record.cached_data if record.cached_exists else {}
+        )
+    }
+    new_fields = {
+        f["key"]: f
+        for f in get_fields(
+            type_public_id,
+            edit.get_new_data_when_edit_applied_to_latest_record_cached_data(),
+        )
+    }
+    changes = []
+    for key, field in new_fields.items():
+        old = old_fields.get(key)
+        if old is None:
+            changes.append(
+                {
+                    "title": indigo.utils.tidy_field_title(field["title"]),
+                    "old": None,
+                    "new": field["value"],
+                    "kind": "added",
+                }
+            )
+        elif old["value"] != field["value"]:
+            changes.append(
+                {
+                    "title": indigo.utils.tidy_field_title(field["title"]),
+                    "old": old["value"],
+                    "new": field["value"],
+                    "kind": "changed",
+                }
+            )
+    for key, field in old_fields.items():
+        if key not in new_fields:
+            changes.append(
+                {
+                    "title": indigo.utils.tidy_field_title(field["title"]),
+                    "old": field["value"],
+                    "new": None,
+                    "kind": "removed",
+                }
+            )
+    return changes
+
+
+def _add_moderation_message(request, actions):
+    approved = len(
+        [
+            a
+            for a in actions
+            if isinstance(a, jsondataferret.pythonapi.newevent.NewEventApproval)
+        ]
+    )
+    rejected = len(actions) - approved
+    parts = []
+    if approved:
+        parts.append(f"{approved} approved")
+    if rejected:
+        parts.append(f"{rejected} rejected")
+    messages.add_message(
+        request, messages.INFO, "Moderation saved: " + ", ".join(parts) + "."
+    )
+
+
+DOWNLOAD_FORM_NOTE = "You can delete any sheet/tab from a downloaded form (except the introduction one) and it will still work fine."
+
+
+def _admin_record_page(
+    request,
+    record,
+    *,
+    record_title,
+    type_public_id,
+    url_prefix,
+    list_title,
+    extra_actions=(),
+    spreadsheets=(),
+    notes=(),
+):
+    """The admin page of one record: its fields in sections, with an Edit button and a More menu.
+
+    extra_actions are (label, url name, admin only?) for this type's own pages. spreadsheets are (label, url name),
+    which all need the record's ID."""
+    kwargs = {"public_id": record.public_id}
+
+    def item(label, url_name, admin_only=False):
+        return {
+            "label": label,
+            "url_name": url_name,
+            "url_kwargs": kwargs,
+            "admin_only": admin_only,
+        }
+
+    groups = [
+        {
+            "heading": None,
+            "items": [
+                item("Change Status", f"indigo_admin_{url_prefix}_change_status"),
+                item("Moderate", f"indigo_admin_{url_prefix}_moderate"),
+                item("History", f"indigo_admin_{url_prefix}_history"),
+            ]
+            + [item(*action) for action in extra_actions],
+        }
+    ]
+    if spreadsheets:
+        groups.append(
+            {
+                "heading": "Spreadsheets",
+                "items": [item(*s) for s in spreadsheets],
+                "notes": list(notes),
+            }
+        )
+    name = (record.data_private or {}).get("name")
+    return render(
+        request,
+        "indigo/admin/record.html",
+        {
+            "record": record,
+            "record_title": record_title,
+            "display_name": name.get("value", "") if isinstance(name, dict) else "",
+            "sections": build_record_sections(type_public_id, record.data_private),
+            "edit_url": reverse(f"indigo_admin_{url_prefix}_edit", kwargs=kwargs),
+            "menu": visible_menu(request.user, groups),
+            "list_title": list_title,
+            "list_url": reverse(f"indigo_admin_{url_prefix}_list"),
+        },
+    )
 
 
 def _permission_admin_or_data_steward_required_test(user):
@@ -168,23 +414,131 @@ def user_can_access_edit(user, edit: Edit):
     return False
 
 
+def _count_records_needing_moderation(type_public_id):
+    try:
+        type = Type.objects.get(public_id=type_public_id)
+    except Type.DoesNotExist:
+        return 0
+    return len(list(Record.objects.filter_needs_moderation_by_type(type)))
+
+
 @permission_admin_or_data_steward_required()
 def admin_index(request):
-    return render(request, "indigo/admin/index.html")
+    user = request.user
+    is_admin = user.has_perm("indigo.admin")
+
+    # The "To Moderate" page is for admins, so only admins are told what is waiting
+    def waiting(type_public_id):
+        return _count_records_needing_moderation(type_public_id) if is_admin else None
+
+    sections = [
+        {
+            "title": "Projects",
+            "icon": "diagram-project",
+            "count": Project.objects.filter_by_admin_user_can_access(user).count(),
+            "waiting": waiting(TYPE_PROJECT_PUBLIC_ID),
+            "list_url": "indigo_admin_project_list",
+            "new_url": "indigo_admin_project_new",
+        },
+        {
+            "title": "Organisations",
+            "icon": "building",
+            "count": Organisation.objects.count(),
+            "waiting": waiting(TYPE_ORGANISATION_PUBLIC_ID),
+            "list_url": "indigo_admin_organisation_list",
+            "new_url": "indigo_admin_organisation_new",
+        },
+        {
+            "title": "Funds",
+            "icon": "coins",
+            "count": Fund.objects.count(),
+            "waiting": waiting(TYPE_FUND_PUBLIC_ID),
+            "list_url": "indigo_admin_fund_list",
+            "new_url": "indigo_admin_fund_new",
+        },
+    ]
+    if is_admin:
+        sections += [
+            {
+                "title": "Pipelines",
+                "icon": "bars-progress",
+                "count": Pipeline.objects.count(),
+                "waiting": waiting(TYPE_PIPELINE_PUBLIC_ID),
+                "list_url": "indigo_admin_pipeline_list",
+                "new_url": "indigo_admin_pipeline_new",
+            },
+            {
+                "title": "Assessment Resources",
+                "icon": "clipboard-check",
+                "count": AssessmentResource.objects.count(),
+                "waiting": waiting(TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID),
+                "list_url": "indigo_admin_assessment_resource_list",
+                "new_url": "indigo_admin_assessment_resource_new",
+            },
+            {
+                "title": "Joining Up Initiatives",
+                "icon": "handshake",
+                "count": JoiningUpInitiative.objects.count(),
+                "waiting": waiting(TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID),
+                "list_url": "indigo_admin_joining_up_initiative_list",
+                "new_url": "indigo_admin_joining_up_initiative_new",
+            },
+        ]
+    return render(
+        request,
+        "indigo/admin/index.html",
+        {
+            "sections": sections,
+            "waiting_total": sum(s["waiting"] or 0 for s in sections)
+            if is_admin
+            else None,
+            "sandbox_count": Sandbox.objects.count(),
+        },
+    )
+
+
+def _admin_links_to_records_of(event):
+    """The records an event is about, as links to their admin pages: [{"label", "url"}], and whether there are more.
+
+    A record of a type with no admin page has no url, so it is shown as plain text.
+    (get_records_summary gives Record objects that also have type_public_id and type_title.)"""
+    summary = event.get_records_summary()
+    links = []
+    for record in summary["records"]:
+        try:
+            url = reverse(
+                f"indigo_admin_{record.type_public_id}_index",
+                kwargs={"public_id": record.public_id},
+            )
+        except NoReverseMatch:
+            url = None
+        links.append({"label": f"{record.type_title}: {record.public_id}", "url": url})
+    return links, bool(summary["more"])
+
+
+def _history_quick_ranges():
+    today = timezone.localdate()
+
+    def link(label, days_back):
+        query = urllib.parse.urlencode(
+            {
+                "created__gt": (today - datetime.timedelta(days=days_back)).isoformat(),
+                "created__lt": today.isoformat(),
+            }
+        )
+        return {"label": label, "url": f"{reverse('indigo_admin_history')}?{query}"}
+
+    return [link("Today", 0), link("Last 7 days", 6), link("Last 30 days", 29)]
 
 
 @permission_required("indigo.admin")
 def admin_history(request):
-    filter = EventFilter(request.GET, queryset=Event.objects.all().order_by("created"))
-    paginator = Paginator(filter.qs, 100)
-    page_number = request.GET.get("page")
-    try:
-        page_obj = paginator.page(page_number)
-    except PageNotAnInteger:
-        page_obj = paginator.page(1)
-    except EmptyPage:
-        page_obj = paginator.page(paginator.num_pages)
-    pagination_get_params = urllib.parse.urlencode(filter.get_get_params_for_paging())
+    filter = HistoryFilter(
+        request.GET, queryset=Event.objects.all().order_by("-created", "-id")
+    )
+    page_obj, pagination_get_params = paginate(request, filter.qs)
+    for event in page_obj:
+        event.record_links, event.more_records = _admin_links_to_records_of(event)
     return render(
         request,
         "indigo/admin/history.html",
@@ -192,6 +546,8 @@ def admin_history(request):
             "page_obj": page_obj,
             "filter": filter,
             "pagination_get_params": pagination_get_params,
+            "filtered": any(request.GET.get(k) for k in ("created__gt", "created__lt")),
+            "quick_ranges": _history_quick_ranges(),
         },
     )
 
@@ -201,12 +557,54 @@ def admin_history(request):
 
 @permission_admin_or_data_steward_required()
 def admin_projects_list(request):
-    projects = Project.objects.filter_by_admin_user_can_access(request.user)
-
+    search_term = request.GET.get("search", "").strip()
+    projects = Project.objects.filter_by_admin_user_can_access(
+        request.user, search=search_term
+    )
     return render(
         request,
-        "indigo/admin/projects.html",
-        {"projects": projects},
+        "indigo/admin/list.html",
+        list_context(
+            request,
+            projects,
+            title="Projects",
+            noun_plural="projects",
+            name_field="data_private",
+            index_url_name="indigo_admin_project_index",
+            list_url_name="indigo_admin_project_list",
+            items_key="projects",
+            search_term=search_term,
+            searchable=True,
+            search_placeholder="Project ID or name",
+            edit_url_name="indigo_admin_project_edit",
+            add_url_name="indigo_admin_project_new",
+            add_label="Project",
+            menu_groups=[
+                {
+                    "heading": None,
+                    "items": [
+                        {
+                            "label": "Data Quality Report",
+                            "url_name": "indigo_admin_all_projects_data_quality_report",
+                            "admin_only": True,
+                        }
+                    ],
+                },
+                {
+                    "heading": "Spreadsheets",
+                    "items": [
+                        {
+                            "label": "Download Blank Form",
+                            "url_name": "indigo_admin_project_download_blank_form",
+                        },
+                        {
+                            "label": "Download Blank Simple Form",
+                            "url_name": "indigo_admin_project_download_blank_simple_form",
+                        },
+                    ],
+                },
+            ],
+        ),
     )
 
 
@@ -218,13 +616,23 @@ def admin_project_index(request, public_id):
         raise Http404("Project does not exist")
     if not user_can_access_project(request.user, project):
         raise PermissionDenied("You can not see project")
-    field_data = jsondataferret.utils.get_field_list_from_json(
-        TYPE_PROJECT_PUBLIC_ID, project.data_private
-    )
-    return render(
+    return _admin_record_page(
         request,
-        "indigo/admin/project/index.html",
-        {"project": project, "field_data": field_data},
+        project,
+        record_title="Project",
+        type_public_id=TYPE_PROJECT_PUBLIC_ID,
+        url_prefix="project",
+        list_title="Projects",
+        extra_actions=[
+            ("Data Quality Report", "indigo_admin_project_data_quality_report"),
+            ("Data Steward Users", "indigo_admin_project_admin_users", True),
+        ],
+        spreadsheets=[
+            ("Download Form", "indigo_admin_project_download_form"),
+            ("Download Simple Form", "indigo_admin_project_download_simple_form"),
+            ("Upload/Import Form", "indigo_admin_project_import_form"),
+        ],
+        notes=[DOWNLOAD_FORM_NOTE, "Simple Form: only for use on new projects."],
     )
 
 
@@ -263,10 +671,16 @@ def admin_projects_new(request):
                 p.permission_access = True
                 p.save()
 
-            # redirect to a new URL:
+            messages.add_message(
+                request,
+                messages.INFO,
+                "Created. Now fill in the rest of the details; they will be available once they have been moderated.",
+            )
+
+            # redirect to the edit form
             return HttpResponseRedirect(
                 reverse(
-                    "indigo_admin_project_index",
+                    "indigo_admin_project_edit",
                     kwargs={"public_id": id},
                 )
             )
@@ -275,11 +689,7 @@ def admin_projects_new(request):
     else:
         form = ProjectNewForm()
 
-    context = {
-        "form": form,
-    }
-
-    return render(request, "indigo/admin/project/new.html", context)
+    return _new_page(request, TYPE_PROJECT_PUBLIC_ID, form)
 
 
 @permission_admin_or_data_steward_required()
@@ -289,7 +699,6 @@ def admin_project_moderate(request, public_id):
     except Project.DoesNotExist:
         raise Http404("Record does not exist")
     record = project.record
-    type = record.type
     if not user_can_access_project(request.user, project):
         raise PermissionDenied("You can not see project")
 
@@ -313,6 +722,7 @@ def admin_project_moderate(request, public_id):
             jsondataferret.pythonapi.newevent.newEvent(
                 actions, user=request.user, comment=request.POST.get("comment")
             )
+            _add_moderation_message(request, actions)
 
         return HttpResponseRedirect(
             reverse(
@@ -323,14 +733,12 @@ def admin_project_moderate(request, public_id):
 
     for edit in edits:
         # TODO This will not take account of data_key on an edit If we start using that we will need to check this
-        edit.field_datas = jsondataferret.utils.get_field_list_from_json(
-            TYPE_PROJECT_PUBLIC_ID, edit.data
-        )
+        edit.changes = _edit_changes(edit, record)
 
     return render(
         request,
-        "indigo/admin/project/moderate.html",
-        {"type": type, "record": record, "edits": edits},
+        "indigo/admin/moderate.html",
+        _subpage_context(record, edits=edits),
     )
 
 
@@ -341,17 +749,10 @@ def admin_project_history(request, public_id):
     except Project.DoesNotExist:
         raise Http404("Record does not exist")
     record = project.record
-    type = record.type
     if not user_can_access_project(request.user, project):
         raise PermissionDenied("You can not see project")
 
-    events = Event.objects.filter_by_record(record)
-
-    return render(
-        request,
-        "indigo/admin/project/history.html",
-        {"type": type, "record": record, "events": events},
-    )
+    return _record_history_page(request, record)
 
 
 @permission_required("indigo.admin")
@@ -426,13 +827,12 @@ def admin_project_admin_users(request, public_id):
     return render(
         request,
         "indigo/admin/project/admin_users.html",
-        {
-            "type": project.record.type,
-            "record": project.record,
-            "admin_users_permissions": admin_users_permissions,
-            "admin_users_to_add": admin_users_to_add,
-            "admin_users_with_access": admin_users_with_access,
-        },
+        _subpage_context(
+            project.record,
+            admin_users_permissions=admin_users_permissions,
+            admin_users_to_add=admin_users_to_add,
+            admin_users_with_access=admin_users_with_access,
+        ),
     )
 
 
@@ -565,15 +965,6 @@ def admin_organisation_download_blank_form(request):
 
 
 @permission_admin_or_data_steward_required()
-def admin_organisations_list(request):
-    return render(
-        request,
-        "indigo/admin/organisations.html",
-        {},
-    )
-
-
-@permission_admin_or_data_steward_required()
 def admin_organisations_goto(request):
     goto = request.POST.get("goto").strip()
     try:
@@ -600,8 +991,67 @@ def admin_organisations_search(request):
     organisations = organisations.order_by("public_id")
     return render(
         request,
-        "indigo/admin/organisations_search.html",
-        {"search_term": search_term, "organisations": organisations},
+        "indigo/admin/list.html",
+        list_context(
+            request,
+            organisations,
+            title="Organisations",
+            noun_plural="organisations",
+            name_field="data_private",
+            index_url_name="indigo_admin_organisation_index",
+            list_url_name="indigo_admin_organisation_list",
+            items_key="organisations",
+            search_term=search_term,
+            searchable=True,
+            search_placeholder="Name or ID",
+            edit_url_name="indigo_admin_organisation_edit",
+            add_url_name="indigo_admin_organisation_new",
+            add_label="Organisation",
+            menu_groups=[
+                {
+                    "heading": "Spreadsheets",
+                    "items": [
+                        {
+                            "label": "Download Blank Form",
+                            "url_name": "indigo_admin_organisation_download_blank_form",
+                        },
+                        {
+                            "label": "Download all as CSV",
+                            "url_name": "indigo_admin_organisation_download_all_csv",
+                        },
+                    ],
+                }
+            ],
+            search_extra_template="indigo/admin/includes/organisation_goto.html",
+        ),
+    )
+
+
+@permission_admin_or_data_steward_required()
+def admin_organisations_search_json(request):
+    """Used by the organisation picker on the edit forms. Either search by name, or look up by a comma separated list of IDs."""
+    organisations = Organisation.objects.all()
+    ids = [i.strip() for i in request.GET.get("ids", "").split(",") if i.strip()]
+    search_term = request.GET.get("search", "").strip()
+    if ids:
+        organisations = organisations.filter(public_id__in=ids)
+    elif search_term:
+        organisations = organisations.filter(
+            full_text_search_private__search=search_term
+        )
+    else:
+        organisations = organisations.none()
+    organisations = organisations.order_by("public_id")[:20]
+    return JsonResponse(
+        {
+            "results": [
+                {
+                    "id": organisation.public_id,
+                    "name": organisation.data_private.get("name", {}).get("value", ""),
+                }
+                for organisation in organisations
+            ]
+        }
     )
 
 
@@ -644,13 +1094,22 @@ def admin_organisation_index(request, public_id):
         organisation = Organisation.objects.get(public_id=public_id)
     except Organisation.DoesNotExist:
         raise Http404("Organisation does not exist")
-    field_data = jsondataferret.utils.get_field_list_from_json(
-        TYPE_ORGANISATION_PUBLIC_ID, organisation.data_private
-    )
-    return render(
+    return _admin_record_page(
         request,
-        "indigo/admin/organisation/index.html",
-        {"organisation": organisation, "field_data": field_data},
+        organisation,
+        record_title="Organisation",
+        type_public_id=TYPE_ORGANISATION_PUBLIC_ID,
+        url_prefix="organisation",
+        list_title="Organisations",
+        extra_actions=[
+            ("Projects Using This", "indigo_admin_organisation_projects", True),
+            ("Pipelines Using This", "indigo_admin_organisation_pipelines", True),
+        ],
+        spreadsheets=[
+            ("Download Form", "indigo_admin_organisation_download_form"),
+            ("Upload/Import Form", "indigo_admin_organisation_import_form"),
+        ],
+        notes=[DOWNLOAD_FORM_NOTE],
     )
 
 
@@ -660,15 +1119,16 @@ def admin_organisation_projects(request, public_id):
         organisation = Organisation.objects.get(public_id=public_id)
     except Organisation.DoesNotExist:
         raise Http404("Organisation does not exist")
-    return render(
+    return _related_records_page(
         request,
-        "indigo/admin/organisation/projects.html",
-        {
-            "organisation": organisation,
-            "project_links": [
-                i for i in organisation.included_by_projects.all() if i.in_current_data
-            ],
-        },
+        organisation,
+        "Projects",
+        "project",
+        [
+            link.project
+            for link in organisation.included_by_projects.all()
+            if link.in_current_data
+        ],
     )
 
 
@@ -678,15 +1138,16 @@ def admin_organisation_pipelines(request, public_id):
         organisation = Organisation.objects.get(public_id=public_id)
     except Organisation.DoesNotExist:
         raise Http404("Organisation does not exist")
-    return render(
+    return _related_records_page(
         request,
-        "indigo/admin/organisation/pipelines.html",
-        {
-            "organisation": organisation,
-            "pipeline_links": [
-                i for i in organisation.included_by_pipelines.all() if i.in_current_data
-            ],
-        },
+        organisation,
+        "Pipelines",
+        "pipeline",
+        [
+            link.pipeline
+            for link in organisation.included_by_pipelines.all()
+            if link.in_current_data
+        ],
     )
 
 
@@ -790,12 +1251,9 @@ def admin_organisation_import_form(request, public_id):
     else:
         form = OrganisationImportForm()
 
-    context = {
-        "record": data,
-        "form": form,
-    }
-
-    return render(request, "indigo/admin/organisation/import_form.html", context)
+    return render(
+        request, "indigo/admin/import_form.html", _subpage_context(data, form=form)
+    )
 
 
 @permission_admin_or_data_steward_required()
@@ -825,10 +1283,16 @@ def admin_organisations_new(request):
             )
             newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
 
-            # redirect to a new URL:
+            messages.add_message(
+                request,
+                messages.INFO,
+                "Created. Now fill in the rest of the details; they will be available once they have been moderated.",
+            )
+
+            # redirect to the edit form
             return HttpResponseRedirect(
                 reverse(
-                    "indigo_admin_organisation_index",
+                    "indigo_admin_organisation_edit",
                     kwargs={"public_id": id},
                 )
             )
@@ -837,11 +1301,7 @@ def admin_organisations_new(request):
     else:
         form = OrganisationNewForm()
 
-    context = {
-        "form": form,
-    }
-
-    return render(request, "indigo/admin/organisation/new.html", context)
+    return _new_page(request, TYPE_ORGANISATION_PUBLIC_ID, form)
 
 
 @permission_admin_or_data_steward_required()
@@ -874,6 +1334,7 @@ def admin_organisation_moderate(request, public_id):
             jsondataferret.pythonapi.newevent.newEvent(
                 actions, user=request.user, comment=request.POST.get("comment")
             )
+            _add_moderation_message(request, actions)
 
         return HttpResponseRedirect(
             reverse(
@@ -884,14 +1345,12 @@ def admin_organisation_moderate(request, public_id):
 
     for edit in edits:
         # TODO This will not take account of data_key on an edit If we start using that we will need to check this
-        edit.field_datas = jsondataferret.utils.get_field_list_from_json(
-            TYPE_ORGANISATION_PUBLIC_ID, edit.data
-        )
+        edit.changes = _edit_changes(edit, record)
 
     return render(
         request,
-        "indigo/admin/organisation/moderate.html",
-        {"type": type, "record": record, "edits": edits},
+        "indigo/admin/moderate.html",
+        _subpage_context(record, edits=edits),
     )
 
 
@@ -905,13 +1364,7 @@ def admin_organisation_history(request, public_id):
     except Record.DoesNotExist:
         raise Http404("Record does not exist")
 
-    events = Event.objects.filter_by_record(record)
-
-    return render(
-        request,
-        "indigo/admin/organisation/history.html",
-        {"type": type, "record": record, "events": events},
-    )
+    return _record_history_page(request, record)
 
 
 ########################### Admin - funds & assessment resources
@@ -996,22 +1449,69 @@ class AdminPipelineDownloadBlankForm(AdminModelDownloadBlankForm):
 
 
 class AdminModelList(PermissionRequiredMixin, View, ABC):
+    """A list of records of one type. Each list says (in its class variables):
+
+    _list_title / _noun_plural / _add_label: the words to use
+    _url_prefix: the start of its view names, eg "fund" for indigo_admin_fund_index
+    _search_keys: the keys of the data whose value can be searched, as well as the ID
+    _menu_groups: what goes in the More menu (see indigo.listpages.visible_menu)"""
+
+    _search_keys = []
+    _menu_groups = []
+
     def get(self, request):
+        cls = self.__class__
         try:
-            type = Type.objects.get(public_id=self.__class__._type_public_id)
+            type = Type.objects.get(public_id=cls._type_public_id)
         except Type.DoesNotExist:
             raise Http404("Type does not exist")
         datas = Record.objects.filter(type=type).order_by("public_id")
+        search_term = request.GET.get("search", "").strip()
+        if search_term and cls._search_keys:
+            datas = datas.filter(
+                search_filter(search_term, "cached_data", cls._search_keys)
+            )
         return render(
             request,
-            "indigo/admin/" + self.__class__._model.__name__.lower() + "s.html",
-            {"datas": datas},
+            "indigo/admin/list.html",
+            list_context(
+                request,
+                datas,
+                title=cls._list_title,
+                noun_plural=cls._noun_plural,
+                name_field="cached_data",
+                index_url_name=f"indigo_admin_{cls._url_prefix}_index",
+                list_url_name=f"indigo_admin_{cls._url_prefix}_list",
+                items_key="datas",
+                search_term=search_term,
+                searchable=bool(cls._search_keys),
+                search_placeholder=f"{cls._add_label} ID or name",
+                edit_url_name=f"indigo_admin_{cls._url_prefix}_edit",
+                add_url_name=f"indigo_admin_{cls._url_prefix}_new",
+                add_label=cls._add_label,
+                menu_groups=cls._menu_groups,
+            ),
         )
+
+
+def _blank_form_menu(url_name):
+    return [
+        {
+            "heading": "Spreadsheets",
+            "items": [{"label": "Download Blank Form", "url_name": url_name}],
+        }
+    ]
 
 
 class AdminFundList(AdminModelList):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
+    _search_keys = ["name"]
+    _list_title = "Funds"
+    _noun_plural = "funds"
+    _add_label = "Fund"
+    _url_prefix = "fund"
+    _menu_groups = _blank_form_menu("indigo_admin_fund_download_blank_form")
 
     def has_permission(self):
         user = self.request.user
@@ -1021,6 +1521,14 @@ class AdminFundList(AdminModelList):
 class AdminAssessmentResourceList(AdminModelList):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+    _search_keys = ["name"]
+    _list_title = "Assessment Resources"
+    _noun_plural = "assessment resources"
+    _add_label = "Assessment Resource"
+    _url_prefix = "assessment_resource"
+    _menu_groups = _blank_form_menu(
+        "indigo_admin_assessment_resource_download_blank_form"
+    )
 
     def has_permission(self):
         user = self.request.user
@@ -1030,6 +1538,12 @@ class AdminAssessmentResourceList(AdminModelList):
 class AdminPipelineList(AdminModelList):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+    _search_keys = ["name", "alternative_names"]
+    _list_title = "Pipelines"
+    _noun_plural = "pipelines"
+    _add_label = "Pipeline"
+    _url_prefix = "pipeline"
+    _menu_groups = _blank_form_menu("indigo_admin_pipeline_download_blank_form")
 
     def has_permission(self):
         user = self.request.user
@@ -1039,6 +1553,11 @@ class AdminPipelineList(AdminModelList):
 class AdminJoiningUpInitiativeList(AdminModelList):
     _model = JoiningUpInitiative
     _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
+    _search_keys = ["name"]
+    _list_title = "Joining Up Initiatives"
+    _noun_plural = "Joining Up Initiatives"
+    _add_label = "Joining Up Initiative"
+    _url_prefix = "joining_up_initiative"
 
     def has_permission(self):
         user = self.request.user
@@ -1046,23 +1565,50 @@ class AdminJoiningUpInitiativeList(AdminModelList):
 
 
 class AdminModelIndex(PermissionRequiredMixin, View, ABC):
+    """The admin page of one record of a type. Each says (in its class variables):
+
+    _record_title / _list_title / _url_prefix: the words to use, and the start of its view names
+    _extra_actions: (label, url name, admin only?) for pages this type has of its own
+    _spreadsheets / _notes: what goes in the Spreadsheets part of the More menu, if there is one"""
+
+    _extra_actions = ()
+    _spreadsheets = ()
+    _notes = ()
+
     def get(self, request, public_id):
+        cls = self.__class__
         try:
-            data = self.__class__._model.objects.get(public_id=public_id)
-        except self._model.DoesNotExist:
+            data = cls._model.objects.get(public_id=public_id)
+        except cls._model.DoesNotExist:
             raise Http404("Data does not exist")
-        field_data = jsondataferret.utils.get_field_list_from_json(
-            self.__class__._model.type_id, data.data_private
-        )
-        return render(
+        return _admin_record_page(
             request,
-            "indigo/admin/" + self.__class__._model.__name__.lower() + "/index.html",
-            {"data": data, "field_data": field_data},
+            data,
+            record_title=cls._record_title,
+            type_public_id=cls._model.type_id,
+            url_prefix=cls._url_prefix,
+            list_title=cls._list_title,
+            extra_actions=cls._extra_actions,
+            spreadsheets=cls._spreadsheets,
+            notes=cls._notes,
         )
+
+
+def _form_downloads(prefix):
+    return [
+        ("Download Form", f"indigo_admin_{prefix}_download_form"),
+        ("Upload/Import Form", f"indigo_admin_{prefix}_import_form"),
+    ]
 
 
 class AdminFundIndex(AdminModelIndex):
     _model = Fund
+    _record_title = "Fund"
+    _list_title = "Funds"
+    _url_prefix = "fund"
+    _extra_actions = [("Projects Using This", "indigo_admin_fund_projects", True)]
+    _spreadsheets = _form_downloads("fund")
+    _notes = [DOWNLOAD_FORM_NOTE]
 
     def has_permission(self):
         user = self.request.user
@@ -1071,6 +1617,10 @@ class AdminFundIndex(AdminModelIndex):
 
 class AdminAssessmentResourceIndex(AdminModelIndex):
     _model = AssessmentResource
+    _record_title = "Assessment Resource"
+    _list_title = "Assessment Resources"
+    _url_prefix = "assessment_resource"
+    _spreadsheets = _form_downloads("assessment_resource")
 
     def has_permission(self):
         user = self.request.user
@@ -1079,6 +1629,14 @@ class AdminAssessmentResourceIndex(AdminModelIndex):
 
 class AdminPipelineIndex(AdminModelIndex):
     _model = Pipeline
+    _record_title = "Pipeline"
+    _list_title = "Pipelines"
+    _url_prefix = "pipeline"
+    _extra_actions = [
+        ("Data Quality Report", "indigo_admin_pipeline_data_quality_report")
+    ]
+    _spreadsheets = _form_downloads("pipeline")
+    _notes = [DOWNLOAD_FORM_NOTE]
 
     def has_permission(self):
         user = self.request.user
@@ -1087,6 +1645,9 @@ class AdminPipelineIndex(AdminModelIndex):
 
 class AdminJoiningUpInitiativeIndex(AdminModelIndex):
     _model = JoiningUpInitiative
+    _record_title = "Joining Up Initiative"
+    _list_title = "Joining Up Initiatives"
+    _url_prefix = "joining_up_initiative"
 
     def has_permission(self):
         user = self.request.user
@@ -1099,15 +1660,16 @@ def admin_fund_projects(request, public_id):
         fund = Fund.objects.get(public_id=public_id)
     except Fund.DoesNotExist:
         raise Http404("Fund does not exist")
-    return render(
+    return _related_records_page(
         request,
-        "indigo/admin/fund/projects.html",
-        {
-            "fund": fund,
-            "project_links": [
-                i for i in fund.included_by_projects.all() if i.in_current_data
-            ],
-        },
+        fund,
+        "Projects",
+        "project",
+        [
+            link.project
+            for link in fund.included_by_projects.all()
+            if link.in_current_data
+        ],
     )
 
 
@@ -1237,16 +1799,10 @@ class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
             data = self.__class__._model.objects.get(public_id=public_id)
         except self._model.DoesNotExist:
             raise Http404("Data does not exist")
-        form = self.__class__._form_class()
         return render(
             request,
-            "indigo/admin/"
-            + self.__class__._model.__name__.lower()
-            + "/import_form.html",
-            {
-                "data": data,
-                "form": form,
-            },
+            "indigo/admin/import_form.html",
+            _subpage_context(data.record, form=self.__class__._form_class()),
         )
 
     def post(self, request, public_id):
@@ -1291,13 +1847,8 @@ class AdminModelImportForm(PermissionRequiredMixin, View, ABC):
         else:
             return render(
                 request,
-                "indigo/admin/"
-                + self.__class__._model.__name__.lower()
-                + "/import_form.html",
-                {
-                    "data": data,
-                    "form": form,
-                },
+                "indigo/admin/import_form.html",
+                _subpage_context(data.record, form=form),
             )
 
 
@@ -1348,17 +1899,10 @@ class AdminModelImportFormStage1Of2(PermissionRequiredMixin, View, ABC):
 
         form = ModelImportStage1Of2Form()
 
-        context = {
-            "record": record,
-            "form": form,
-        }
-
         return render(
             request,
-            "indigo/admin/"
-            + self.__class__._model.__name__.lower()
-            + "/import_form.html",
-            context,
+            "indigo/admin/import_form.html",
+            _subpage_context(record, form=form),
         )
 
     def post(self, request, public_id):
@@ -1399,17 +1943,10 @@ class AdminModelImportFormStage1Of2(PermissionRequiredMixin, View, ABC):
 
         else:
 
-            context = {
-                "record": record,
-                "form": form,
-            }
-
             return render(
                 request,
-                "indigo/admin/"
-                + self.__class__._model.__name__.lower()
-                + "/import_form.html",
-                context,
+                "indigo/admin/import_form.html",
+                _subpage_context(record, form=form),
             )
 
     def has_permission_with_data(self, data):
@@ -1485,10 +2022,11 @@ class AdminModelImportFormStage2Of2(PermissionRequiredMixin, View, ABC):
             return (
                 render(
                     request,
-                    "indigo/admin/"
-                    + self.__class__._model.__name__.lower()
-                    + "/import_form_stage_2_exception.html",
-                    {"record": record, "import": import_data},
+                    "indigo/admin/import_message.html",
+                    _subpage_context(
+                        record,
+                        message="There was a problem. Please contact support.",
+                    ),
                 ),
                 None,
                 None,
@@ -1499,10 +2037,13 @@ class AdminModelImportFormStage2Of2(PermissionRequiredMixin, View, ABC):
             return (
                 render(
                     request,
-                    "indigo/admin/"
-                    + self.__class__._model.__name__.lower()
-                    + "/import_form_stage_2_file_not_valid.html",
-                    {"record": record},
+                    "indigo/admin/import_message.html",
+                    _subpage_context(
+                        record,
+                        message="That does not seem to be a "
+                        + record.type.public_id
+                        + " spreadsheet, so it can not be imported.",
+                    ),
                 ),
                 None,
                 None,
@@ -1513,10 +2054,18 @@ class AdminModelImportFormStage2Of2(PermissionRequiredMixin, View, ABC):
             return (
                 render(
                     request,
-                    "indigo/admin/"
-                    + self.__class__._model.__name__.lower()
-                    + "/import_form_stage_2_wait.html",
-                    {"record": record, "import": import_data},
+                    "indigo/admin/import_message.html",
+                    _subpage_context(
+                        record,
+                        message="We are processing your file, please wait ...",
+                        refresh_url=reverse(
+                            f"indigo_admin_{record.type.public_id}_import_form_stage_2",
+                            kwargs={
+                                "public_id": record.public_id,
+                                "import_id": import_data.id,
+                            },
+                        ),
+                    ),
                 ),
                 None,
                 None,
@@ -1548,18 +2097,10 @@ class AdminModelImportFormStage2Of2(PermissionRequiredMixin, View, ABC):
 
         form = ModelImportStage2Of2Form()
 
-        context = {
-            "record": record,
-            "form": form,
-            "level_zero_errors": level_zero_errors,
-        }
-
         return render(
             request,
-            "indigo/admin/"
-            + self.__class__._model.__name__.lower()
-            + "/import_form_stage_2.html",
-            context,
+            "indigo/admin/import_stage_2.html",
+            _subpage_context(record, form=form, level_zero_errors=level_zero_errors),
         )
 
     def post(self, request, public_id, import_id):
@@ -1598,23 +2139,15 @@ class AdminModelImportFormStage2Of2(PermissionRequiredMixin, View, ABC):
             )
 
         else:
-            form = ModelImportStage2Of2Form()
-
             data_quality_report = self._dqr_class(import_data.data)
             level_zero_errors = data_quality_report.get_errors_for_priority_level(0)
 
-            context = {
-                "record": record,
-                "form": form,
-                "level_zero_errors": level_zero_errors,
-            }
-
             return render(
                 request,
-                "indigo/admin/"
-                + self.__class__._model.__name__.lower()
-                + "/import_form_stage_2.html",
-                context,
+                "indigo/admin/import_stage_2.html",
+                _subpage_context(
+                    record, form=form, level_zero_errors=level_zero_errors
+                ),
             )
 
     def has_permission_with_data(self, data):
@@ -1674,17 +2207,10 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
 
         form = RecordChangeStatusForm()
 
-        context = {
-            "record": record,
-            "form": form,
-        }
-
         return render(
             request,
-            "indigo/admin/"
-            + self.__class__._model.__name__.lower()
-            + "/change_status.html",
-            context,
+            "indigo/admin/change_status.html",
+            _subpage_context(record, form=form),
         )
 
     def post(self, request, public_id):
@@ -1718,7 +2244,7 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
 
             # Save the event
             new_event_data = NewEventData(
-                type,
+                record.type,
                 record,
                 {"status": form.cleaned_data["status"]},
                 mode=jsondataferret.EVENT_MODE_MERGE,
@@ -1743,17 +2269,10 @@ class AdminModelChangeStatus(PermissionRequiredMixin, View, ABC):
                 )
             )
 
-        context = {
-            "record": record,
-            "form": form,
-        }
-
         return render(
             request,
-            "indigo/admin/"
-            + self.__class__._model.__name__.lower()
-            + "/change_status.html",
-            context,
+            "indigo/admin/change_status.html",
+            _subpage_context(record, form=form),
         )
 
     def has_permission_with_data(self, data):
@@ -1826,13 +2345,7 @@ class AdminJoiningUpInitiativeChangeStatus(AdminModelChangeStatus):
 class AdminModelNew(PermissionRequiredMixin, View, ABC):
     def get(self, request):
         form = self.__class__._form_class()
-        return render(
-            request,
-            "indigo/admin/" + self.__class__._model.__name__.lower() + "/new.html",
-            {
-                "form": form,
-            },
-        )
+        return _new_page(request, self.__class__._type_public_id, form)
 
     @method_decorator(transaction.atomic)
     def post(self, request):
@@ -1853,7 +2366,13 @@ class AdminModelNew(PermissionRequiredMixin, View, ABC):
             )
             newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
 
-            # redirect to a new URL:
+            messages.add_message(
+                request,
+                messages.INFO,
+                "Created. Now fill in the rest of the details; they will be available once they have been moderated.",
+            )
+
+            # redirect to the edit form
             return HttpResponseRedirect(
                 reverse(
                     self.__class__._redirect_view,
@@ -1861,20 +2380,14 @@ class AdminModelNew(PermissionRequiredMixin, View, ABC):
                 )
             )
 
-        return render(
-            request,
-            "indigo/admin/" + self.__class__._model.__name__.lower() + "/new.html",
-            {
-                "form": form,
-            },
-        )
+        return _new_page(request, self.__class__._type_public_id, form)
 
 
 class AdminFundNew(AdminModelNew):
     _model = Fund
     _type_public_id = TYPE_FUND_PUBLIC_ID
     _form_class = FundNewForm
-    _redirect_view = "indigo_admin_fund_index"
+    _redirect_view = "indigo_admin_fund_edit"
 
     def has_permission(self):
         user = self.request.user
@@ -1885,7 +2398,7 @@ class AdminAssessmentResourceNew(AdminModelNew):
     _model = AssessmentResource
     _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
     _form_class = AssessmentResourceNewForm
-    _redirect_view = "indigo_admin_assessment_resource_index"
+    _redirect_view = "indigo_admin_assessment_resource_edit"
 
     def has_permission(self):
         user = self.request.user
@@ -1896,7 +2409,7 @@ class AdminPipelineNew(AdminModelNew):
     _model = Pipeline
     _type_public_id = TYPE_PIPELINE_PUBLIC_ID
     _form_class = PipelineNewForm
-    _redirect_view = "indigo_admin_pipeline_index"
+    _redirect_view = "indigo_admin_pipeline_edit"
 
     def has_permission(self):
         user = self.request.user
@@ -1904,13 +2417,11 @@ class AdminPipelineNew(AdminModelNew):
 
 
 class AdminModelJSONFormNew(PermissionRequiredMixin, View, ABC):
-    def get_template(self):
-        return f"indigo/admin/{self.__class__._model.__name__.lower()}/new.html"
+    def _page(self, request, form):
+        return _new_page(request, self.__class__._type_public_id, form, full_form=True)
 
     def get(self, request):
-        return render(
-            request, self.get_template(), {"form": self.__class__._form_class()}
-        )
+        return self._page(request, self.__class__._form_class())
 
     @method_decorator(transaction.atomic)
     def post(self, request):
@@ -1946,7 +2457,7 @@ class AdminModelJSONFormNew(PermissionRequiredMixin, View, ABC):
                 )
             )
 
-        return render(request, self.get_template(), {"form": form})
+        return self._page(request, form)
 
 
 class AdminJoiningUpInitiativeNew(AdminModelJSONFormNew):
@@ -1961,8 +2472,32 @@ class AdminJoiningUpInitiativeNew(AdminModelJSONFormNew):
 
 
 class AdminModelEdit(PermissionRequiredMixin, View, ABC):
+    """The page for editing a record. Each says (in its class variables) _record_title and _list_title, and
+    _redirect_view, the record's own page, which also names the rest of its views."""
+
     def get_template(self):
-        return f"indigo/admin/{self.__class__._model.__name__.lower()}/edit.html"
+        return "indigo/admin/edit.html"
+
+    def _context(self, form, instance):
+        cls = self.__class__
+        name = (instance.data_private or {}).get("name")
+        return {
+            "form": form,
+            "instance": instance,
+            "record_title": cls._record_title,
+            "list_title": cls._list_title,
+            "list_url": reverse(cls._redirect_view.removesuffix("_index") + "_list"),
+            "record_url": reverse(
+                cls._redirect_view, kwargs={"public_id": instance.public_id}
+            ),
+            "display_name": name.get("value", "") if isinstance(name, dict) else "",
+        }
+
+    def has_permission_with_data(self, data):
+        return True
+
+    def _get_edits(self, record, data):
+        return extract_edits_from_form(self._type_public_id, record, data)
 
     def get(self, request, public_id):
         Model = self.__class__._model
@@ -1971,11 +2506,11 @@ class AdminModelEdit(PermissionRequiredMixin, View, ABC):
             instance = Model.objects.get(public_id=public_id)
         except Model.DoesNotExist:
             raise Http404(f"{Model.__name__} does not exist")
+        if not self.has_permission_with_data(instance):
+            raise PermissionDenied("You can not see data")
 
         form = Form(initial={"data": instance.data_private})
-        return render(
-            request, self.get_template(), {"form": form, "instance": instance}
-        )
+        return render(request, self.get_template(), self._context(form, instance))
 
     @method_decorator(transaction.atomic)
     def post(self, request, public_id):
@@ -1991,15 +2526,15 @@ class AdminModelEdit(PermissionRequiredMixin, View, ABC):
             raise Http404("Record does not exist")
         except Model.DoesNotExist:
             raise Http404(f"{Model.__name__} does not exist")
+        if not self.has_permission_with_data(instance):
+            raise PermissionDenied("You can not see data")
 
         form = Form(request.POST, request.FILES)
 
         if form.is_valid():
             data = form.cleaned_data["data"]
 
-            new_event_datas = extract_edits_from_joining_up_initiative_form(
-                record, data
-            )
+            new_event_datas = self._get_edits(record, data)
 
             newEvent(
                 new_event_datas, user=request.user, comment=form.cleaned_data["comment"]
@@ -2020,13 +2555,13 @@ class AdminModelEdit(PermissionRequiredMixin, View, ABC):
                 )
             )
 
-        return render(
-            request, self.get_template(), {"form": form, "instance": instance}
-        )
+        return render(request, self.get_template(), self._context(form, instance))
 
 
 class AdminJoiningUpInitiativeEdit(AdminModelEdit):
     _model = JoiningUpInitiative
+    _record_title = "Joining Up Initiative"
+    _list_title = "Joining Up Initiatives"
     _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
     _form_class = JoiningUpInitiativeEditForm
     _redirect_view = "indigo_admin_joining_up_initiative_index"
@@ -2036,8 +2571,26 @@ class AdminJoiningUpInitiativeEdit(AdminModelEdit):
         return user.has_perm("indigo.admin")
 
 
+class AdminProjectEdit(AdminModelEdit):
+    _model = Project
+    _record_title = "Project"
+    _list_title = "Projects"
+    _type_public_id = TYPE_PROJECT_PUBLIC_ID
+    _form_class = ProjectEditForm
+    _redirect_view = "indigo_admin_project_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+    def has_permission_with_data(self, data):
+        return user_can_access_project(self.request.user, data)
+
+
 class AdminOrganisationEdit(AdminModelEdit):
     _model = Organisation
+    _record_title = "Organisation"
+    _list_title = "Organisations"
     _type_public_id = TYPE_ORGANISATION_PUBLIC_ID
     _form_class = OrganisationEditForm
     _redirect_view = "indigo_admin_organisation_index"
@@ -2045,6 +2598,45 @@ class AdminOrganisationEdit(AdminModelEdit):
     def has_permission(self):
         user = self.request.user
         return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+
+class AdminFundEdit(AdminModelEdit):
+    _model = Fund
+    _record_title = "Fund"
+    _list_title = "Funds"
+    _type_public_id = TYPE_FUND_PUBLIC_ID
+    _form_class = FundEditForm
+    _redirect_view = "indigo_admin_fund_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
+
+
+class AdminPipelineEdit(AdminModelEdit):
+    _model = Pipeline
+    _record_title = "Pipeline"
+    _list_title = "Pipelines"
+    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
+    _form_class = PipelineEditForm
+    _redirect_view = "indigo_admin_pipeline_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
+
+
+class AdminAssessmentResourceEdit(AdminModelEdit):
+    _model = AssessmentResource
+    _record_title = "Assessment Resource"
+    _list_title = "Assessment Resources"
+    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
+    _form_class = AssessmentResourceEditForm
+    _redirect_view = "indigo_admin_assessment_resource_index"
+
+    def has_permission(self):
+        user = self.request.user
+        return user.has_perm("indigo.admin")
 
 
 class AdminModelModerate(PermissionRequiredMixin, View, ABC):
@@ -2083,6 +2675,7 @@ class AdminModelModerate(PermissionRequiredMixin, View, ABC):
                 jsondataferret.pythonapi.newevent.newEvent(
                     actions, user=request.user, comment=request.POST.get("comment")
                 )
+                _add_moderation_message(request, actions)
                 return HttpResponseRedirect(
                     reverse(
                         self.__class__._redirect_view,
@@ -2090,10 +2683,13 @@ class AdminModelModerate(PermissionRequiredMixin, View, ABC):
                     )
                 )
 
+        for edit in edits:
+            edit.changes = _edit_changes(edit, record)
+
         return render(
             request,
-            "indigo/admin/" + self.__class__._model.__name__.lower() + "/moderate.html",
-            {"type": type, "record": record, "edits": edits},
+            "indigo/admin/moderate.html",
+            _subpage_context(record, edits=edits),
         )
 
 
@@ -2142,13 +2738,7 @@ class AdminModelHistory(PermissionRequiredMixin, View, ABC):
             raise Http404("Type does not exist")
         except Record.DoesNotExist:
             raise Http404("Record does not exist")
-        events = Event.objects.filter_by_record(record)
-
-        return render(
-            request,
-            "indigo/admin/" + self.__class__._model.__name__.lower() + "/history.html",
-            {"type": type, "record": record, "events": events},
-        )
+        return _record_history_page(request, record)
 
 
 class AdminFundHistory(AdminModelHistory):
@@ -2194,7 +2784,6 @@ class AdminModelDataQualityReport(PermissionRequiredMixin, View, ABC):
         except self._model.DoesNotExist:
             raise Http404("Data does not exist")
         record = data.record
-        type = record.type
 
         if not self.has_permission_with_data(data):
             raise PermissionDenied("You can not see data")
@@ -2203,15 +2792,12 @@ class AdminModelDataQualityReport(PermissionRequiredMixin, View, ABC):
 
         return render(
             request,
-            "indigo/admin/"
-            + self.__class__._model.__name__.lower()
-            + "/data_quality_report.html",
-            {
-                "type": type,
-                "record": record,
-                "errors_by_priority_level": dqr.get_errors_in_priority_levels(),
-                "data_quality_report": dqr,
-            },
+            "indigo/admin/data_quality_report.html",
+            _subpage_context(
+                record,
+                errors_by_priority_level=dqr.get_errors_in_priority_levels(),
+                data_quality_report=dqr,
+            ),
         )
 
     def has_permission_with_data(self, data):
@@ -2340,36 +2926,75 @@ def admin_edit_index(request, edit_id):
 ########################### Admin - Moderate
 
 
+# What the To Moderate page shows: each type, its title, and the start of its view names
+MODERATION_TYPES = [
+    (TYPE_PROJECT_PUBLIC_ID, "Projects", "project"),
+    (TYPE_ORGANISATION_PUBLIC_ID, "Organisations", "organisation"),
+    (TYPE_FUND_PUBLIC_ID, "Funds", "fund"),
+    (TYPE_PIPELINE_PUBLIC_ID, "Pipelines", "pipeline"),
+    (TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID, "Assessment Resources", "assessment_resource"),
+    (
+        TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
+        "Joining Up Initiatives",
+        "joining_up_initiative",
+    ),
+]
+
+
+def _records_waiting_for_moderation(type_public_id):
+    """The records of this type with edits waiting to be moderated, oldest waiting first.
+
+    Each is a dict of the record, its name, how many edits are waiting, since when, and who made the latest."""
+    try:
+        type = Type.objects.get(public_id=type_public_id)
+    except Type.DoesNotExist:
+        return []
+    records = list(Record.objects.filter_needs_moderation_by_type(type))
+    edits_by_record = {}
+    for edit in (
+        Edit.objects.filter(record__in=records, approval_event=None, refusal_event=None)
+        .select_related("creation_event", "creation_event__user")
+        .order_by("creation_event__created", "id")
+    ):
+        edits_by_record.setdefault(edit.record_id, []).append(edit)
+    rows = []
+    for record in records:
+        edits = edits_by_record.get(record.id)
+        if not edits:
+            continue
+        data = record.cached_data if isinstance(record.cached_data, dict) else {}
+        name = data.get("name")
+        rows.append(
+            {
+                "record": record,
+                "name": name.get("value", "") if isinstance(name, dict) else "",
+                "edit_count": len(edits),
+                "waiting_since": edits[0].creation_event.created,
+                "latest_user": edits[-1].creation_event.user,
+            }
+        )
+    rows.sort(key=lambda row: row["waiting_since"])
+    return rows
+
+
 @permission_required("indigo.admin")
 def admin_to_moderate(request):
-    try:
-        type_project = Type.objects.get(public_id=TYPE_PROJECT_PUBLIC_ID)
-        type_organisation = Type.objects.get(public_id=TYPE_ORGANISATION_PUBLIC_ID)
-        type_fund = Type.objects.get(public_id=TYPE_FUND_PUBLIC_ID)
-        type_pipeline = Type.objects.get(public_id=TYPE_PIPELINE_PUBLIC_ID)
-        type_assessment_resource = Type.objects.get(
-            public_id=TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
-        )
-        type_joining_up_initiative = Type.objects.get(
-            public_id=TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
-        )
-    except Type.DoesNotExist:
-        raise Http404("Type does not exist")
+    sections = [
+        {
+            "title": title,
+            "anchor": prefix,
+            "rows": _records_waiting_for_moderation(type_public_id),
+            "index_url": f"indigo_admin_{prefix}_index",
+            "moderate_url": f"indigo_admin_{prefix}_moderate",
+        }
+        for type_public_id, title, prefix in MODERATION_TYPES
+    ]
     return render(
         request,
         "indigo/admin/to_moderate.html",
         {
-            "projects": Record.objects.filter_needs_moderation_by_type(type_project),
-            "organisations": Record.objects.filter_needs_moderation_by_type(
-                type_organisation
-            ),
-            "funds": Record.objects.filter_needs_moderation_by_type(type_fund),
-            "pipelines": Record.objects.filter_needs_moderation_by_type(type_pipeline),
-            "assessment_resources": Record.objects.filter_needs_moderation_by_type(
-                type_assessment_resource
-            ),
-            "joining_up_initiatives": Record.objects.filter_needs_moderation_by_type(
-                type_joining_up_initiative
-            ),
+            "sections": sections,
+            "total": sum(len(section["rows"]) for section in sections),
+            "empty_titles": [s["title"] for s in sections if not s["rows"]],
         },
     )

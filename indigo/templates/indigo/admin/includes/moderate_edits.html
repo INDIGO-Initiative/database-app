@@ -1,0 +1,113 @@
+{# The page for moderating a record. Pass: record, edits (each with .changes), noun (eg "project"), record_url. #}
+<div class="record-header mt-5 mb-3">
+    <h2 class="record-header__title">Moderate {{ noun|title }}: {{ record.public_id }} {{ record.cached_data.name.value }}</h2>
+    <div class="record-header__actions">
+        <a href="{{ record_url }}" class="btn btn-secondary">View {{ noun }}</a>
+    </div>
+</div>
+
+{% if edits %}
+    <p class="text-muted">
+        <strong>{{ edits|length }}</strong> edit{{ edits|length|pluralize }} waiting.
+        {% if perms.indigo.admin %}
+            Choose to approve or reject each one, then save. Anything left as "No action" stays waiting.
+        {% else %}
+            Only admins can approve or reject edits.
+        {% endif %}
+    </p>
+
+    <form action="" method="post" class="mb-5" id="moderate-form">
+        {% csrf_token %}
+
+        {% if perms.indigo.admin and edits|length > 1 %}
+            <p class="text-right">
+                All edits:
+                <button type="button" class="btn btn-sm btn-outline-success" data-moderate-all="approve">Approve</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-moderate-all="reject">Reject</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-moderate-all="">No action</button>
+            </p>
+        {% endif %}
+
+        {% for edit in edits %}
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>Edit {{ forloop.counter }}</strong>
+                        by {{ edit.creation_event.user|default:"an unknown user" }},
+                        <span title="{{ edit.creation_event.created }}">{{ edit.creation_event.created|timesince }} ago</span>
+                        {% if edit.creation_event.comment %}
+                            <div class="text-muted small mt-1">&ldquo;{{ edit.creation_event.comment|linebreaksbr }}&rdquo;</div>
+                        {% endif %}
+                    </div>
+                    <span class="badge badge-secondary ml-3 text-nowrap">{{ edit.changes|length }} change{{ edit.changes|length|pluralize }}</span>
+                </div>
+
+                {% if edit.changes %}
+                    <table class="table table-sm mb-0 moderate-changes">
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Change</th>
+                                <th>Current</th>
+                                <th>Proposed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for change in edit.changes %}
+                                <tr class="moderate-changes__row--{{ change.kind }}">
+                                    <td>{{ change.title }}</td>
+                                    <td>{% if change.kind == "added" %}<span class="badge badge-success">New</span>{% elif change.kind == "removed" %}<span class="badge badge-danger">Removed</span>{% else %}<span class="badge badge-warning">Changed</span>{% endif %}</td>
+                                    <td class="moderate-changes__old">{% if change.old is None %}<span class="text-muted">&mdash;</span>{% else %}<div class="moderate-changes__value">{{ change.old }}</div>{% endif %}</td>
+                                    <td class="moderate-changes__new">{% if change.new is None %}<span class="text-muted">&mdash;</span>{% else %}<div class="moderate-changes__value">{{ change.new }}</div>{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="card-body text-muted">This edit does not change anything.</div>
+                {% endif %}
+
+                {% if perms.indigo.admin %}
+                    <div class="card-footer bg-transparent">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="action-{{ edit.id }}-approve" name="action_{{ edit.id }}" value="approve" class="custom-control-input">
+                            <label class="custom-control-label text-success font-weight-bold" for="action-{{ edit.id }}-approve">Approve</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="action-{{ edit.id }}-reject" name="action_{{ edit.id }}" value="reject" class="custom-control-input">
+                            <label class="custom-control-label text-danger font-weight-bold" for="action-{{ edit.id }}-reject">Reject</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="action-{{ edit.id }}-none" name="action_{{ edit.id }}" value="" class="custom-control-input" checked>
+                            <label class="custom-control-label" for="action-{{ edit.id }}-none">No action</label>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {% if perms.indigo.admin %}
+            {% include "indigo/includes/comment_box.html" with help="Kept in the history of the record along with your decisions." %}
+            <button type="submit" class="btn btn-primary">Save decisions</button>
+            <a href="{{ record_url }}" class="btn btn-link">Cancel</a>
+        {% endif %}
+    </form>
+
+    {% if perms.indigo.admin and edits|length > 1 %}
+    <script>
+        document.querySelectorAll("[data-moderate-all]").forEach(function (button) {
+            button.addEventListener("click", function () {
+                var value = button.getAttribute("data-moderate-all");
+                document.querySelectorAll('#moderate-form input[type="radio"][name^="action_"]').forEach(function (radio) {
+                    if (radio.value === value) { radio.checked = true; }
+                });
+            });
+        });
+    </script>
+    {% endif %}
+{% else %}
+    <div class="alert alert-success">
+        <i class="fa-solid fa-check mr-2" aria-hidden="true"></i>There is nothing to moderate here, well done!
+    </div>
+    <a href="{{ record_url }}" class="btn btn-secondary">Back to {{ noun }}</a>
+{% endif %}

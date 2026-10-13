@@ -1,0 +1,59 @@
+{# The body of every list page (admin and public). The view gives the context from indigo/listpages.py:list_context #}
+<div class="record-header mt-5 mb-3">
+    <h2 class="record-header__title">{{ list_title }}</h2>
+    {% if add_url_name or menu %}
+        <div class="record-header__actions">
+            {% if add_url_name %}
+                <a href="{% url add_url_name %}" class="btn btn-primary">Add {{ add_label }} <i class="far fa-plus" aria-hidden="true"></i></a>
+            {% endif %}
+            {% if menu %}
+                {% include "indigo/includes/actions_menu.html" %}
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+{% if searchable %}
+    {% url list_url_name as clear_url %}
+    {% if search_extra_template %}
+        <div class="d-flex flex-wrap justify-content-between align-items-start">
+            {% include "indigo/includes/list_search.html" with input_id="list-search" placeholder=search_placeholder clear_url=clear_url %}
+            {% include search_extra_template %}
+        </div>
+    {% else %}
+        {% include "indigo/includes/list_search.html" with input_id="list-search" placeholder=search_placeholder clear_url=clear_url %}
+    {% endif %}
+{% endif %}
+
+{% if items %}
+    {% include "indigo/includes/result_count.html" %}
+
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            {% if edit_url_name %}<th>&nbsp;</th>{% endif %}
+        </tr>
+        {% for item in items %}
+            <tr>
+                <td class="text-nowrap"><a href="{% url index_url_name public_id=item.public_id %}">{{ item.public_id }}</a></td>
+                <td><a href="{% url index_url_name public_id=item.public_id %}" class="text-body">{{ item.display_name }}</a></td>
+                {% if edit_url_name %}
+                    <td class="text-nowrap text-right">
+                        <a href="{% url edit_url_name public_id=item.public_id %}" class="btn btn-primary btn-sm">Edit</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+        {% include "jsondataferret/common/pagination.html" %}
+    {% endif %}
+{% else %}
+    {% if search_term %}
+        <p>No {{ noun_plural }} match your search.</p>
+    {% else %}
+        <p>No {{ noun_plural }} are available.</p>
+    {% endif %}
+{% endif %}

@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "jsondataferret.apps.JsondataferretConfig",
     "indigo.apps.IndigoConfig",
-    "django_jsonforms",
 ]
 
 MIDDLEWARE = [

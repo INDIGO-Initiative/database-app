@@ -1,0 +1,14 @@
+{# The signed-in user in the top bar: their name opens a menu. On the admin pages set admin_site so it links to the public site instead of the admin. #}
+<div class="dropdown site-header__menu">
+    <button type="button" class="btn btn-sm btn-outline-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Your account"><i class="fa-solid fa-user mr-1" aria-hidden="true"></i>{{ user.username }}</button>
+    <div class="dropdown-menu dropdown-menu-right">
+        {% if admin_site %}
+            <a class="dropdown-item" href="{% url 'indigo_index' %}"><i class="fa-solid fa-globe fa-fw mr-2 text-muted" aria-hidden="true"></i>Public site</a>
+            <div class="dropdown-divider"></div>
+        {% elif perms.indigo.admin or perms.indigo.data_steward %}
+            <a class="dropdown-item" href="{% url 'indigo_admin_index' %}"><i class="fa-solid fa-gear fa-fw mr-2 text-muted" aria-hidden="true"></i>Admin</a>
+            <div class="dropdown-divider"></div>
+        {% endif %}
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket fa-fw mr-2 text-muted" aria-hidden="true"></i>Logout</a>
+    </div>
+</div>

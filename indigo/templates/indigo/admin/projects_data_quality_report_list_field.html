@@ -1,6 +1,6 @@
 {% extends 'indigo/base-admin.html' %}
 
-{% block head_title %}Project {{ project.public_id }}{% endblock %}
+{% block head_title %}Data Quality Report: {{ field.title }}{% endblock %}
 
 {% block breadcrumbs %}
     <nav aria-label="breadcrumb">
@@ -15,7 +15,9 @@
 
 {% block content %}
 
-    <p>Project Data Quality Report: Field {{ field.title }}</p>
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">Data Quality Report: {{ field.title }}</h2>
+    </div>
 
     <div id="plotly_count_data_no_data" style="width: 400px; height: 400px; margin: 20px auto;"></div>
 

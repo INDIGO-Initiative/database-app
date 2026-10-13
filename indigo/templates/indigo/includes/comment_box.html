@@ -1,0 +1,9 @@
+{# The "Comment for history" box on pages that change a record (edit, moderate). Pass optionally: value, errors, help. #}
+<div class="form-group comment-box">
+    <label for="id_comment" class="comment-box__label">Comment for history</label>
+    <div class="comment-box__help">{{ help|default:"Kept in the history of the record." }}</div>
+    <textarea name="comment" id="id_comment" class="form-control" rows="3">{{ value|default:"" }}</textarea>
+    {% for error in errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>

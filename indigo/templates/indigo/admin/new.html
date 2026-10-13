@@ -1,0 +1,35 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Add {{ record_title }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{{ list_url }}">{{ list_title }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    {% if full_form %}
+        {# The whole record in one go (it is added once its details have been moderated) #}
+        <div class="record-header mt-5 mb-3">
+            <h2 class="record-header__title">Add {{ record_title }}</h2>
+        </div>
+
+        <p class="text-muted">The {{ record_title|lower }} will be added once its details have been moderated.</p>
+
+        <form action="" method="post" class="form mb-5">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form }}
+            <button type="submit" class="btn btn-primary my-3">Save</button>
+            <a href="{{ list_url }}" class="btn btn-link">Cancel</a>
+        </form>
+    {% else %}
+        {# Just a name to start with; the rest is filled in on the edit form next #}
+        {% include "indigo/admin/includes/new_record_form.html" with noun=record_title|lower cancel_url=list_url %}
+    {% endif %}
+{% endblock %}

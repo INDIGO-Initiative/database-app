@@ -1,0 +1,16 @@
+{% extends 'indigo/base.html' %}
+
+{% block head_title %}Logged out{% endblock %}
+
+{% block content %}
+
+    <div class="card auth-card mx-auto mt-5">
+        <div class="card-body p-4 text-center">
+            <h2 class="mb-3">You have been logged out</h2>
+            <p class="text-muted">Thanks for using the site.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary">Log in again</a>
+            <a href="{% url 'indigo_index' %}" class="btn btn-link">Back to the public data</a>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'indigo/base-admin.html' %}
 
-{% block head_title %}Project {{ project.public_id }}{% endblock %}
+{% block head_title %}Project Data Quality Report{% endblock %}
 
 {% block breadcrumbs %}
     <nav aria-label="breadcrumb">
@@ -13,22 +13,25 @@
 {% endblock %}
 
 {% block content %}
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">Project Data Quality Report</h2>
+    </div>
 
-    <p>Project Data Quality Report</p>
+    <p class="text-muted">Statistics across all projects. Choose a report:</p>
 
-    <ul>
+    <ul class="list-unstyled">
         {% for i in '0123'|make_list %}
-            <li>
+            <li class="mb-2">
                 <a href="{% url 'indigo_admin_all_projects_data_quality_list_projects_by_priority_highest' priority=i %}" class="btn btn-primary">Projects by count of priority {{ i }} issues</a>
             </li>
         {% endfor %}
         {% for field_single in fields_single %}
-            <li>
+            <li class="mb-2">
                 <a href="{% url 'indigo_admin_all_projects_data_quality_report_field_single' %}?field={{ field_single.key|urlencode:"" }}" class="btn btn-primary">{{ field_single.title }}</a>
             </li>
         {% endfor %}
         {% for field_list in fields_list %}
-            <li>
+            <li class="mb-2">
                 <a href="{% url 'indigo_admin_all_projects_data_quality_report_field_list' %}?field={{ field_list.key|urlencode:"" }}" class="btn btn-primary">{{ field_list.title }}</a>
             </li>
         {% endfor %}

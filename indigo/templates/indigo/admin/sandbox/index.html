@@ -15,8 +15,9 @@
 
 
 {% block content %}
-
-<p>Sandbox {{ sandbox.public_id  }}</p>
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">Sandbox: {{ sandbox.public_id }} {{ sandbox.title }}</h2>
+    </div>
 
 <table class="table">
     <tr><th>ID</th><td>{{ sandbox.public_id }}</td></tr>

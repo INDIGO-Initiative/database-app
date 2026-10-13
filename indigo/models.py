@@ -1,6 +1,7 @@
 import jsonpointer
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from jsondataferret.models import Record
 
 from indigo import (
@@ -102,19 +103,25 @@ class Organisation(BaseModel):
 
 
 class ProjectManager(models.Manager):
-    def filter_by_admin_user_can_access(self, user):
+    def filter_by_admin_user_can_access(self, user, search=None):
+        """The projects this user can see, in ID order. If search is given, only projects whose ID or name contains it
+        (ignoring case)."""
         if user and user.has_perm("indigo.admin"):
-            return self.all().order_by("public_id")
+            projects = self.all()
         elif user and user.has_perm("indigo.data_steward"):
-            return self.raw(
-                "SELECT indigo_project.* FROM indigo_project "
-                + "JOIN indigo_adminuserhaspermissionsforproject ON indigo_adminuserhaspermissionsforproject.project_id = indigo_project.id "
-                + "AND indigo_adminuserhaspermissionsforproject.user_id=%s AND indigo_adminuserhaspermissionsforproject.permission_access = %s "
-                + "ORDER BY indigo_project.public_id ASC",
-                [user.id, True],
-            )
+            projects = self.filter(
+                adminuserhaspermissionsforproject__user=user,
+                adminuserhaspermissionsforproject__permission_access=True,
+            ).distinct()
         else:
-            return []
+            return self.none()
+        if search:
+            projects = projects.filter(
+                Q(public_id__icontains=search)
+                | Q(data_private__name__value__icontains=search)
+                | Q(data_private__alternative_names__value__icontains=search)
+            )
+        return projects.order_by("public_id")
 
 
 class Project(BaseModel):

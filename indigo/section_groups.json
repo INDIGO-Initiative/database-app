@@ -1,0 +1,13 @@
+{
+  "project": [
+    ["Overview", ["status", "name", "alternative_names", "stage_development", "social_investment_prototype", "dates", "jurisdiction", "notes", "changes_to_project_due_to_covid19"]],
+    ["Finance", ["overall_project_finance", "investment_details", "provider_side_cost", "outcome_payer_cost"]],
+    ["Purpose & beneficiaries", ["purpose_and_classifications", "service_and_beneficiaries"]],
+    ["Funds & locations", ["outcome_funds", "delivery_locations"]],
+    ["Service & investment", ["service_provisions", "investments", "intermediary_services"]],
+    ["Outcomes", ["outcome_payment_commitments", "outcome_metrics", "outcome_pricings", "outcome_payment_plans", "outcome_payments", "results"]],
+    ["Transactions & TA", ["transactions", "technical_assistances", "technical_assistance_details"]],
+    ["Data standards", ["open_contracting_datas", "360giving_datas"]],
+    ["Sources & documents", ["sources", "documents"]]
+  ]
+}

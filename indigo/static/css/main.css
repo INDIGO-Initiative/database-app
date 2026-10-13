@@ -29,3 +29,481 @@
     border-radius: 4px;
     margin: 0 2px;
 }
+
+/* Page links under long lists (the same markup is used on every list page and the history page) */
+.pagination {
+    justify-content: center;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.pagination .step-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* The title of a page with its buttons on the right. A long title wraps within its own space, instead of pushing the
+   buttons onto a line below. */
+.record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.record-header__title {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-bottom: 0;
+    overflow-wrap: anywhere;
+}
+
+.record-header__actions {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+/* On a narrow screen there is no room for both side by side */
+@media (max-width: 575px) {
+    .record-header {
+        flex-wrap: wrap;
+    }
+
+    .record-header__actions {
+        white-space: normal;
+    }
+}
+
+/* The admin home page */
+.dashboard-card {
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.12);
+}
+
+.dashboard-card__title {
+    color: inherit;
+    text-decoration: none;
+}
+
+.dashboard-card__count {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.1;
+}
+
+/* Buttons sit above the card's full-size link so they can be clicked on their own */
+.dashboard-card__actions {
+    position: relative;
+    z-index: 2;
+}
+
+.dashboard-tools {
+    max-width: 28rem;
+}
+
+/* Breadcrumbs: flat text on the grey band (not a second grey box on top of it), with chevrons between the steps */
+.page-header .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9rem;
+    align-items: center;
+}
+
+.page-header .breadcrumb-item + .breadcrumb-item {
+    padding-left: 0.6rem;
+}
+
+.page-header .breadcrumb-item + .breadcrumb-item::before {
+    content: "\203A";
+    padding-right: 0.6rem;
+    font-size: 1.25em;
+    line-height: 1;
+    color: #868e96;
+}
+
+.page-header .breadcrumb-item a {
+    color: #495057;
+    text-decoration: none;
+}
+
+.page-header .breadcrumb-item a:hover,
+.page-header .breadcrumb-item a:focus {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.page-header .breadcrumb-item.active {
+    color: #212529;
+    font-weight: 600;
+}
+
+/* A little house on the first step (Admin) */
+.page-header .breadcrumb-item:first-child a::before,
+.page-header .breadcrumb-item.active:first-child::before {
+    content: "\f015";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 0.85em;
+    margin-right: 0.4rem;
+    color: #868e96;
+}
+
+/* The bar at the top of every admin page: the site title on the left, who you are and Logout on the right */
+.site-header {
+    background: #343a40;
+    padding: 1rem 10px;
+}
+
+.site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem 1rem;
+}
+
+.site-header__title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.site-header__title a,
+.site-header__title a:hover {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* The icon is drawn in the title's colour (white), a little taller than the lettering */
+.site-header__icon {
+    flex: 0 0 auto;
+    height: 1.6rem;
+    width: 1.21rem;
+}
+
+.site-header__user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #dee2e6;
+    white-space: nowrap;
+}
+
+/* The page for adding a record by its name */
+.new-record-form {
+    max-width: 40rem;
+}
+
+/* Moderating a record: what an edit would change */
+.moderate-changes {
+    /* Equal-ish columns however much is in them; otherwise an empty Current column shrinks to a sliver */
+    table-layout: fixed;
+}
+
+.moderate-changes th {
+    border-top: 0;
+}
+
+.moderate-changes th:nth-child(1) {
+    width: 24%;
+}
+
+.moderate-changes th:nth-child(2) {
+    width: 6.5rem;
+}
+
+.moderate-changes th:nth-child(3),
+.moderate-changes th:nth-child(4) {
+    width: 33%;
+}
+
+/* Everything starts at the top left of its cell */
+.moderate-changes th,
+.moderate-changes td {
+    text-align: left;
+    vertical-align: top;
+}
+
+/* Keep the line breaks in a value, but only the value's own: the whitespace around it in the HTML must not show */
+.moderate-changes__value {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.moderate-changes td:first-child {
+    font-weight: 500;
+}
+
+.moderate-changes__old {
+    background: #fff1f0;
+    color: #86181d;
+}
+
+.moderate-changes__row--added .moderate-changes__old,
+.moderate-changes__row--removed .moderate-changes__new {
+    background: transparent;
+}
+
+.moderate-changes__new {
+    background: #f0fff4;
+    color: #165c2c;
+}
+
+/* The public home page */
+.home-downloads {
+    max-width: 44rem;
+}
+
+.home-intro__title {
+    font-size: 2.25rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.home-intro__text {
+    max-width: 50rem;
+    color: #495057;
+}
+
+/* The grey strip under the top bar that holds the breadcrumbs */
+.breadcrumb-bar {
+    background: #eee;
+    padding: 10px 10px;
+}
+
+/* The login and logged-out pages: a card in the middle of the page */
+.auth-card {
+    max-width: 26rem;
+}
+
+/* The fields of one record, on the public record pages */
+.record-details th,
+.record-details td {
+    text-align: left;
+    vertical-align: top;
+}
+
+.record-details th {
+    width: 30%;
+    font-weight: 500;
+}
+
+/* Keep a value's own line breaks (the cell's HTML has no whitespace around the value) */
+.record-details td {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* Sections of a record page, with a sidebar to jump between them (the same look as the edit form's tabs) */
+.record-layout {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+.record-nav {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    border-right: 1px solid #dee2e6;
+    padding-right: 0.75rem;
+}
+
+.record-nav .nav-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    color: #495057;
+    padding: 0.5rem 0.75rem;
+}
+
+.record-nav .nav-link:hover {
+    background: #f1f3f5;
+}
+
+.record-nav .nav-link.active {
+    background: #007bff;
+    color: #fff;
+}
+
+.record-nav .nav-link.active .badge {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
+
+.record-section {
+    scroll-margin-top: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.record-section__title {
+    font-size: 1.4rem;
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.record-block__title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 1.5rem 0 0.5rem;
+}
+
+.record-item .card-header {
+    font-weight: 500;
+    background: #f8f9fa;
+}
+
+.dropdown-menu .dropdown-note {
+    max-width: 18rem;
+    white-space: normal;
+}
+
+@media (max-width: 767px) {
+    .record-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+    }
+
+    .record-nav {
+        position: static;
+        max-height: none;
+        border-right: 0;
+        padding-right: 0;
+    }
+
+    .record-nav .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+/* The widths of the edit form's tab sidebar and the gap to its fields, shared so the footer below can line up with the fields */
+:root {
+    --record-nav-width: 13rem;
+    --record-gap: 2rem;
+}
+
+/* The comment and Save button under an edit form: in line with the fields (not under the tabs), below a divider */
+.edit-footer {
+    margin-left: calc(var(--record-nav-width) + var(--record-gap));
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px dashed #dee2e6;
+}
+
+@media (max-width: 767px) {
+    .edit-footer {
+        margin-left: 0;
+    }
+}
+
+/* The label of the "Comment for history" box looks like the labels of the fields above it (.record-form .control-label
+   in frontend/src/rjsf-form.css), so keep the two the same. */
+.comment-box__label {
+    font-weight: 500;
+    margin-bottom: 0.15rem;
+}
+
+/* Under the label, above the box, like the help text of the fields above (.record-form .field-help) */
+.comment-box__help {
+    font-size: 0.8rem;
+    color: #666;
+    margin: 0.15rem 0 0.35rem;
+}
+
+/* In the admin the strip is teal, so it is obvious at a glance whether you are on the admin side or the public side */
+.breadcrumb-bar--admin {
+    background: #0e7c7b;
+}
+
+.breadcrumb-bar--admin .breadcrumb-item a,
+.breadcrumb-bar--admin .breadcrumb-item.active {
+    color: #fff;
+}
+
+.breadcrumb-bar--admin .breadcrumb-item a:hover,
+.breadcrumb-bar--admin .breadcrumb-item a:focus {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.breadcrumb-bar--admin .breadcrumb-item + .breadcrumb-item::before,
+.breadcrumb-bar--admin .breadcrumb-item:first-child a::before,
+.breadcrumb-bar--admin .breadcrumb-item.active:first-child::before {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* The date range on the History page */
+.history-filter .form-control {
+    width: auto;
+}
+
+/* The footer of the public site: the data disclaimer, and the logo (a link to the Government Outcomes Lab website). It sits at the bottom of the window
+   on a short page, and after the content on a long one. */
+.has-footer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.site-footer {
+    margin-top: auto;
+    padding: 2rem 10px;
+    background: #f1f3f5;
+    border-top: 1px solid #dee2e6;
+    color: #495057;
+    font-size: 0.85rem;
+}
+
+.site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem 3rem;
+}
+
+.site-footer__notice {
+    flex: 1 1 36rem;
+    max-width: 60rem;
+}
+
+.site-footer__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 0.75rem;
+}
+
+.site-footer p {
+    margin-bottom: 0.75rem;
+}
+
+.site-footer__logo {
+    flex: 0 0 auto;
+}
+
+.site-footer__logo a {
+    display: block;
+}
+
+.site-footer__logo img {
+    display: block;
+    height: 3rem;
+    width: auto;
+    max-width: 100%;
+}

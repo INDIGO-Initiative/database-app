@@ -6,7 +6,6 @@ import jsonpointer
 from indigo import (
     TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
     TYPE_FUND_PUBLIC_ID,
-    TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PIPELINE_PUBLIC_ID,
     TYPE_PROJECT_AND_PIPELINE_ORGANISATION_LIST,
@@ -240,10 +239,25 @@ def extract_edits_from_pipeline_spreadsheet(record, import_json):
     ]
 
 
-def extract_edits_from_joining_up_initiative_form(record, import_json):
+def _add_nulls_for_removed_keys(current_data, new_data):
+    """Edits are saved in merge mode, so a key that is missing from new_data would keep its old value.
+    To make removing a value in a web form work, set removed keys to None. Alters new_data in place.
+    (Lists are replaced as a whole by a merge, so removed list items need no help.)"""
+    for key, current_value in current_data.items():
+        if key not in new_data:
+            if current_value is not None:
+                new_data[key] = None
+        elif isinstance(current_value, dict) and isinstance(new_data[key], dict):
+            _add_nulls_for_removed_keys(current_value, new_data[key])
+
+
+def extract_edits_from_form(type_public_id, record, import_json):
+    """For data from a web form that edits a whole record."""
+    import_json = deepcopy(import_json)
+    _add_nulls_for_removed_keys(record.cached_data or {}, import_json)
     return [
         jsondataferret.pythonapi.newevent.NewEventData(
-            TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
+            type_public_id,
             record,
             import_json,
             mode=jsondataferret.EVENT_MODE_MERGE,

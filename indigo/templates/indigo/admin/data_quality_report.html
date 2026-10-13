@@ -1,0 +1,17 @@
+{% extends 'indigo/admin/record_subpage.html' %}
+
+{% block head_title %}Data Quality Report of {{ record_title }} {{ record.public_id }}{% endblock %}
+{% block current_crumb %}Data Quality Report{% endblock %}
+
+{% block content %}
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">Data Quality Report: {{ record_title }} {{ record.public_id }} {{ display_name }}</h2>
+    </div>
+
+    {% for priority, errors in errors_by_priority_level.items %}
+        <h3 class="h5 mt-4">Priority {{ priority }}</h3>
+        {% include 'indigo/admin/includes/data_quality_errors.html' with errors=errors %}
+    {% empty %}
+        <p>No problems were found.</p>
+    {% endfor %}
+{% endblock %}
