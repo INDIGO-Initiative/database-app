@@ -289,3 +289,18 @@ class ProjectsByPriorityPageTests(TestCase):
         self.assertEqual(
             self.client.get(reverse(name, kwargs={"priority": 7})).status_code, 404
         )
+
+
+class AdminThemeTests(TestCase):
+    """The admin's teal colours are scoped to the admin pages' main area, so the public pages keep Bootstrap's blue."""
+
+    def test_only_the_admin_pages_have_the_admin_theme(self):
+        self.client.force_login(_user("theme-admin", "admin"))
+        self.assertContains(
+            self.client.get(reverse("indigo_admin_index")),
+            'class="content container admin-main"',
+        )
+        self.assertNotContains(self.client.get(reverse("indigo_index")), "admin-main")
+        self.assertNotContains(
+            self.client.get(reverse("indigo_project_list")), "admin-main"
+        )

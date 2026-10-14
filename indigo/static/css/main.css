@@ -415,6 +415,123 @@
     background: #0e7c7b;
 }
 
+/* The admin pages use the same teal for buttons, links and the active tab. It is set on the page's main area only, so
+   the public pages (and the header and footer) keep Bootstrap's blue. Warning, danger and success colours are left
+   alone because they mean something. White on this teal is about 5:1, which passes AA for text. */
+.admin-main {
+    --admin-accent: #0e7c7b;
+    --admin-accent-dark: #0a5f5e;
+    --admin-accent-darker: #084a49;
+    --admin-accent-ring: rgba(14, 124, 123, 0.35);
+    --admin-accent-border: #6bbcbb;
+}
+
+.admin-main a:not([class]) {
+    color: var(--admin-accent);
+}
+
+.admin-main a:not([class]):hover {
+    color: var(--admin-accent-dark);
+}
+
+.admin-main .btn-primary {
+    background-color: var(--admin-accent);
+    border-color: var(--admin-accent);
+}
+
+.admin-main .btn-primary:hover {
+    background-color: var(--admin-accent-dark);
+    border-color: var(--admin-accent-dark);
+}
+
+.admin-main .btn-primary:focus,
+.admin-main .btn-primary.focus {
+    background-color: var(--admin-accent-dark);
+    border-color: var(--admin-accent-dark);
+    box-shadow: 0 0 0 0.2rem var(--admin-accent-ring);
+}
+
+.admin-main .btn-primary:not(:disabled):not(.disabled):active,
+.admin-main .btn-primary:not(:disabled):not(.disabled).active,
+.admin-main .show > .btn-primary.dropdown-toggle {
+    background-color: var(--admin-accent-darker);
+    border-color: var(--admin-accent-darker);
+}
+
+.admin-main .btn-primary.disabled,
+.admin-main .btn-primary:disabled {
+    background-color: var(--admin-accent);
+    border-color: var(--admin-accent);
+}
+
+.admin-main .btn-outline-primary {
+    color: var(--admin-accent);
+    border-color: var(--admin-accent);
+}
+
+.admin-main .btn-outline-primary:hover,
+.admin-main .btn-outline-primary:not(:disabled):not(.disabled):active,
+.admin-main .btn-outline-primary:not(:disabled):not(.disabled).active {
+    color: #fff;
+    background-color: var(--admin-accent);
+    border-color: var(--admin-accent);
+}
+
+.admin-main .btn-outline-primary:focus {
+    box-shadow: 0 0 0 0.2rem var(--admin-accent-ring);
+}
+
+.admin-main .btn-link {
+    color: var(--admin-accent);
+}
+
+.admin-main .btn-link:hover {
+    color: var(--admin-accent-dark);
+}
+
+.admin-main .page-link {
+    color: var(--admin-accent);
+}
+
+.admin-main .page-link:hover {
+    color: var(--admin-accent-dark);
+}
+
+.admin-main .page-link:focus {
+    box-shadow: 0 0 0 0.2rem var(--admin-accent-ring);
+}
+
+.admin-main .page-item.active .page-link {
+    color: #fff;
+    background-color: var(--admin-accent);
+    border-color: var(--admin-accent);
+}
+
+.admin-main .form-control:focus,
+.admin-main .custom-select:focus,
+.admin-main .custom-file-input:focus ~ .custom-file-label {
+    border-color: var(--admin-accent-border);
+    box-shadow: 0 0 0 0.2rem var(--admin-accent-ring);
+}
+
+.admin-main .dropdown-item.active,
+.admin-main .dropdown-item:active {
+    background-color: var(--admin-accent);
+}
+
+.admin-main .nav-pills .nav-link.active,
+.admin-main .record-nav .nav-link.active,
+.admin-main .record-form__tabs .nav-link.active {
+    background: var(--admin-accent);
+    color: #fff;
+}
+
+.admin-main .alert-primary {
+    color: var(--admin-accent-darker);
+    background-color: #d3eceb;
+    border-color: #bfe1e0;
+}
+
 .breadcrumb-bar--admin .breadcrumb-item a,
 .breadcrumb-bar--admin .breadcrumb-item.active {
     color: #fff;
