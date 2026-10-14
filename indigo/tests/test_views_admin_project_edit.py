@@ -590,7 +590,7 @@ class AdminListPaginationTests(TestCase):
         response = self.client.get(
             reverse("indigo_admin_organisation_search"), {"search": "Acme"}
         )
-        self.assertContains(response, "?search=Acme&page=2")
+        self.assertContains(response, "?search=Acme&amp;page=2")
 
     def test_odd_page_numbers_do_not_break_the_page(self):
         self._login("admin")
@@ -1718,7 +1718,7 @@ class AdminHistoryPageTests(TestCase):
             )
         page = self.client.get(self.url, {"created__gt": "2026-10-01"})
         self.assertContains(page, "Page 1 of 2")
-        self.assertContains(page, "?created__gt=2026-10-01&page=2")
+        self.assertContains(page, "?created__gt=2026-10-01&amp;page=2")
 
 
 class RecordSubpageTests(TestCase):

@@ -49,9 +49,7 @@
         {% endfor %}
     </table>
 
-    {% if page_obj.paginator.num_pages > 1 %}
-        {% include "jsondataferret/common/pagination.html" %}
-    {% endif %}
+    {% include "indigo/includes/pagination.html" %}
 {% else %}
     <p>{% if filtered %}No events in that date range.{% else %}No events are available.{% endif %}</p>
 {% endif %}

@@ -10,8 +10,8 @@ PAGE_SIZE = 100
 def paginate(request, items):
     """Splits a long list into pages.
 
-    Returns the page (which can be looped over like the list), and the rest of the query string so that links to
-    other pages keep things like a search."""
+    Returns the page (which can be looped over like the list, and has page_numbers for the links under the list), and
+    the rest of the query string so that links to other pages keep things like a search."""
     if not hasattr(items, "order_by"):
         # Not a normal queryset (eg a raw query, or a list), so load it so the paginator can count it
         items = list(items)
@@ -22,6 +22,10 @@ def paginate(request, items):
         page = paginator.page(1)
     except EmptyPage:
         page = paginator.page(paginator.num_pages)
+    # The page numbers to show: the first and last, the ones near this page, and "…" for the gaps
+    page.page_numbers = list(
+        paginator.get_elided_page_range(page.number, on_each_side=2, on_ends=1)
+    )
     other_params = request.GET.copy()
     other_params.pop("page", None)
     return page, other_params.urlencode()

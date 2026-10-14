@@ -46,9 +46,7 @@
             {% endfor %}
         </table>
 
-        {% if page_obj.paginator.num_pages > 1 %}
-            {% include "jsondataferret/common/pagination.html" %}
-        {% endif %}
+        {% include "indigo/includes/pagination.html" %}
     {% else %}
         <p>No projects have any errors at this level.</p>
     {% endif %}

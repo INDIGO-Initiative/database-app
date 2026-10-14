@@ -30,21 +30,6 @@
     margin: 0 2px;
 }
 
-/* Page links under long lists (the same markup is used on every list page and the history page) */
-.pagination {
-    justify-content: center;
-    align-items: center;
-    margin: 1.5rem 0;
-}
-
-.pagination .step-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-}
-
 /* The title of a page with its buttons on the right. A long title wraps within its own space, instead of pushing the
    buttons onto a line below. */
 .record-header {

@@ -196,7 +196,7 @@ class PublicListPageTests(TestCase):
         self.assertContains(first, "Page 1 of 2")
         self.assertEqual(len(self.client.get(url, {"page": 2}).context["projects"]), 20)
         self.assertContains(
-            self.client.get(url, {"search": "Project"}), "?search=Project&page=2"
+            self.client.get(url, {"search": "Project"}), "?search=Project&amp;page=2"
         )
         self.assertContains(self.client.get(url, {"page": "banana"}), "Page 1 of 2")
 
