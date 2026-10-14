@@ -1,23 +1,19 @@
-"""Approving or rejecting the edits waiting on a record."""
-from abc import ABC
-
+"""The base of the page for approving or rejecting the edits waiting on a record."""
 import jsondataferret
-from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.views import View
 from jsondataferret.models import Edit, Record, Type
 
-from indigo.models import AssessmentResource, Fund, JoiningUpInitiative, Pipeline
 from indigo.views_admin.common import (
-    _add_moderation_message,
-    _edit_changes,
-    _subpage_context,
+    AdminModelRecordView,
+    add_moderation_message,
+    edit_changes,
+    subpage_context,
 )
 
 
-class AdminModelModerate(PermissionRequiredMixin, View, ABC):
+class AdminModelModerate(AdminModelRecordView):
     def get(self, request, public_id):
         return self.post(request, public_id)
 
@@ -29,6 +25,7 @@ class AdminModelModerate(PermissionRequiredMixin, View, ABC):
             raise Http404("Type does not exist")
         except Record.DoesNotExist:
             raise Http404("Record does not exist")
+        self._check_access(public_id)
         edits = Edit.objects.filter(
             record=record, approval_event=None, refusal_event=None
         )
@@ -53,7 +50,7 @@ class AdminModelModerate(PermissionRequiredMixin, View, ABC):
                 jsondataferret.pythonapi.newevent.newEvent(
                     actions, user=request.user, comment=request.POST.get("comment")
                 )
-                _add_moderation_message(request, actions)
+                add_moderation_message(request, actions)
                 return HttpResponseRedirect(
                     reverse(
                         self.__class__._redirect_view,
@@ -62,46 +59,10 @@ class AdminModelModerate(PermissionRequiredMixin, View, ABC):
                 )
 
         for edit in edits:
-            edit.changes = _edit_changes(edit, record)
+            edit.changes = edit_changes(edit, record)
 
         return render(
             request,
             "indigo/admin/moderate.html",
-            _subpage_context(record, edits=edits),
+            subpage_context(record, edits=edits),
         )
-
-
-class AdminFundModerate(AdminModelModerate):
-    _model = Fund
-    _redirect_view = "indigo_admin_fund_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
-
-class AdminAssessmentResourceModerate(AdminModelModerate):
-    _model = AssessmentResource
-    _redirect_view = "indigo_admin_assessment_resource_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")
-
-
-class AdminPipelineModerate(AdminModelModerate):
-    _model = Pipeline
-    _redirect_view = "indigo_admin_pipeline_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")
-
-
-class AdminJoiningUpInitiativeModerate(AdminModelModerate):
-    _model = JoiningUpInitiative
-    _redirect_view = "indigo_admin_joining_up_initiative_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")

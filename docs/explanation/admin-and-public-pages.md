@@ -15,23 +15,34 @@ made once.
 
 ## Admin views: `indigo/views_admin/`
 
-The admin views are a package with one module for each area. `__init__.py` re-exports every view, so `urls.py` just says
-`views_admin.<name>`.
+The admin views are a package. `__init__.py` re-exports every view, so `urls.py` just says `views_admin.<name>`.
 
-| Module | What is in it |
-|---|---|
-| `common.py` | Helpers used by the others: `RECORD_TITLES`, `_subpage_context`, `_edit_changes`, permission checks |
-| `lists.py`, `records.py` | The list page and the record page of each type |
-| `new.py`, `edit.py` | Adding a record and editing it with the web form |
-| `change_status.py`, `moderate.py` | Changing a record's status; approving or rejecting waiting edits |
-| `history.py`, `to_moderate.py`, `dashboard.py` | The History pages, To Moderate, the admin home page |
-| `imports.py`, `downloads.py` | Spreadsheet import (one stage, or two for big forms) and downloads |
-| `data_quality.py` | Data quality reports |
-| `projects.py`, `organisations.py` | Views of those types that are not (yet) class based |
+* `generic/` has the base class of each kind of page that every type of record has. The behaviour is here, so a change
+  to how a page works for every type is made in one place.
 
-Most pages are a base class for all types (for example `AdminModelList`) and one small subclass for each type. The
-subclass only sets class variables (its model, its words such as `_list_title`, its permissions) and the base class does
-the work. To change how a page works for every type, change the base class.
+  | Module | The page |
+  |---|---|
+  | `generic/lists.py`, `generic/records.py` | The list page and the page of one record |
+  | `generic/new.py`, `generic/edit.py` | Adding a record and editing it with the web form |
+  | `generic/change_status.py`, `generic/moderate.py` | Changing a record's status; approving or rejecting waiting edits |
+  | `generic/history.py`, `generic/data_quality.py` | The History page and the data quality report of one record |
+  | `generic/imports.py`, `generic/downloads.py` | Spreadsheet import (one stage, or two for big forms) and downloads |
+
+* One module for each type: `project.py`, `organisation.py`, `fund.py`, `pipeline.py`, `assessment_resource.py` and
+  `joining_up_initiative.py`. Each has a small subclass of each base class, which only sets class variables (its model,
+  its words such as `_list_title`, its permissions), and the views that only that type has. Everything about one type,
+  including who is allowed to do what with it, is in its module.
+* `common.py` has helpers used by the others: `RECORD_TITLES`, `subpage_context`, `edit_changes`, the permission checks.
+* `dashboard.py`, `to_moderate.py`, `events.py` (the site-wide History page and the pages for one event or edit) and
+  `sandboxes.py` are the admin pages that are not about one type.
+
+The base classes never import from the type modules.
+
+Projects and organisations use the same base classes as the other types. Where they differ, the base class has a hook
+that the subclass overrides: `_get_items` (what a list shows: a data steward only lists the projects they have access
+to), `_check_access` (the `ProjectAccessMixin`, which stops a data steward opening another project's pages),
+`_after_create` (giving a steward access to a project they have just added) and `_get_import_json` (how an uploaded
+spreadsheet is read: there are several versions of the organisation form).
 
 ## Admin templates: `indigo/templates/indigo/admin/`
 
@@ -41,7 +52,7 @@ There are no templates for individual types. Each page has one template:
   `related_records.html`, `data_quality_report.html`, and the import pages (`import_form.html`, `import_stage_2.html`,
   `import_message.html`).
 * Pages about one record extend `record_subpage.html`, which makes the breadcrumbs (Admin > list > record > this page).
-  Their views make the context with `_subpage_context(record, ...)`, which gives the record, the type's titles and the
+  Their views make the context with `subpage_context(record, ...)`, which gives the record, the type's titles and the
   links back.
 * Shared pieces are in `admin/includes/` (the simple form, the moderation table, the data quality errors) and
   `indigo/includes/` (the page header, actions menu, comment box, result count, history table, user menu, footer).
@@ -65,9 +76,9 @@ Fund is the simplest type to copy. A type needs:
 * A `Type` record in the database, and constants in `indigo/__init__.py`. The type's public id (`fund`, ...) is also the
   start of its admin URL names (`indigo_admin_fund_list`), and the views and templates rely on that.
 * Its titles in `RECORD_TITLES` in `views_admin/common.py`.
-* A subclass for each admin page (`AdminFundList`, `AdminFundIndex`, `AdminFundEdit`, `AdminFundNew`, `AdminFundModerate`,
-  `AdminFundChangeStatus`, `AdminFundHistory`, and the spreadsheet downloads and import if it has a spreadsheet form),
-  and the matching routes in `urls.py`.
+* A module for it in `indigo/views_admin/` (copy `fund.py`) with a subclass for each admin page (`AdminFundList`,
+  `AdminFundIndex`, `AdminFundEdit`, `AdminFundNew`, `AdminFundModerate`, `AdminFundChangeStatus`, `AdminFundHistory`, and
+  the spreadsheet downloads and import if it has a spreadsheet form), and the matching routes in `urls.py`.
 * Its edit and add forms in `indigo/forms.py` (`FundEditForm`, `FundNewForm`).
 * Optionally, tab groups in `indigo/section_groups.json`. Rebuild the frontend after changing that file.
 

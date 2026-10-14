@@ -568,7 +568,7 @@ class AdminListPaginationTests(TestCase):
         url = reverse("indigo_admin_organisation_search")
 
         first = self.client.get(url)
-        self.assertEqual(len(first.context["organisations"]), 100)
+        self.assertEqual(len(first.context["items"]), 100)
         self.assertContains(first, "Page 1 of 2")
         self.assertContains(
             first, "Showing 1&ndash;100 of <strong>120</strong> results"
@@ -580,7 +580,7 @@ class AdminListPaginationTests(TestCase):
         self.assertContains(
             second, "Showing 101&ndash;120 of <strong>120</strong> results"
         )
-        self.assertEqual(len(second.context["organisations"]), 20)
+        self.assertEqual(len(second.context["items"]), 20)
         self.assertContains(second, "INDIGO-ORG-0100")
         self.assertNotContains(second, "INDIGO-ORG-0000")
 
@@ -615,12 +615,12 @@ class AdminListPaginationTests(TestCase):
                 type=type, public_id=f"INDIGO-FUND-{i:04d}"
             )
         response = self.client.get(reverse("indigo_admin_fund_list"))
-        self.assertEqual(len(response.context["datas"]), 100)
+        self.assertEqual(len(response.context["items"]), 100)
         self.assertContains(response, "Page 1 of 2")
         self.assertEqual(
             len(
                 self.client.get(reverse("indigo_admin_fund_list"), {"page": 2}).context[
-                    "datas"
+                    "items"
                 ]
             ),
             5,
@@ -631,8 +631,8 @@ class AdminListPaginationTests(TestCase):
         for i in range(120):
             Project.objects.create(public_id=f"INDIGO-POJ-{i:04d}")
         url = reverse("indigo_admin_project_list")
-        self.assertEqual(len(self.client.get(url).context["projects"]), 100)
-        self.assertEqual(len(self.client.get(url, {"page": 2}).context["projects"]), 20)
+        self.assertEqual(len(self.client.get(url).context["items"]), 100)
+        self.assertEqual(len(self.client.get(url, {"page": 2}).context["items"]), 20)
 
         # A data steward's list comes from a raw query, and only has their projects
         self.client.logout()
@@ -645,7 +645,7 @@ class AdminListPaginationTests(TestCase):
             )
         response = self.client.get(url)
         self.assertEqual(
-            [p.public_id for p in response.context["projects"]],
+            [p.public_id for p in response.context["items"]],
             ["INDIGO-POJ-0003", "INDIGO-POJ-0007"],
         )
         self.assertNotContains(response, "Page 1 of")
@@ -670,7 +670,7 @@ class AdminListPaginationTests(TestCase):
 
         def ids(search):
             response = self.client.get(url, {"search": search})
-            return [p.public_id for p in response.context["projects"]]
+            return [p.public_id for p in response.context["items"]]
 
         self.assertEqual(ids("peterborough"), ["INDIGO-POJ-0001"])
         self.assertEqual(ids("PATHWAYS"), ["INDIGO-POJ-0002"])
@@ -699,7 +699,7 @@ class AdminListPaginationTests(TestCase):
             reverse("indigo_admin_project_list"), {"search": "shared"}
         )
         self.assertEqual(
-            [p.public_id for p in response.context["projects"]], ["INDIGO-POJ-0001"]
+            [p.public_id for p in response.context["items"]], ["INDIGO-POJ-0001"]
         )
 
     def test_project_list_actions_are_in_a_menu_at_the_top(self):
@@ -752,7 +752,7 @@ class AdminListPaginationTests(TestCase):
         )
         # Searching and paging work from the list address
         self.assertEqual(
-            len(self.client.get(url, {"search": "Acme 1"}).context["organisations"]), 1
+            len(self.client.get(url, {"search": "Acme 1"}).context["items"]), 1
         )
 
     def test_other_lists_have_add_and_a_menu_at_the_top(self):
@@ -820,7 +820,7 @@ class AdminListPaginationTests(TestCase):
         def ids(search):
             return [
                 r.public_id
-                for r in self.client.get(url, {"search": search}).context["datas"]
+                for r in self.client.get(url, {"search": search}).context["items"]
             ]
 
         self.assertEqual(ids("northern"), ["INDIGO-PL-0001"])
@@ -859,7 +859,7 @@ class AdminListPaginationTests(TestCase):
             def ids(search):
                 return [
                     r.public_id
-                    for r in self.client.get(url, {"search": search}).context["datas"]
+                    for r in self.client.get(url, {"search": search}).context["items"]
                 ]
 
             self.assertEqual(ids("alpha"), [f"{id_prefix}-0001"], name)

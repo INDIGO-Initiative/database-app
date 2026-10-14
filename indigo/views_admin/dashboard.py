@@ -19,7 +19,7 @@ from indigo.models import (
     Sandbox,
 )
 from indigo.views_admin.common import permission_admin_or_data_steward_required
-from indigo.views_admin.to_moderate import _count_records_needing_moderation
+from indigo.views_admin.to_moderate import count_records_needing_moderation
 
 
 @permission_admin_or_data_steward_required()
@@ -29,7 +29,7 @@ def admin_index(request):
 
     # The "To Moderate" page is for admins, so only admins are told what is waiting
     def waiting(type_public_id):
-        return _count_records_needing_moderation(type_public_id) if is_admin else None
+        return count_records_needing_moderation(type_public_id) if is_admin else None
 
     sections = [
         {

@@ -1,29 +1,18 @@
-"""The History pages (all records, and one record), and the pages for one event or edit."""
+"""The site-wide History page, and the pages for one event or edit."""
 import datetime
 import urllib.parse
-from abc import ABC
 
 from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import render
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
-from django.views import View
-from jsondataferret.models import CachedRecordHistory, Edit, Event, Record, Type
+from jsondataferret.models import CachedRecordHistory, Edit, Event
 
-from indigo import (
-    TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
-    TYPE_FUND_PUBLIC_ID,
-    TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
-    TYPE_PIPELINE_PUBLIC_ID,
-)
 from indigo.filters import HistoryFilter
 from indigo.listpages import paginate
-from indigo.models import AssessmentResource, Fund, JoiningUpInitiative, Pipeline
 from indigo.views_admin.common import (
-    _record_history_page,
     permission_admin_or_data_steward_required,
     user_can_access_edit,
     user_can_access_event,
@@ -83,54 +72,6 @@ def admin_history(request):
             "quick_ranges": _history_quick_ranges(),
         },
     )
-
-
-class AdminModelHistory(PermissionRequiredMixin, View, ABC):
-    def get(self, request, public_id):
-        try:
-            type = Type.objects.get(public_id=self.__class__._type_public_id)
-            record = Record.objects.get(type=type, public_id=public_id)
-        except Type.DoesNotExist:
-            raise Http404("Type does not exist")
-        except Record.DoesNotExist:
-            raise Http404("Record does not exist")
-        return _record_history_page(request, record)
-
-
-class AdminFundHistory(AdminModelHistory):
-    _model = Fund
-    _type_public_id = TYPE_FUND_PUBLIC_ID
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
-
-class AdminAssessmentResourceHistory(AdminModelHistory):
-    _model = AssessmentResource
-    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")
-
-
-class AdminPipelineHistory(AdminModelHistory):
-    _model = Pipeline
-    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")
-
-
-class AdminJoiningUpInitiativeHistory(AdminModelHistory):
-    _model = JoiningUpInitiative
-    _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")
 
 
 @permission_admin_or_data_steward_required()

@@ -1,4 +1,4 @@
-"""Adding a record."""
+"""The bases of the pages for adding a record."""
 from abc import ABC
 
 from django.contrib import messages
@@ -12,26 +12,16 @@ from jsondataferret.models import Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 
 import indigo.utils
-from indigo import (
-    TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
-    TYPE_FUND_PUBLIC_ID,
-    TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
-    TYPE_PIPELINE_PUBLIC_ID,
-)
-from indigo.forms import (
-    AssessmentResourceNewForm,
-    FundNewForm,
-    JoiningUpInitiativeNewForm,
-    PipelineNewForm,
-)
-from indigo.models import AssessmentResource, Fund, JoiningUpInitiative, Pipeline
-from indigo.views_admin.common import _new_page
+from indigo.views_admin.common import new_page
 
 
 class AdminModelNew(PermissionRequiredMixin, View, ABC):
+    def _after_create(self, request, public_id):
+        """Anything else to do once the record has been created (by default, nothing)."""
+
     def get(self, request):
         form = self.__class__._form_class()
-        return _new_page(request, self.__class__._type_public_id, form)
+        return new_page(request, self.__class__._type_public_id, form)
 
     @method_decorator(transaction.atomic)
     def post(self, request):
@@ -51,6 +41,7 @@ class AdminModelNew(PermissionRequiredMixin, View, ABC):
                 approved=True,
             )
             newEvent([data], user=request.user, comment=form.cleaned_data["comment"])
+            self._after_create(request, id)
 
             messages.add_message(
                 request,
@@ -66,45 +57,12 @@ class AdminModelNew(PermissionRequiredMixin, View, ABC):
                 )
             )
 
-        return _new_page(request, self.__class__._type_public_id, form)
-
-
-class AdminFundNew(AdminModelNew):
-    _model = Fund
-    _type_public_id = TYPE_FUND_PUBLIC_ID
-    _form_class = FundNewForm
-    _redirect_view = "indigo_admin_fund_edit"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
-
-class AdminAssessmentResourceNew(AdminModelNew):
-    _model = AssessmentResource
-    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
-    _form_class = AssessmentResourceNewForm
-    _redirect_view = "indigo_admin_assessment_resource_edit"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")
-
-
-class AdminPipelineNew(AdminModelNew):
-    _model = Pipeline
-    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
-    _form_class = PipelineNewForm
-    _redirect_view = "indigo_admin_pipeline_edit"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")
+        return new_page(request, self.__class__._type_public_id, form)
 
 
 class AdminModelJSONFormNew(PermissionRequiredMixin, View, ABC):
     def _page(self, request, form):
-        return _new_page(request, self.__class__._type_public_id, form, full_form=True)
+        return new_page(request, self.__class__._type_public_id, form, full_form=True)
 
     def get(self, request):
         return self._page(request, self.__class__._form_class())
@@ -144,14 +102,3 @@ class AdminModelJSONFormNew(PermissionRequiredMixin, View, ABC):
             )
 
         return self._page(request, form)
-
-
-class AdminJoiningUpInitiativeNew(AdminModelJSONFormNew):
-    _model = JoiningUpInitiative
-    _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
-    _form_class = JoiningUpInitiativeNewForm
-    _redirect_view = "indigo_admin_joining_up_initiative_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")

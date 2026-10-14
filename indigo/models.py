@@ -10,6 +10,7 @@ from indigo import (
     TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
     TYPE_ORGANISATION_PUBLIC_ID,
     TYPE_PIPELINE_PUBLIC_ID,
+    TYPE_PROJECT_PUBLIC_ID,
 )
 
 
@@ -125,6 +126,7 @@ class ProjectManager(models.Manager):
 
 
 class Project(BaseModel):
+    type_id = TYPE_PROJECT_PUBLIC_ID
     social_investment_prototype = models.BooleanField(
         default=False, null=False, blank=True
     )

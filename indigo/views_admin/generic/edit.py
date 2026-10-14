@@ -1,4 +1,4 @@
-"""Editing a record with the web form."""
+"""The base of the page for editing a record with the web form."""
 from abc import ABC
 
 from django.contrib import messages
@@ -13,32 +13,7 @@ from django.views import View
 from jsondataferret.models import Record, Type
 from jsondataferret.pythonapi.newevent import newEvent
 
-from indigo import (
-    TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID,
-    TYPE_FUND_PUBLIC_ID,
-    TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID,
-    TYPE_ORGANISATION_PUBLIC_ID,
-    TYPE_PIPELINE_PUBLIC_ID,
-    TYPE_PROJECT_PUBLIC_ID,
-)
-from indigo.forms import (
-    AssessmentResourceEditForm,
-    FundEditForm,
-    JoiningUpInitiativeEditForm,
-    OrganisationEditForm,
-    PipelineEditForm,
-    ProjectEditForm,
-)
-from indigo.models import (
-    AssessmentResource,
-    Fund,
-    JoiningUpInitiative,
-    Organisation,
-    Pipeline,
-    Project,
-)
 from indigo.spreadsheetforms import extract_edits_from_form
-from indigo.views_admin.common import user_can_access_project
 
 
 class AdminModelEdit(PermissionRequiredMixin, View, ABC):
@@ -126,84 +101,3 @@ class AdminModelEdit(PermissionRequiredMixin, View, ABC):
             )
 
         return render(request, self.get_template(), self._context(form, instance))
-
-
-class AdminJoiningUpInitiativeEdit(AdminModelEdit):
-    _model = JoiningUpInitiative
-    _record_title = "Joining Up Initiative"
-    _list_title = "Joining Up Initiatives"
-    _type_public_id = TYPE_JOINING_UP_INITIATIVE_PUBLIC_ID
-    _form_class = JoiningUpInitiativeEditForm
-    _redirect_view = "indigo_admin_joining_up_initiative_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")
-
-
-class AdminProjectEdit(AdminModelEdit):
-    _model = Project
-    _record_title = "Project"
-    _list_title = "Projects"
-    _type_public_id = TYPE_PROJECT_PUBLIC_ID
-    _form_class = ProjectEditForm
-    _redirect_view = "indigo_admin_project_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
-    def has_permission_with_data(self, data):
-        return user_can_access_project(self.request.user, data)
-
-
-class AdminOrganisationEdit(AdminModelEdit):
-    _model = Organisation
-    _record_title = "Organisation"
-    _list_title = "Organisations"
-    _type_public_id = TYPE_ORGANISATION_PUBLIC_ID
-    _form_class = OrganisationEditForm
-    _redirect_view = "indigo_admin_organisation_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
-
-class AdminFundEdit(AdminModelEdit):
-    _model = Fund
-    _record_title = "Fund"
-    _list_title = "Funds"
-    _type_public_id = TYPE_FUND_PUBLIC_ID
-    _form_class = FundEditForm
-    _redirect_view = "indigo_admin_fund_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin") or user.has_perm("indigo.data_steward")
-
-
-class AdminPipelineEdit(AdminModelEdit):
-    _model = Pipeline
-    _record_title = "Pipeline"
-    _list_title = "Pipelines"
-    _type_public_id = TYPE_PIPELINE_PUBLIC_ID
-    _form_class = PipelineEditForm
-    _redirect_view = "indigo_admin_pipeline_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")
-
-
-class AdminAssessmentResourceEdit(AdminModelEdit):
-    _model = AssessmentResource
-    _record_title = "Assessment Resource"
-    _list_title = "Assessment Resources"
-    _type_public_id = TYPE_ASSESSMENT_RESOURCE_PUBLIC_ID
-    _form_class = AssessmentResourceEditForm
-    _redirect_view = "indigo_admin_assessment_resource_index"
-
-    def has_permission(self):
-        user = self.request.user
-        return user.has_perm("indigo.admin")

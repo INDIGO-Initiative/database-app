@@ -1,10 +1,16 @@
 """Helpers shared by the admin views: titles, the context of pages about a record, permissions and moderation messages."""
+from abc import ABC
+
 import jsondataferret
 import jsondataferret.utils
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse
+from django.views import View
 from jsondataferret.models import Edit, Event
 
 import indigo.utils
@@ -43,14 +49,14 @@ def _list_context_for_type(type_public_id):
     }
 
 
-def _new_page(request, type_public_id, form, full_form=False):
+def new_page(request, type_public_id, form, full_form=False):
     """The page for adding a record: just a name to start with, or (full_form) the whole record in one go."""
     context = _list_context_for_type(type_public_id)
     context.update({"form": form, "full_form": full_form})
     return render(request, "indigo/admin/new.html", context)
 
 
-def _subpage_context(record, **extra):
+def subpage_context(record, **extra):
     """The context of a page about one record (change status, history...): see admin/record_subpage.html."""
     type_public_id = record.type.public_id
     data = (record.cached_data if record.cached_exists else None) or {}
@@ -70,7 +76,7 @@ def _subpage_context(record, **extra):
     return context
 
 
-def _related_records_page(
+def related_records_page(
     request, model_instance, related_title, related_noun, related_records
 ):
     """A page listing the records of another type that link to this one, eg the projects using an organisation."""
@@ -88,7 +94,7 @@ def _related_records_page(
     return render(
         request,
         "indigo/admin/related_records.html",
-        _subpage_context(
+        subpage_context(
             model_instance.record,
             related_title=related_title,
             related_noun=related_noun,
@@ -97,14 +103,14 @@ def _related_records_page(
     )
 
 
-def _record_history_page(request, record):
+def record_history_page(request, record):
     page_obj, pagination_get_params = paginate(
         request, _events_for_record_newest_first(record)
     )
     return render(
         request,
         "indigo/admin/record_history.html",
-        _subpage_context(
+        subpage_context(
             record, page_obj=page_obj, pagination_get_params=pagination_get_params
         ),
     )
@@ -121,7 +127,7 @@ def _events_for_record_newest_first(record):
     )
 
 
-def _edit_changes(edit, record):
+def edit_changes(edit, record):
     """What approving this edit would change on the record, as a list of
     {"title", "old", "new", "kind"} where kind is "added", "changed" or "removed".
 
@@ -175,7 +181,7 @@ def _edit_changes(edit, record):
     return changes
 
 
-def _add_moderation_message(request, actions):
+def add_moderation_message(request, actions):
     approved = len(
         [
             a
@@ -197,7 +203,7 @@ def _add_moderation_message(request, actions):
 DOWNLOAD_FORM_NOTE = "You can delete any sheet/tab from a downloaded form (except the introduction one) and it will still work fine."
 
 
-def _admin_record_page(
+def admin_record_page(
     request,
     record,
     *,
@@ -265,6 +271,14 @@ def _permission_admin_or_data_steward_required_test(user):
 
 def permission_admin_or_data_steward_required():
     return user_passes_test(_permission_admin_or_data_steward_required_test)
+
+
+class AdminModelRecordView(PermissionRequiredMixin, View, ABC):
+    """The base of the views of one record. A type can add to who may see a record by overriding _check_access."""
+
+    def _check_access(self, public_id):
+        """Raise PermissionDenied if this user may not see the record with this public id. By default anyone with
+        permission to use the view can."""
 
 
 def user_can_access_project(user, project: Project):
@@ -336,3 +350,15 @@ def user_can_access_edit(user, edit: Edit):
                 pass
     # Then No
     return False
+
+
+class ProjectAccessMixin:
+    """For the views of one project: a data steward can only see the projects they have been given access to."""
+
+    def _check_access(self, public_id):
+        try:
+            project = Project.objects.get(public_id=public_id)
+        except Project.DoesNotExist:
+            raise Http404("Record does not exist")
+        if not user_can_access_project(self.request.user, project):
+            raise PermissionDenied("You can not see project")

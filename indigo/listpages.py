@@ -77,7 +77,7 @@ def list_context(
     name_field,
     index_url_name,
     list_url_name,
-    items_key,
+    items_key=None,
     search_term="",
     searchable=False,
     search_placeholder="",
@@ -96,12 +96,10 @@ def list_context(
     page_obj, pagination_get_params = paginate(request, items)
     for item in page_obj:
         item.display_name = _name_of(item, name_field)
-    return {
+    context = {
         "list_title": title,
         "noun_plural": noun_plural,
         "items": page_obj,
-        # The same list under the name the page has always had it by
-        items_key: page_obj,
         "page_obj": page_obj,
         "pagination_get_params": pagination_get_params,
         "index_url_name": index_url_name,
@@ -118,3 +116,7 @@ def list_context(
         "search_extra_template": search_extra_template,
         "breadcrumbs": breadcrumbs,
     }
+    if items_key:
+        # The same list under another name, for pages that have always had it by that name
+        context[items_key] = page_obj
+    return context

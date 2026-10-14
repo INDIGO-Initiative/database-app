@@ -13,7 +13,7 @@ from indigo import (
 )
 
 
-def _count_records_needing_moderation(type_public_id):
+def count_records_needing_moderation(type_public_id):
     try:
         type = Type.objects.get(public_id=type_public_id)
     except Type.DoesNotExist:
