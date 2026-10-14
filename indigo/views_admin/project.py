@@ -1,4 +1,6 @@
 """The admin pages of projects: which of the pages every type has projects use, and the ones only projects have."""
+import urllib.parse
+
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
@@ -12,12 +14,15 @@ from indigo.dataqualityreport import (
     DataQualityReportForProject,
 )
 from indigo.forms import ProjectEditForm, ProjectNewForm
+from indigo.listpages import paginate
 from indigo.models import AdminUserHasPermissionsForProject, Project, ProjectImport
+from indigo.recordpages import SECTION_GROUPS
 from indigo.spreadsheetforms import (
     convert_project_data_to_spreadsheetforms_data,
     extract_edits_from_project_spreadsheet,
 )
 from indigo.tasks import task_process_imported_project_file
+from indigo.utils import tidy_field_title
 from indigo.views_admin.common import (
     DOWNLOAD_FORM_NOTE,
     ProjectAccessMixin,
@@ -278,6 +283,73 @@ class AdminProjectDownloadSimpleForm(AdminModelDownloadForm):
         return user_can_access_project(self.request.user, data)
 
 
+PRIORITY_DESCRIPTIONS = {
+    0: "Wrong data: a value that is not allowed or in the wrong format, or an ID that does not exist",
+    1: "Missing: the most important fields",
+    2: "Missing: important fields",
+    3: "Missing: the other fields",
+}
+
+
+def _priority_summary():
+    """For each priority level, how many projects have problems at that level, and how many problems in all."""
+    summary = [
+        {
+            "priority": p,
+            "description": PRIORITY_DESCRIPTIONS[p],
+            "projects": 0,
+            "issues": 0,
+        }
+        for p in range(4)
+    ]
+    counts_for_each_project = Project.objects.filter(exists=True).values_list(
+        "data_quality_report_counts_by_priority", flat=True
+    )
+    for counts in counts_for_each_project:
+        for row in summary:
+            n = (counts or {}).get(str(row["priority"]), 0)
+            if n:
+                row["projects"] += 1
+                row["issues"] += n
+    return summary
+
+
+def _section_title_of(field):
+    """The section of the project edit form a field is in."""
+    for title, keys in SECTION_GROUPS.get(TYPE_PROJECT_PUBLIC_ID, []):
+        if field["key"].split("/")[1] in keys:
+            return title
+    return "Other"
+
+
+def _field_sections(fields_single, fields_list):
+    """The fields there are statistics for, grouped into the sections of the project edit form: [{"title", "fields":
+    [{"label", "url", "is_list"}]}]. A section with no fields is left out."""
+    sections = {
+        title: [] for title, _ in SECTION_GROUPS.get(TYPE_PROJECT_PUBLIC_ID, [])
+    }
+    sections["Other"] = []
+    for fields, url_name, is_list in [
+        (
+            fields_single,
+            "indigo_admin_all_projects_data_quality_report_field_single",
+            False,
+        ),
+        (fields_list, "indigo_admin_all_projects_data_quality_report_field_list", True),
+    ]:
+        for field in fields:
+            sections[_section_title_of(field)].append(
+                {
+                    "label": tidy_field_title(field["title"]),
+                    "url": reverse(url_name)
+                    + "?field="
+                    + urllib.parse.quote(field["key"], safe=""),
+                    "is_list": is_list,
+                }
+            )
+    return [{"title": t, "fields": f} for t, f in sections.items() if f]
+
+
 @permission_required("indigo.admin")
 def admin_all_projects_data_quality_report(request):
     data_quality_report = DataQualityReportForAllProjects()
@@ -285,63 +357,69 @@ def admin_all_projects_data_quality_report(request):
         request,
         "indigo/admin/projects_data_quality_report.html",
         {
-            "fields_single": data_quality_report.get_possible_fields_for_single_field_statistics(),
-            "fields_list": data_quality_report.get_possible_fields_for_list_field_statistics(),
+            "priority_summary": _priority_summary(),
+            "count_projects": Project.objects.filter(exists=True).count(),
+            "count_public_projects": Project.objects.filter(status_public=True).count(),
+            "sections": _field_sections(
+                data_quality_report.get_possible_fields_for_single_field_statistics(),
+                data_quality_report.get_possible_fields_for_list_field_statistics(),
+            ),
+        },
+    )
+
+
+def _field_statistics_page(
+    request, fields, get_statistics, with_key, without_key, is_list
+):
+    field_path = request.GET.get("field", "")
+    # Note we MUST explicitly check the field the user passed is in our pre-calculated Config list!
+    # If we don't, we open ourselves up to SQL Injection security holes.
+    matching = [i for i in fields if i.get("key") == field_path]
+    if not matching:
+        raise Http404("Field does not exist")
+    field = matching[0]
+    statistics = get_statistics(field)
+    with_value = statistics[with_key]
+    total = statistics["count_public_projects"]
+    return render(
+        request,
+        "indigo/admin/projects_data_quality_report_field.html",
+        {
+            "field": field,
+            "label": tidy_field_title(field["title"]),
+            "section_title": _section_title_of(field),
+            "is_list": is_list,
+            "total": total,
+            "with_value": with_value,
+            "without_value": statistics[without_key],
+            "percent_with_value": round(100 * with_value / total) if total else 0,
         },
     )
 
 
 @permission_required("indigo.admin")
 def admin_all_projects_data_quality_report_field_single(request):
-
     data_quality_report = DataQualityReportForAllProjects()
-
-    field_path = request.GET.get("field", "")
-    # Note we MUST explicitly check the field the user passed is in our pre-calculated Config list!
-    # If we don't, we open ourselves up to SQL Injection security holes.
-    fields = [
-        i
-        for i in data_quality_report.get_possible_fields_for_single_field_statistics()
-        if i.get("key") == field_path
-    ]
-    if not fields:
-        raise Http404("Field does not exist")  #
-    field = fields[0]
-
-    data = {"field": field}
-    data.update(data_quality_report.get_single_field_statistics_for_field(field))
-
-    return render(
+    return _field_statistics_page(
         request,
-        "indigo/admin/projects_data_quality_report_single_field.html",
-        data,
+        data_quality_report.get_possible_fields_for_single_field_statistics(),
+        data_quality_report.get_single_field_statistics_for_field,
+        "count_public_projects_with_public_value",
+        "count_public_projects_without_public_value",
+        is_list=False,
     )
 
 
 @permission_required("indigo.admin")
 def admin_all_projects_data_quality_report_field_list(request):
-
     data_quality_report = DataQualityReportForAllProjects()
-
-    field_path = request.GET.get("field", "")
-    # Note we MUST explicitly check the field the user passed is in our pre-calculated Config list!
-    # If we don't, we open ourselves up to SQL Injection security holes.
-    fields = [
-        i
-        for i in data_quality_report.get_possible_fields_for_list_field_statistics()
-        if i.get("key") == field_path
-    ]
-    if not fields:
-        raise Http404("Field does not exist")  #
-    field = fields[0]
-
-    data = {"field": field}
-    data.update(data_quality_report.get_list_field_statistics_for_field(field))
-
-    return render(
+    return _field_statistics_page(
         request,
-        "indigo/admin/projects_data_quality_report_list_field.html",
-        data,
+        data_quality_report.get_possible_fields_for_list_field_statistics(),
+        data_quality_report.get_list_field_statistics_for_field,
+        "count_public_projects_with_at_least_one_public_value",
+        "count_public_projects_without_any_public_values",
+        is_list=True,
     )
 
 
@@ -352,29 +430,29 @@ def admin_all_projects_data_quality_list_projects_by_priority_highest(
     priority = int(priority)
     if priority < 0 or priority > 3:
         raise Http404("Priority does not exist")
-    projects = Project.objects.filter(exists=True)
-    projects = [
-        p
-        for p in projects
-        if p.data_quality_report_counts_by_priority.get(str(priority), 0) > 0
+    # Only the fields the page shows, so the (large) data of every project is not loaded
+    rows = [
+        {"public_id": public_id, "name": name, "count": counts.get(str(priority))}
+        for public_id, name, counts in Project.objects.filter(exists=True)
+        .order_by("public_id")
+        .values_list(
+            "public_id",
+            "data_private__name__value",
+            "data_quality_report_counts_by_priority",
+        )
+        if (counts or {}).get(str(priority), 0) > 0
     ]
-    projects = sorted(
-        projects,
-        key=lambda x: x.data_quality_report_counts_by_priority.get(str(priority)),
-        reverse=True,
-    )
+    # Most problems first (the sort is stable, so projects with the same count stay in ID order)
+    rows.sort(key=lambda row: row["count"], reverse=True)
+    page_obj, pagination_get_params = paginate(request, rows)
     return render(
         request,
         "indigo/admin/projects_data_quality_report_list_projects_by_priority_highest.html",
         {
             "priority": priority,
-            "projects_with_count": [
-                (
-                    project,
-                    project.data_quality_report_counts_by_priority.get(str(priority)),
-                )
-                for project in projects
-            ],
+            "description": PRIORITY_DESCRIPTIONS[priority],
+            "page_obj": page_obj,
+            "pagination_get_params": pagination_get_params,
         },
     )
 

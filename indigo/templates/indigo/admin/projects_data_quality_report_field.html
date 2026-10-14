@@ -1,0 +1,62 @@
+{# How many public projects have a value for one field (or, for a list, at least one item). Pass label, section_title, is_list, total, with_value, without_value, percent_with_value. #}
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Data Quality Report: {{ label }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_list' %}">Projects</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_all_projects_data_quality_report' %}">Data Quality Report</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ label }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="record-header mt-5 mb-3">
+        <div>
+            <h2 class="record-header__title">{{ label }}{% if is_list %} <span class="badge badge-secondary align-middle">list</span>{% endif %}</h2>
+            <div class="text-muted">{{ section_title }}</div>
+        </div>
+        <div class="record-header__actions">
+            <a href="{% url 'indigo_admin_all_projects_data_quality_report' %}" class="btn btn-secondary btn-sm">All fields</a>
+        </div>
+    </div>
+
+    {% if total %}
+        <p class="coverage-headline">
+            <strong>{{ percent_with_value }}%</strong>
+            of public projects have {% if is_list %}at least one item{% else %}a value{% endif %}
+            <span class="text-muted">({{ with_value }} of {{ total }})</span>
+        </p>
+
+        <div class="progress coverage-bar" role="img" aria-label="{{ with_value }} of {{ total }} public projects have {% if is_list %}at least one item{% else %}a value{% endif %}">
+            <div class="progress-bar coverage-bar__with" style="width: {{ percent_with_value }}%"></div>
+        </div>
+
+        <table class="table coverage-table mt-4">
+            <tr>
+                <th>&nbsp;</th>
+                <th class="text-right">Public projects</th>
+            </tr>
+            <tr>
+                <td><span class="coverage-key coverage-key--with"></span>{% if is_list %}With at least one item{% else %}With a value{% endif %}</td>
+                <td class="text-right">{{ with_value }}</td>
+            </tr>
+            <tr>
+                <td><span class="coverage-key coverage-key--without"></span>{% if is_list %}With no items{% else %}With no value{% endif %}</td>
+                <td class="text-right">{{ without_value }}</td>
+            </tr>
+            <tr>
+                <th>All public projects</th>
+                <th class="text-right">{{ total }}</th>
+            </tr>
+        </table>
+    {% else %}
+        <p class="text-muted">There are no public projects yet, so there is nothing to count.</p>
+    {% endif %}
+
+    <p class="text-muted small">Public data only.</p>
+{% endblock %}

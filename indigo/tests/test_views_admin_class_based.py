@@ -140,3 +140,152 @@ class AdminOrganisationClassBasedTests(TestCase):
                 name,
             )
             self.assertContains(response, "Go to ID", msg_prefix=name)
+
+
+class ProjectDataQualityReportIndexTests(TestCase):
+    def test_it_summarises_priorities_and_groups_the_fields_by_section(self):
+        self.client.force_login(_user("dq-admin", "admin"))
+        Project.objects.create(
+            public_id="INDIGO-POJ-0001",
+            exists=True,
+            status_public=True,
+            data_quality_report_counts_by_priority={"0": 2, "1": 5},
+        )
+        Project.objects.create(
+            public_id="INDIGO-POJ-0002",
+            exists=True,
+            data_quality_report_counts_by_priority={"1": 1},
+        )
+        response = self.client.get(
+            reverse("indigo_admin_all_projects_data_quality_report")
+        )
+        by_priority = {r["priority"]: r for r in response.context["priority_summary"]}
+        self.assertEqual((by_priority[0]["projects"], by_priority[0]["issues"]), (1, 2))
+        self.assertEqual((by_priority[1]["projects"], by_priority[1]["issues"]), (2, 6))
+        self.assertEqual((by_priority[3]["projects"], by_priority[3]["issues"]), (0, 0))
+        self.assertEqual(response.context["count_projects"], 2)
+        self.assertEqual(response.context["count_public_projects"], 1)
+        titles = [s["title"] for s in response.context["sections"]]
+        self.assertIn("Overview", titles)
+        self.assertEqual(len(titles), len(set(titles)))
+        # Every field there are statistics for is linked to, once, with its key safely encoded
+        links = [f["url"] for s in response.context["sections"] for f in s["fields"]]
+        self.assertEqual(len(links), len(set(links)))
+        self.assertTrue(any(l.endswith("?field=%2Fname%2Fvalue") for l in links))
+        self.assertContains(response, 'id="dq-filter"')
+
+
+class ProjectDataQualityReportFieldPagesTests(TestCase):
+    def setUp(self):
+        self.client.force_login(_user("dq-admin", "admin"))
+        Project.objects.create(
+            public_id="INDIGO-POJ-0001",
+            exists=True,
+            status_public=True,
+            data_public={
+                "name": {"value": "Has a name"},
+                "outcome_funds": [{"id": "F"}],
+            },
+        )
+        Project.objects.create(
+            public_id="INDIGO-POJ-0002",
+            exists=True,
+            status_public=True,
+            data_public={"name": {"value": ""}, "outcome_funds": []},
+        )
+        Project.objects.create(
+            public_id="INDIGO-POJ-0003",
+            exists=True,
+            status_public=True,
+            data_public={"name": {"value": "Another"}},
+        )
+        # Private projects are not counted
+        Project.objects.create(
+            public_id="INDIGO-POJ-0004",
+            exists=True,
+            data_public={"name": {"value": "Private"}},
+        )
+
+    def test_a_single_field_shows_how_many_projects_have_a_value(self):
+        response = self.client.get(
+            reverse("indigo_admin_all_projects_data_quality_report_field_single"),
+            {"field": "/name/value"},
+        )
+        self.assertEqual(
+            (
+                response.context["with_value"],
+                response.context["without_value"],
+                response.context["total"],
+                response.context["percent_with_value"],
+            ),
+            (2, 1, 3, 67),
+        )
+        self.assertContains(response, "67%")
+        self.assertContains(response, "2 of 3")
+        self.assertNotContains(response, "plotly")
+
+    def test_a_list_field_counts_projects_with_at_least_one_item(self):
+        response = self.client.get(
+            reverse("indigo_admin_all_projects_data_quality_report_field_list"),
+            {"field": "/outcome_funds"},
+        )
+        self.assertEqual(
+            (response.context["with_value"], response.context["total"]), (1, 3)
+        )
+        self.assertContains(response, "at least one item")
+
+    def test_an_unknown_field_is_a_404_and_no_projects_is_not_an_error(self):
+        url = reverse("indigo_admin_all_projects_data_quality_report_field_single")
+        self.assertEqual(self.client.get(url, {"field": "/nope"}).status_code, 404)
+        Project.objects.update(status_public=False)
+        response = self.client.get(url, {"field": "/name/value"})
+        self.assertContains(response, "no public projects yet")
+
+
+class ProjectsByPriorityPageTests(TestCase):
+    def test_it_is_split_into_pages_with_the_worst_projects_first(self):
+        self.client.force_login(_user("pri-admin", "admin"))
+        for n in range(1, 111):
+            Project.objects.create(
+                public_id=f"INDIGO-POJ-{n:04d}",
+                exists=True,
+                data_private={"name": {"value": f"Project {n}"}},
+                data_quality_report_counts_by_priority={"1": n % 7 + 1},
+            )
+        # No problems at this level, so it is not listed
+        Project.objects.create(
+            public_id="INDIGO-POJ-0999",
+            exists=True,
+            data_quality_report_counts_by_priority={"2": 4},
+        )
+        url = reverse(
+            "indigo_admin_all_projects_data_quality_list_projects_by_priority_highest",
+            kwargs={"priority": 1},
+        )
+        first = self.client.get(url)
+        rows = list(first.context["page_obj"])
+        self.assertEqual(len(rows), 100)
+        self.assertEqual(first.context["page_obj"].paginator.count, 110)
+        counts = [row["count"] for row in rows]
+        self.assertEqual(counts, sorted(counts, reverse=True))
+        self.assertEqual(counts[0], 7)
+        self.assertContains(first, "Page 1 of 2")
+        self.assertContains(first, "Missing: the most important fields")
+        second = self.client.get(url, {"page": 2})
+        self.assertEqual(len(second.context["page_obj"]), 10)
+        self.assertNotContains(first, "INDIGO-POJ-0999")
+        self.assertNotContains(second, "INDIGO-POJ-0999")
+        self.assertContains(first, "Project ")
+
+    def test_a_level_with_no_problems_and_a_bad_level(self):
+        self.client.force_login(_user("pri-admin", "admin"))
+        name = (
+            "indigo_admin_all_projects_data_quality_list_projects_by_priority_highest"
+        )
+        self.assertContains(
+            self.client.get(reverse(name, kwargs={"priority": 0})),
+            "No projects have any errors at this level",
+        )
+        self.assertEqual(
+            self.client.get(reverse(name, kwargs={"priority": 7})).status_code, 404
+        )

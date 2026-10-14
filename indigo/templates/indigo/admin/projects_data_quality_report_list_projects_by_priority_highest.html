@@ -15,30 +15,40 @@
 
 {% block content %}
     <div class="record-header mt-5 mb-3">
-        <h2 class="record-header__title">Projects with priority {{ priority }} issues</h2>
+        <div>
+            <h2 class="record-header__title">Projects with priority {{ priority }} problems</h2>
+            <div class="text-muted">{{ description }}</div>
+        </div>
+        <div class="record-header__actions">
+            <a href="{% url 'indigo_admin_all_projects_data_quality_report' %}" class="btn btn-secondary btn-sm">Data Quality Report</a>
+        </div>
     </div>
 
-    {% if projects_with_count %}
+    {% if page_obj.paginator.count %}
+        {% include "indigo/includes/result_count.html" with noun="project" %}
         <table class="table">
             <tr>
                 <th>ID</th>
                 <th>Project Name</th>
-                <th>Count</th>
+                <th class="text-right">Problems</th>
                 <th>&nbsp;</th>
             </tr>
-            {% for project, count in projects_with_count %}
+            {% for row in page_obj %}
                 <tr>
-                    <td><a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}">{{ project.public_id }}</a></td>
-                    <td>{{ project.data_private.name.value }}</td>
-                    <td>{{ count }}</td>
+                    <td class="text-nowrap"><a href="{% url 'indigo_admin_project_index' public_id=row.public_id %}">{{ row.public_id }}</a></td>
+                    <td>{{ row.name|default:"" }}</td>
+                    <td class="text-right">{{ row.count }}</td>
                     <td class="text-nowrap text-right">
-                        <a href="{% url 'indigo_admin_project_index' public_id=project.public_id %}" class="btn btn-primary btn-sm">View Project</a>
-                        <a href="{% url 'indigo_admin_project_data_quality_report' public_id=project.public_id %}" class="btn btn-primary btn-sm">View Report</a>
+                        <a href="{% url 'indigo_admin_project_index' public_id=row.public_id %}" class="btn btn-primary btn-sm">View Project</a>
+                        <a href="{% url 'indigo_admin_project_data_quality_report' public_id=row.public_id %}" class="btn btn-primary btn-sm">View Report</a>
                     </td>
-
                 </tr>
             {% endfor %}
         </table>
+
+        {% if page_obj.paginator.num_pages > 1 %}
+            {% include "jsondataferret/common/pagination.html" %}
+        {% endif %}
     {% else %}
         <p>No projects have any errors at this level.</p>
     {% endif %}

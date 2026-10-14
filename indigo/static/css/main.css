@@ -507,3 +507,46 @@
     width: auto;
     max-width: 100%;
 }
+
+/* The fields on the project data quality report: as many columns as fit */
+.dq-fields {
+    column-width: 20rem;
+    column-gap: 2rem;
+}
+
+.dq-fields li {
+    break-inside: avoid;
+    margin-bottom: 0.25rem;
+}
+
+/* Data quality report: how many public projects have a value for one field */
+.coverage-headline {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.coverage-bar {
+    height: 1.75rem;
+    background: #dee2e6;
+}
+
+.coverage-bar__with,
+.coverage-key--with {
+    background: #0e7c7b;
+}
+
+.coverage-key {
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-right: 0.5rem;
+    border-radius: 2px;
+}
+
+.coverage-key--without {
+    background: #dee2e6;
+}
+
+.coverage-table {
+    max-width: 32rem;
+}

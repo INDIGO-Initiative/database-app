@@ -17,23 +17,66 @@
         <h2 class="record-header__title">Project Data Quality Report</h2>
     </div>
 
-    <p class="text-muted">Statistics across all projects. Choose a report:</p>
+    <p class="text-muted">Across all <strong>{{ count_projects }}</strong> project{{ count_projects|pluralize }}, and the <strong>{{ count_public_projects }}</strong> that {{ count_public_projects|pluralize:"is,are" }} public.</p>
 
-    <ul class="list-unstyled">
-        {% for i in '0123'|make_list %}
-            <li class="mb-2">
-                <a href="{% url 'indigo_admin_all_projects_data_quality_list_projects_by_priority_highest' priority=i %}" class="btn btn-primary">Projects by count of priority {{ i }} issues</a>
-            </li>
+    <h3 class="h5 mt-4">Problems found, by priority</h3>
+    <p class="text-muted small mb-2">Lower numbers matter more. Each page lists the projects with problems at that level, worst first.</p>
+    <table class="table">
+        <tr>
+            <th>Priority</th>
+            <th>What it covers</th>
+            <th class="text-right">Projects affected</th>
+            <th class="text-right">Problems</th>
+            <th>&nbsp;</th>
+        </tr>
+        {% for row in priority_summary %}
+            <tr>
+                <td class="text-nowrap">Priority {{ row.priority }}</td>
+                <td>{{ row.description }}</td>
+                <td class="text-right">{{ row.projects }}</td>
+                <td class="text-right">{{ row.issues }}</td>
+                <td class="text-nowrap text-right">
+                    {% if row.projects %}
+                        <a href="{% url 'indigo_admin_all_projects_data_quality_list_projects_by_priority_highest' priority=row.priority %}" class="btn btn-primary btn-sm">View projects</a>
+                    {% else %}
+                        <span class="text-muted small">None</span>
+                    {% endif %}
+                </td>
+            </tr>
         {% endfor %}
-        {% for field_single in fields_single %}
-            <li class="mb-2">
-                <a href="{% url 'indigo_admin_all_projects_data_quality_report_field_single' %}?field={{ field_single.key|urlencode:"" }}" class="btn btn-primary">{{ field_single.title }}</a>
-            </li>
-        {% endfor %}
-        {% for field_list in fields_list %}
-            <li class="mb-2">
-                <a href="{% url 'indigo_admin_all_projects_data_quality_report_field_list' %}?field={{ field_list.key|urlencode:"" }}" class="btn btn-primary">{{ field_list.title }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    </table>
+
+    <h3 class="h5 mt-5">How complete is each field?</h3>
+    <p class="text-muted small mb-2">Pick a field to see how many public projects have a value for it. This uses public data only.</p>
+    <input type="search" id="dq-filter" class="form-control mb-3" placeholder="Filter fields" aria-label="Filter fields">
+
+    {% for section in sections %}
+        <section class="dq-section">
+            <h4 class="h6 text-uppercase text-muted border-bottom pb-1 mt-4">{{ section.title }}</h4>
+            <ul class="list-unstyled dq-fields">
+                {% for field in section.fields %}
+                    <li><a href="{{ field.url }}">{{ field.label }}</a>{% if field.is_list %} <span class="badge badge-secondary">list</span>{% endif %}</li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endfor %}
+    <p id="dq-none" class="text-muted" hidden>No fields match.</p>
+
+    <script>
+        document.getElementById("dq-filter").addEventListener("input", function () {
+            var term = this.value.trim().toLowerCase();
+            var shown = 0;
+            document.querySelectorAll(".dq-section").forEach(function (section) {
+                var any = false;
+                section.querySelectorAll("li").forEach(function (item) {
+                    var match = item.textContent.toLowerCase().indexOf(term) !== -1;
+                    item.hidden = !match;
+                    any = any || match;
+                });
+                section.hidden = !any;
+                shown += any ? 1 : 0;
+            });
+            document.getElementById("dq-none").hidden = shown > 0;
+        });
+    </script>
 {% endblock %}
