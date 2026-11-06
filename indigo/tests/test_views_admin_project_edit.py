@@ -112,12 +112,12 @@ class AdminProjectEditTests(TestCase):
         self.client.login(username="admin", password="1234")
         response = self.client.post(
             self.url,
-            {"data": json.dumps({"name": {"value": 5}, "bogus": 1}), "comment": "T"},
+            {"data": json.dumps({"name": "just text", "bogus": 1}), "comment": "T"},
         )
         self.assertEqual(response.status_code, 200)
         # Errors say where the problem is
-        self.assertContains(response, "/name/value: 5 is not of type")
-        self.assertContains(response, '"path": "/name/value"')
+        self.assertContains(response, "/name: &#x27;just text&#x27; is not of type")
+        self.assertContains(response, '"path": "/name"')
         self.assertContains(response, 'id="id_data_errors"')
         self.assertFalse(
             jsondataferret.models.Edit.objects.filter(
@@ -1557,15 +1557,15 @@ class AdminEditPageConsistencyTests(TestCase):
     def test_what_you_wrote_is_kept_when_a_save_is_refused(self):
         response = self.client.post(
             reverse("indigo_admin_project_edit", kwargs={"public_id": "PROJ1"}),
-            {"data": json.dumps({"name": {"value": 5}}), "comment": "My reason"},
+            {"data": json.dumps({"name": "just text"}), "comment": "My reason"},
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "This could not be saved:")
-        self.assertContains(response, "name/value: 5 is not of type")
+        self.assertContains(response, "name: &#x27;just text&#x27; is not of type")
         self.assertContains(response, ">My reason</textarea>")
         self.assertFalse(
             jsondataferret.models.Edit.objects.filter(
-                record__public_id="PROJ1", data__name__value=5
+                record__public_id="PROJ1", approval_event=None, data__name="just text"
             ).exists()
         )
 

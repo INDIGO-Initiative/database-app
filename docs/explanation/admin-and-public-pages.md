@@ -65,7 +65,8 @@ sections as tabs. Both read `indigo/section_groups.json`, which says which parts
 A type with no entry there gets a "General" section and one section for each repeating list.
 
 The edit form is a React JSON Schema Form (see [Rebuild the frontend](../how-to-guide/rebuild-frontend.md)). Django
-checks the whole record against the type's schema when it is saved, and the edit always goes to moderation. This is the
+checks the whole record against the type's schema when it is saved (some kinds of mismatch only warn: see
+[How data is checked against the data standard](validation.md)), and the edit always goes to moderation. This is the
 same as uploading a spreadsheet.
 
 ## What a type needs

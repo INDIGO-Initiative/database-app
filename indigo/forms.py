@@ -1,11 +1,12 @@
 import json
 import os
 
-import jsonschema
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+
+from indigo import schemacheck
 
 COMMENT_LABEL = "Comment for history"
 
@@ -64,7 +65,10 @@ class RJSFSchemaField(forms.CharField):
     def __init__(self, schema, type_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.schema = schema
+        self.type_id = type_id
         self.widget = RJSFWidget(schema=schema, type_id=type_id)
+        # Problems found by the last clean() that do not stop the data being saved (see indigo/schemacheck.py)
+        self.warnings = []
 
     def prepare_value(self, value):
         if isinstance(value, (dict, list)):
@@ -84,10 +88,12 @@ class RJSFSchemaField(forms.CharField):
 
     def clean(self, value):
         value = super().clean(value)
-        errors = schema_errors(self.schema, value)
-        if errors:
+        result = schemacheck.check(self.schema, value, self.type_id)
+        # Problems that only warn do not stop the save; the view tells the person about them
+        self.warnings = result.warnings
+        if result.blocking:
             raise ValidationError(
-                [SchemaValidationError(message, path) for path, message in errors]
+                [SchemaValidationError(p.message, p.path) for p in result.blocking]
             )
         return value
 
@@ -115,29 +121,17 @@ class RJSFBoundField(forms.BoundField):
         return super().as_widget(widget, attrs, only_initial)
 
 
-MAX_SCHEMA_ERRORS = 50
+class RJSFForm(forms.Form):
+    """A form with an RJSFSchemaField. Once it is valid, schema_warnings says what in the data does not match the data
+    standard but was allowed to save."""
 
-
-def _pointer(parts):
-    return "".join("/" + str(p).replace("~", "~0").replace("/", "~1") for p in parts)
-
-
-def schema_errors(schema, value):
-    """Problems with value found by checking it against the JSON Schema, as a list of (JSON pointer, message)."""
-    found = []
-    for error in sorted(
-        jsonschema.Draft7Validator(schema).iter_errors(value),
-        key=lambda e: [str(p) for p in e.absolute_path],
-    ):
-        path = list(error.absolute_path)
-        if error.validator == "required":
-            # Show these against the missing field, not the group it is missing from
-            for key in error.validator_value:
-                if key not in error.instance:
-                    found.append((_pointer(path + [key]), "This field is required"))
-        else:
-            found.append((_pointer(path), error.message))
-    return found[:MAX_SCHEMA_ERRORS]
+    @property
+    def schema_warnings(self):
+        return [
+            problem
+            for form_field in self.fields.values()
+            for problem in getattr(form_field, "warnings", [])
+        ]
 
 
 BASE_PATH = os.path.join(os.path.dirname(__file__), "jsonschema", "cached_information")
@@ -214,35 +208,35 @@ class OrganisationImportForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea, label=COMMENT_LABEL)
 
 
-class OrganisationEditForm(forms.Form):
+class OrganisationEditForm(RJSFForm):
     data = RJSFSchemaField(label="", schema=ORGANISATION_SCHEMA, type_id="organisation")
     comment = forms.CharField(
         widget=forms.Textarea(attrs={"class": "form-control"}), label=COMMENT_LABEL
     )
 
 
-class ProjectEditForm(forms.Form):
+class ProjectEditForm(RJSFForm):
     data = RJSFSchemaField(label="", schema=PROJECT_SCHEMA, type_id="project")
     comment = forms.CharField(
         widget=forms.Textarea(attrs={"class": "form-control"}), label=COMMENT_LABEL
     )
 
 
-class FundEditForm(forms.Form):
+class FundEditForm(RJSFForm):
     data = RJSFSchemaField(label="", schema=FUND_SCHEMA, type_id="fund")
     comment = forms.CharField(
         widget=forms.Textarea(attrs={"class": "form-control"}), label=COMMENT_LABEL
     )
 
 
-class PipelineEditForm(forms.Form):
+class PipelineEditForm(RJSFForm):
     data = RJSFSchemaField(label="", schema=PIPELINE_SCHEMA, type_id="pipeline")
     comment = forms.CharField(
         widget=forms.Textarea(attrs={"class": "form-control"}), label=COMMENT_LABEL
     )
 
 
-class AssessmentResourceEditForm(forms.Form):
+class AssessmentResourceEditForm(RJSFForm):
     data = RJSFSchemaField(
         label="", schema=ASSESSMENT_RESOURCE_SCHEMA, type_id="assessment_resource"
     )
@@ -263,7 +257,7 @@ class PipelineNewForm(NewRecordForm):
     pass
 
 
-class JoiningUpInitiativeNewForm(forms.Form):
+class JoiningUpInitiativeNewForm(RJSFForm):
     data = RJSFSchemaField(
         label="",
         schema=JOINING_UP_INITIATIVE_SCHEMA,
@@ -272,7 +266,7 @@ class JoiningUpInitiativeNewForm(forms.Form):
     comment = forms.CharField(widget=forms.HiddenInput, initial="Created")
 
 
-class JoiningUpInitiativeEditForm(forms.Form):
+class JoiningUpInitiativeEditForm(RJSFForm):
     data = RJSFSchemaField(
         label="",
         schema=JOINING_UP_INITIATIVE_SCHEMA,

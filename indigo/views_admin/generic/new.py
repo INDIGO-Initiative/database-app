@@ -12,7 +12,7 @@ from jsondataferret.models import Type
 from jsondataferret.pythonapi.newevent import NewEventData, newEvent
 
 import indigo.utils
-from indigo.views_admin.common import new_page
+from indigo.views_admin.common import add_schema_warnings_message, new_page
 
 
 class AdminModelNew(PermissionRequiredMixin, View, ABC):
@@ -92,6 +92,7 @@ class AdminModelJSONFormNew(PermissionRequiredMixin, View, ABC):
                 messages.INFO,
                 "New record submitted. The data will not be available until it's been moderated.",
             )
+            add_schema_warnings_message(request, form)
 
             # redirect to a new URL:
             return HttpResponseRedirect(

@@ -362,3 +362,21 @@ class ProjectAccessMixin:
             raise Http404("Record does not exist")
         if not user_can_access_project(self.request.user, project):
             raise PermissionDenied("You can not see project")
+
+
+def add_schema_warnings_message(request, form):
+    """If the data was saved although parts of it do not match the data standard, say so (see indigo/schemacheck.py)."""
+    warnings = form.schema_warnings
+    if not warnings:
+        return
+    shown = "; ".join(
+        f"{problem.path or '(whole record)'}: {problem.message}"
+        for problem in warnings[:5]
+    )
+    more = f" (and {len(warnings) - 5} more)" if len(warnings) > 5 else ""
+    messages.add_message(
+        request,
+        messages.WARNING,
+        f"Saved, but {len(warnings)} value{'s do' if len(warnings) != 1 else ' does'} not match the data standard: "
+        f"{shown}{more}. The data quality report lists these.",
+    )

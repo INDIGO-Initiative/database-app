@@ -14,6 +14,7 @@ from jsondataferret.models import Record, Type
 from jsondataferret.pythonapi.newevent import newEvent
 
 from indigo.spreadsheetforms import extract_edits_from_form
+from indigo.views_admin.common import add_schema_warnings_message
 
 
 class AdminModelEdit(PermissionRequiredMixin, View, ABC):
@@ -91,6 +92,7 @@ class AdminModelEdit(PermissionRequiredMixin, View, ABC):
                 messages.INFO,
                 "Updates submitted. The changes will not be available until the updates have been moderated.",
             )
+            add_schema_warnings_message(request, form)
 
             # redirect to a new URL:
             return HttpResponseRedirect(

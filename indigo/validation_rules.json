@@ -1,0 +1,20 @@
+{
+  "description": "What happens when a record's data does not match its data standard (JSON Schema). Each rule is 'block' (the form refuses to save), 'warn' (it saves and says what looks wrong) or 'ignore' (not mentioned). 'defaults' are by schema keyword. Text and numbers mixed up have their own rules: 'number_for_text' (a number where text is expected, which is harmless and often comes from spreadsheet cells) and 'text_for_number' (such as TBD in a number field); 'type' is used for either if its own rule is missing. Any other wrong type, such as a list where a single value is expected, always blocks. '*' is every keyword not listed. 'types' can override one record type, for the fields matching a path ('*' stands for any list position, or any one name), eg {\"path\": \"/dates/*\", \"rule\": \"pattern\", \"mode\": \"block\"}; the first matching override wins. See docs/explanation/validation.md.",
+  "defaults": {
+    "type": "warn",
+    "number_for_text": "ignore",
+    "text_for_number": "warn",
+    "enum": "warn",
+    "pattern": "warn",
+    "format": "warn",
+    "minLength": "warn",
+    "maxLength": "warn",
+    "minimum": "warn",
+    "maximum": "warn",
+    "minItems": "warn",
+    "maxItems": "warn",
+    "required": "block",
+    "*": "block"
+  },
+  "types": {}
+}
