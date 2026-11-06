@@ -40,3 +40,9 @@ def get_next_record_id(type):
         id_number = 1
 
     return f"{prefix}{id_number:04d}"
+
+
+def tidy_field_title(title):
+    """The titles of fields read like "Impact Bond Name - (Value)" because most fields have a (Value) part; the
+    part adds nothing for someone reading, so leave it off. Other parts, like "Dates - (Notes)", are kept."""
+    return re.sub(r"\s+-\s+\(Value\)$", "", title)

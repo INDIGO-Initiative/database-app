@@ -243,12 +243,12 @@ urlpatterns = [
     ),
     path(
         "admin/project",
-        views_admin.admin_projects_list,
+        views_admin.AdminProjectList.as_view(),
         name="indigo_admin_project_list",
     ),
     path(
         "admin/project/<public_id>",
-        views_admin.admin_project_index,
+        views_admin.AdminProjectIndex.as_view(),
         name="indigo_admin_project_index",
     ),
     path(
@@ -272,18 +272,23 @@ urlpatterns = [
         name="indigo_admin_project_import_form_stage_2",
     ),
     path(
+        "admin/project/<public_id>/edit",
+        views_admin.AdminProjectEdit.as_view(),
+        name="indigo_admin_project_edit",
+    ),
+    path(
         "admin/project/<public_id>/change_status",
         views_admin.AdminProjectChangeStatus.as_view(),
         name="indigo_admin_project_change_status",
     ),
     path(
         "admin/project/<public_id>/moderate",
-        views_admin.admin_project_moderate,
+        views_admin.AdminProjectModerate.as_view(),
         name="indigo_admin_project_moderate",
     ),
     path(
         "admin/project/<public_id>/history",
-        views_admin.admin_project_history,
+        views_admin.AdminProjectHistory.as_view(),
         name="indigo_admin_project_history",
     ),
     path(
@@ -298,7 +303,7 @@ urlpatterns = [
     ),
     path(
         "admin/new_project",
-        views_admin.admin_projects_new,
+        views_admin.AdminProjectNew.as_view(),
         name="indigo_admin_project_new",
     ),
     path(
@@ -324,7 +329,7 @@ urlpatterns = [
     ########################### Admin - Organisation
     path(
         "admin/organisation_download_blank_form",
-        views_admin.admin_organisation_download_blank_form,
+        views_admin.AdminOrganisationDownloadBlankForm.as_view(),
         name="indigo_admin_organisation_download_blank_form",
     ),
     path(
@@ -334,7 +339,7 @@ urlpatterns = [
     ),
     path(
         "admin/organisation",
-        views_admin.admin_organisations_list,
+        views_admin.AdminOrganisationList.as_view(),
         name="indigo_admin_organisation_list",
     ),
     path(
@@ -343,13 +348,18 @@ urlpatterns = [
         name="indigo_admin_organisation_goto",
     ),
     path(
+        "admin/organisation_search_json",
+        views_admin.admin_organisations_search_json,
+        name="indigo_admin_organisation_search_json",
+    ),
+    path(
         "admin/organisation_search",
-        views_admin.admin_organisations_search,
+        views_admin.AdminOrganisationList.as_view(),
         name="indigo_admin_organisation_search",
     ),
     path(
         "admin/organisation/<public_id>",
-        views_admin.admin_organisation_index,
+        views_admin.AdminOrganisationIndex.as_view(),
         name="indigo_admin_organisation_index",
     ),
     path(
@@ -374,27 +384,27 @@ urlpatterns = [
     ),
     path(
         "admin/organisation/<public_id>/download_form",
-        views_admin.admin_organisation_download_form,
+        views_admin.AdminOrganisationDownloadForm.as_view(),
         name="indigo_admin_organisation_download_form",
     ),
     path(
         "admin/organisation/<public_id>/import_form",
-        views_admin.admin_organisation_import_form,
+        views_admin.AdminOrganisationImportForm.as_view(),
         name="indigo_admin_organisation_import_form",
     ),
     path(
         "admin/organisation/<public_id>/moderate",
-        views_admin.admin_organisation_moderate,
+        views_admin.AdminOrganisationModerate.as_view(),
         name="indigo_admin_organisation_moderate",
     ),
     path(
         "admin/organisation/<public_id>/history",
-        views_admin.admin_organisation_history,
+        views_admin.AdminOrganisationHistory.as_view(),
         name="indigo_admin_organisation_history",
     ),
     path(
         "admin/new_organisation",
-        views_admin.admin_organisations_new,
+        views_admin.AdminOrganisationNew.as_view(),
         name="indigo_admin_organisation_new",
     ),
     ########################### Admin - Fund
@@ -427,6 +437,11 @@ urlpatterns = [
         "admin/fund/<public_id>/import_form",
         views_admin.AdminFundImportForm.as_view(),
         name="indigo_admin_fund_import_form",
+    ),
+    path(
+        "admin/fund/<public_id>/edit",
+        views_admin.AdminFundEdit.as_view(),
+        name="indigo_admin_fund_edit",
     ),
     path(
         "admin/fund/<public_id>/change_status",
@@ -473,6 +488,11 @@ urlpatterns = [
         "admin/assessment_resource/<public_id>/import_form",
         views_admin.AdminAssessmentResourceImportForm.as_view(),
         name="indigo_admin_assessment_resource_import_form",
+    ),
+    path(
+        "admin/assessment_resource/<public_id>/edit",
+        views_admin.AdminAssessmentResourceEdit.as_view(),
+        name="indigo_admin_assessment_resource_edit",
     ),
     path(
         "admin/assessment_resource/<public_id>/change_status",
@@ -524,6 +544,11 @@ urlpatterns = [
         "admin/pipeline/<public_id>/import_form/<import_id>",
         views_admin.AdminPipelineImportFormStage2Of2.as_view(),
         name="indigo_admin_pipeline_import_form_stage_2",
+    ),
+    path(
+        "admin/pipeline/<public_id>/edit",
+        views_admin.AdminPipelineEdit.as_view(),
+        name="indigo_admin_pipeline_edit",
     ),
     path(
         "admin/pipeline/<public_id>/change_status",

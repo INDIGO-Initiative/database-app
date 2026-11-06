@@ -1,0 +1,16 @@
+{# A dropdown button of links. Pass the menu from indigo/listpages.py:visible_menu as "menu", and optionally menu_label and menu_icon. #}
+<div class="btn-group">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if menu_icon %}<i class="fa-solid fa-{{ menu_icon }} mr-1" aria-hidden="true"></i>{% endif %}{{ menu_label|default:"More" }}</button>
+    <div class="dropdown-menu dropdown-menu-right">
+        {% for group in menu %}
+            {% if not forloop.first %}<div class="dropdown-divider"></div>{% endif %}
+            {% if group.heading %}<h6 class="dropdown-header">{{ group.heading }}</h6>{% endif %}
+            {% for item in group.items %}
+                <a class="dropdown-item" href="{{ item.url }}">{{ item.label }}</a>
+            {% endfor %}
+            {% for note in group.notes %}
+                <span class="dropdown-item-text small text-muted dropdown-note">{{ note }}</span>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>

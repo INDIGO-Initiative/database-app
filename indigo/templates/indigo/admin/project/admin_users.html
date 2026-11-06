@@ -1,24 +1,15 @@
-{% extends 'indigo/base-admin.html' %}
+{% extends 'indigo/admin/record_subpage.html' %}
 
-{% block head_title %}Data Steward Users of Project {{ record.public_id }}{% endblock %}
-
-{% block breadcrumbs %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_list' %}">Projects</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_project_index' public_id=record.public_id  %}">Project {{ record.public_id }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Data Steward Users</li>
-      </ol>
-    </nav>
-{% endblock %}
+{% block head_title %}Data Steward Users of {{ record_title }} {{ record.public_id }}{% endblock %}
+{% block current_crumb %}Data Steward Users{% endblock %}
 
 {% block content %}
-
-    <h2>Admin Users</h2>
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">Data Stewards: {{ record_title }} {{ record.public_id }} {{ display_name }}</h2>
+    </div>
 
     {% if admin_users_with_access %}
-        <h3>Data Stewards With Access</h3>
+        <h3 class="h5 mt-4">With access</h3>
         <table class="table">
             <tr>
                 <th>User</th>
@@ -26,24 +17,24 @@
             </tr>
             {% for admin_user_with_access in admin_users_with_access %}
                 <tr>
-                    <td>
-                        {{ admin_user_with_access.username }}
-                    </td>
-                    <td>
-                        <form method="post">
+                    <td>{{ admin_user_with_access.username }}</td>
+                    <td class="text-right">
+                        <form method="post" class="m-0">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="remove">
                             <input type="hidden" name="user" value="{{ admin_user_with_access.id }}">
-                            <input type="submit" value="Remove" class="btn btn-primary">
+                            <input type="submit" value="Remove" class="btn btn-outline-danger btn-sm">
                         </form>
                     </td>
                 </tr>
             {% endfor %}
         </table>
+    {% else %}
+        <p class="text-muted">No data stewards have access to this {{ record_title|lower }} yet.</p>
     {% endif %}
 
     {% if admin_users_to_add %}
-        <h3>Data Stewards To Add</h3>
+        <h3 class="h5 mt-4">Give access to</h3>
         <table class="table">
             <tr>
                 <th>User</th>
@@ -51,24 +42,17 @@
             </tr>
             {% for admin_user_to_add in admin_users_to_add %}
                 <tr>
-                    <td>
-                        {{ admin_user_to_add.username }}
-                    </td>
-                    <td>
-                        <form method="post">
+                    <td>{{ admin_user_to_add.username }}</td>
+                    <td class="text-right">
+                        <form method="post" class="m-0">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="add">
                             <input type="hidden" name="user" value="{{ admin_user_to_add.id }}">
-                            <input type="submit" value="Add" class="btn btn-primary">
+                            <input type="submit" value="Add" class="btn btn-primary btn-sm">
                         </form>
                     </td>
                 </tr>
             {% endfor %}
         </table>
-
     {% endif %}
-
-
-
-
 {% endblock %}

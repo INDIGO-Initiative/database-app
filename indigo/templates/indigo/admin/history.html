@@ -12,45 +12,9 @@
 {% endblock %}
 
 {% block content %}
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">History</h2>
+    </div>
 
-    <form method="get">
-        {{ filter.form.as_p }}
-        <input type="submit" value="Filter"  class="btn btn-primary" />
-        <a href="{% url 'jsondataferret_event_list' %}" class="btn btn-secondary">(reset filters)</a>
-    </form>
-
-    {% if page_obj.paginator.count > 0 %}
-        <table class="table">
-            <tr>
-                <th>At</th>
-                <th>By</th>
-                <th>Records</th>
-                <th>Comment</th>
-                <th>&nbsp;</th>
-            </tr>
-            {% for event in page_obj %}
-                <tr>
-                    <td>{{ event.created }}</td>
-                    <td>{{ event.user }}</td>
-                    <td>
-                        {% with records_summary=event.get_records_summary %}
-                            {% for record in records_summary.records %}
-                                <div><a href="{% url 'jsondataferret_record_index' type_id=record.type_public_id record_id=record.public_id %}">{{ record.type_title }}: {{ record.public_id }}</a></div>
-                            {% endfor %}
-                            {% if records_summary.more %}<div>...</div>{% endif %}
-                        {% endwith %}
-                    </td>
-                    <td>{{ event.comment|linebreaks }}</td>
-                    <td><a href="{% url 'indigo_admin_event_index' event_id=event.public_id %}" class="btn btn-primary">View</a></td>
-                </tr>
-            {% endfor %}
-        </table>
-
-        {% include "jsondataferret/common/pagination.html" %}
-    {% else %}
-        <p>No events are available.</p>
-    {% endif %}
-
-
-
+    {% include "indigo/includes/history_table.html" with show_records=True %}
 {% endblock %}

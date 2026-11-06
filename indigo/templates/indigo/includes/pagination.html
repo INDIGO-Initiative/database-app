@@ -1,0 +1,29 @@
+{# The page links under a long list. Needs page_obj (from listpages.paginate) and pagination_get_params. #}
+{% if page_obj.paginator.num_pages > 1 %}
+    <nav aria-label="Pages" class="my-4">
+        <ul class="pagination justify-content-center mb-2">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?{% if pagination_get_params %}{{ pagination_get_params }}&amp;{% endif %}page={{ page_obj.previous_page_number }}" rel="prev">&laquo; Previous</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">&laquo; Previous</span></li>
+            {% endif %}
+
+            {% for number in page_obj.page_numbers %}
+                {% if number == page_obj.number %}
+                    <li class="page-item active" aria-current="page"><span class="page-link">{{ number }}</span></li>
+                {% elif number == page_obj.paginator.ELLIPSIS %}
+                    <li class="page-item disabled"><span class="page-link">{{ number }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?{% if pagination_get_params %}{{ pagination_get_params }}&amp;{% endif %}page={{ number }}">{{ number }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?{% if pagination_get_params %}{{ pagination_get_params }}&amp;{% endif %}page={{ page_obj.next_page_number }}" rel="next">Next &raquo;</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Next &raquo;</span></li>
+            {% endif %}
+        </ul>
+        <p class="text-center text-muted small mb-0">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+    </nav>
+{% endif %}

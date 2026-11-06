@@ -2,7 +2,11 @@
 /.vagrant
 __pycache__
 /static
+# Public files the background worker writes when running locally (spreadsheets of each record's public data)
+/public
 .DS_Store
 *.log
 *.dump
 data/
+
+frontend/node_modules

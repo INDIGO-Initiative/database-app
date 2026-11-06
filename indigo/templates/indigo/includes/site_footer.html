@@ -1,0 +1,16 @@
+{% load indigo_extras %}
+{% static_if_exists 'img/go-lab-logo.svg' as logo_url %}
+<footer class="site-footer">
+    <div class="content container site-footer__inner">
+        <div class="site-footer__notice">
+            <h2 class="site-footer__title">Important Notice and Disclaimer on INDIGO Data</h2>
+            <p>INDIGO data are shared for research and policy analysis purposes. INDIGO data can be used to support a range of insights, for example, to understand the social outcomes that projects aim to improve, the network of organisations across projects, trends, scales, timelines and summary information. The collaborative system by which we collect, process, and share data is designed to advance data-sharing norms, harmonise data definitions and improve data use. These data are NOT shared for auditing, investment, or legal purposes. Please independently verify any data that you might use in decision making. We provide no guarantees or assurances as to the quality of these data. Data may be inaccurate, incomplete, inconsistent, and/or not current for various reasons: INDIGO is a collaborative and iterative initiative that mostly relies on projects all over the world volunteering to share their data. We have a system for processing information and try to attribute data to named sources, but we do not audit, cross-check, or verify all information provided to us. It takes time and resources to share data, which may not have been included in a project’s budget. Many of the projects are ongoing and timely updates may not be available. Different people may have different interpretations of data items and definitions. Even when data are high quality, interpretation or generalisation to different contexts may not be possible and/or requires additional information and/or expertise.</p>
+            <p>Help us improve our data quality: email us at <a href="mailto:indigo@bsg.ox.ac.uk">indigo@bsg.ox.ac.uk</a> if you have data on new projects, changes or performance updates on current projects, clarifications or corrections on our data, and/or confidentiality or sensitivity notices. Please also give input via the INDIGO Data Definitions Improvement Tool and INDIGO Feedback Questionnaire.</p>
+        </div>
+        {% if logo_url %}
+            <div class="site-footer__logo">
+                <a href="https://golab.bsg.ox.ac.uk/" target="_blank" rel="noopener noreferrer" title="Government Outcomes Lab website"><img src="{{ logo_url }}" alt="Government Outcomes Lab"></a>
+            </div>
+        {% endif %}
+    </div>
+</footer>

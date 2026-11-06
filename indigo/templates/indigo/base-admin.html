@@ -15,27 +15,26 @@
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     </head>
     <body>
-        <div class="page-header" style="background: #ccc; padding: 40px 10px;">
-            <div class="content container">
-                <h1><a href="{% url 'indigo_index' %}">{{ request.app_title }}</a></h1>
-                <div style="text-align: right;">
+        <div class="page-header site-header">
+            <div class="content container site-header__inner">
+                <h1 class="site-header__title"><a href="{% url 'indigo_index' %}">{% include "indigo/includes/dataset_icon.html" %}<span>{{ request.app_title }}</span></a></h1>
+                <div class="site-header__user">
                     {% if user.is_authenticated %}
-                        {{ user.username }} <a href="{% url 'logout' %}">Logout</a>
+                        {% include "indigo/includes/user_menu.html" with admin_site=True %}
                     {% else %}
-                        <a href="{% url 'login' %}">Login</a>
+                        <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light">Login</a>
                     {% endif %}
                 </div>
-
             </div>
         </div>
-        <div class="page-header" style="background: #eee; padding: 10px 10px;">
+        <div class="page-header breadcrumb-bar breadcrumb-bar--admin">
             <div class="content container">
                 {% block breadcrumbs %}
                 {% endblock %}
             </div>
         </div>
 
-        <div class="content container" style="padding: 10px;">
+        <div class="content container admin-main" style="padding: 10px;">
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-primary">{{ message }}</div>

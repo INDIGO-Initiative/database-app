@@ -17,11 +17,11 @@ jobs:
         ports:
           - 5432:5432
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/checkout@v7
+    - uses: actions/setup-python@v7
       with:
         python-version: 3.11
-    - uses: actions/cache@v1
+    - uses: actions/cache@v6
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements_dev.txt') }}
@@ -42,3 +42,29 @@ jobs:
       run: python manage.py test
       if: always()
 
+
+  frontend:
+    # The edit forms are built from frontend/ and the result is committed to indigo/static/rjsf/.
+    # This checks the tests pass and that the committed files are what the source builds to
+    # (so a change to frontend/src or indigo/section_groups.json is never deployed without a rebuild).
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-node@v7
+      with:
+        node-version-file: frontend/.nvmrc
+        cache: npm
+        cache-dependency-path: frontend/package-lock.json
+    - run: npm ci
+      working-directory: frontend
+    - run: npm test
+      working-directory: frontend
+    - run: npm run build
+      working-directory: frontend
+    - name: Check the committed build is up to date
+      run: |
+        if [ -n "$(git status --porcelain indigo/static/rjsf)" ]; then
+          echo "indigo/static/rjsf/ is out of date. Run 'npm run build' in frontend/ and commit the result."
+          git status --short indigo/static/rjsf
+          exit 1
+        fi

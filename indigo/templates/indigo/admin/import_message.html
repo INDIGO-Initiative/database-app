@@ -1,0 +1,15 @@
+{# Stage 2 of an import has not got a form to show yet: the file is still being processed, or something went wrong. Pass message, and optionally refresh_url. #}
+{% extends 'indigo/admin/record_subpage.html' %}
+
+{% block head_title %}Import {{ record_title }} {{ record.public_id }}{% endblock %}
+{% block head %}{% if refresh_url %}<meta http-equiv="refresh" content="5;url={{ refresh_url }}" />{% endif %}{% endblock %}
+{% block current_crumb %}Import{% endblock %}
+
+{% block content %}
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">Import: {{ record_title }} {{ record.public_id }} {{ display_name }}</h2>
+    </div>
+
+    <div class="alert {% if refresh_url %}alert-info{% else %}alert-danger{% endif %}">{{ message }}</div>
+    <a href="{{ record_url }}" class="btn btn-link">Back to {{ record_title|lower }}</a>
+{% endblock %}

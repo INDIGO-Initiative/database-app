@@ -1,0 +1,17 @@
+{% extends 'indigo/admin/record_subpage.html' %}
+
+{% block head_title %}Import {{ record_title }} {{ record.public_id }}{% endblock %}
+{% block current_crumb %}Import{% endblock %}
+
+{% block content %}
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">Import: {{ record_title }} {{ record.public_id }} {{ display_name }}</h2>
+    </div>
+
+    {% if level_zero_errors and record.type.public_id == "project" %}
+        <div class="alert alert-warning">Some problems were found in the spreadsheet:</div>
+        {% include 'indigo/admin/includes/data_quality_errors.html' with errors=level_zero_errors %}
+    {% endif %}
+
+    {% include "indigo/admin/includes/simple_form.html" with button="Import" cancel_url=record_url %}
+{% endblock %}

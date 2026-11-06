@@ -1,0 +1,7 @@
+{# A search box for a list page. Pass: input_id, placeholder, clear_url. The list view must read the "search" GET parameter. #}
+<form action="" method="get" class="form-inline mb-3">
+    <label for="{{ input_id }}" class="mr-2">Search:</label>
+    <input type="search" id="{{ input_id }}" name="search" value="{{ search_term }}" class="form-control mr-2" placeholder="{{ placeholder }}">
+    <input type="submit" value="Search" class="btn btn-primary mr-2">
+    {% if search_term %}<a href="{{ clear_url }}" class="btn btn-secondary">Clear</a>{% endif %}
+</form>

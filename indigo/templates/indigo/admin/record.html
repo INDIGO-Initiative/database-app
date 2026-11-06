@@ -1,0 +1,18 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}{{ record_title }} {{ record.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{{ list_url }}">{{ list_title }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ record_title }} {{ record.public_id }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    {% include "indigo/includes/record_header.html" %}
+    {% include "indigo/includes/record_sections.html" %}
+{% endblock %}

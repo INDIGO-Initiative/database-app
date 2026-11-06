@@ -1,0 +1,14 @@
+{% extends 'indigo/admin/record_subpage.html' %}
+
+{% block head_title %}Import {{ record_title }} {{ record.public_id }}{% endblock %}
+{% block current_crumb %}Import{% endblock %}
+
+{% block content %}
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">Import: {{ record_title }} {{ record.public_id }} {{ display_name }}</h2>
+    </div>
+
+    <p class="text-muted">Upload a completed spreadsheet form to replace this {{ record_title|lower }}'s details. The changes are sent for moderation.</p>
+
+    {% include "indigo/admin/includes/simple_form.html" with button="Import" cancel_url=record_url multipart=True %}
+{% endblock %}

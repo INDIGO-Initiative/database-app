@@ -1,0 +1,12 @@
+{% extends 'indigo/admin/record_subpage.html' %}
+
+{% block head_title %}History of {{ record_title }} {{ record.public_id }}{% endblock %}
+{% block current_crumb %}History{% endblock %}
+
+{% block content %}
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">History: {{ record_title }} {{ record.public_id }} {{ display_name }}</h2>
+    </div>
+
+    {% include "indigo/includes/history_table.html" %}
+{% endblock %}

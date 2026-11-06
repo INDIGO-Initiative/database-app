@@ -1,0 +1,16 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}{{ list_title }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ list_title }}</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    {% include "indigo/includes/list_page.html" %}
+{% endblock %}

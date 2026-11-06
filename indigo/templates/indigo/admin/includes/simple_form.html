@@ -1,0 +1,35 @@
+{# The fields of a simple form (a file, a status, a comment...) with errors. Pass form, button (the submit button's text), cancel_url, and optionally multipart. #}
+<form action="" method="post"{% if multipart %} enctype="multipart/form-data"{% endif %} class="mb-5">
+    {% csrf_token %}
+    {% include "indigo/includes/form_problems.html" %}
+    {% for field in form %}
+        {% if field.name == "comment" %}
+            {% include "indigo/includes/comment_box.html" with value=field.value errors=field.errors required=field.field.required %}
+        {% else %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="font-weight-bold">{{ field.label }}{% if field.field.required %} <span class="text-danger" aria-hidden="true">*</span><span class="sr-only">(required)</span>{% endif %}</label>
+                {% if field.field.widget.input_type == "file" %}
+                    <div class="custom-file">
+                        {{ field }}
+                        <label class="custom-file-label" for="{{ field.id_for_label }}">Choose a file&hellip;</label>
+                    </div>
+                {% else %}
+                    <div>{{ field }}</div>
+                {% endif %}
+                {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
+                {% for error in field.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">{{ button }}</button>
+    <a href="{{ cancel_url }}" class="btn btn-link">Cancel</a>
+</form>
+<script>
+    // Bootstrap 4 does not show the name of the chosen file by itself
+    document.querySelectorAll(".custom-file-input").forEach(function (input) {
+        input.addEventListener("change", function () {
+            var label = input.parentNode.querySelector(".custom-file-label");
+            if (label && input.files.length) { label.textContent = input.files[0].name; }
+        });
+    });
+</script>

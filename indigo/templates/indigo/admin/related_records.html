@@ -1,0 +1,31 @@
+{# The records of another type that link to this record (eg the projects using an organisation). Pass related_title ("Projects"), related_noun ("project") and links: [{public_id, name, url}]. #}
+{% extends 'indigo/admin/record_subpage.html' %}
+
+{% block head_title %}{{ related_title }} for {{ record_title }} {{ record.public_id }}{% endblock %}
+{% block current_crumb %}{{ related_title }}{% endblock %}
+
+{% block content %}
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">{{ related_title }} using {{ record_title }}: {{ record.public_id }} {{ display_name }}</h2>
+    </div>
+
+    {% if links %}
+        <p class="text-muted small mb-2"><strong>{{ links|length }}</strong> {{ related_noun }}{{ links|length|pluralize }} currently linked.</p>
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>&nbsp;</th>
+            </tr>
+            {% for link in links %}
+                <tr>
+                    <td class="text-nowrap"><a href="{{ link.url }}">{{ link.public_id }}</a></td>
+                    <td>{{ link.name }}</td>
+                    <td class="text-nowrap text-right"><a href="{{ link.url }}" class="btn btn-primary btn-sm">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No {{ related_noun }}s are linked.</p>
+    {% endif %}
+{% endblock %}

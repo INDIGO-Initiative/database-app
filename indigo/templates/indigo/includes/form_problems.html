@@ -1,0 +1,14 @@
+{# A summary at the top of a form that was refused: every reason, each linked to its field. Pass form. #}
+{% if form.errors %}
+    <div class="alert alert-danger" id="save-problems" role="alert">
+        <strong>This could not be saved:</strong>
+        <ul class="mb-0">
+            {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{% if field.label and not field.is_hidden %}<a href="#{{ field.id_for_label }}">{{ field.label }}</a>: {% endif %}{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

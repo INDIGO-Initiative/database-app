@@ -1,0 +1,5 @@
+<input type="hidden" name="{{ widget.name }}" id="{{ widget.attrs.id }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}>
+{{ widget.schema|json_script:widget.schema_id }}
+{{ widget.errors|json_script:widget.errors_id }}
+{{ widget.warnings|json_script:widget.warnings_id }}
+<div class="rjsf-holder" data-input-id="{{ widget.attrs.id }}" data-schema-id="{{ widget.schema_id }}" data-errors-id="{{ widget.errors_id }}" data-warnings-id="{{ widget.warnings_id }}" data-type-id="{{ widget.type_id }}" data-organisation-search-url="{{ widget.organisation_search_url }}"></div>

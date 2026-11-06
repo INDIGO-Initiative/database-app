@@ -1,0 +1,4 @@
+{# "130 results", or "Showing 1-100 of 130 results" when there is more than one page. Pass page_obj, optionally noun (default "result") and search_term. #}
+<p class="text-muted small mb-2 list-count">
+    {% if page_obj.paginator.num_pages > 1 %}Showing {{ page_obj.start_index }}&ndash;{{ page_obj.end_index }} of {% endif %}<strong>{{ page_obj.paginator.count }}</strong> {{ noun|default:"result" }}{{ page_obj.paginator.count|pluralize }}{% if search_term %} for &ldquo;{{ search_term }}&rdquo;{% endif %}
+</p>

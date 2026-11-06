@@ -1,0 +1,34 @@
+{% extends 'indigo/base-admin.html' %}
+
+{% block head_title %}Edit {{ record_title }} {{ instance.public_id }}{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'indigo_admin_index' %}">Admin</a></li>
+        <li class="breadcrumb-item"><a href="{{ list_url }}">{{ list_title }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ record_url }}">{{ record_title }} {{ instance.public_id }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+      </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="record-header mt-5 mb-3">
+        <h2 class="record-header__title">Edit {{ record_title }}: {{ instance.public_id }} {{ display_name }}</h2>
+    </div>
+
+    <p class="text-muted">Changes will not be available until they have been moderated.</p>
+
+    <form action="" method="post" class="mb-5">
+        {% csrf_token %}
+        {{ form.media }}
+        {% include "indigo/includes/form_problems.html" %}
+        {{ form.data }}
+        <div class="edit-footer">
+            {% include "indigo/includes/comment_box.html" with value=form.comment.value errors=form.comment.errors required=form.comment.field.required %}
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <a href="{{ record_url }}" class="btn btn-link">Cancel</a>
+        </div>
+    </form>
+{% endblock %}

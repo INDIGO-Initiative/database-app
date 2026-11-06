@@ -89,7 +89,7 @@
                         <div class="tab-pane fade show" id="record-{{ record_with_changes.record.id }}-data-before-change">
                             {% if record_with_changes.last_cached_record_history %}
                                 {{ record_with_changes.last_cached_record_history.get_data_html|safe }}
-                                <a href="{% url 'indigo_admin_event_index' event_id=record_with_changes.last_cached_record_history.event.public_id %}" class="btn btn-primary">View event that made this change</a>
+                                <a href="{% url 'indigo_admin_event_index' event_id=record_with_changes.last_cached_record_history.event.public_id %}" class="btn btn-primary btn-sm">View event that made this change</a>
                             {% else %}
                                 No previous data found.
                             {% endif %}
@@ -115,7 +115,7 @@
                                                     <th>Creation</th>
                                                     <td>
                                                         Created {{ edit.creation_event.created }} / {{ edit.creation_event.user }}
-                                                        <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary">View</a>
+                                                        <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary btn-sm">View change</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -126,7 +126,7 @@
                                         <tr>
                                             <th>&nbsp;</th>
                                             <td>
-                                                <a href="{% url 'indigo_admin_edit_index' edit_id=edit.public_id %}" class="btn btn-primary">View edit details</a>
+                                                <a href="{% url 'indigo_admin_edit_index' edit_id=edit.public_id %}" class="btn btn-primary btn-sm">View edit details</a>
                                             </td>
                                         </tr>
                                     </table>
@@ -166,7 +166,7 @@
                             <th>State</th>
                             <td>
                                 Approved {{ edit.approval_event.created }} / {{ edit.approval_event.user }}
-                                <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary">View</a>
+                                <a href="{% url 'indigo_admin_event_index' event_id=edit.approval_event.public_id %}" class="btn btn-primary btn-sm">View change</a>
                             </td>
                         </tr>
                     {% elif edit.refusal_event %}
@@ -174,7 +174,7 @@
                             <th>State</th>
                             <td>
                                 Refused {{ edit.refusal_event.created }} / {{ edit.refusal_event.user }}
-                                <a href="{% url 'indigo_admin_event_index' event_id=edit.refusal_event.public_id %}" class="btn btn-primary">View</a>
+                                <a href="{% url 'indigo_admin_event_index' event_id=edit.refusal_event.public_id %}" class="btn btn-primary btn-sm">View change</a>
                             </td>
                         </tr>
                     {% else %}
@@ -208,7 +208,7 @@
                         <th>Edit created by</th>
                         <td>
                             {{ edit.creation_event.created }} / {{ edit.creation_event.user }}
-                            <a href="{% url 'indigo_admin_event_index' event_id=edit.creation_event.public_id %}" class="btn btn-primary">View</a>
+                            <a href="{% url 'indigo_admin_event_index' event_id=edit.creation_event.public_id %}" class="btn btn-primary btn-sm">View change</a>
                         </td>
                     </tr>
                 </table>

@@ -46,7 +46,6 @@ django==4.2.11
     #   dj-database-url
     #   django-filter
     #   django-heroku
-    #   django-jsonforms
     #   django-storages
     #   jsondataferret
 django-environ==0.11.2
@@ -54,8 +53,6 @@ django-environ==0.11.2
 django-filter==23.2
     # via jsondataferret
 django-heroku==0.3.1
-    # via -r requirements.in
-django-jsonforms==1.1.2
     # via -r requirements.in
 django-storages[boto3]==1.14
     # via -r requirements.in
@@ -79,8 +76,8 @@ jsonref==1.1.0
     # via compiletojsonschema
 jsonschema==4.19.0
     # via
+    #   -r requirements.in
     #   compiletojsonschema
-    #   django-jsonforms
     #   jsondataferret
     #   jsonmerge
 jsonschema-specifications==2023.7.1

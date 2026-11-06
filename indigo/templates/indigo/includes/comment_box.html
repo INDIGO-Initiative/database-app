@@ -1,0 +1,9 @@
+{# The "Comment for history" box on pages that change a record (edit, moderate). Pass optionally: value, errors, help, required. #}
+<div class="form-group comment-box">
+    <label for="id_comment" class="comment-box__label">Comment for history{% if required %} <span class="text-danger" aria-hidden="true">*</span><span class="sr-only">(required)</span>{% endif %}</label>
+    <div class="comment-box__help">{{ help|default:"Kept in the history of the record." }}{% if required %} Required.{% endif %}</div>
+    <textarea name="comment" id="id_comment" class="form-control{% if errors %} is-invalid{% endif %}" rows="3"{% if required %} required aria-required="true"{% endif %}{% if errors %} aria-invalid="true"{% endif %}>{{ value|default:"" }}</textarea>
+    {% for error in errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
