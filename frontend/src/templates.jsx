@@ -122,7 +122,12 @@ function FieldTemplate(props) {
     <>
       {props.help}
       <ul className="warning-detail">
-        {messages.map((message, i) => <li key={i}>{message}</li>)}
+        {messages.map((message, i) => (
+          <li key={i}>
+            <i className="fa-solid fa-triangle-exclamation" aria-hidden="true" />
+            <span>{message}</span>
+          </li>
+        ))}
       </ul>
     </>
   )

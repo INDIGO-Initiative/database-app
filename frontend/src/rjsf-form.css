@@ -55,10 +55,38 @@
 .record-form .error-detail { list-style: none; padding: 0; margin: 0.25rem 0 0; font-size: 0.85rem; }
 .record-form .has-error input, .record-form .has-error select, .record-form .has-error textarea { border-color: #dc3545; }
 
-/* Values that do not match the data standard but can still be saved: amber, not red */
-.record-form .warning-detail { list-style: none; padding: 0; margin: 0.25rem 0 0; font-size: 0.85rem; color: #856404; }
-.record-form .warning-detail li::before { content: "\26A0\FE0E"; margin-right: 0.35rem; }
-.record-form .has-warning input, .record-form .has-warning select, .record-form .has-warning textarea { border-color: #e0a800; }
+/* Values that do not match the data standard but can still be saved: amber, not red. A tinted field with a thick
+   edge, and the reason in a callout, so it stands out on a white page. */
+.record-form .has-warning {
+  background: #fff8e1;
+  border-left: 4px solid #f0ad00;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+}
+.record-form .has-warning input, .record-form .has-warning select, .record-form .has-warning textarea {
+  border-color: #f0ad00;
+  box-shadow: 0 0 0 0.15rem rgba(240, 173, 0, 0.35);
+  background-color: #fff;
+}
+.record-form .warning-detail {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #664d03;
+}
+.record-form .warning-detail li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  background: #ffecb5;
+  border: 1px solid #f0c24b;
+  border-radius: 0.25rem;
+  padding: 0.35rem 0.6rem;
+}
+.record-form .warning-detail li + li { margin-top: 0.25rem; }
+.record-form .warning-detail i { color: #b36b00; margin-top: 0.2rem; }
 
 /* A dropdown that also lets you type your own value */
 .record-form .choice-or-other { display: flex; flex-wrap: wrap; gap: 0.5rem; }
