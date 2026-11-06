@@ -77,7 +77,9 @@ class RJSFSchemaField(forms.CharField):
 
     def prepare_value(self, value):
         if isinstance(value, (dict, list)):
-            return json.dumps(value)
+            # Blank values (spreadsheet uploads store a blank cell as null) are left out, as they are when the form
+            # saves, so a record can be saved without editing it
+            return json.dumps(schemacheck.prune_blanks(value))
         return value
 
     def to_python(self, value):
@@ -93,6 +95,9 @@ class RJSFSchemaField(forms.CharField):
 
     def clean(self, value):
         value = super().clean(value)
+        # A blank is the same as nothing being there, so take blanks out before checking and saving. The edit form
+        # does this in the browser too, but only once something is edited, so it can not be relied on.
+        value = schemacheck.prune_blanks(value)
         result = schemacheck.check(self.schema, value, self.type_id)
         # Problems that only warn do not stop the save; the view tells the person about them
         self.warnings = result.warnings

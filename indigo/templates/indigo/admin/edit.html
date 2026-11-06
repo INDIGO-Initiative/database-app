@@ -23,18 +23,10 @@
     <form action="" method="post" class="mb-5">
         {% csrf_token %}
         {{ form.media }}
-        {% if form.non_field_errors or form.data.errors %}
-            <div class="alert alert-danger">
-                <strong>This could not be saved:</strong>
-                <ul class="mb-0">
-                    {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
-                    {% for error in form.data.errors %}<li>{{ error }}</li>{% endfor %}
-                </ul>
-            </div>
-        {% endif %}
+        {% include "indigo/includes/form_problems.html" %}
         {{ form.data }}
         <div class="edit-footer">
-            {% include "indigo/includes/comment_box.html" with value=form.comment.value errors=form.comment.errors %}
+            {% include "indigo/includes/comment_box.html" with value=form.comment.value errors=form.comment.errors required=form.comment.field.required %}
             <button type="submit" class="btn btn-primary">Save changes</button>
             <a href="{{ record_url }}" class="btn btn-link">Cancel</a>
         </div>

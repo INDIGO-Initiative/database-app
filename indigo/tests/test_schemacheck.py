@@ -1,4 +1,6 @@
+import html
 import json
+import re
 from io import StringIO
 
 import jsondataferret.models
@@ -11,6 +13,7 @@ from django.urls import reverse
 
 from indigo import schemacheck
 from indigo.forms import ProjectEditForm
+from indigo.views_admin.common import edit_changes
 
 SCHEMA = {
     "type": "object",
@@ -295,6 +298,104 @@ class EditSaveWithWarningsTests(TestCase):
         )
         self.assertContains(response, "Updates submitted")
         self.assertNotContains(response, "does not match the data standard")
+
+
+def _record_of_type(type_id, public_id, data):
+    type = jsondataferret.models.Type.objects.get_or_create(
+        public_id=type_id, defaults={"title": type_id}
+    )[0]
+    record = jsondataferret.models.Record.objects.create(type=type, public_id=public_id)
+    jsondataferret.pythonapi.newevent.newEvent(
+        [
+            jsondataferret.pythonapi.newevent.NewEventData(
+                type, record, data, approved=True
+            )
+        ],
+        comment="c",
+    )
+    return record
+
+
+def _contains_a_blank(value):
+    if isinstance(value, dict):
+        return any(_contains_a_blank(v) for v in value.values())
+    if isinstance(value, list):
+        return any(_contains_a_blank(v) for v in value)
+    return value is None or value == ""
+
+
+# What spreadsheet uploads leave behind: a blank cell is stored as null
+PIPELINE_WITH_STORED_BLANKS = {
+    "name": {"value": "A pipeline"},
+    "alternative_names": {"value": None},
+    "notes": {"value": None},
+    "dates": {"notes": None},
+    "delivery_locations": [
+        {
+            "location_postcode": {"value": None},
+            "lat_lng": {"lat": {"value": None}},
+            "notes": None,
+        }
+    ],
+    "misc7": {"proposed_financing_instruments": {"status": None}},
+}
+
+
+# The record as the database holds it: the form always sends these along too, so they are not "removed"
+AS_STORED = {**PIPELINE_WITH_STORED_BLANKS, "id": "PIPE1", "organisations": []}
+
+
+class SavingWithoutEditingTests(TestCase):
+    """Saving a record you have not changed must not trip over the blanks that spreadsheet uploads stored as null."""
+
+    def setUp(self):
+        _record_of_type("pipeline", "PIPE1", PIPELINE_WITH_STORED_BLANKS)
+        self.client.force_login(_admin())
+        self.url = reverse("indigo_admin_pipeline_edit", kwargs={"public_id": "PIPE1"})
+
+    def _data_in_the_form(self):
+        page = self.client.get(self.url).content.decode()
+        value = re.search(
+            r'<input type="hidden" name="data"[^>]* value="([^"]*)"', page
+        )
+        return html.unescape(value.group(1))
+
+    def test_the_form_starts_with_the_blanks_left_out(self):
+        data = json.loads(self._data_in_the_form())
+        self.assertFalse(_contains_a_blank(data), data)
+        self.assertEqual(data["name"], {"value": "A pipeline"})
+
+    def test_saving_what_the_form_started_with_works(self):
+        response = self.client.post(
+            self.url, {"data": self._data_in_the_form(), "comment": "No changes"}
+        )
+        self.assertEqual(response.status_code, 302)
+
+    def test_data_with_the_blanks_still_in_is_accepted_too(self):
+        # An old copy of the page, or anything else that sends the record as stored
+        response = self.client.post(
+            self.url,
+            {"data": json.dumps(AS_STORED), "comment": "As stored"},
+        )
+        self.assertEqual(response.status_code, 302)
+
+    def test_saving_it_untouched_shows_moderators_no_changes(self):
+        self.client.post(
+            self.url, {"data": self._data_in_the_form(), "comment": "None"}
+        )
+        edit = jsondataferret.models.Edit.objects.filter(
+            record__public_id="PIPE1", approval_event=None
+        ).latest("id")
+        self.assertEqual(edit_changes(edit, edit.record), [])
+
+    def test_a_real_problem_is_still_refused_among_the_blanks(self):
+        data = {**AS_STORED, "name": "just text"}
+        response = self.client.post(
+            self.url, {"data": json.dumps(data), "comment": "Bad"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "/name")
+        self.assertNotContains(response, "None is not of type")
 
 
 class WarningsReachTheFormTests(TestCase):

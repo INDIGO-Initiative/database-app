@@ -23,6 +23,7 @@
 
         <form action="" method="post" class="form mb-5">
             {% csrf_token %}
+            {% include "indigo/includes/form_problems.html" %}
             {{ form.media }}
             {{ form }}
             <button type="submit" class="btn btn-primary my-3">Save</button>

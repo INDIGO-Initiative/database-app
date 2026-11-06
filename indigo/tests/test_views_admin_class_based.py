@@ -304,3 +304,90 @@ class AdminThemeTests(TestCase):
         self.assertNotContains(
             self.client.get(reverse("indigo_project_list")), "admin-main"
         )
+
+
+class RefusedSaveIsObviousTests(TestCase):
+    """A save that is refused says so at the top of the page, for every reason, and the comment is marked as required."""
+
+    def setUp(self):
+        _record(TYPE_ORGANISATION_PUBLIC_ID, "INDIGO-ORG-0900", "Acme")
+        self.client.force_login(_user("admin", "admin"))
+        self.edit_url = reverse(
+            "indigo_admin_organisation_edit", kwargs={"public_id": "INDIGO-ORG-0900"}
+        )
+
+    def test_the_comment_box_is_marked_as_required_on_the_edit_page(self):
+        response = self.client.get(self.edit_url)
+        self.assertContains(response, 'required aria-required="true"')
+        self.assertContains(response, 'aria-hidden="true">*</span>')
+        self.assertContains(response, "Required.")
+        self.assertNotContains(response, "save-problems")
+
+    def test_the_comment_on_the_moderation_page_is_not_required(self):
+        response = self.client.get(
+            reverse(
+                "indigo_admin_organisation_moderate",
+                kwargs={"public_id": "INDIGO-ORG-0900"},
+            )
+        )
+        self.assertNotContains(response, 'aria-required="true"')
+
+    def test_a_missing_comment_is_in_the_banner_at_the_top_and_by_the_box(self):
+        response = self.client.post(
+            self.edit_url,
+            {"data": '{"name": {"value": "Renamed"}}', "comment": ""},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="save-problems"')
+        self.assertContains(response, "This could not be saved:")
+        self.assertContains(response, '<a href="#id_comment">Comment for history</a>')
+        # ... and by the box itself, which is outlined in red
+        self.assertContains(response, 'class="form-control is-invalid"')
+        # What was typed is kept
+        self.assertContains(response, "Renamed")
+        # Nothing was saved
+        self.assertFalse(
+            jsondataferret.models.Edit.objects.filter(
+                record__public_id="INDIGO-ORG-0900", approval_event=None
+            ).exists()
+        )
+
+    def test_a_comment_of_only_spaces_gets_past_the_browser_but_not_the_server(self):
+        # The browser only checks the box is not empty, so this is what the banner is for
+        response = self.client.post(
+            self.edit_url,
+            {"data": '{"name": {"value": "Renamed"}}', "comment": "    "},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="save-problems"')
+        self.assertContains(response, '<a href="#id_comment">Comment for history</a>')
+
+    def test_data_problems_and_a_missing_comment_are_listed_together(self):
+        response = self.client.post(
+            self.edit_url, {"data": '{"name": "just text"}', "comment": ""}
+        )
+        banner = (
+            response.content.decode().split('id="save-problems"')[1].split("</ul>")[0]
+        )
+        self.assertIn("/name", banner)
+        self.assertIn("Comment for history", banner)
+
+    def test_the_other_forms_mark_the_comment_and_show_the_banner_too(self):
+        url = reverse(
+            "indigo_admin_organisation_change_status",
+            kwargs={"public_id": "INDIGO-ORG-0900"},
+        )
+        self.assertContains(self.client.get(url), 'required aria-required="true"')
+        response = self.client.post(
+            url, {"status": "PUBLIC", "when": "moderate", "comment": ""}
+        )
+        self.assertContains(response, 'id="save-problems"')
+        self.assertContains(response, '<a href="#id_comment">Comment for history</a>')
+
+    def test_a_valid_save_has_no_banner(self):
+        response = self.client.post(
+            self.edit_url,
+            {"data": '{"name": {"value": "Renamed"}}', "comment": "Why"},
+            follow=True,
+        )
+        self.assertNotContains(response, "save-problems")

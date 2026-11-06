@@ -1440,13 +1440,14 @@ class AdminEditPageConsistencyTests(TestCase):
             "Joining Up Initiative",
         ),
     ]
+    # The same box on both pages. The edit page also marks it as required (an asterisk and the required attribute), so
+    # these are the parts the two have in common.
     COMMENT_BOX_START = (
         '<div class="form-group comment-box">\n'
-        '    <label for="id_comment" class="comment-box__label">Comment for history</label>\n'
-        '    <div class="comment-box__help">'
+        '    <label for="id_comment" class="comment-box__label">Comment for history'
     )
     COMMENT_TEXTAREA = (
-        '<textarea name="comment" id="id_comment" class="form-control" rows="3">'
+        '<textarea name="comment" id="id_comment" class="form-control" rows="3"'
     )
 
     def setUp(self):
@@ -1538,7 +1539,7 @@ class AdminEditPageConsistencyTests(TestCase):
                 # The help text is under the label and above the box, like the help text of the fields
                 content = page.content.decode()
                 self.assertLess(
-                    content.index("Comment for history</label>"),
+                    content.index('class="comment-box__label"'),
                     content.index('class="comment-box__help"'),
                     name,
                 )
