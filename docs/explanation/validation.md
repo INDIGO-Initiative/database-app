@@ -34,14 +34,19 @@ The file's `defaults` set this for every type of record. The ones that matter mo
 * `enum`: a value that is not one of the listed options. A warning.
 * `pattern`, `format`, `minLength`, `maxLength`, `minimum`, `maximum`, `minItems`, `maxItems`: warnings.
 * `required` and anything not listed (`*`): block.
+* A `status` (PUBLIC, PRIVATE or DISPUTED) that is not one of its options always blocks, because status decides what is
+  shown publicly and a mistyped one would quietly hide or expose data. This is an override for every type in the file
+  (`"path": "**/status"`).
 
 The wrong *shape* of data always blocks, for example a single value where a group of fields is expected, or a list where
 a single value is expected. The form could not make sense of that.
 
 ### Changing a rule for one type or field
 
-Add an override to `types` in the same file. The first override that matches wins. `path` is the position in the data,
-where `*` stands for any list position (or any one name), and `rule` is the keyword (leave it out for every keyword):
+Add an override to `types` in the same file (or to the top-level `overrides`, which apply to every type). The first
+override that matches wins, and a type's own overrides are looked at before the ones for every type. `path` is the
+position in the data, where `*` stands for any list position (or any one name) and `**` for any number of parts, and
+`rule` is the keyword (leave it out for every keyword):
 
 ```json
 "types": {
@@ -55,6 +60,17 @@ where `*` stands for any list position (or any one name), and `rule` is the keyw
 ```
 
 No rebuild is needed, but restart the app so it reads the file again.
+
+## What the person editing sees
+
+* **When the form opens**, any value in the record that does not match the standard but is allowed is marked in amber
+  under its field, with the reason, and each tab with some has an amber count. Values the server refuses when saving are
+  still shown in red.
+* **A warning is about the value as it was loaded.** Once the value is changed the warning goes, even if the new value
+  is also odd. After saving, the page says how many values do not match, so nothing is silent.
+* **Lists of options** are a dropdown with an extra "Other (type your own)..." choice, which shows a text box. A value
+  that is not in the list is shown in that text box, so it is visible and kept instead of vanishing from a dropdown that
+  cannot show it. A status is always a plain dropdown.
 
 ## What the standard itself still does
 

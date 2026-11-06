@@ -3,7 +3,16 @@ import Form from '@rjsf/core'
 import validator from '@rjsf/validator-ajv8'
 import { widgets } from './widgets'
 import { templates } from './templates'
-import { buildTabs, buildUiSchema, countErrorsByTopLevelKey, errorsToExtraErrors, mergeTabData, tabSchema } from './utils'
+import {
+  buildTabs,
+  buildUiSchema,
+  countErrorsByTopLevelKey,
+  currentWarnings,
+  errorsToExtraErrors,
+  mergeTabData,
+  tabSchema,
+  warningsByPointer,
+} from './utils'
 
 /**
  * Tabbed form for one record, generated from its JSON Schema.
@@ -11,12 +20,16 @@ import { buildTabs, buildUiSchema, countErrorsByTopLevelKey, errorsToExtraErrors
  * Only the active tab is rendered. The server validates the whole record when the page is saved
  * (the schema is the single source of truth), so client side validation is off.
  */
-export default function RecordForm({ typeId, schema, data, onChange, organisationSearchUrl, errors = [] }) {
+export default function RecordForm({ typeId, schema, data, onChange, organisationSearchUrl, errors = [], warnings = [] }) {
   const tabs = useMemo(() => buildTabs(typeId, schema), [typeId, schema])
   const uiSchema = useMemo(() => buildUiSchema(schema), [schema])
   const errorCounts = useMemo(() => countErrorsByTopLevelKey(errors), [errors])
   const extraErrors = useMemo(() => errorsToExtraErrors(errors), [errors])
   const tabErrorCount = tab => tab.keys.reduce((n, k) => n + (errorCounts[k] || 0), 0)
+  // Warnings are about the values as they were loaded, so they go as the values are changed
+  const liveWarnings = useMemo(() => currentWarnings(warnings, data), [warnings, data])
+  const warningCounts = useMemo(() => countErrorsByTopLevelKey(liveWarnings), [liveWarnings])
+  const tabWarningCount = tab => tab.keys.reduce((n, k) => n + (warningCounts[k] || 0), 0)
   // Open on the first tab with a problem, if the server found any
   const [activeId, setActiveId] = useState((tabs.find(t => tabErrorCount(t) > 0) || tabs[0])?.id)
   const active = tabs.find(t => t.id === activeId) || tabs[0]
@@ -26,7 +39,10 @@ export default function RecordForm({ typeId, schema, data, onChange, organisatio
     () => Object.fromEntries(Object.entries(uiSchema).filter(([k]) => active?.keys.includes(k) || k.startsWith('ui:'))),
     [uiSchema, active],
   )
-  const formContext = useMemo(() => ({ organisationSearchUrl }), [organisationSearchUrl])
+  const formContext = useMemo(
+    () => ({ organisationSearchUrl, warnings: warningsByPointer(liveWarnings) }),
+    [organisationSearchUrl, liveWarnings],
+  )
 
   if (!active) return null
 
@@ -46,6 +62,14 @@ export default function RecordForm({ typeId, schema, data, onChange, organisatio
               {tabErrorCount(tab) > 0 && (
                 <span className="badge badge-danger record-form__badge" title="Problems found when saving">
                   {tabErrorCount(tab)}
+                </span>
+              )}
+              {tabWarningCount(tab) > 0 && (
+                <span
+                  className="badge badge-warning record-form__badge"
+                  title="Values that do not match the data standard (they can still be saved)"
+                >
+                  {tabWarningCount(tab)}
                 </span>
               )}
             </button>

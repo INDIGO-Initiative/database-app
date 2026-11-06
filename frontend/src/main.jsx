@@ -9,7 +9,7 @@ function readJson(id) {
   return el ? JSON.parse(el.textContent) : null
 }
 
-function Editor({ holder, input, schema, initial, errors }) {
+function Editor({ holder, input, schema, initial, errors, warnings }) {
   const [data, setData] = useState(initial || {})
 
   function change(next) {
@@ -26,6 +26,7 @@ function Editor({ holder, input, schema, initial, errors }) {
       onChange={change}
       organisationSearchUrl={holder.dataset.organisationSearchUrl}
       errors={errors}
+      warnings={warnings}
     />
   )
 }
@@ -49,8 +50,12 @@ function mount(holder) {
 
   // Problems the server found the last time this was saved, if any
   const errors = readJson(holder.dataset.errorsId) || []
+  // Values that do not match the data standard but are allowed, in the data as loaded
+  const warnings = readJson(holder.dataset.warningsId) || []
 
-  createRoot(holder).render(<Editor holder={holder} input={input} schema={schema} initial={initial} errors={errors} />)
+  createRoot(holder).render(
+    <Editor holder={holder} input={input} schema={schema} initial={initial} errors={errors} warnings={warnings} />,
+  )
 }
 
 function mountAll() {

@@ -1,5 +1,6 @@
+import { getDefaultRegistry } from '@rjsf/core'
 import { getTemplate, getUiOptions } from '@rjsf/utils'
-import { isValueBlock } from './utils'
+import { isValueBlock, pathToPointer } from './utils'
 
 function Help({ description }) {
   if (!description) return null
@@ -108,7 +109,28 @@ function ArrayFieldItemTemplate({ children, className, buttonsProps, hasToolbar,
   )
 }
 
+const DefaultFieldTemplate = getDefaultRegistry().templates.FieldTemplate
+
+/**
+ * The usual field, with any warnings about its value below it, in amber. A warning is about something the data
+ * standard does not allow but the form does (the server decides which), so it is a note, not a stop.
+ */
+function FieldTemplate(props) {
+  const messages = props.registry?.formContext?.warnings?.[pathToPointer(props.fieldPathId?.path)]
+  if (!messages || messages.length === 0) return <DefaultFieldTemplate {...props} />
+  const help = (
+    <>
+      {props.help}
+      <ul className="warning-detail">
+        {messages.map((message, i) => <li key={i}>{message}</li>)}
+      </ul>
+    </>
+  )
+  return <DefaultFieldTemplate {...props} classNames={`${props.classNames || ''} has-warning`} help={help} />
+}
+
 export const templates = {
+  FieldTemplate,
   ObjectFieldTemplate,
   DescriptionFieldTemplate,
   TitleFieldTemplate,

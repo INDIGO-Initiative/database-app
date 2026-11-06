@@ -115,7 +115,62 @@ function OrganisationInput({ multiple, id, value, onChange, disabled, readonly, 
   )
 }
 
+const OTHER = '__other__'
+
+/**
+ * A list of options as a dropdown, with "Other" to type a value that is not in the list. The standard has fixed
+ * options, but the data does not always fit them, so a value that is not in the list is shown (and kept) instead of
+ * vanishing from a dropdown that cannot show it.
+ */
+function ChoiceOrOther({ id, value, onChange, disabled, readonly, options, required }) {
+  const choices = (options?.enumOptions || []).map(o => String(o.value)).filter(v => v !== '')
+  const hasValue = value !== undefined && value !== null && value !== ''
+  const notInList = hasValue && !choices.includes(String(value))
+  // Chosen "Other" but not typed anything yet
+  const [typing, setTyping] = useState(false)
+  const showText = notInList || typing
+
+  function pick(e) {
+    const chosen = e.target.value
+    if (chosen === OTHER) {
+      setTyping(true)
+    } else {
+      setTyping(false)
+      onChange(chosen === '' ? undefined : chosen)
+    }
+  }
+
+  return (
+    <div className="choice-or-other">
+      <select
+        id={id}
+        className="form-control"
+        value={showText ? OTHER : hasValue ? String(value) : ''}
+        disabled={disabled || readonly}
+        required={required}
+        onChange={pick}
+      >
+        <option value="" />
+        {choices.map(c => <option key={c} value={c}>{c}</option>)}
+        <option value={OTHER}>Other (type your own)…</option>
+      </select>
+      {showText && (
+        <input
+          type="text"
+          className="form-control choice-or-other__text"
+          aria-label="Your own value"
+          placeholder="Type your own value"
+          value={hasValue ? String(value) : ''}
+          disabled={disabled || readonly}
+          onChange={e => onChange(e.target.value === '' ? undefined : e.target.value)}
+        />
+      )}
+    </div>
+  )
+}
+
 export const widgets = {
+  choiceOrOtherWidget: ChoiceOrOther,
   organisationWidget: props => <OrganisationInput multiple={false} {...props} />,
   organisationsWidget: props => <OrganisationInput multiple {...props} />,
 }

@@ -23,13 +23,18 @@ SCHEMA = {
         },
         "amount": {"type": "number"},
         "kind": {"enum": ["senior", "junior"]},
+        "status": {"type": "string", "enum": ["PUBLIC", "PRIVATE", "DISPUTED"]},
         "code": {"type": "string", "pattern": "^[0-9]+$"},
         "items": {
             "type": "array",
             "minItems": 1,
             "items": {
                 "type": "object",
-                "properties": {"label": {"type": "string"}, "qty": {"type": "number"}},
+                "properties": {
+                    "label": {"type": "string"},
+                    "qty": {"type": "number"},
+                    "status": {"type": "string", "enum": ["PUBLIC", "PRIVATE"]},
+                },
             },
         },
     },
@@ -102,6 +107,47 @@ class ClassifyingProblemsTests(SimpleTestCase):
             },
         )
         self.assertEqual(warnings, set())
+
+
+class StatusAndValuesTests(SimpleTestCase):
+    def test_a_status_that_is_not_one_of_the_options_always_blocks(self):
+        # Status decides what is shown publicly, so a mistyped one must not be saved
+        self.assertEqual(_check({"status": "Pub"}), ({("/status", "enum")}, set()))
+        self.assertEqual(
+            _check({"items": [{"label": "a", "status": "HIDDEN"}]}),
+            ({("/items/0/status", "enum")}, set()),
+        )
+        # ... while the same sort of mistake in another list of options only warns
+        self.assertEqual(_check({"kind": "Senior"}), (set(), {("/kind", "enum")}))
+
+    def test_a_problem_says_which_value_it_is_about(self):
+        result = schemacheck.check(
+            SCHEMA, {"id": "X", "amount": "TBD", "kind": "x", "items": []}, "thing"
+        )
+        self.assertEqual(
+            [(p.path, p.value) for p in result.warnings],
+            [("/amount", "TBD"), ("/items", []), ("/kind", "x")],
+        )
+
+    def test_double_star_matches_any_depth(self):
+        parts = ["a", "b", "status"]
+        self.assertTrue(schemacheck._matches("**/status", parts))
+        self.assertTrue(schemacheck._matches("**/status", ["status"]))
+        self.assertTrue(schemacheck._matches("/a/**/status", parts))
+        self.assertFalse(schemacheck._matches("**/status", ["a", "statuses"]))
+        self.assertFalse(schemacheck._matches("**/status", ["status", "a"]))
+        self.assertFalse(schemacheck._matches("/a/b", parts))
+
+    def test_a_type_can_relax_the_status_rule_for_itself(self):
+        rules = json.loads(json.dumps(schemacheck.load_rules()))
+        rules["types"] = {
+            "thing": {
+                "overrides": [{"path": "/status", "rule": "enum", "mode": "warn"}]
+            }
+        }
+        self.assertEqual(
+            _check({"status": "Pub"}, rules), (set(), {("/status", "enum")})
+        )
 
 
 class OverridesTests(SimpleTestCase):
@@ -249,6 +295,53 @@ class EditSaveWithWarningsTests(TestCase):
         )
         self.assertContains(response, "Updates submitted")
         self.assertNotContains(response, "does not match the data standard")
+
+
+class WarningsReachTheFormTests(TestCase):
+    def setUp(self):
+        _project(
+            "PROJ1",
+            {
+                "name": {"value": "Odd"},
+                "investments": [{"investment_type": {"value": "senior loan"}}],
+            },
+        )
+        self.client.force_login(_admin())
+        self.url = reverse("indigo_admin_project_edit", kwargs={"public_id": "PROJ1"})
+
+    def _warnings(self, response):
+        html = response.content.decode()
+        start = html.index('id="id_data_warnings"')
+        start = html.index(">", start) + 1
+        return json.loads(html[start : html.index("</script>", start)])
+
+    def test_the_form_is_given_the_warnings_for_the_data_it_shows(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, 'data-warnings-id="id_data_warnings"')
+        warnings = self._warnings(response)
+        self.assertEqual(
+            [(w["path"], w["value"]) for w in warnings],
+            [("/investments/0/investment_type/value", "senior loan")],
+        )
+
+    def test_a_clean_record_has_none(self):
+        _project("PROJ2", {"name": {"value": "Fine"}})
+        url = reverse("indigo_admin_project_edit", kwargs={"public_id": "PROJ2"})
+        self.assertEqual(self._warnings(self.client.get(url)), [])
+
+    def test_a_refused_save_shows_the_warnings_for_what_was_submitted_too(self):
+        data = {
+            "name": "just text",
+            "investments": [{"investment_type": {"value": "mezzanine"}}],
+        }
+        response = self.client.post(
+            self.url, {"data": json.dumps(data), "comment": "c"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [(w["path"], w["value"]) for w in self._warnings(response)],
+            [("/investments/0/investment_type/value", "mezzanine")],
+        )
 
 
 class CheckRecordsCommandTests(TestCase):

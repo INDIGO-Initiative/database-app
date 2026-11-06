@@ -37,6 +37,7 @@ class Problem:
     path: str  # a JSON pointer to the part of the data, eg /outcome_funds/0/id
     message: str
     rule: str  # the JSON Schema keyword that was broken, eg "enum"
+    value: object = None  # the value that does not match, so a page can stop mentioning it once it is changed
 
 
 @dataclass
@@ -56,11 +57,24 @@ def _pointer(parts):
 
 
 def _matches(pattern, segments):
-    """Whether a path pattern such as /outcome_funds/*/id matches the parts of a path (list positions are "*")."""
+    """Whether a path pattern such as /outcome_funds/*/id matches the parts of a path (list positions are "*").
+    A "**" part stands for any number of parts, including none, eg **/status."""
     wanted = [p for p in pattern.split("/") if p]
-    return len(wanted) == len(segments) and all(
-        fnmatch.fnmatchcase(segment, want) for want, segment in zip(wanted, segments)
-    )
+
+    def match(wanted, segments):
+        if not wanted:
+            return not segments
+        if wanted[0] == "**":
+            return any(
+                match(wanted[1:], segments[n:]) for n in range(len(segments) + 1)
+            )
+        return (
+            bool(segments)
+            and fnmatch.fnmatchcase(segments[0], wanted[0])
+            and match(wanted[1:], segments[1:])
+        )
+
+    return match(wanted, segments)
 
 
 def _scalar_mismatch(error):
@@ -78,7 +92,11 @@ def _scalar_mismatch(error):
 
 def _mode(error, segments, rules, type_id):
     keyword = error.validator
-    for override in rules.get("types", {}).get(type_id, {}).get("overrides", []):
+    # The overrides for this type come first (so a type can relax a rule for all types), then the ones for every type
+    overrides = rules.get("types", {}).get(type_id, {}).get(
+        "overrides", []
+    ) + rules.get("overrides", [])
+    for override in overrides:
         if override.get("rule", "*") in (keyword, "*") and _matches(
             override["path"], segments
         ):
@@ -108,7 +126,7 @@ def check(schema, value, type_id, rules=None):
         if error.validator == "required":
             # Show these against the missing field, not the group it is missing from
             found = [
-                (path + [key], "This field is required")
+                (path + [key], "This field is required", None)
                 for key in error.validator_value
                 if key not in error.instance
             ]
@@ -118,11 +136,13 @@ def check(schema, value, type_id, rules=None):
                 if key not in error.instance
             ]
         else:
-            found = [(path, error.message)]
+            found = [(path, error.message, error.instance)]
             segments_for = [segments]
-        for (problem_path, message), problem_segments in zip(found, segments_for):
+        for (problem_path, message, value), problem_segments in zip(
+            found, segments_for
+        ):
             mode = _mode(error, problem_segments, rules, type_id)
-            problem = Problem(_pointer(problem_path), message, error.validator)
+            problem = Problem(_pointer(problem_path), message, error.validator, value)
             if mode == BLOCK:
                 result.blocking.append(problem)
             elif mode == WARN:

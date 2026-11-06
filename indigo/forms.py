@@ -47,11 +47,16 @@ class RJSFWidget(forms.Widget):
         # RJSFBoundField gives us the errors from the last check of the schema, so they can be shown against the fields
         attrs = dict(attrs or {})
         errors = attrs.pop("rjsf_errors", [])
+        warnings = attrs.pop("rjsf_warnings", [])
         context = super().get_context(name, value, attrs)
         context["widget"]["schema"] = self.schema
         context["widget"]["schema_id"] = f"{context['widget']['attrs']['id']}_schema"
         context["widget"]["errors"] = errors
         context["widget"]["errors_id"] = f"{context['widget']['attrs']['id']}_errors"
+        context["widget"]["warnings"] = warnings
+        context["widget"][
+            "warnings_id"
+        ] = f"{context['widget']['attrs']['id']}_warnings"
         context["widget"]["type_id"] = self.type_id
         context["widget"]["organisation_search_url"] = reverse(
             "indigo_admin_organisation_search_json"
@@ -118,7 +123,29 @@ class RJSFBoundField(forms.BoundField):
             for e in self.form.errors.as_data().get(self.name, [])
             if isinstance(e, SchemaValidationError)
         ]
+        attrs["rjsf_warnings"] = self._schema_warnings()
         return super().as_widget(widget, attrs, only_initial)
+
+    def _schema_warnings(self):
+        """What in the data being shown (the record as it is, or what was just submitted) does not match the data standard
+        but is allowed. Each says which value it is about, so the form can stop showing it once that value is changed."""
+        value = self.value()
+        if isinstance(value, str):
+            try:
+                value = json.loads(value)
+            except ValueError:
+                return []
+        if not isinstance(value, (dict, list)):
+            return []
+        result = schemacheck.check(
+            self.field.schema,
+            schemacheck.prune_blanks(value),
+            self.field.type_id,
+        )
+        return [
+            {"path": p.path, "message": p.message, "value": p.value}
+            for p in result.warnings
+        ]
 
 
 class RJSFForm(forms.Form):

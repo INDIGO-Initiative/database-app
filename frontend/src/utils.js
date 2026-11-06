@@ -48,9 +48,10 @@ export function orderedKeys(rootSchema, properties) {
 
 /**
  * Build an RJSF uiSchema from the JSON Schema: organisation references get the
- * lookup widget; long free text gets a textarea.
+ * lookup widget; long free text gets a textarea; lists of options let you type your own value too, except for
+ * a status, which decides what is public and must be one of its options.
  */
-export function buildUiSchema(rootSchema, node = rootSchema, depth = 0) {
+export function buildUiSchema(rootSchema, node = rootSchema, depth = 0, propertyName = '') {
   const resolved = resolveRef(rootSchema, node)
   if (!resolved || depth > 12) return {}
   const ui = {}
@@ -59,6 +60,8 @@ export function buildUiSchema(rootSchema, node = rootSchema, depth = 0) {
     ui['ui:widget'] = resolved['references-models-seperator'] ? 'organisationsWidget' : 'organisationWidget'
   } else if (resolved.type === 'string' && !resolved.enum && /\n|\(.{200,}/.test(resolved.description || '')) {
     ui['ui:widget'] = 'textarea'
+  } else if (resolved.type === 'string' && Array.isArray(resolved.enum) && propertyName !== 'status') {
+    ui['ui:widget'] = 'choiceOrOtherWidget'
   }
 
   if (resolved.type === 'array' && resolved.items) {
@@ -66,7 +69,7 @@ export function buildUiSchema(rootSchema, node = rootSchema, depth = 0) {
     if (Object.keys(items).length) ui.items = items
   }
   for (const [name, child] of Object.entries(resolved.properties || {})) {
-    const childUi = buildUiSchema(rootSchema, child, depth + 1)
+    const childUi = buildUiSchema(rootSchema, child, depth + 1, name)
     if (Object.keys(childUi).length) ui[name] = childUi
   }
 
@@ -197,4 +200,38 @@ export function countErrorsByTopLevelKey(errors) {
     counts[key] = (counts[key] || 0) + 1
   }
   return counts
+}
+
+// -------------------------------------------------------------------- warnings
+
+/** ['outcome_funds', 0, 'id'] -> "/outcome_funds/0/id" */
+export function pathToPointer(path) {
+  return (path || []).map(p => '/' + String(p).replace(/~/g, '~0').replace(/\//g, '~1')).join('')
+}
+
+/** The value at a JSON pointer in the data, or undefined if there is nothing there. */
+export function valueAtPath(data, pointer) {
+  let node = data
+  for (const part of pointerToPath(pointer)) {
+    if (node === null || node === undefined || typeof node !== 'object') return undefined
+    node = node[part]
+  }
+  return node
+}
+
+/**
+ * The warnings that still apply. The server's [{path, message, value}] are about the data as it was loaded (or last
+ * submitted); once someone changes a value, the warning about the old one no longer applies, so it is dropped.
+ */
+export function currentWarnings(warnings, data) {
+  return (warnings || []).filter(w => JSON.stringify(valueAtPath(data, w.path)) === JSON.stringify(w.value))
+}
+
+/** The messages for each place in the data: {"/investments/0/investment_type/value": ['...']} */
+export function warningsByPointer(warnings) {
+  const lookup = {}
+  for (const { path, message } of warnings || []) {
+    lookup[path] = [...(lookup[path] || []), message]
+  }
+  return lookup
 }

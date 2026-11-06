@@ -4,12 +4,16 @@ import {
   countErrorsByTopLevelKey,
   errorsToExtraErrors,
   isValueBlock,
+  currentWarnings,
   mergeTabData,
   orderedKeys,
+  pathToPointer,
   pointerToPath,
   prune,
   resolveRef,
   tabSchema,
+  valueAtPath,
+  warningsByPointer,
 } from './utils'
 
 describe('propertyOrder', () => {
@@ -128,5 +132,66 @@ describe('server errors', () => {
   })
   it('counts errors per top level key', () => {
     expect(countErrorsByTopLevelKey(errors)).toEqual({ name: 1, outcome_funds: 2, '': 1 })
+  })
+})
+
+describe('lists of options', () => {
+  const schema = {
+    type: 'object',
+    properties: {
+      kind: { type: 'string', enum: ['a', 'b'] },
+      status: { type: 'string', enum: ['PUBLIC', 'PRIVATE'] },
+      note: { type: 'string' },
+      rows: {
+        type: 'array',
+        items: { type: 'object', properties: { kind: { type: 'string', enum: ['x'] }, status: { type: 'string', enum: ['PUBLIC'] } } },
+      },
+    },
+  }
+
+  it('lets you type your own value, except for a status', () => {
+    const ui = buildUiSchema(schema)
+    expect(ui.kind['ui:widget']).toBe('choiceOrOtherWidget')
+    expect(ui.status).toBeUndefined()
+    expect(ui.note).toBeUndefined()
+    expect(ui.rows.items.kind['ui:widget']).toBe('choiceOrOtherWidget')
+    expect(ui.rows.items.status).toBeUndefined()
+  })
+})
+
+describe('warnings', () => {
+  it('turns a path into a pointer and back', () => {
+    expect(pathToPointer(['a', 0, 'b/c'])).toBe('/a/0/b~1c')
+    expect(pathToPointer([])).toBe('')
+    expect(pointerToPath(pathToPointer(['a', 0, 'b/c']))).toEqual(['a', '0', 'b/c'])
+  })
+
+  it('finds the value at a pointer', () => {
+    const data = { a: [{ b: 'x' }], n: null }
+    expect(valueAtPath(data, '/a/0/b')).toBe('x')
+    expect(valueAtPath(data, '/a/3/b')).toBeUndefined()
+    expect(valueAtPath(data, '/n/x')).toBeUndefined()
+    expect(valueAtPath(data, '')).toBe(data)
+  })
+
+  it('keeps a warning only while the value it is about is unchanged', () => {
+    const warnings = [
+      { path: '/amount', message: 'not a number', value: 'TBD' },
+      { path: '/rows', message: 'too short', value: [] },
+    ]
+    expect(currentWarnings(warnings, { amount: 'TBD', rows: [] })).toHaveLength(2)
+    expect(currentWarnings(warnings, { amount: '12', rows: [] })).toEqual([warnings[1]])
+    expect(currentWarnings(warnings, { rows: [{}] })).toEqual([warnings[0]].filter(() => false))
+    expect(currentWarnings(undefined, {})).toEqual([])
+  })
+
+  it('groups the messages by where they are, and counts them by top level key', () => {
+    const warnings = [
+      { path: '/a/0/x', message: 'one' },
+      { path: '/a/0/x', message: 'two' },
+      { path: '/b', message: 'three' },
+    ]
+    expect(warningsByPointer(warnings)).toEqual({ '/a/0/x': ['one', 'two'], '/b': ['three'] })
+    expect(countErrorsByTopLevelKey(warnings)).toEqual({ a: 2, b: 1 })
   })
 })

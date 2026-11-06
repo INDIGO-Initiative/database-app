@@ -54,3 +54,14 @@
 .record-form__badge { margin-left: 0.5rem; }
 .record-form .error-detail { list-style: none; padding: 0; margin: 0.25rem 0 0; font-size: 0.85rem; }
 .record-form .has-error input, .record-form .has-error select, .record-form .has-error textarea { border-color: #dc3545; }
+
+/* Values that do not match the data standard but can still be saved: amber, not red */
+.record-form .warning-detail { list-style: none; padding: 0; margin: 0.25rem 0 0; font-size: 0.85rem; color: #856404; }
+.record-form .warning-detail li::before { content: "\26A0\FE0E"; margin-right: 0.35rem; }
+.record-form .has-warning input, .record-form .has-warning select, .record-form .has-warning textarea { border-color: #e0a800; }
+
+/* A dropdown that also lets you type your own value */
+.record-form .choice-or-other { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.record-form .choice-or-other > select { flex: 1 1 12rem; min-width: 0; }
+.record-form .choice-or-other__text { flex: 2 1 14rem; min-width: 0; }
+
